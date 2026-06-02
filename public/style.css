@@ -1,0 +1,508 @@
+/* Премиальный скроллбар */
+::-webkit-scrollbar {
+    width: 10px;
+}
+::-webkit-scrollbar-track {
+    background: #F8F9FA; 
+}
+::-webkit-scrollbar-thumb {
+    background: #1A2332; /* Глубокий синий */
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #B89B72; /* Золотой при наведении */
+}
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px; /* Защита от наезжающей шапки */
+}
+
+/* Цвет выделения текста (когда клиент выделяет текст мышкой) */
+::selection {
+    background-color: #B89B72;
+    color: #ffffff;
+}
+
+/* Плавная тень для навигации при скролле */
+.header-scrolled {
+    box-shadow: 0 10px 30px -10px rgba(26, 35, 50, 0.1);
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+/* Эффект свечения для карточек проектов */
+.project-card-glow:hover {
+    box-shadow: 0 20px 40px -5px rgba(184, 155, 114, 0.15);
+}
+
+/* Плавное подчеркивание ссылок в меню */
+.nav-link {
+    position: relative;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #B89B72;
+    transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Эффект матового стекла (Glassmorphism) для карточек */
+.glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 30px 50px -10px rgba(0, 0, 0, 0.3);
+}
+
+/* Дорогая мягкая тень для светлых блоков */
+.premium-shadow {
+    box-shadow: 0 20px 40px -5px rgba(26, 36, 33, 0.08);
+}
+
+/* Микро-анимация карточек при наведении (эффект левитации) */
+.hover-float {
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.hover-float:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px -12px rgba(163, 139, 102, 0.15); /* Золотое свечение */
+}
+
+/* Эффект проявления фото (Черно-белое -> Цветное) */
+.photo-reveal img {
+    filter: grayscale(100%) contrast(1.1);
+    transition: all 0.6s ease;
+}
+.photo-reveal:hover img {
+    filter: grayscale(0%) contrast(1);
+    transform: scale(1.05);
+}
+
+/* Текстура шума для темных фонов */
+.noise-bg {
+    position: relative;
+}
+.noise-bg::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+}
+/* --- АНИМАЦИИ ДЛЯ ЛОГОТИПОВ --- */
+@keyframes float-slow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Рассинхрон, чтобы они "дышали" вразнобой */
+.logo-float-1 { animation: float-slow 4s ease-in-out infinite; }
+.logo-float-2 { animation: float-slow 5.5s ease-in-out infinite 1s; }
+.logo-float-3 { animation: float-slow 4.5s ease-in-out infinite 0.5s; }
+.logo-float-4 { animation: float-slow 5s ease-in-out infinite 1.5s; }
+
+/* Золотое свечение на фоне при наведении */
+.logo-wrapper {
+    position: relative;
+    z-index: 10;
+}
+.logo-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%; height: 140%;
+    background: radial-gradient(circle, rgba(138,123,102,0.12) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    z-index: -1;
+    pointer-events: none;
+}
+.logo-wrapper:hover::before {
+    opacity: 1;
+}
+/* Убираем гигантские цифры с фона в проектах */
+.chapter-number { display: none !important; }
+/* --- БАЗОВАЯ НАСТРОЙКА --- */
+html, body {
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ================================================
+   DARK MODE — Bridge Consult
+   ================================================ */
+
+/* --- Плавные переходы ТОЛЬКО для самого корня --- */
+/* section * с !important убивало ВСЕ анимации — убрано */
+html, body {
+    transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+/* Точечные переходы для шапки и меню */
+header {
+    transition: background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+#mobile-menu {
+    transition: transform 0.5s ease, background-color 0.35s ease;
+}
+
+/* ================================================
+   HEADER
+   ================================================ */
+html.dark-theme header {
+    background-color: rgba(18, 17, 16, 0.97) !important;
+    border-bottom-color: #2a2928 !important;
+}
+html.dark-theme .nav-link {
+    color: #d4d4d8 !important;
+}
+html.dark-theme .nav-link:hover {
+    color: #8A7B66 !important;
+}
+/* Иконки соцсетей в шапке */
+html.dark-theme header .bg-bridge-light {
+    background-color: #2a2928 !important;
+}
+/* Разделители */
+html.dark-theme header .border-r,
+html.dark-theme header .border-gray-200 {
+    border-color: #3a3937 !important;
+}
+/* Переключатель языков */
+html.dark-theme header .text-gray-400 {
+    color: #71717a !important;
+}
+html.dark-theme header .text-gray-200 {
+    color: #3a3937 !important;
+}
+/* Кнопка бургера */
+html.dark-theme #mobile-menu-btn {
+    color: #d4d4d8 !important;
+}
+/* Кнопка переключения темы */
+html.dark-theme #theme-toggle {
+    color: #a1a1aa !important;
+}
+html.dark-theme #theme-toggle:hover {
+    color: #8A7B66 !important;
+}
+
+/* Dropdown в nav */
+html.dark-theme nav .group > div.absolute {
+    background-color: #1e1d1b !important;
+    border-color: #2a2928 !important;
+}
+html.dark-theme nav .group > div.absolute a {
+    color: #d4d4d8 !important;
+}
+html.dark-theme nav .group > div.absolute a:hover {
+    background-color: #2a2928 !important;
+    color: #8A7B66 !important;
+}
+
+/* ================================================
+   МОБИЛЬНОЕ МЕНЮ
+   ================================================ */
+html.dark-theme #mobile-menu {
+    background-color: #121110 !important;
+}
+html.dark-theme #mobile-menu a {
+    color: #e4e4e7 !important;
+}
+html.dark-theme #mobile-menu .border-b,
+html.dark-theme #mobile-menu .border-gray-100 {
+    border-color: #2a2928 !important;
+}
+html.dark-theme #mobile-menu .text-gray-400 {
+    color: #71717a !important;
+}
+html.dark-theme #mobile-theme-toggle {
+    color: #a1a1aa !important;
+}
+
+/* ================================================
+   BODY И ФОНЫ СЕКЦИЙ
+   ================================================ */
+html.dark-theme body {
+    background-color: #151413 !important;
+    color: #d4d4d8 !important;
+}
+
+/* Белые секции → тёмные */
+html.dark-theme section.bg-white,
+html.dark-theme #about.bg-white {
+    background-color: #151413 !important;
+}
+/* Светло-серые секции */
+html.dark-theme .bg-bridge-light,
+html.dark-theme .bg-gray-50,
+html.dark-theme section.bg-bridge-light {
+    background-color: #1e1d1b !important;
+}
+/* Уже тёмные секции — чуть темнее */
+html.dark-theme .bg-bridge-dark {
+    background-color: #0f0e0d !important;
+}
+
+/* ================================================
+   КАРТОЧКИ И КОНТЕЙНЕРЫ
+   ================================================ */
+html.dark-theme .bg-white:not(header):not(#mobile-menu):not(.bg-bridge-dark):not(.accordion-icon-line) {
+    background-color: #1e1d1b !important;
+}
+html.dark-theme .bg-gray-100 {
+    background-color: #252321 !important;
+}
+html.dark-theme .rounded-3xl,
+html.dark-theme .rounded-2xl {
+    border-color: #2a2928;
+}
+html.dark-theme .border-gray-100 {
+    border-color: #2a2928 !important;
+}
+html.dark-theme .border-gray-200 {
+    border-color: #3a3937 !important;
+}
+
+/* ================================================
+   ТЕКСТЫ
+   ================================================ */
+html.dark-theme h1,
+html.dark-theme h2,
+html.dark-theme h3,
+html.dark-theme h4 {
+    color: #ffffff !important;
+}
+html.dark-theme .text-bridge-taupe {
+    color: #8A7B66 !important;
+}
+html.dark-theme section:not(.bg-bridge-dark) .text-white {
+    color: #f4f4f5 !important;
+}
+html.dark-theme .text-bridge-dark {
+    color: #f4f4f5 !important;
+}
+html.dark-theme .text-gray-600,
+html.dark-theme .text-gray-500 {
+    color: #a1a1aa !important;
+}
+html.dark-theme p {
+    color: #a1a1aa !important;
+}
+/* Не трогаем текст внутри тёмных секций */
+html.dark-theme .bg-bridge-dark p,
+html.dark-theme section.bg-bridge-dark p {
+    color: inherit !important;
+}
+
+/* ================================================
+   РАЗДЕЛИТЕЛИ / ЛИНИИ
+   ================================================ */
+html.dark-theme .w-px.bg-gray-200,
+html.dark-theme .h-px.bg-gray-200 {
+    background-color: #3a3937 !important;
+}
+
+/* ================================================
+   ФОРМА ОБРАТНОЙ СВЯЗИ
+   Внешняя секция (bg-white) → тёмная
+   ================================================ */
+html.dark-theme #contact-form.bg-white,
+html.dark-theme section#contact-form {
+    background-color: #151413 !important;
+}
+
+/* ================================================
+   МОДАЛЬНОЕ ОКНО
+   ================================================ */
+html.dark-theme #projectModal > div:first-child {
+    background-color: rgba(0, 0, 0, 0.85) !important;
+}
+html.dark-theme #modalContent {
+    background-color: #1e1d1b !important;
+    color: #e4e4e7 !important;
+}
+html.dark-theme #modalContent h2,
+html.dark-theme #modalContent h3,
+html.dark-theme #modalTitle {
+    color: #ffffff !important;
+}
+html.dark-theme #modalContent p,
+html.dark-theme #modalBody p {
+    color: #a1a1aa !important;
+}
+html.dark-theme #modalContent button.bg-gray-100 {
+    background-color: #2a2928 !important;
+    color: #e4e4e7 !important;
+}
+
+/* ================================================
+   ТЕНИ В ТЁМНОМ РЕЖИМЕ
+   ================================================ */
+html.dark-theme .shadow-sm {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5) !important;
+}
+html.dark-theme .shadow-md {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5) !important;
+}
+html.dark-theme .shadow-xl,
+html.dark-theme .shadow-2xl {
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6) !important;
+}
+
+/* Логотип в шапке — светлый на тёмном фоне */
+html.dark-theme header .site-logo {
+    filter: brightness(0) invert(1) sepia(0.15) saturate(1.2) hue-rotate(350deg);
+}
+
+/* Логотипы партнёров (кроме ADB — цветной на светлой подложке) */
+html.dark-theme .logo-wrapper img:not(.partner-logo-adb) {
+    filter: brightness(0) invert(1);
+    opacity: 0.75;
+}
+html.dark-theme .logo-wrapper:hover img:not(.partner-logo-adb) {
+    opacity: 1;
+}
+html.dark-theme .partner-logo-adb-shell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #f8f7f5 0%, #eceae6 100%);
+    padding: 0.65rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+html.dark-theme .logo-wrapper-adb,
+html.dark-theme .logo-wrapper-adb .partner-logo-adb-shell {
+    filter: none !important;
+}
+html.dark-theme .logo-wrapper img.partner-logo-adb {
+    filter: none !important;
+    opacity: 1 !important;
+}
+/* Светлая тема: ADB тоже на мягкой подложке для единообразия */
+.partner-logo-adb-shell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 0.5rem;
+    border-radius: 0.5rem;
+}
+html.dark-theme .logo-wrapper span.text-bridge-dark {
+    color: #f4f4f5 !important;
+}
+html.dark-theme .logo-wrapper span.text-bridge-taupe {
+    color: #8A7B66 !important;
+}
+
+/* Бейджи на карточках проектов */
+html.dark-theme #portfolio span.bg-white\/95 {
+    background-color: rgba(30, 29, 27, 0.92) !important;
+    color: #f4f4f5 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Фото команды: в тёмной теме — цвет по умолчанию */
+html.dark-theme .photo-reveal img {
+    filter: grayscale(0%) contrast(1);
+}
+html.dark-theme .photo-reveal:hover img {
+    filter: grayscale(85%) contrast(1.05);
+}
+
+/* Портфолио: клик по фото переключает ч/б */
+#portfolio .portfolio-photo-card.photo-bw img.grayscale {
+    filter: grayscale(100%) !important;
+}
+html.dark-theme #portfolio .portfolio-photo-card:not(.photo-bw) img.grayscale {
+    filter: grayscale(0%);
+}
+html.dark-theme #portfolio .portfolio-photo-card.photo-bw img.grayscale {
+    filter: grayscale(100%) !important;
+}
+
+/* --- МЕДИА-КАРТОЧКИ (ЭФФЕКТЫ ПРИ НАВЕДЕНИИ) --- */
+/* Светлая тема: по умолчанию ч/б, при наведении — цвет */
+#media .media-photo-card .media-photo-wrap img {
+    filter: grayscale(100%);
+    transition: filter 0.4s ease, transform 0.7s ease;
+}
+#media .media-photo-card:hover .media-photo-wrap img {
+    filter: grayscale(0%);
+}
+
+/* Темная тема: по умолчанию цветное, при наведении — ч/б */
+html.dark-theme #media .media-photo-card .media-photo-wrap img {
+    filter: grayscale(0%) !important;
+}
+html.dark-theme #media .media-photo-card:hover .media-photo-wrap img {
+    filter: grayscale(100%) !important;
+}
+
+/* Career Centre: светлая панель под логотип в тёмной теме */
+html.dark-theme #media .media-career-card .media-logo-panel {
+    background: linear-gradient(180deg, #f8f7f5 0%, #ebe8e3 100%) !important;
+    border-bottom-color: #3a3937 !important;
+}
+html.dark-theme #media .media-career-card .media-brand-logo {
+    filter: none !important;
+    opacity: 1 !important;
+}
+html.dark-theme #media .media-photo-card span.bg-white.text-bridge-dark {
+    background-color: rgba(245, 244, 242, 0.96) !important;
+    color: #292724 !important;
+}
+
+/* Кнопка CV и тёмные CTA на карточках */
+html.dark-theme a.bg-bridge-dark.text-white {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+/* Аккордеон «Стандарты высшей лиги» — плюсики */
+html.dark-theme .accordion-item .accordion-toggle-icon {
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+}
+html.dark-theme .accordion-item:hover .accordion-toggle-icon,
+html.dark-theme .accordion-item.is-open .accordion-toggle-icon {
+    border-color: #8A7B66 !important;
+    background-color: rgba(138, 123, 102, 0.2) !important;
+}
+html.dark-theme .accordion-item .accordion-icon-line {
+    background-color: #ffffff !important;
+}
+html.dark-theme .accordion-item .text-white {
+    color: #ffffff !important;
+}
+html.dark-theme nav .group > button.nav-link {
+    color: #d4d4d8 !important;
+}
+html.dark-theme nav .group > button.nav-link:hover {
+    color: #8A7B66 !important;
+}
+/* --- МОБИЛЬНАЯ КАРУСЕЛЬ УСЛУГ --- */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* --- ГРАДИЕНТ ДЛЯ КНОПКИ "ЧИТАТЬ ПОЛНОСТЬЮ" (КОМАНДА) --- */
+.fade-overlay {
+    background: linear-gradient(to top, #ffffff 15%, rgba(255, 255, 255, 0));
+}
+html.dark-theme .fade-overlay {
+    /* Цвет #1e1d1b - это цвет карточек команды в твоей темной теме */
+    background: linear-gradient(to top, #1e1d1b 15%, rgba(30, 29, 27, 0));
+}

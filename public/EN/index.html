@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge Consult | Infrastructure Contracts & Dispute Resolution</title>
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Bridge Consult | Infrastructure Contracts & Dispute Resolution">
+    <meta property="og:description" content="Independent international expertise. Advisory on FIDIC and EPC projects.">
+    <meta property="og:image" content="https://bridgeconsult.uz/og-image.jpg">
+    <meta name="theme-color" content="#292724">
+
+    <script>
+        (function() {
+            var t = localStorage.getItem('bc-theme');
+            if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark-theme');
+            }
+        })();
+    </script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bridge-taupe': '#8A7B66',
+                        'bridge-dark': '#292724',
+                        'bridge-light': '#F5F4F2',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+            position: relative;
+        }
+    </style>
+</head>
+<body class="font-sans text-bridge-dark antialiased bg-white selection:bg-bridge-taupe/20 overflow-x-hidden">
+
+<div id="preloader" class="fixed inset-0 z-[999999] bg-bridge-dark flex items-center justify-center transition-all duration-1000 ease-in-out">
+    <div class="relative overflow-visible flex items-center justify-center">
+        <div class="absolute inset-0 bg-bridge-taupe/30 blur-[40px] rounded-full scale-150"></div>
+        <img src="../bridge 2.png" alt="Bridge Consult Loading" class="relative z-10 h-12 md:h-16 object-contain transform translate-y-full opacity-0 transition-all duration-1000 ease-out" id="preloader-logo" style="filter: brightness(0) invert(60%) sepia(20%) saturate(1000%) hue-rotate(350deg) drop-shadow(0px 0px 20px rgba(138,123,102,0.8));">
+    </div>
+</div>
+
+<header class="fixed w-full top-0 z-[100] bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between relative z-[101]">
+        <a href="#" class="block relative z-[101] shrink-0">
+            <img src="../bridge 2.svg" alt="Bridge Consult" class="site-logo h-10 md:h-12 object-contain relative z-[101]">
+        </a>
+        
+        <nav class="hidden lg:flex space-x-6">
+            <a href="#about" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">About Us</a>
+            <a href="#services" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Services</a>
+            <a href="projects.html" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Project Experience</a>
+        
+            <!-- Dropdown -->
+            <div class="relative group">
+                <button class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors flex items-center gap-1 cursor-pointer whitespace-nowrap">
+                    Company
+                    <svg class="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                <div class="absolute top-full left-0 mt-3 w-52 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <a href="#team" class="flex items-center gap-2 px-4 py-3 text-sm text-bridge-dark hover:text-bridge-taupe hover:bg-bridge-light transition-colors rounded-xl mx-1">
+                        Team &amp; Training
+                    </a>
+                    <a href="#media" class="flex items-center gap-2 px-4 py-3 text-sm text-bridge-dark hover:text-bridge-taupe hover:bg-bridge-light transition-colors rounded-xl mx-1">
+                        Media &amp; Publications
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="hidden lg:flex items-center space-x-4 ml-4">
+            <div class="flex items-center space-x-3 pr-4 border-r border-gray-200">
+                <a href="https://www.linkedin.com/in/larissalk" target="_blank" class="w-10 h-10 rounded-full bg-bridge-light flex items-center justify-center text-bridge-taupe hover:bg-bridge-taupe hover:text-white transition-all duration-300 shadow-sm hover:shadow-md" title="LinkedIn">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+                <a href="https://t.me/fidicuzb" target="_blank" class="w-10 h-10 rounded-full bg-bridge-light flex items-center justify-center text-bridge-taupe hover:bg-bridge-taupe hover:text-white transition-all duration-300 shadow-sm hover:shadow-md" title="Telegram">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.11.03-1.84 1.18-5.2 3.45-.49.33-.94.5-1.35.49-.45-.01-1.3-.25-1.94-.46-.78-.26-1.4-.4-1.34-.84.03-.23.36-.47.98-.72 3.85-1.68 6.42-2.78 7.71-3.32 3.67-1.53 4.43-1.8 4.93-1.81.11 0 .36.03.49.13.11.09.14.22.15.34.01.07.01.18 0 .22z"/></svg>
+                </a>
+            </div>
+
+            <!-- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ -->
+            <div class="flex items-center space-x-2 pr-4 border-r border-gray-200 font-bold text-xs uppercase tracking-widest">
+                <a href="../index.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-0.5">RU</a>
+                <span class="text-gray-200">|</span>
+                <a href="#" class="text-bridge-taupe border-b-2 border-bridge-taupe pb-0.5">EN</a>
+                <span class="text-gray-200">|</span>
+                <a href="../UZ/index.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-0.5">UZ</a>
+            </div>
+
+            <button id="theme-toggle" type="button" title="Toggle theme" class="shrink-0 text-gray-500 hover:text-bridge-taupe focus:outline-none">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+                </svg>
+            </button>
+            
+            <div class="flex items-center space-x-3">
+                <a href="tel:+998330001530" class="text-sm font-bold text-bridge-dark hover:text-bridge-taupe transition-colors tracking-wide whitespace-nowrap">+998 33 000 15 30</a>
+                <a href="#contact-form" class="bg-bridge-dark text-white px-5 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-bridge-taupe transition-colors shadow-md hover:-translate-y-0.5 whitespace-nowrap">Request Consultation</a>
+            </div>
+        </div>
+
+        <button id="mobile-menu-btn" class="lg:hidden flex flex-col justify-between w-7 h-5 text-bridge-dark focus:outline-none relative z-[101] cursor-pointer">
+            <span class="w-full h-[2px] bg-current transition-all duration-300 origin-left burger-line-1"></span>
+            <span class="w-full h-[2px] bg-current transition-all duration-300 burger-line-2"></span>
+            <span class="w-full h-[2px] bg-current transition-all duration-300 origin-left burger-line-3"></span>
+        </button>
+    </div>
+
+    <div id="mobile-menu" class="fixed inset-0 w-full h-[100dvh] bg-white z-[100] flex flex-col p-8 transition-transform duration-500 translate-x-full lg:hidden pt-28 overflow-y-auto">
+        <div class="flex items-center justify-center space-x-6 mb-10 pb-6 border-b border-gray-100 font-bold text-sm uppercase tracking-widest font-sans">
+            <a href="../index.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-1">RU</a>
+            <a href="#" class="text-bridge-taupe border-b-2 border-bridge-taupe pb-1">EN</a>
+            <a href="../UZ/index.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-1">UZ</a>
+            <button id="mobile-theme-toggle" type="button" class="text-gray-400 hover:text-bridge-taupe transition-colors focus:outline-none ml-2" title="Toggle theme">
+                <svg id="mobile-theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="mobile-theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="flex flex-col space-y-6 font-sans">
+            <a href="#about" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-4">About Us</a>
+            <a href="#services" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-4">Services</a>
+            <a href="projects.html" class="text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-4">Project Experience</a>
+            <a href="#team" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-4">Team &amp; Training</a>
+            <a href="#media" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-4">Media &amp; Publications</a>
+            <a href="#contact-form" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-4">Contact</a>
+        </div>
+        <div class="mt-12 flex flex-col space-y-4 font-sans">
+            <a href="tel:+998330001530" class="text-xl font-semibold text-bridge-dark text-center">+998 33 000 15 30</a>
+            <a href="#contact-form" class="mobile-nav-link text-center bg-bridge-taupe text-white py-4 rounded-xl text-sm font-bold uppercase tracking-widest shadow-md">Contact Us</a>
+        </div>
+    </div>
+</header>
+
+<section class="relative w-full bg-cover bg-center" style="background-image: url('../hero-bg.png'); background-color: #1a1a1a;">
+    <div class="absolute inset-0 bg-gradient-to-r from-bridge-dark/95 via-bridge-dark/80 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-bridge-dark/80 z-0"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6 pt-[140px] md:pt-[180px] pb-[120px] md:pb-[160px]">
+        <div class="max-w-3xl">
+            <div class="flex flex-wrap gap-2 md:gap-3 mb-6" data-aos="fade-down" data-aos-duration="1000">
+                <span class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">FIDIC / EPC</span>
+                <span class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">Contract Engineering</span>
+            </div>
+            
+            <h1 class="text-white text-3xl sm:text-5xl md:text-6xl font-sans font-bold leading-tight mb-6 break-words" data-aos="fade-up" data-aos-delay="100">
+                Advisory on Infrastructure Contracts, Claims, and <span class="text-bridge-taupe">Dispute Resolution</span>
+            </h1>
+            
+            <p class="text-gray-300 text-lg md:text-xl font-light leading-relaxed mb-10 max-w-2xl font-sans" data-aos="fade-up" data-aos-delay="200">
+                Comprehensive advisory for complex infrastructure projects: from contract structuring to dispute resolution.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4" data-aos="fade-up" data-aos-delay="300">
+                <a href="#contact-form" class="text-center bg-white text-bridge-dark px-8 py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-bridge-taupe hover:text-white transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1">Discuss a Project</a>
+                <a href="#services" class="text-center bg-transparent border border-white/30 text-white px-8 py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-all hover:-translate-y-1">Our Services</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="relative z-20 max-w-7xl mx-auto px-4 md:px-6 -mt-20 md:-mt-24 mb-16 md:mb-24 font-sans">
+    <div class="bg-bridge-dark/85 backdrop-blur-xl border border-white/10 rounded-2xl md:rounded-3xl shadow-[0_20px_50px_-10px_rgba(26,35,50,0.5)] p-8 md:p-12 relative overflow-hidden" data-aos="fade-up" data-aos-delay="400">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-bridge-taupe/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 divide-x-0 md:divide-x divide-white/10 text-center relative z-10">
+            <div class="flex flex-col items-center justify-center md:px-4">
+                <div class="text-4xl md:text-5xl font-sans font-bold text-white mb-2 flex items-baseline"><span class="counter" data-target="20">0</span><span class="text-bridge-taupe ml-1">+</span></div>
+                <span class="text-[10px] md:text-[11px] uppercase tracking-widest text-gray-400 font-semibold mt-1">Years of Experience</span>
+            </div>
+            <div class="flex flex-col items-center justify-center md:px-4">
+                <div class="text-4xl md:text-5xl font-sans font-bold text-white mb-2 flex items-baseline"><span class="counter" data-target="50">0</span><span class="text-bridge-taupe ml-1">+</span></div>
+                <span class="text-[10px] md:text-[11px] uppercase tracking-widest text-gray-400 font-semibold mt-1">Major Projects</span>
+            </div>
+            <div class="flex flex-col items-center justify-center md:px-4">
+                <div class="text-4xl md:text-5xl font-sans font-bold text-white mb-2 flex items-baseline"><span class="counter" data-target="5">0</span><span class="text-bridge-taupe ml-1">+</span></div>
+                <span class="text-[10px] md:text-[11px] uppercase tracking-widest text-gray-400 font-semibold mt-1">IFI Partners</span>
+            </div>
+            <div class="flex flex-col items-center justify-center md:px-4">
+                <div class="text-4xl md:text-5xl font-sans font-bold text-white mb-2 flex items-baseline"><span class="counter" data-target="100">0</span><span class="text-bridge-taupe ml-1">%</span></div>
+                <span class="text-[10px] md:text-[11px] uppercase tracking-widest text-gray-400 font-semibold mt-1">Client Protection</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="py-24 bg-white font-sans">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div data-aos="fade-right" data-aos-duration="1000">
+                <div class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-4">1 // ABOUT THE COMPANY</div>
+                <h2 class="text-4xl md:text-5xl font-sans font-bold text-bridge-dark mb-8 leading-tight" data-aos="fade-up">About Us</h2>
+                <div class="space-y-6 text-gray-600 font-light text-lg">
+                    <p><strong class="font-bold text-bridge-dark">BRIDGE CONSULT</strong> is an independent consulting firm specializing in contract engineering, construction contract administration, and dispute resolution in international infrastructure projects.</p>
+                    <p>The company provides expert support to public sector clients, international financial institutions (IFIs), investors, and contractors in the execution of large-scale infrastructure projects, including those financed by multilateral development banks.</p>
+                    <p class="text-sm font-medium text-bridge-taupe pt-4 border-t border-gray-100">The company was founded in 2016 and is registered in the Republic of Uzbekistan.</p>
+                </div>
+            </div>
+            <div data-aos="fade-left" data-aos-duration="1000">
+                <div class="bg-bridge-dark rounded-3xl p-10 md:p-14 shadow-2xl relative overflow-hidden">
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-bridge-taupe rounded-full opacity-20 blur-3xl"></div>
+                    <div class="relative z-10">
+                        <h3 class="text-2xl font-sans font-bold text-white mb-6">Mission</h3>
+                        <p class="text-gray-300 font-light leading-relaxed mb-6">The mission of Bridge Consult is to support the successful implementation of international infrastructure projects through professional contract engineering, effective construction contract management, and the application of modern dispute resolution mechanisms.</p>
+                        <p class="text-gray-300 font-light leading-relaxed mb-6">We strive to ensure transparency, legal certainty, and effective risk management at all stages of the project lifecycle by integrating international best practices, FIDIC standards, and deep expertise in contract and project management.</p>
+                        <p class="text-gray-300 font-light leading-relaxed">Our goal is to establish a reliable legal and managerial foundation for cooperation between the public sector, IFIs, investors, and contractors.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="services" class="py-16 md:py-32 bg-bridge-dark relative font-sans overflow-hidden">
+    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
+        <source src="../ultra-bridge.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/70 to-bridge-dark/95 z-[1]"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20" data-aos="fade-up">
+            <div class="max-w-2xl">
+                <div class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-4 flex items-center">
+                    <span class="w-8 h-px bg-bridge-taupe mr-4"></span> 2 // SERVICES OVERVIEW
+                </div>
+                <h2 class="text-3xl md:text-5xl font-sans font-bold text-white leading-tight">Services Overview</h2>
+            </div>
+            <p class="text-gray-400 text-base md:text-lg font-light mt-4 md:mt-0 max-w-md">Bridge Consult provides consulting services for international infrastructure projects.</p>
+        </div>
+
+        <div class="flex md:grid md:grid-cols-2 gap-5 md:gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none hide-scrollbar pb-8 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0">
+            
+            <div class="glass-card rounded-2xl md:rounded-3xl p-6 md:p-10 hover-float relative overflow-hidden group min-w-[85vw] sm:min-w-[60vw] md:min-w-0 snap-center" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="text-xl md:text-2xl font-sans font-bold text-white mb-4 md:mb-6 relative z-10">Contract Engineering (FIDIC / EPC)</h3>
+                <ul class="space-y-3 md:space-y-4 text-gray-300 font-light text-[13px] md:text-sm relative z-10 leading-relaxed">
+                    <li><strong class="text-white">Structuring, Documentation & Tenders:</strong> Preparation of a complete documentation package for procurement procedures, including technical specifications and evaluation criteria.</li>
+                    <li><strong class="text-white">Tender Engineering:</strong> Bid analysis, identifying hidden risks in tender documentation.</li>
+                    <li><strong class="text-white">Contract Drafting:</strong> Drafting and adapting international construction contracts (FIDIC and EPC).</li>
+                    <li><strong class="text-white">Contract Strategy Audit:</strong> Evaluating and selecting the optimal contract model.</li>
+                </ul>
+            </div>
+
+            <div class="glass-card rounded-2xl md:rounded-3xl p-6 md:p-10 hover-float relative overflow-hidden group min-w-[85vw] sm:min-w-[60vw] md:min-w-0 snap-center" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-xl md:text-2xl font-sans font-bold text-white mb-4 md:mb-6 relative z-10">Construction Contract Administration</h3>
+                <ul class="space-y-3 md:space-y-4 text-gray-300 font-light text-[13px] md:text-sm relative z-10 leading-relaxed">
+                    <li><strong class="text-white">Claims Management:</strong> Professional analysis, preparation, and defense of the client's position; preventive measures to avoid disputes.</li>
+                    <li><strong class="text-white">Risk & Change Management:</strong> Risk identification, regulation of all modifications in scope, time, and cost.</li>
+                    <li><strong class="text-white">Budget & Quality Control:</strong> Budget, procurement, and quality control in accordance with technical and regulatory requirements.</li>
+                </ul>
+            </div>
+
+            <div class="glass-card rounded-2xl md:rounded-3xl p-6 md:p-10 hover-float relative overflow-hidden group min-w-[85vw] sm:min-w-[60vw] md:min-w-0 snap-center" data-aos="fade-up" data-aos-delay="300">
+                <h3 class="text-xl md:text-2xl font-sans font-bold text-white mb-4 md:mb-6 relative z-10">Dispute Resolution and Arbitration</h3>
+                <ul class="space-y-3 md:space-y-4 text-gray-300 font-light text-[13px] md:text-sm relative z-10 leading-relaxed">
+                    <li><strong class="text-white">Dispute Avoidance Boards (DAAB/DAB):</strong> Representation of parties, consulting support, and provision of experts.</li>
+                    <li><strong class="text-white">Mediation:</strong> Applying mediation procedures to achieve out-of-court settlements.</li>
+                    <li><strong class="text-white">Arbitration Support:</strong> Expert support and preparation of evidence in Claims & Arbitration procedures.</li>
+                </ul>
+            </div>
+
+            <div class="glass-card rounded-2xl md:rounded-3xl p-6 md:p-10 hover-float relative overflow-hidden group min-w-[85vw] sm:min-w-[60vw] md:min-w-0 snap-center" data-aos="fade-up" data-aos-delay="400">
+                <h3 class="text-xl md:text-2xl font-sans font-bold text-white mb-4 md:mb-6 relative z-10">Analytical Expertise and Training</h3>
+                <ul class="space-y-3 md:space-y-4 text-gray-300 font-light text-[13px] md:text-sm relative z-10 leading-relaxed">
+                    <li><strong class="text-white">Financial Risk Assessment:</strong> Forensic Delay Analysis and Quantum Calculation (variation and damage calculations).</li>
+                    <li><strong class="text-white">Local Adaptation:</strong> Aligning international contract conditions with the legislation of the Republic of Uzbekistan.</li>
+                    <li><strong class="text-white">Institutional Development:</strong> Conducting seminars and training on effective contract administration and claims management.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-32 bg-bridge-dark relative overflow-hidden font-sans">
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[150vw] md:w-[800px] aspect-square max-w-[800px] bg-bridge-taupe/20 rounded-full blur-[100px] md:blur-[150px] pointer-events-none"></div>
+    <div class="max-w-5xl mx-auto px-6 relative z-10">
+        <div class="text-center mb-20" data-aos="fade-up">
+            <span class="text-bridge-taupe font-bold tracking-widest uppercase text-sm mb-4 block animate-pulse">Innovative Approach</span>
+            <h2 class="text-4xl md:text-6xl font-sans font-bold text-white mb-6 break-words">Top-Tier <span class="text-transparent bg-clip-text bg-gradient-to-r from-bridge-taupe to-[#D4C3A3]">Standards</span></h2>
+            <p class="text-gray-400 text-lg font-light max-w-2xl mx-auto">Integrating world-class dispute resolution practices into real-world project conditions.</p>
+        </div>
+        <div class="space-y-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="accordion-item group bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 hover:border-bridge-taupe/60 hover:shadow-[0_0_40px_-10px_rgba(138,123,102,0.4)]">
+                <button class="accordion-btn w-full px-6 md:px-8 py-6 md:py-8 flex items-center justify-between text-left focus:outline-none cursor-pointer">
+                    <span class="text-xl md:text-2xl font-sans text-white font-medium tracking-wide">FIDIC Contract Forms</span>
+                    <div class="accordion-toggle-icon relative w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/20 flex items-center justify-center shrink-0 transition-all duration-500 group-hover:border-bridge-taupe group-hover:bg-bridge-taupe/10">
+                        <div class="accordion-icon-line w-4 md:w-5 h-[2px] bg-white absolute transition-transform duration-500"></div>
+                        <div class="accordion-icon-line vertical-line w-[2px] h-4 md:h-5 bg-white absolute transition-transform duration-500"></div>
+                    </div>
+                </button>
+                <div class="accordion-content grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]" style="grid-template-rows: 0fr;">
+                    <div class="overflow-hidden">
+                        <div class="px-6 md:px-8 pb-10 pt-2 text-gray-300 font-light text-base md:text-lg leading-relaxed border-t border-white/10 mt-2">
+                            <p class="mb-6">The International Federation of Consulting Engineers (FIDIC) provides the gold standard for standard forms of contract. We possess expertise in applying the full suite of forms, including:</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="p-5 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                                    <strong class="text-bridge-taupe block text-xl mb-1">Red Book</strong><span class="text-sm">Conditions of Contract for Construction</span>
+                                </div>
+                                <div class="p-5 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                                    <strong class="text-bridge-taupe block text-xl mb-1">Yellow Book</strong><span class="text-sm">Conditions of Contract for Plant and Design-Build</span>
+                                </div>
+                                <div class="p-5 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                                    <strong class="text-bridge-taupe block text-xl mb-1">Silver Book</strong><span class="text-sm">Conditions of Contract for EPC/Turnkey Projects</span>
+                                </div>
+                                <div class="p-5 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                                    <strong class="text-bridge-taupe block text-xl mb-1">Pink Book</strong><span class="text-sm">MDB Harmonised Edition</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item group bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 hover:border-bridge-taupe/60 hover:shadow-[0_0_40px_-10px_rgba(138,123,102,0.4)]">
+                <button class="accordion-btn w-full px-6 md:px-8 py-6 md:py-8 flex items-center justify-between text-left focus:outline-none cursor-pointer">
+                    <span class="text-xl md:text-2xl font-sans text-white font-medium tracking-wide">Forensic Delay Analysis (FDA)</span>
+                    <div class="accordion-toggle-icon relative w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/20 flex items-center justify-center shrink-0 transition-all duration-500 group-hover:border-bridge-taupe group-hover:bg-bridge-taupe/10">
+                        <div class="accordion-icon-line w-4 md:w-5 h-[2px] bg-white absolute transition-transform duration-500"></div>
+                        <div class="accordion-icon-line vertical-line w-[2px] h-4 md:h-5 bg-white absolute transition-transform duration-500"></div>
+                    </div>
+                </button>
+                <div class="accordion-content grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]" style="grid-template-rows: 0fr;">
+                    <div class="overflow-hidden">
+                        <div class="px-6 md:px-8 pb-10 pt-6 text-gray-300 font-light text-base md:text-lg leading-relaxed border-t border-white/10 mt-2">
+                            Applied for retrospective analysis of construction delays. We utilize the <strong class="text-white">Society of Construction Law (SCL) Protocol</strong> methods, including Time Impact Analysis and Time Slice Analysis, to prove or disprove a contractor's entitlement to an Extension of Time (EOT) and cost compensation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item group bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 hover:border-bridge-taupe/60 hover:shadow-[0_0_40px_-10px_rgba(138,123,102,0.4)]">
+                <button class="accordion-btn w-full px-6 md:px-8 py-6 md:py-8 flex items-center justify-between text-left focus:outline-none cursor-pointer">
+                    <span class="text-xl md:text-2xl font-sans text-white font-medium tracking-wide">Dispute Avoidance Board (DAAB)</span>
+                    <div class="accordion-toggle-icon relative w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/20 flex items-center justify-center shrink-0 transition-all duration-500 group-hover:border-bridge-taupe group-hover:bg-bridge-taupe/10">
+                        <div class="accordion-icon-line w-4 md:w-5 h-[2px] bg-white absolute transition-transform duration-500"></div>
+                        <div class="accordion-icon-line vertical-line w-[2px] h-4 md:h-5 bg-white absolute transition-transform duration-500"></div>
+                    </div>
+                </button>
+                <div class="accordion-content grid transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]" style="grid-template-rows: 0fr;">
+                    <div class="overflow-hidden">
+                        <div class="px-6 md:px-8 pb-10 pt-6 text-gray-300 font-light text-base md:text-lg leading-relaxed border-t border-white/10 mt-2">
+                            A pre-arbitral dispute resolution mechanism. We assist in structuring DAAB operations, preparing Position Papers, and representing clients at Board hearings, thereby minimizing the risks of escalating the case to costly international arbitration.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-32 relative overflow-hidden bg-bridge-dark font-sans">
+    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-70">
+        <source src="../elegant-video.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-t from-bridge-dark via-bridge-dark/60 to-bridge-dark/95 z-[1]"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="text-center mb-20" data-aos="fade-up">
+            <div class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-4">Our Approach</div>
+            <h2 class="text-4xl md:text-5xl font-sans font-bold text-white mb-6">Why Choose Bridge Consult</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div class="bg-bridge-dark/30 border border-white/10 p-10 rounded-3xl backdrop-blur-md hover:bg-white/10 hover:border-bridge-taupe/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-bridge-taupe text-5xl font-sans font-bold mb-6 opacity-50">01</div>
+                <h3 class="text-xl font-bold text-white mb-4">International Standards</h3>
+                <p class="text-gray-400 font-light leading-relaxed">Deep understanding of FIDIC forms, EPC contracts, and stringent IFI requirements.</p>
+            </div>
+            <div class="bg-bridge-dark/30 border border-white/10 p-10 rounded-3xl backdrop-blur-md hover:bg-white/10 hover:border-bridge-taupe/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-bridge-taupe text-5xl font-sans font-bold mb-6 opacity-50">02</div>
+                <h3 class="text-xl font-bold text-white mb-4">Local Adaptation</h3>
+                <p class="text-gray-400 font-light leading-relaxed">Integrating international contracts into the legal framework of Uzbekistan without compromising their legal validity.</p>
+            </div>
+            <div class="bg-bridge-dark/30 border border-white/10 p-10 rounded-3xl backdrop-blur-md hover:bg-white/10 hover:border-bridge-taupe/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl" data-aos="fade-up" data-aos-delay="300">
+                <div class="text-bridge-taupe text-5xl font-sans font-bold mb-6 opacity-50">03</div>
+                <h3 class="text-xl font-bold text-white mb-4">Comprehensive Protection</h3>
+                <p class="text-gray-400 font-light leading-relaxed">Client interest defense at all levels: from quantum audit to arbitration representation.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="portfolio" class="py-24 bg-white font-sans">
+    <div class="max-w-7xl mx-auto px-6">
+        
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-16 w-full" data-aos="fade-up">
+            <div class="w-full md:w-auto mb-8 md:mb-0">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="w-10 h-[2px] bg-bridge-taupe shrink-0"></span>
+                    <span class="text-bridge-taupe font-bold tracking-widest uppercase text-xs shrink-0">Portfolio</span>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-sans font-bold text-bridge-dark leading-tight break-words">Selected Project Experience</h2>
+            </div>
+            
+            <div class="hidden md:block flex-grow h-[1px] bg-gray-200 mx-10"></div>
+            
+            <div class="w-full md:w-auto shrink-0">
+                <a href="projects.html" class="group flex items-center justify-center w-full md:w-auto bg-bridge-dark text-white px-8 py-4 rounded-full text-sm font-bold uppercase tracking-wider hover:bg-bridge-taupe transition-all duration-300 shadow-xl hover:shadow-bridge-taupe/20 hover:-translate-y-1">
+                    View Detailed Cases
+                    <svg class="w-5 h-5 ml-3 transform group-hover:translate-x-1 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+            <!-- Project 1 -->
+            <div class="portfolio-photo-card group cursor-pointer bg-white rounded-[2rem] border border-gray-100 overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-bridge-taupe/10 transition-all duration-500 hover:-translate-y-2 flex flex-col" data-aos="fade-up" data-aos-delay="100" onclick="openModal('olympic')">
+                <div class="relative h-64 md:h-72 overflow-hidden bg-bridge-dark">
+                    <div class="absolute inset-0 bg-bridge-dark/30 group-hover:bg-bridge-dark/10 transition-colors z-10"></div>
+                    <img src="../olympic city.jpg" alt="Olympic City" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute top-6 left-6 z-20 flex gap-2">
+                        <span class="bg-white/95 backdrop-blur text-bridge-dark text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">EPC+F</span>
+                        <span class="bg-bridge-taupe/95 backdrop-blur text-white text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">2022-2025</span>
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-bold text-bridge-dark mb-3 group-hover:text-bridge-taupe transition-colors">Olympic City</h3>
+                    <p class="text-gray-600 font-light mb-6 flex-grow text-sm md:text-base">Construction of modern sports facilities for the IV Asian Youth Games in Tashkent.</p>
+                    <div class="pt-5 border-t border-gray-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest group-hover:text-bridge-taupe transition-colors">Detailed Case</span>
+                        <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-bridge-taupe group-hover:text-white transition-all duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="portfolio-photo-card group cursor-pointer bg-white rounded-[2rem] border border-gray-100 overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-bridge-taupe/10 transition-all duration-500 hover:-translate-y-2 flex flex-col" data-aos="fade-up" data-aos-delay="200" onclick="openModal('tashkent')">
+                <div class="relative h-64 md:h-72 overflow-hidden bg-bridge-dark">
+                    <div class="absolute inset-0 bg-bridge-dark/30 group-hover:bg-bridge-dark/10 transition-colors z-10"></div>
+                    <img src="../tashkent-invest-company.png" alt="Tashkent Invest" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute top-6 left-6 z-20 flex gap-2">
+                        <span class="bg-white/95 backdrop-blur text-bridge-dark text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">White Book</span>
+                        <span class="bg-bridge-taupe/95 backdrop-blur text-white text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">2025-Present</span>
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-bold text-bridge-dark mb-3 group-hover:text-bridge-taupe transition-colors">Tashkent Invest Company JSC</h3>
+                    <p class="text-gray-600 font-light mb-6 flex-grow text-sm md:text-base">Development and implementation of a procurement and contract management system for EPC+F infrastructure projects.</p>
+                    <div class="pt-5 border-t border-gray-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest group-hover:text-bridge-taupe transition-colors">Detailed Case</span>
+                        <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-bridge-taupe group-hover:text-white transition-all duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="portfolio-photo-card group cursor-pointer bg-white rounded-[2rem] border border-gray-100 overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-bridge-taupe/10 transition-all duration-500 hover:-translate-y-2 flex flex-col" data-aos="fade-up" data-aos-delay="300" onclick="openModal('kamchik')">
+                <div class="relative h-64 md:h-72 overflow-hidden bg-bridge-dark">
+                    <div class="absolute inset-0 bg-bridge-dark/30 group-hover:bg-bridge-dark/10 transition-colors z-10"></div>
+                    <img src="../kamchik.avif" alt="Kamchik Pass" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute top-6 left-6 z-20 flex gap-2">
+                        <span class="bg-white/95 backdrop-blur text-bridge-dark text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">MDB Harmonised</span>
+                        <span class="bg-bridge-taupe/95 backdrop-blur text-white text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">2016-2022</span>
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-bold text-bridge-dark mb-3 group-hover:text-bridge-taupe transition-colors">A-373 Highway (Kamchik Pass)</h3>
+                    <p class="text-gray-600 font-light mb-6 flex-grow text-sm md:text-base">CAREC Corridor 2 Road Investment Program. Client: EVRASCON JSC.</p>
+                    <div class="pt-5 border-t border-gray-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest group-hover:text-bridge-taupe transition-colors">Detailed Case</span>
+                        <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-bridge-taupe group-hover:text-white transition-all duration-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-16 bg-gray-50 rounded-[2rem] border border-gray-100 p-8 md:p-10" data-aos="fade-up">
+            <h3 class="text-xl md:text-2xl font-bold text-bridge-dark mb-8">Water Supply System Projects <span class="text-base font-medium text-gray-500 block md:inline md:ml-2 mt-1 md:mt-0">(Employer: Suv-Taraqqiyot LLC)</span></h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="flex flex-col">
+                    <span class="w-8 h-1 bg-bridge-taupe mb-4 rounded-full"></span>
+                    <p class="font-bold text-bridge-dark text-base mb-2">Yangiyul and Jiydakapa</p>
+                    <p class="text-sm text-gray-600 leading-relaxed">Reconstruction of water supply systems. Financing: World Bank, EBRD. FIDIC Yellow Book.</p>
+                </div>
+                <div class="flex flex-col">
+                    <span class="w-8 h-1 bg-bridge-taupe mb-4 rounded-full"></span>
+                    <p class="font-bold text-bridge-dark text-base mb-2">Namangan</p>
+                    <p class="text-sm text-gray-600 leading-relaxed">Water supply for the northern part of the city (60.07 km pipeline). Financing: OPEC Fund.</p>
+                </div>
+                <div class="flex flex-col">
+                    <span class="w-8 h-1 bg-bridge-taupe mb-4 rounded-full"></span>
+                    <p class="font-bold text-bridge-dark text-base mb-2">Samarkand Region</p>
+                    <p class="text-sm text-gray-600 leading-relaxed">Construction of water intakes. Financing: ADB.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="team" class="py-32 bg-bridge-light font-sans">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-20" data-aos="fade-up">
+            <div class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-4">Expertise</div>
+            <h2 class="text-4xl md:text-5xl font-sans font-bold text-bridge-dark mb-6">Our Key Personnel</h2>
+            <p class="text-gray-500 max-w-3xl mx-auto text-lg font-light">The foundation of BRIDGE CONSULT is the unique experience of our specialists. We have brought together professionals with decades of practice in engineering, law, and international arbitration.</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-8 md:p-12 premium-shadow mb-10 flex flex-col lg:flex-row gap-10 hover-float" data-aos="fade-up" data-aos-delay="100">
+            <div class="lg:w-1/3">
+                <div class="aspect-[4/5] w-full rounded-2xl overflow-hidden photo-reveal tilt-card">
+                    <img src="../larisa-belousova.jpg" alt="Larissa Belousova" class="w-full h-full object-cover object-top">
+                </div>
+            </div>
+            <div class="lg:w-2/3 flex flex-col justify-center font-sans">
+                <span class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-2">Founder & Managing Director</span>
+                <h3 class="text-3xl font-sans font-bold text-bridge-dark mb-4">Larissa Belousova</h3>
+                <p class="font-bold text-bridge-dark text-base mb-4">Infrastructure Contracts | FIDIC | EPC | International Arbitration</p>
+                
+                <div class="team-desc-container relative">
+                    <div class="team-content overflow-hidden max-h-[140px] md:max-h-none transition-[max-height] duration-500 ease-in-out relative">
+                        <div class="text-gray-600 font-light leading-relaxed text-sm">
+                            <p class="font-bold text-bridge-dark mb-2">Professional Accreditation & Advisory Activities:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>Member of the FIDIC IMC Committee</li>
+                                <li>FCCE - FIDIC Certified Consulting Engineer</li>
+                                <li>FCCP - FIDIC Certified Consulting Professional</li>
+                                <li>ADB Accredited Contract Manager and Dispute Resolution Specialist</li>
+                                <li>MCIArb - Member of the Chartered Institute of Arbitrators</li>
+                                <li>Member of the International Construction Arbitration Association (ICAA)</li>
+                                <li>Next Generation Program Participant</li>
+                                <li>Licensed Dispute Board (DB) Professional and Practitioner</li>
+                                <li>Dispute Resolution Board Foundation (DRBF) Emerging Markets</li>
+                                <li>Independent Practicing Mediator</li>
+                                <li>PCQI - Practitioner of the Chartered Quality Institute (CQI), UK</li>
+                                <li>ICAgile Certified Professional (ICP)</li>
+                            </ul>
+                        </div>
+                        <div class="fade-overlay absolute bottom-0 left-0 w-full h-16 md:hidden transition-opacity duration-300 pointer-events-none"></div>
+                    </div>
+                    <button type="button" data-more="Read more ↓" data-less="Show less ↑" class="read-more-btn block md:hidden text-bridge-taupe text-[10px] font-bold uppercase tracking-widest mt-4 focus:outline-none transition-colors hover:text-bridge-dark">
+                        Read more ↓
+                    </button>
+                </div>
+
+                <div class="mt-8">
+                    <a href="../larisa-belousova-cv.pdf" target="_blank" class="inline-flex items-center gap-2 bg-bridge-dark text-white px-6 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-bridge-taupe transition-all duration-300 shadow-lg hover:-translate-y-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Download CV (PDF)
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div class="bg-white rounded-3xl p-8 md:p-10 premium-shadow hover-float flex flex-col font-sans" data-aos="fade-up" data-aos-delay="200">
+                <div class="flex items-center gap-6 mb-6">
+                    <div class="w-24 h-24 rounded-full overflow-hidden shrink-0 photo-reveal tilt-card">
+                        <img src="../anna.png" alt="Doctor Anna Ubaydullaeva" class="w-full h-full object-cover object-top">
+                    </div>
+                    <div>
+                        <span class="text-bridge-taupe font-bold tracking-widest uppercase text-[10px] mb-1 block">Partner & Legal Advisor</span>
+                        <h3 class="text-2xl font-sans font-bold text-bridge-dark leading-tight">Doctor Anna Ubaydullaeva</h3>
+                    </div>
+                </div>
+                
+                <div class="team-desc-container relative">
+                    <div class="team-content overflow-hidden max-h-[140px] md:max-h-none transition-[max-height] duration-500 ease-in-out relative">
+                        <div class="text-gray-600 font-light leading-relaxed text-sm">
+                            <p class="font-bold text-bridge-dark mb-4 text-base">International Arbitration | Institutional Reforms | Digital Economy Regulation</p>
+                            <p class="font-bold text-bridge-dark mb-2">Professional Accreditation & Advisory Activities:</p>
+                            <ul class="list-disc pl-5 mb-4 space-y-1">
+                                <li>International Arbitrator at the Tashkent International Arbitration Centre (TIAC) and the Vienna International Arbitral Centre (VIAC).</li>
+                                <li>Resident of the Asian International Arbitration Centre (AIAC).</li>
+                                <li>Consultant in World Bank projects on legal and institutional reforms.</li>
+                                <li>Member of the Working Group under the Ministry of Higher Education, Science and Innovation of the Republic of Uzbekistan on the development of legal frameworks for the digital economy and artificial intelligence.</li>
+                            </ul>
+                            <p class="font-bold text-bridge-dark mb-2">Professional Practice Includes:</p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>International arbitration and mediation</li>
+                                <li>Cross-border commercial dispute resolution</li>
+                                <li>Advisory support in international projects and institutional reforms</li>
+                                <li>Legal frameworks for the digital economy and AI</li>
+                            </ul>
+                        </div>
+                        <div class="fade-overlay absolute bottom-0 left-0 w-full h-16 md:hidden transition-opacity duration-300 pointer-events-none"></div>
+                    </div>
+                    <button type="button" data-more="Read more ↓" data-less="Show less ↑" class="read-more-btn block md:hidden text-bridge-taupe text-[10px] font-bold uppercase tracking-widest mt-4 focus:outline-none transition-colors hover:text-bridge-dark">
+                        Read more ↓
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 md:p-10 premium-shadow hover-float flex flex-col" data-aos="fade-up" data-aos-delay="300">
+                <div class="flex items-center gap-6 mb-8">
+                    <div class="w-24 h-24 rounded-full overflow-hidden shrink-0 photo-reveal tilt-card">
+                        <img src="../ernest.jpg" alt="Ernest Belousov" class="w-full h-full object-cover object-top">
+                    </div>
+                    <div>
+                        <span class="text-bridge-taupe font-bold tracking-widest uppercase text-[10px] mb-1 block font-sans">Lead Specialist</span>
+                        <h3 class="text-2xl font-sans font-bold text-bridge-dark leading-tight">Ernest Belousov</h3>
+                    </div>
+                </div>
+                
+                <div class="team-desc-container relative">
+                    <div class="team-content overflow-hidden max-h-[140px] md:max-h-none transition-[max-height] duration-500 ease-in-out relative">
+                        <p class="text-gray-600 font-bold leading-relaxed mb-4">Lead Specialist for FIDIC Contracts | Infrastructure Project Management</p>
+                        <p class="text-gray-600 font-light leading-relaxed">Ernest Belousov is an expert in international construction contract management, specializing in advisory for complex infrastructure projects. Possessing deep competencies in working with FIDIC standard forms (Red, Yellow, Silver Books), Ernest ensures effective contract administration and strict compliance with international engineering standards.</p>
+                        <div class="fade-overlay absolute bottom-0 left-0 w-full h-16 md:hidden transition-opacity duration-300 pointer-events-none"></div>
+                    </div>
+                    <button type="button" data-more="Read more ↓" data-less="Show less ↑" class="read-more-btn block md:hidden text-bridge-taupe text-[10px] font-bold uppercase tracking-widest mt-4 focus:outline-none transition-colors hover:text-bridge-dark">
+                        Read more ↓
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 md:p-10 premium-shadow hover-float flex flex-col font-sans" data-aos="fade-up" data-aos-delay="400">
+                <div class="flex items-center gap-6 mb-6">
+                    <div class="w-24 h-24 rounded-full overflow-hidden shrink-0 photo-reveal tilt-card">
+                        <img src="../lucia.jpg" alt="Luciya Akhmedieva" class="w-full h-full object-cover object-top">
+                    </div>
+                    <div>
+                        <span class="text-bridge-taupe font-bold tracking-widest uppercase text-[10px] mb-1 block">Head of Quantity Surveying</span>
+                        <h3 class="text-2xl font-sans font-bold text-bridge-dark leading-tight">Luciya Akhmedieva</h3>
+                    </div>
+                </div>
+                
+                <div class="team-desc-container relative">
+                    <div class="team-content overflow-hidden max-h-[140px] md:max-h-none transition-[max-height] duration-500 ease-in-out relative">
+                        <div class="text-gray-600 font-light leading-relaxed text-sm">
+                            <p class="font-bold text-bridge-dark mb-4 text-base">Quantity Surveying | Cost Estimation | Tender Documentation</p>
+                            <p class="mb-3">Luciya Akhmedieva has over 40 years of experience in quantity surveying and technical management within the construction industry of Uzbekistan. Her professional expertise includes the preparation of tender, design, and estimate documentation, Bills of Quantities (BoQ), cost evaluation, and budget control for large-scale infrastructure projects.</p>
+                            <p>She has also been involved in verifying work volumes, cost optimization, contract administration, and providing technical support for resolving contract issues and claims, including projects related to the construction of strategic highway sections in Uzbekistan.</p>
+                        </div>
+                        <div class="fade-overlay absolute bottom-0 left-0 w-full h-16 md:hidden transition-opacity duration-300 pointer-events-none"></div>
+                    </div>
+                    <button type="button" data-more="Read more ↓" data-less="Show less ↑" class="read-more-btn block md:hidden text-bridge-taupe text-[10px] font-bold uppercase tracking-widest mt-4 focus:outline-none transition-colors hover:text-bridge-dark">
+                        Read more ↓
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-8 md:p-10 premium-shadow hover-float flex flex-col font-sans" data-aos="fade-up" data-aos-delay="500">
+                <div class="flex items-center gap-6 mb-6">
+                    <div class="w-24 h-24 rounded-full overflow-hidden shrink-0 photo-reveal tilt-card">
+                        <img src="../olga.jpg" alt="Olga Mitrofanova" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <span class="text-bridge-taupe font-bold tracking-widest uppercase text-[10px] mb-1 block">Head of Quality Assurance Department</span>
+                        <h3 class="text-2xl font-sans font-bold text-bridge-dark leading-tight">Olga Mitrofanova</h3>
+                    </div>
+                </div>
+                
+                <div class="team-desc-container relative">
+                    <div class="team-content overflow-hidden max-h-[140px] md:max-h-none transition-[max-height] duration-500 ease-in-out relative">
+                        <div class="text-gray-600 font-light leading-relaxed text-sm">
+                            <p class="font-bold text-bridge-dark mb-4 text-base">Construction Quality Systems | Material Certification | ISO 9001</p>
+                            <p class="mb-3">Over 50 years of experience in construction engineering and quality management. Participation in large-scale infrastructure projects financed by IFIs, including the Asian Development Bank (ADB) and the World Bank.</p>
+                            <p class="mb-3">Professional activities in quality assurance, material certification, and compliance monitoring in construction and infrastructure projects.</p>
+                            <p>Certified specialist in construction material certification and quality management systems. Certified QMS Lead Auditor ISO 9001:2015.</p>
+                        </div>
+                        <div class="fade-overlay absolute bottom-0 left-0 w-full h-16 md:hidden transition-opacity duration-300 pointer-events-none"></div>
+                    </div>
+                    <button type="button" data-more="Read more ↓" data-less="Show less ↑" class="read-more-btn block md:hidden text-bridge-taupe text-[10px] font-bold uppercase tracking-widest mt-4 focus:outline-none transition-colors hover:text-bridge-dark">
+                        Read more ↓
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div> 
+</section>
+
+<!-- TRAINING & DEVELOPMENT (NEW BLOCK) -->
+<section class="py-24 bg-bridge-dark relative overflow-hidden font-sans border-y border-bridge-taupe/20">
+    <div class="absolute top-1/2 right-0 transform -translate-y-1/2 w-[600px] h-[600px] bg-bridge-taupe/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+            <div data-aos="fade-right">
+                <div class="flex items-center gap-4 mb-6">
+                    <span class="w-8 h-px bg-bridge-taupe"></span>
+                    <span class="text-bridge-taupe font-bold tracking-widest uppercase text-xs">Institutional Development</span>
+                </div>
+                <h2 class="text-3xl md:text-5xl font-sans font-bold text-white mb-6 leading-tight">FIDIC Standards Training</h2>
+                <p class="text-gray-400 font-light text-lg mb-8 leading-relaxed">
+                    We not only manage projects but also enhance team qualifications. Bridge Consult experts conduct specialized seminars on the practical application of FIDIC forms, risk management, and contract administration for employers and engineers.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <div class="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 w-full hover:bg-white/10 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-bridge-taupe/20 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-bridge-taupe" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                        </div>
+                        <span class="text-sm text-gray-200 font-medium">Real IFI Cases</span>
+                    </div>
+                    <div class="flex items-center gap-4 bg-white/5 border border-white/10 rounded-2xl p-4 w-full hover:bg-white/10 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-bridge-taupe/20 flex items-center justify-center shrink-0">
+                            <svg class="w-5 h-5 text-bridge-taupe" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        </div>
+                        <span class="text-sm text-gray-200 font-medium">Deep Expertise</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative group" data-aos="fade-left">
+                <div class="absolute -inset-4 bg-bridge-taupe/20 rounded-[2rem] blur-xl transition-all duration-500 group-hover:bg-bridge-taupe/40"></div>
+                <div class="relative rounded-[1.5rem] overflow-hidden border border-white/10 shadow-2xl bg-black aspect-video z-10">
+                    <video controls playsinline class="w-full h-full object-cover">
+                        <source src="../fidic-training.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- MEDIA & PUBLICATIONS -->
+<section id="media" class="py-32 bg-bridge-light relative overflow-hidden font-sans border-t border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16" data-aos="fade-up">
+            <div class="max-w-2xl">
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="w-8 h-px bg-bridge-taupe"></span>
+                    <span class="text-bridge-taupe font-bold tracking-widest uppercase text-xs">Media & Expertise</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold text-bridge-dark">Featured In</h2>
+            </div>
+            <div class="hidden md:block pb-2">
+                <p class="text-gray-500 font-light text-lg">Expert Opinion and Company Profile</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <!-- Article 1: UzReport -->
+            <a href="https://uzreport.news/economy/what-is-fidic-and-does-uzbekistan-need-it-" target="_blank" class="media-photo-card group bg-white rounded-3xl overflow-hidden premium-shadow hover-float flex flex-col border border-gray-100 transition-all duration-500" data-aos="fade-up" data-aos-delay="100">
+                <div class="media-photo-wrap relative h-72 overflow-hidden bg-bridge-dark shrink-0 flex items-center justify-center" title="Click photo for color">
+                    <img src="../larisa-belousova-uznews.png" alt="Larissa Belousova" class="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute top-6 left-6 z-20">
+                        <span class="bg-white text-bridge-dark text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest shadow-lg">UzReport.news</span>
+                    </div>
+                </div>
+                <div class="p-10 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-bold text-bridge-dark mb-4 group-hover:text-bridge-taupe transition-colors leading-tight">What is FIDIC and does Uzbekistan need it?</h3>
+                    <p class="text-gray-600 font-light leading-relaxed mb-8 flex-grow">An extensive interview with the Director of BRIDGE CONSULT, Larissa Belousova, regarding the significance of international standards for the country's infrastructure projects.</p>
+                    <div class="flex items-center text-bridge-taupe text-sm font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">
+                        Read Interview <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Article 2: Career Centre -->
+            <a href="https://careercentre.uz/about-company.php?id=610" target="_blank" class="media-career-card group bg-white rounded-3xl overflow-hidden premium-shadow hover-float flex flex-col border border-gray-100 transition-all duration-500" data-aos="fade-up" data-aos-delay="200">
+                <div class="media-logo-panel relative h-72 overflow-hidden bg-gray-50 shrink-0 border-b border-gray-100 flex items-center justify-center">
+                    <img src="../careercentreuz.svg" alt="Career Centre" class="media-brand-logo w-2/3 h-1/2 object-contain transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute top-6 left-6 z-20">
+                        <span class="bg-bridge-dark text-white text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest shadow-lg">CareerCentre.uz</span>
+                    </div>
+                </div>
+                <div class="p-10 flex flex-col flex-grow">
+                    <h3 class="text-2xl font-bold text-bridge-dark mb-4 group-hover:text-bridge-taupe transition-colors leading-tight">BRIDGE Consult Company Profile</h3>
+                    <p class="text-gray-600 font-light leading-relaxed mb-8 flex-grow">A detailed independent overview of corporate expertise: from contract structuring and Forensic Delay Analysis to dispute resolution and mediation.</p>
+                    <div class="flex items-center text-bridge-taupe text-sm font-bold uppercase tracking-widest group-hover:translate-x-2 transition-transform">
+                        View Profile <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- TOP-LEVEL TRUST (BANKS) -->
+<section class="py-32 bg-white relative overflow-hidden font-sans">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150vw] md:w-[800px] h-[100vw] md:h-[400px] max-w-[800px] max-h-[400px] bg-bridge-taupe/10 rounded-full blur-[100px] pointer-events-none"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="text-center mb-16">
+            <div class="flex items-center justify-center gap-4 mb-6" data-aos="fade-up">
+                <div class="w-12 h-px bg-bridge-taupe"></div>
+                <span class="text-bridge-taupe font-bold tracking-widest uppercase text-sm">Top-Level Trust</span>
+                <div class="w-12 h-px bg-bridge-taupe"></div>
+            </div>
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-sans font-bold text-bridge-dark leading-tight mb-8" data-aos="fade-up" data-aos-delay="100">
+                Experience with International <br class="hidden md:block"> Financial Institutions
+            </h2>
+            <p class="text-gray-600 text-lg max-w-4xl mx-auto leading-relaxed" data-aos="fade-up" data-aos-delay="150">
+                The Managing Director holds the status of an <strong>ADB Accredited Contract Manager and Dispute Resolution Specialist</strong>. Bridge Consult has a proven track record working on projects financed by the <strong>World Bank, EBRD, ADB, and the OPEC Fund</strong>. The company's experts regularly moderate sessions on the use of Dispute Boards (DBs) in IFI projects and conduct certified training programs.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-12 md:gap-20 items-center justify-items-center" data-aos="fade-up" data-aos-delay="200">
+            <div class="logo-wrapper w-full flex justify-center grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-110 cursor-pointer logo-float-1">
+                <img src="../wb.webp" alt="World Bank" class="h-16 md:h-20 w-auto object-contain">
+            </div>
+            <div class="logo-wrapper w-full flex justify-center grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-110 cursor-pointer logo-float-2">
+                <img src="../EBRD-Logo-1991.webp" alt="EBRD" class="h-20 md:h-28 w-auto object-contain">
+            </div>
+            <div class="logo-wrapper logo-wrapper-adb w-full flex justify-center opacity-80 hover:opacity-100 transition-all duration-500 hover:scale-110 cursor-pointer logo-float-3">
+                <span class="partner-logo-adb-shell">
+                    <img src="../ADB logo stacked.png" alt="Asian Development Bank" class="partner-logo-adb h-20 md:h-28 w-auto object-contain">
+                </span>
+            </div>
+            <div class="logo-wrapper w-full flex justify-center grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-110 cursor-pointer logo-float-4">
+                <span class="font-sans font-bold text-3xl md:text-4xl text-bridge-dark text-center leading-none tracking-tighter flex flex-col">Tashkent<span class="text-bridge-taupe">Invest</span></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT FORM -->
+<section id="contact-form" class="py-32 bg-white relative overflow-hidden font-sans">
+    <div class="max-w-4xl mx-auto px-6 relative z-10">
+        <div class="bg-bridge-dark rounded-3xl p-10 md:p-16 shadow-2xl relative overflow-hidden" data-aos="fade-up" data-aos-duration="1000">
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-bridge-taupe rounded-full opacity-20 blur-3xl"></div>
+
+            <div class="text-center mb-10 relative z-10">
+                <h2 class="text-3xl md:text-4xl font-sans font-bold text-white mb-4" data-aos="fade-down" data-aos-delay="200">Request a Consultation</h2>
+                <p class="text-gray-400 font-light" data-aos="fade-up" data-aos-delay="300">Contact us for a preliminary assessment of your inquiry.</p>
+            </div>
+            
+            <form id="en-contact-form" class="space-y-6 relative z-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div data-aos="fade-right" data-aos-delay="400">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Your Name</label>
+                        <input type="text" name="name" required class="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-bridge-taupe transition-colors" placeholder="Enter your name">
+                    </div>
+                    <div data-aos="fade-left" data-aos-delay="500">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Email</label>
+                        <input type="email" name="email" required class="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-bridge-taupe transition-colors" placeholder="info@company.com">
+                    </div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="600">
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">Message or Inquiry Details</label>
+                    <textarea name="message" required rows="4" class="w-full bg-transparent border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-bridge-taupe transition-colors resize-none" placeholder="Describe your situation..."></textarea>
+                </div>
+
+                <!-- Status messages -->
+                <div id="en-form-success" class="hidden text-center py-3 px-4 bg-green-500/10 border border-green-500/30 rounded-xl">
+                    <p class="text-green-400 font-bold">✓ Request sent! We will get back to you shortly.</p>
+                </div>
+                <div id="en-form-error" class="hidden text-center py-3 px-4 bg-red-500/10 border border-red-500/30 rounded-xl">
+                    <p class="text-red-400 font-bold">Submission failed. Please try again or email info@bridgeconsult.uz</p>
+                </div>
+
+                <div data-aos="zoom-in" data-aos-delay="700" class="pt-2">
+                    <button type="submit" id="en-submit-btn" class="w-full bg-bridge-taupe text-white font-bold uppercase tracking-widest py-4 rounded-xl hover:bg-white hover:text-bridge-dark transition-all duration-500 shadow-[0_10px_30px_-10px_rgba(138,123,102,0.6)] hover:shadow-[0_10px_30px_-10px_rgba(255,255,255,0.6)] disabled:opacity-60 disabled:cursor-not-allowed">
+                        Submit Request
+                    </button>
+                </div>
+            </form>
+
+            <script>
+            document.getElementById('en-contact-form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const form = e.target;
+                const btn = document.getElementById('en-submit-btn');
+                const success = document.getElementById('en-form-success');
+                const error = document.getElementById('en-form-error');
+
+                btn.disabled = true;
+                btn.textContent = 'Sending...';
+                success.classList.add('hidden');
+                error.classList.add('hidden');
+
+                try {
+                    const res = await fetch('https://formspree.io/f/meedwzjw', {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (res.ok) {
+                        form.reset();
+                        success.classList.remove('hidden');
+                        btn.textContent = '✓ Sent';
+                    } else {
+                        error.classList.remove('hidden');
+                        btn.disabled = false;
+                        btn.textContent = 'Submit Request';
+                    }
+                } catch (err) {
+                    error.classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.textContent = 'Submit Request';
+                }
+            });
+            </script>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-bridge-dark pt-16 md:pt-20 pb-8 border-t-4 border-bridge-taupe relative overflow-hidden font-sans">
+    <div class="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-white/5 rounded-full blur-3xl -mr-32 md:-mr-48 -mt-32 md:-mt-48 pointer-events-none"></div>
+    
+    <div class="max-w-7xl mx-auto px-6 relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 md:gap-12 mb-12 md:mb-16">
+            
+            <div class="lg:col-span-5">
+                <a href="index.html" class="flex flex-col mb-4 md:mb-6 inline-block">
+                    <span class="text-3xl font-sans font-bold tracking-tight text-white leading-none">Bridge</span>
+                    <span class="text-[10px] md:text-xs tracking-widest text-bridge-taupe uppercase font-semibold">Consult</span>
+                </a>
+                <p class="text-gray-400 font-light leading-relaxed max-w-sm mb-6 md:mb-8 text-sm md:text-base">Your reliable partner in contract engineering and dispute resolution. Building bridges between legal certainty and successful project implementation.</p>
+            </div>
+            
+            <div class="lg:col-span-3">
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs md:text-sm mb-4 md:mb-6">Navigation</h4>
+                <ul class="space-y-3 md:space-y-4 text-gray-400 font-light text-sm">
+                    <li><a href="#about" class="hover:text-bridge-taupe transition-colors">About Us</a></li>
+                    <li><a href="#services" class="hover:text-bridge-taupe transition-colors">Services & Standards</a></li>
+                    <li><a href="projects.html" class="hover:text-bridge-taupe transition-colors">Project Experience</a></li>
+                    <li><a href="#team" class="hover:text-bridge-taupe transition-colors">Team & Training</a></li>
+                    <li><a href="#media" class="hover:text-bridge-taupe transition-colors">Media & Publications</a></li>
+                </ul>
+            </div>
+            
+            <div class="lg:col-span-4">
+                <h4 class="text-white font-bold uppercase tracking-widest text-xs md:text-sm mb-4 md:mb-6">Contact Information</h4>
+                <ul class="space-y-4 md:space-y-6 text-gray-400 font-light text-sm">
+                    <li class="flex items-start">
+                        <svg class="w-5 h-5 md:w-6 md:h-6 text-bridge-taupe mr-3 md:mr-4 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        <span class="leading-relaxed">100180, Republic of Uzbekistan,<br>Tashkent, Yunusabad district,<br>Ahmad Donish st., 12 block, 20A</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 md:w-6 md:h-6 text-bridge-taupe mr-3 md:mr-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                        <a href="tel:+998330001530" class="hover:text-bridge-taupe transition-colors text-base md:text-lg">+998 33 000 15 30</a>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 md:w-6 md:h-6 text-bridge-taupe mr-3 md:mr-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <a href="mailto:info@bridgeconsult.uz" class="hover:text-bridge-taupe transition-colors break-all">info@bridgeconsult.uz</a>
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+        
+        <div class="pt-6 md:pt-8 border-t border-gray-800 flex flex-col items-center justify-center text-xs md:text-sm text-gray-500 font-light text-center">
+            <p>&copy; 2016-2026 Bridge Consult. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+<script src="../main.js"></script>
+<script>
+    AOS.init({ once: true, offset: 50 });
+    VanillaTilt.init(document.querySelectorAll(".tilt-card"), { max: 5, speed: 400, glare: true, "max-glare": 0.2 });
+</script>
+
+<div id="projectModal" class="fixed inset-0 z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div class="relative bg-white w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl m-4 transform scale-95 transition-transform duration-300" id="modalContent">
+        <button onclick="closeModal()" class="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-full p-2 transition-colors z-10">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        <div class="p-10 font-sans">
+            <span id="modalTag" class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-2 block">Category</span>
+            <h3 id="modalTitle" class="text-3xl font-bold text-bridge-dark mb-6">Project Title</h3>
+            <div id="modalBody" class="space-y-4 text-gray-600 font-light leading-relaxed"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById('projectModal');
+    const modalContent = document.getElementById('modalContent');
+    const mTitle = document.getElementById('modalTitle');
+    const mTag = document.getElementById('modalTag');
+    const mBody = document.getElementById('modalBody');
+
+    const projectsData = {
+        'olympic': {
+            tag: 'EPC+F | 2022-2025',
+            title: 'Olympic City',
+            text: '<video controls playsinline class="w-full rounded-xl mb-6 shadow-lg"><source src="../olympic-city.mp4" type="video/mp4"></video><p>Construction of modern sports facilities for the IV Asian Youth Games in Tashkent.</p><p><strong>Client:</strong> Ministry of Construction and Housing and Communal Economy of the Republic of Uzbekistan.</p>'
+        },
+        'tashkent': {
+            tag: 'EPC+F / White Book | 2025 - Present',
+            title: 'Tashkent Invest Company JSC',
+            text: '<p>Development and implementation of a procurement and contract management system for EPC+F infrastructure projects, including EPC contracts and engineering consulting service contracts.</p>'
+        },
+        'road_recon': {
+            tag: 'FIDIC Red Book | ADB',
+            title: 'Highway Reconstruction (4R105 & 4R100)',
+            text: '<p>SRRP/CW/Lot 1, SRRP/CW/Lot 2 and SRRP/CW/Lot 3 Reconstruction of 107 km of the 4R105 road (km 5-70) and 4R100 road (km 128-174).</p><p><strong>Employer:</strong> Lankaran Yul Tikinti (Azerbaijan).</p><p><strong>Financing:</strong> Asian Development Bank (ADB).</p>'
+        },
+        'kamchik': {
+            tag: 'FIDIC MDB Harmonised | 2016-2022',
+            title: 'A-373 Highway (Kamchik Pass)',
+            text: '<p>CAREC Corridor 2 Road Investment Program. Reconstruction of the A-373 Tashkent-Osh highway (Kamchik Pass).</p><p><strong>Client:</strong> EVRASCON JSC.</p>'
+        }
+    };
+
+    function openModal(projectId) {
+        const data = projectsData[projectId];
+        if(!data) return;
+        mTitle.innerHTML = data.title;
+        mTag.innerHTML = data.tag;
+        mBody.innerHTML = data.text;
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modal.classList.remove('opacity-0');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }, 10);
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        modal.classList.add('opacity-0');
+        modalContent.classList.remove('scale-100');
+        modalContent.classList.add('scale-95');
+        setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        document.body.style.overflow = 'auto';
+    }
+</script>
+</body>
+</html>
