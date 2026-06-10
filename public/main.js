@@ -213,3 +213,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 }); // <--- ТУТ БЫЛА СИНТАКСИЧЕСКАЯ ОШИБКА, СЕЙЧАС ВСЕ ЧИСТО
+
+// Прогресс-бар прокрутки страницы
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('scroll-progress-bar')) return;
+
+    const bar = document.createElement('div');
+    bar.id = 'scroll-progress-bar';
+    bar.style.cssText = [
+        'position:fixed',
+        'top:0',
+        'left:0',
+        'height:3px',
+        'width:100%',
+        'transform:scaleX(0)',
+        'transform-origin:0 50%',
+        'background:linear-gradient(90deg,#8A7B66,#D4C3A3)',
+        'z-index:2147483647',
+        'pointer-events:none',
+        'will-change:transform'
+    ].join(';');
+    document.body.appendChild(bar);
+
+    let ticking = false;
+    function update() {
+        const doc = document.documentElement;
+        const scrollable = (doc.scrollHeight - doc.clientHeight) || 1;
+        const ratio = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
+        bar.style.transform = 'scaleX(' + ratio + ')';
+        ticking = false;
+    }
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(update);
+            ticking = true;
+        }
+    }, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+});

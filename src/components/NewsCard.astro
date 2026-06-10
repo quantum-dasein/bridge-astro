@@ -19,18 +19,19 @@ const formattedDate = new Intl.DateTimeFormat('ru-RU', {
 
 <article
 	class:list={[
-		'group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-lg transition-all duration-500 hover:-translate-y-1 hover:border-bridge-taupe/50 hover:shadow-[0_8px_40px_-8px_rgba(184,155,114,0.25)]',
-		featured ? 'md:col-span-2 lg:col-span-2' : '',
+		'group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-lg transition-all duration-500 hover:-translate-y-1.5 hover:border-bridge-taupe/50 hover:shadow-[0_12px_50px_-10px_rgba(184,155,114,0.3)]',
+		featured ? 'md:col-span-2 lg:col-span-2 md:min-h-[420px]' : '',
 	]}
 	data-aos="fade-up"
 	data-aos-delay={index * 100}
 >
+	<span class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></span>
 	<a href={`/news/${slug}/`} class:list={['block h-full', featured ? 'md:grid md:grid-cols-2 md:items-stretch' : 'flex flex-col']}>
-		<div class:list={['relative overflow-hidden bg-bridge-dark', featured ? 'aspect-[16/10] md:h-full md:aspect-auto' : 'aspect-[16/10]']}>
+		<div class:list={['relative overflow-hidden bg-bridge-dark', featured ? 'h-64 md:h-full' : 'h-60']}>
 			<img
 				src={coverImage}
 				alt={title}
-				class="h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
+				class="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
 				loading="lazy"
 			/>
 			<div class="absolute inset-0 bg-gradient-to-t from-bridge-dark/80 via-bridge-dark/10 to-transparent"></div>
@@ -42,14 +43,14 @@ const formattedDate = new Intl.DateTimeFormat('ru-RU', {
 				))}
 			</div>
 		</div>
-		<div class:list={['flex h-full flex-col', featured ? 'p-8 md:p-10 md:justify-center' : 'p-6 md:p-7']}>
+		<div class:list={['flex h-full flex-col', featured ? 'p-8 md:p-12 md:justify-center' : 'p-8']}>
 			<time class="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-bridge-taupe" datetime={date.toISOString()}>
 				{formattedDate}
 			</time>
 			<h2 class:list={['mb-4 font-bold leading-tight text-white transition-colors group-hover:text-bridge-taupe', featured ? 'text-2xl md:text-4xl' : 'text-xl md:text-2xl']}>
 				{title}
 			</h2>
-			<p class:list={['mb-6 font-light leading-relaxed text-gray-400', featured ? 'text-base md:text-lg' : 'text-sm']}>
+			<p class:list={['mb-7 font-light leading-relaxed text-gray-400', featured ? 'text-base md:text-lg' : 'text-sm md:text-base']}>
 				{excerpt}
 			</p>
 			<span class="mt-auto inline-flex items-center text-xs font-bold uppercase tracking-widest text-white">
