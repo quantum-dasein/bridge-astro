@@ -1,0 +1,115 @@
+---
+interface Props {
+	title?: string;
+	description?: string;
+	ogImage?: string;
+	ogType?: string;
+	extraHead?: string;
+}
+
+const {
+	title = 'Новости | Bridge Consult',
+	description = 'Профессиональные публикации Bridge Consult о FIDIC, инфраструктурных контрактах и управлении строительными проектами.',
+	ogImage = '/og-image.jpg',
+	ogType = 'website',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="ru" class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta property="og:type" content={ogType} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImage} />
+		<meta name="theme-color" content="#292724" />
+		<link rel="icon" href="/favicon.png" type="image/png" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+		<!-- Anti-flicker dark theme -->
+		<script is:inline>
+			(function () {
+				if (localStorage.getItem('bc-theme') === 'dark') {
+					document.documentElement.classList.add('dark-theme');
+				}
+			})();
+		</script>
+
+		<!-- Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap"
+			rel="stylesheet"
+		/>
+
+		<!-- AOS animations -->
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+		<!-- Tailwind CDN with bridge theme -->
+		<script src="https://cdn.tailwindcss.com" is:inline></script>
+		<script is:inline>
+			tailwind.config = {
+				theme: {
+					extend: {
+						colors: {
+							'bridge-taupe': '#8A7B66',
+							'bridge-dark': '#292724',
+							'bridge-light': '#F5F4F2',
+						},
+						fontFamily: {
+							sans: ['Inter', 'system-ui', 'sans-serif'],
+							serif: ['Playfair Display', 'Georgia', 'serif'],
+						},
+					},
+				},
+			};
+		</script>
+
+		<!-- Premium custom styles from existing site -->
+		<link rel="stylesheet" href="/style.css" />
+
+		<slot name="head" />
+	</head>
+	<body class="font-sans antialiased bg-bridge-dark text-white overflow-x-hidden selection:bg-bridge-taupe/30">
+		<!-- Compact news header -->
+		<header class="fixed top-0 left-0 right-0 z-[100] h-16 flex items-center bg-bridge-dark/90 backdrop-blur-md border-b border-white/10">
+			<div class="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
+				<a href="/index.html" class="shrink-0">
+					<img src="/bridge%202.svg" alt="Bridge Consult" class="h-8 object-contain" />
+				</a>
+
+				<nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+					<a href="/index.html" class="text-gray-400 hover:text-white transition-colors">Главная</a>
+					<a href="/index.html#services" class="text-gray-400 hover:text-white transition-colors">Услуги</a>
+					<a href="/projects.html" class="text-gray-400 hover:text-white transition-colors">Проекты</a>
+					<a href="/news/" class="text-bridge-taupe font-semibold">Новости</a>
+				</nav>
+
+				<a
+					href="/index.html#contact-form"
+					class="text-xs font-bold uppercase tracking-widest bg-bridge-taupe/20 border border-bridge-taupe/40 text-bridge-taupe px-5 py-2.5 rounded-full hover:bg-bridge-taupe hover:text-white transition-all duration-300"
+				>
+					Связаться
+				</a>
+			</div>
+		</header>
+
+		<!-- Page content -->
+		<main class="pt-16">
+			<slot />
+		</main>
+
+		<!-- AOS init -->
+		<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" is:inline></script>
+		<script is:inline>
+			document.addEventListener('DOMContentLoaded', function () {
+				AOS.init({ duration: 900, once: true, offset: 60 });
+			});
+		</script>
+	</body>
+</html>

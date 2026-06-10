@@ -1,0 +1,220 @@
+---
+import { getCollection, render } from 'astro:content';
+import NewsLayout from '../../layouts/NewsLayout.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('news');
+	return posts.map((post) => ({
+		params: { slug: post.id.replace(/\.(md|mdx)$/i, '') },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const { title, date, excerpt, coverImage, videoUrl, tags, lang } = post.data;
+
+const formattedDate = new Intl.DateTimeFormat('ru-RU', {
+	day: 'numeric',
+	month: 'long',
+	year: 'numeric',
+}).format(date);
+
+const pageTitle = `${title} | Bridge Consult`;
+const pageUrl = `https://bridgeconsult.uz/news/${Astro.params.slug}/`;
+const absImage = coverImage.startsWith('http') ? coverImage : `https://bridgeconsult.uz${coverImage}`;
+
+const jsonLd = JSON.stringify({
+	'@context': 'https://schema.org',
+	'@type': 'NewsArticle',
+	headline: title,
+	description: excerpt,
+	image: [absImage],
+	datePublished: date.toISOString(),
+	dateModified: date.toISOString(),
+	mainEntityOfPage: { '@type': 'WebPage', '@id': pageUrl },
+	author: { '@type': 'Organization', name: 'Bridge Consult', url: 'https://bridgeconsult.uz' },
+	publisher: {
+		'@type': 'Organization',
+		name: 'Bridge Consult',
+		logo: { '@type': 'ImageObject', url: 'https://bridgeconsult.uz/bridge%202.png' },
+	},
+});
+---
+
+<NewsLayout title={pageTitle} description={excerpt} ogImage={coverImage} ogType="article">
+	<Fragment slot="head">
+		<meta property="og:url" content={pageUrl} />
+		<meta property="article:published_time" content={date.toISOString()} />
+		{tags.map((tag) => <meta property="article:tag" content={tag} />)}
+		<script type="application/ld+json" set:html={jsonLd}></script>
+	</Fragment>
+
+	<!-- ========== ARTICLE HERO ========== -->
+	<div class="relative min-h-[60vh] flex items-end overflow-hidden">
+		<!-- Cover image background -->
+		<div class="absolute inset-0 z-0">
+			<img
+				src={coverImage}
+				alt={title}
+				class="w-full h-full object-cover grayscale opacity-40"
+			/>
+			<div class="absolute inset-0 bg-gradient-to-t from-bridge-dark via-bridge-dark/70 to-bridge-dark/30"></div>
+		</div>
+
+		<!-- Glow -->
+		<div class="absolute inset-0 z-[1] flex items-center justify-center pointer-events-none">
+			<div class="w-[500px] h-[500px] bg-bridge-taupe/15 rounded-full blur-[100px]"></div>
+		</div>
+
+		<div class="relative z-10 max-w-5xl mx-auto px-6 pb-16 pt-20 w-full">
+			<!-- Back link -->
+			<a
+				href="/news/"
+				class="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe hover:text-white transition-colors mb-8 group"
+				data-aos="fade-up"
+			>
+				<span class="h-px w-8 bg-bridge-taupe group-hover:w-12 transition-all duration-300"></span>
+				Все новости
+			</a>
+
+			<!-- Tags -->
+			<div class="flex flex-wrap gap-2 mb-5" data-aos="fade-up" data-aos-delay="50">
+				{
+					tags.map((tag) => (
+						<span class="text-[10px] font-bold uppercase tracking-widest border border-white/20 bg-white/10 text-white px-3 py-1.5 rounded-full backdrop-blur-sm">
+							{tag}
+						</span>
+					))
+				}
+			</div>
+
+			<!-- Title -->
+			<h1
+				class="text-4xl md:text-6xl font-bold text-white leading-tight tracking-tight mb-5"
+				data-aos="fade-up"
+				data-aos-delay="100"
+			>
+				{title}
+			</h1>
+
+			<!-- Excerpt -->
+			<p class="text-lg text-gray-300 font-light leading-relaxed max-w-3xl mb-6" data-aos="fade-up" data-aos-delay="150">
+				{excerpt}
+			</p>
+
+			<!-- Date -->
+			<time
+				class="text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe"
+				datetime={date.toISOString()}
+				data-aos="fade-up"
+				data-aos-delay="200"
+			>
+				{formattedDate}
+			</time>
+		</div>
+	</div>
+
+	<!-- ========== ARTICLE BODY ========== -->
+	<div class="relative py-12 md:py-20">
+		<!-- Subtle glow -->
+		<div class="absolute -left-40 top-0 w-96 h-96 bg-bridge-taupe/5 rounded-full blur-3xl pointer-events-none"></div>
+
+		<div class="relative z-10 max-w-4xl mx-auto px-6">
+			<!-- Cover image (large) -->
+			<div class="rounded-3xl overflow-hidden mb-12 premium-shadow" data-aos="fade-up">
+				<img src={coverImage} alt={title} class="w-full object-cover max-h-[520px]" />
+			</div>
+
+			<!-- MDX content card -->
+			<div
+				class="glass-card rounded-3xl p-8 md:p-14 mb-10"
+				data-aos="fade-up"
+				data-aos-delay="100"
+			>
+				<div class="prose-news">
+					<Content />
+				</div>
+			</div>
+
+			<!-- Video player (if videoUrl in frontmatter) -->
+			{videoUrl && (
+				<div data-aos="fade-up" data-aos-delay="150">
+					<VideoPlayer src={videoUrl} />
+				</div>
+			)}
+
+			<!-- Back link footer -->
+			<div class="mt-16 pt-10 border-t border-white/10 flex justify-between items-center" data-aos="fade-up">
+				<a
+					href="/news/"
+					class="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-bridge-taupe hover:text-white transition-colors group"
+				>
+					<span class="h-px w-8 bg-bridge-taupe group-hover:w-12 transition-all duration-300"></span>
+					К списку новостей
+				</a>
+				<a
+					href="/index.html#contact-form"
+					class="text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-bridge-taupe transition-colors"
+				>
+					Оставить заявку →
+				</a>
+			</div>
+		</div>
+	</div>
+</NewsLayout>
+
+<style>
+	/* MDX article typography */
+	.prose-news :global(p) {
+		color: #a1a1aa;
+		font-size: 1.05rem;
+		font-weight: 300;
+		line-height: 1.9;
+		margin-bottom: 1.4rem;
+	}
+	.prose-news :global(p:first-of-type) {
+		color: #e4e4e7;
+		font-size: 1.15rem;
+	}
+	.prose-news :global(strong) {
+		color: #fff;
+		font-weight: 600;
+	}
+	.prose-news :global(h2),
+	.prose-news :global(h3) {
+		color: #fff;
+		font-weight: 700;
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		line-height: 1.3;
+	}
+	.prose-news :global(h2) { font-size: 1.5rem; }
+	.prose-news :global(h3) { font-size: 1.2rem; }
+	.prose-news :global(ul),
+	.prose-news :global(ol) {
+		color: #a1a1aa;
+		padding-left: 1.5rem;
+		margin-bottom: 1.4rem;
+	}
+	.prose-news :global(li) {
+		margin-bottom: 0.4rem;
+		line-height: 1.75;
+	}
+	.prose-news :global(blockquote) {
+		border-left: 3px solid #8A7B66;
+		padding-left: 1.25rem;
+		color: #71717a;
+		font-style: italic;
+		margin: 1.5rem 0;
+	}
+	.prose-news :global(a) {
+		color: #8A7B66;
+		text-decoration: underline;
+		text-decoration-color: rgba(138,123,102,0.4);
+		transition: color 0.2s;
+	}
+	.prose-news :global(a:hover) { color: #fff; }
+</style>

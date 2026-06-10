@@ -1,0 +1,134 @@
+---
+import { getCollection } from 'astro:content';
+import NewsLayout from '../../layouts/NewsLayout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+
+const allPosts = await getCollection('news');
+const posts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<NewsLayout
+	title="Новости | Bridge Consult"
+	description="Профессиональные публикации о FIDIC, инфраструктурных контрактах и управлении строительными проектами."
+>
+	<!-- ========== HERO ========== -->
+	<section class="relative min-h-[70vh] flex items-center overflow-hidden">
+		<!-- Background image -->
+		<div class="absolute inset-0 z-0">
+			<img
+				src="/images/news/news-cover.jpg"
+				alt="Bridge Consult Newsroom"
+				class="w-full h-full object-cover"
+			/>
+			<!-- Multi-layer gradient overlay -->
+			<div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/70 to-bridge-dark"></div>
+			<div class="absolute inset-0 bg-gradient-to-r from-bridge-dark/80 via-transparent to-bridge-dark/40"></div>
+		</div>
+
+		<!-- Decorative glow -->
+		<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-bridge-taupe/15 rounded-full blur-[120px] pointer-events-none z-[1]"></div>
+
+		<div class="relative z-10 max-w-7xl mx-auto px-6 py-32">
+			<!-- Label -->
+			<div class="flex items-center gap-4 mb-6" data-aos="fade-up">
+				<span class="h-px w-12 bg-bridge-taupe"></span>
+				<span class="text-bridge-taupe text-xs font-bold uppercase tracking-[0.3em]">Newsroom</span>
+			</div>
+
+			<!-- Title -->
+			<h1
+				class="text-5xl md:text-7xl font-bold text-white leading-tight tracking-tight max-w-3xl mb-6"
+				data-aos="fade-up"
+				data-aos-delay="100"
+			>
+				Новости и<br />
+				<span class="text-transparent bg-clip-text bg-gradient-to-r from-bridge-taupe to-[#D4C3A3]">
+					публикации
+				</span>
+			</h1>
+
+			<!-- Subtitle -->
+			<p
+				class="text-lg text-gray-400 font-light max-w-2xl leading-relaxed"
+				data-aos="fade-up"
+				data-aos-delay="200"
+			>
+				Экспертные заметки о контрактах FIDIC, инфраструктурных проектах и развитии профессионального сообщества.
+			</p>
+
+			<!-- Stats -->
+			<div class="flex items-center gap-8 mt-10" data-aos="fade-up" data-aos-delay="300">
+				<div>
+					<div class="text-3xl font-bold text-white">{posts.length}</div>
+					<div class="text-xs text-gray-500 uppercase tracking-widest mt-1">Публикаций</div>
+				</div>
+				<div class="h-8 w-px bg-white/10"></div>
+				<div>
+					<div class="text-3xl font-bold text-white">FIDIC</div>
+					<div class="text-xs text-gray-500 uppercase tracking-widest mt-1">Экспертиза</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ========== NEWS GRID ========== -->
+	<section class="relative py-20 md:py-28 overflow-hidden">
+		<!-- Background glow accents -->
+		<div class="absolute -left-40 top-20 w-80 h-80 bg-bridge-taupe/8 rounded-full blur-3xl pointer-events-none"></div>
+		<div class="absolute -right-40 bottom-20 w-80 h-80 bg-bridge-taupe/8 rounded-full blur-3xl pointer-events-none"></div>
+
+		<div class="relative z-10 max-w-7xl mx-auto px-6">
+			<!-- Section header -->
+			<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+				<div data-aos="fade-up">
+					<div class="flex items-center gap-3 mb-3">
+						<span class="h-px w-8 bg-bridge-taupe"></span>
+						<span class="text-bridge-taupe text-xs font-bold uppercase tracking-widest">Latest</span>
+					</div>
+					<h2 class="text-3xl md:text-4xl font-bold text-white">Последние материалы</h2>
+				</div>
+				<p class="text-gray-500 text-sm max-w-sm leading-relaxed" data-aos="fade-up" data-aos-delay="100">
+					Актуальная аналитика и профессиональный взгляд на управление инфраструктурными контрактами.
+				</p>
+			</div>
+
+			{
+				posts.length > 0 ? (
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+						{posts.map((post, i) => {
+							const slug = post.id.replace(/\.(md|mdx)$/i, '');
+							return (
+								<NewsCard
+									slug={slug}
+									title={post.data.title}
+									date={post.data.date}
+									excerpt={post.data.excerpt}
+									coverImage={post.data.coverImage}
+									tags={post.data.tags}
+									index={i}
+								/>
+							);
+						})}
+					</div>
+				) : (
+					<div class="glass-card rounded-3xl p-16 text-center" data-aos="fade-up">
+						<p class="text-gray-500 text-lg">Публикации появятся совсем скоро.</p>
+					</div>
+				)
+			}
+		</div>
+	</section>
+
+	<!-- ========== CTA ========== -->
+	<section class="py-20 border-t border-white/5">
+		<div class="max-w-7xl mx-auto px-6 text-center" data-aos="fade-up">
+			<p class="text-gray-500 text-sm mb-6">Остались вопросы по контрактам FIDIC или инфраструктурным проектам?</p>
+			<a
+				href="/index.html#contact-form"
+				class="inline-block bg-bridge-taupe text-white px-10 py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-bridge-dark transition-all duration-300 shadow-lg hover:-translate-y-1"
+			>
+				Оставить заявку
+			</a>
+		</div>
+	</section>
+</NewsLayout>

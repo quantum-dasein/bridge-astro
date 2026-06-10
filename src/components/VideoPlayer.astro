@@ -1,0 +1,15 @@
+---
+interface Props {
+	src: string;
+}
+
+const { src } = Astro.props;
+---
+
+<video
+	src={src}
+	controls
+	playsinline
+	preload="metadata"
+	class="w-full rounded-3xl border border-white/10 shadow-2xl mt-8"
+></video>
