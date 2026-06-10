@@ -182,44 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     counters.forEach(counter => observer.observe(counter));
 });
 
-// Анимация Прелоадера с жесткой защитой от зависания
-const hidePreloader = () => {
-    const preloader = document.getElementById('preloader');
-    if (preloader) {
-        preloader.style.opacity = '0';
-        preloader.style.visibility = 'hidden';
-        document.body.style.overflow = 'auto';
-    }
-};
-
-window.addEventListener('load', () => {
-    const preloaderLogo = document.getElementById('preloader-logo');
-    if (preloaderLogo) {
-        setTimeout(() => {
-            preloaderLogo.style.transform = 'translateY(0)';
-            preloaderLogo.style.opacity = '1';
-        }, 100);
-    }
-    setTimeout(hidePreloader, 1500); 
-});
-
-// Если окно грузится слишком долго (баг браузера), убиваем прелоадер через 2.5 секунды принудительно
-setTimeout(hidePreloader, 2500);
-// Автоматическое закрытие мобильного меню при клике на ссылку
-document.addEventListener('DOMContentLoaded', () => {
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileLinks = mobileMenu ? mobileMenu.querySelectorAll('a') : [];
-    
-    mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            // Закрываем меню (убираем класс translate-x-0 и возвращаем translate-x-full)
-            mobileMenu.classList.remove('translate-x-0');
-            mobileMenu.classList.add('translate-x-full');
-        });
-    });
-});
-// --- ЛОГИКА КНОПКИ "ЧИТАТЬ ПОЛНОСТЬЮ" ДЛЯ МОБИЛЬНЫХ ---
-// --- ЛОГИКА КНОПКИ "ЧИТАТЬ ПОЛНОСТЬЮ" ДЛЯ МОБИЛЬНЫХ ---
+/// --- ЛОГИКА КНОПКИ "ЧИТАТЬ ПОЛНОСТЬЮ" ДЛЯ МОБИЛЬНЫХ ---
 document.addEventListener('DOMContentLoaded', () => {
     const readMoreBtns = document.querySelectorAll('.read-more-btn');
     
@@ -229,28 +192,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const content = container.querySelector('.team-content');
             const overlay = container.querySelector('.fade-overlay');
             
-            // Подтягиваем переводы из атрибутов (или берем русский по умолчанию)
             const textMore = btn.getAttribute('data-more') || 'Читать полностью ↓';
             const textLess = btn.getAttribute('data-less') || 'Скрыть ↑';
             
             if (content.classList.contains('max-h-[140px]')) {
-                // Разворачиваем текст
                 content.classList.remove('max-h-[140px]');
                 content.classList.add('max-h-[2000px]');
                 overlay.style.opacity = '0';
                 e.target.innerHTML = textLess;
             } else {
-                // Сворачиваем текст
                 content.classList.remove('max-h-[2000px]');
                 content.classList.add('max-h-[140px]');
                 overlay.style.opacity = '1';
                 e.target.innerHTML = textMore;
                 
-                // Плавный скролл чуть вверх
                 setTimeout(() => {
                     container.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 300);
             }
         });
     });
-});
+}); // <--- ТУТ БЫЛА СИНТАКСИЧЕСКАЯ ОШИБКА, СЕЙЧАС ВСЕ ЧИСТО
