@@ -41,9 +41,10 @@ const newsPosts = (await getCollection('news')).sort(
 		</div>
 	</section>
 
-	<section class="relative overflow-hidden bg-bridge-light py-16 font-sans md:py-24">
-		<div class="absolute -left-32 top-20 h-72 w-72 rounded-full bg-bridge-taupe/10 blur-3xl"></div>
-		<div class="absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-dark/10 blur-3xl"></div>
+	<section class="relative overflow-hidden bg-bridge-dark py-16 font-sans md:py-24">
+		<div class="absolute -left-40 top-10 h-96 w-96 rounded-full bg-bridge-taupe/10 blur-[120px]"></div>
+		<div class="absolute -right-40 bottom-10 h-96 w-96 rounded-full bg-bridge-taupe/5 blur-[120px]"></div>
+		<div class="pointer-events-none absolute inset-0 opacity-[0.04]" style="background-image: linear-gradient(rgba(138,123,102,1) 1px, transparent 1px), linear-gradient(90deg, rgba(138,123,102,1) 1px, transparent 1px); background-size: 64px 64px;"></div>
 
 		<div class="relative z-10 mx-auto max-w-7xl px-6">
 			<div class="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
@@ -52,20 +53,42 @@ const newsPosts = (await getCollection('news')).sort(
 						<span class="mr-4 h-px w-8 bg-bridge-taupe"></span>
 						Latest insights
 					</div>
-					<h2 class="text-3xl font-bold leading-tight text-bridge-dark md:text-5xl">Актуальные материалы</h2>
+					<h2 class="text-3xl font-bold leading-tight text-white md:text-5xl">Актуальные материалы</h2>
 				</div>
-				<p class="max-w-md text-base font-light leading-relaxed text-gray-600 md:text-lg" data-aos="fade-up" data-aos-delay="100">
+				<p class="max-w-md text-base font-light leading-relaxed text-gray-400 md:text-lg" data-aos="fade-up" data-aos-delay="100">
 					Короткая форма, сильная экспертиза и практический взгляд на управление инфраструктурными контрактами.
 				</p>
 			</div>
 
 			{newsPosts.length > 0 ? (
-				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-					{newsPosts.map((post, index) => <NewsCard post={post} index={index} />)}
+				<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 md:gap-8">
+					{newsPosts.map((post, index) => <NewsCard post={post} index={index} featured={index === 0} />)}
+
+					<a
+						href="https://t.me/fidicuzb"
+						target="_blank"
+						class="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-bridge-taupe/25 bg-gradient-to-br from-bridge-taupe/15 to-bridge-taupe/5 p-8 backdrop-blur-lg transition-all duration-500 hover:-translate-y-1 hover:border-bridge-taupe/60 hover:shadow-[0_8px_40px_-8px_rgba(184,155,114,0.4)]"
+						data-aos="fade-up"
+						data-aos-delay="100"
+					>
+						<div class="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-bridge-taupe/20 blur-3xl"></div>
+						<div class="relative z-10">
+							<div class="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-bridge-taupe/25">
+								<svg class="h-6 w-6 text-bridge-taupe" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.11.03-1.84 1.18-5.2 3.45-.49.33-.94.5-1.35.49z"/></svg>
+							</div>
+							<span class="mb-2 block text-[10px] font-bold uppercase tracking-widest text-bridge-taupe">Telegram-канал</span>
+							<h3 class="mb-2 text-xl font-bold text-white">Следите за новостями FIDIC</h3>
+							<p class="text-sm font-light leading-relaxed text-gray-400">Анонсы встреч, разборы кейсов и публикации — первыми в нашем канале.</p>
+						</div>
+						<span class="relative z-10 mt-6 inline-flex items-center text-xs font-bold uppercase tracking-widest text-white">
+							Подписаться
+							<span class="ml-3 h-px w-10 bg-bridge-taupe transition-all duration-300 group-hover:w-16"></span>
+						</span>
+					</a>
 				</div>
 			) : (
-				<div class="rounded-3xl border border-white/70 bg-white p-10 text-center premium-shadow" data-aos="fade-up">
-					<p class="text-lg font-light text-gray-600">Публикации скоро появятся.</p>
+				<div class="rounded-3xl border border-white/10 bg-white/5 p-10 text-center backdrop-blur-lg" data-aos="fade-up">
+					<p class="text-lg font-light text-gray-400">Публикации скоро появятся.</p>
 				</div>
 			)}
 		</div>
