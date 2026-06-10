@@ -19,6 +19,7 @@ interface Props {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const { title, date, excerpt, coverImage, tags, lang } = post.data;
+const video = post.data.videoUrl;
 const currentSlug = Astro.params.slug as string;
 const baseSlug = currentSlug.replace(/^(ru|en|uz)-/, '');
 const langUrls = {
@@ -29,6 +30,7 @@ const langUrls = {
 const newsBase = lang === 'uz' ? '/news/uz/' : lang === 'en' ? '/news/en/' : '/news/';
 const locale = lang === 'uz' ? 'uz-UZ' : lang === 'en' ? 'en-US' : 'ru-RU';
 const backLabel = lang === 'uz' ? 'Barcha yangiliklar' : lang === 'en' ? 'All news' : 'Все публикации';
+const videoCaption = lang === 'uz' ? 'FIDIC OSH — Birinchi uchrashuv' : lang === 'en' ? 'FIDIC OSH — First Meeting' : 'FIDIC OSH — Первая встреча';
 const fallbackImage = '/larisa-belousova-uznews.png';
 
 const pageTitle = `${title} | Bridge Consult`;
@@ -100,10 +102,7 @@ const newsArticleJsonLd = {
 				<h1 class="mb-6 text-4xl font-bold leading-tight tracking-tight text-white md:text-6xl" data-aos="fade-up" data-aos-delay="100">
 					{title}
 				</h1>
-				<p class="mx-auto mb-6 max-w-3xl text-lg font-light leading-relaxed text-gray-300 md:text-xl" data-aos="fade-up" data-aos-delay="200">
-					{excerpt}
-				</p>
-				<time class="text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe" datetime={date.toISOString()} data-aos="fade-up" data-aos-delay="300">
+				<time class="text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe" datetime={date.toISOString()} data-aos="fade-up" data-aos-delay="200">
 					{formattedDate}
 				</time>
 			</div>
@@ -113,13 +112,43 @@ const newsArticleJsonLd = {
 			<div class="absolute -left-32 top-20 h-72 w-72 rounded-full bg-bridge-taupe/10 blur-3xl"></div>
 			<div class="absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-dark/10 blur-3xl"></div>
 
-			<div class="relative z-10 mx-auto max-w-4xl px-6">
-				<figure class="mb-10 overflow-hidden rounded-3xl bg-bridge-dark premium-shadow" data-aos="fade-up">
+			<div class="relative z-10 mx-auto max-w-3xl px-6">
+				<figure class="-mt-24 mb-10 overflow-hidden rounded-3xl bg-bridge-dark shadow-[0_30px_70px_-20px_rgba(26,24,22,0.45)] md:-mt-32" data-aos="fade-up">
 					<img src={coverImage} alt={title} onerror={`this.onerror=null;this.src='${fallbackImage}'`} class="aspect-[16/10] w-full object-cover object-center" />
 				</figure>
 
-				<div class="news-body news-surface rounded-3xl border border-white/70 bg-white p-7 premium-shadow md:p-12" data-aos="fade-up" data-aos-delay="100">
+				<p class="mb-10 border-l-2 border-bridge-taupe pl-6 text-lg font-light italic leading-relaxed text-bridge-dark md:text-xl" data-aos="fade-up">
+					{excerpt}
+				</p>
+
+				<div class="news-body" data-aos="fade-up" data-aos-delay="100">
 					<Content />
+				</div>
+
+				{video && (
+					<div class="my-14 flex flex-col items-center" data-aos="fade-up">
+						<div class="w-full max-w-[320px] overflow-hidden rounded-3xl bg-bridge-dark shadow-[0_40px_90px_-15px_rgba(26,24,22,0.6)] ring-1 ring-white/10">
+							<div class="relative w-full" style="aspect-ratio:9/16">
+								<video
+									autoplay
+									loop
+									muted
+									playsinline
+									class="absolute inset-0 h-full w-full object-cover"
+								>
+									<source src={video} type="video/mp4" />
+								</video>
+							</div>
+						</div>
+						<p class="mt-4 text-[10px] font-bold uppercase tracking-[0.28em] text-bridge-taupe">{videoCaption}</p>
+					</div>
+				)}
+
+				<div class="mt-12 border-t border-gray-200 pt-8">
+					<a href={newsBase} class="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-bridge-dark transition-colors hover:text-bridge-taupe">
+						<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
+						{backLabel}
+					</a>
 				</div>
 			</div>
 		</section>
@@ -132,12 +161,7 @@ const newsArticleJsonLd = {
 		color: #4b5563;
 		font-size: 1.08rem;
 		font-weight: 300;
-		line-height: 1.85;
-	}
-
-	.news-body :global(p:first-child) {
-		color: #292724;
-		font-size: 1.22rem;
+		line-height: 1.9;
 	}
 
 	.news-body :global(strong) {
@@ -145,10 +169,58 @@ const newsArticleJsonLd = {
 		font-weight: 700;
 	}
 
-	.news-body :global(video) {
-		margin-top: 2.5rem;
-		width: 100%;
-		border-radius: 1rem;
-		background: #292724;
+	.news-body :global(h2) {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin: 2.5rem 0 1.25rem;
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #292724;
+	}
+
+	.news-body :global(h2::before) {
+		content: '';
+		display: inline-block;
+		width: 2rem;
+		height: 3px;
+		border-radius: 999px;
+		background: #8A7B66;
+	}
+
+	.news-body :global(ul) {
+		margin: 0 0 1.5rem;
+		padding-left: 1.25rem;
+		list-style: none;
+	}
+
+	.news-body :global(li) {
+		position: relative;
+		margin-bottom: 0.75rem;
+		padding-left: 1.25rem;
+		color: #4b5563;
+		font-weight: 300;
+		line-height: 1.8;
+	}
+
+	.news-body :global(li::before) {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.7em;
+		width: 6px;
+		height: 6px;
+		border-radius: 999px;
+		background: #8A7B66;
+	}
+
+	.news-body :global(blockquote) {
+		margin: 2rem 0;
+		padding: 1.25rem 1.5rem;
+		border-left: 3px solid #8A7B66;
+		background: #f5f4f2;
+		border-radius: 0 1rem 1rem 0;
+		font-style: italic;
+		color: #292724;
 	}
 </style>

@@ -16,6 +16,7 @@ interface Props { post: CollectionEntry<'news'>; }
 const { post } = Astro.props;
 const { Content } = await render(post);
 const { title, date, excerpt, coverImage, tags } = post.data;
+const video = post.data.videoUrl;
 const pageTitle = `${title} | Bridge Consult`;
 const pageUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
 const formattedDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
@@ -27,7 +28,7 @@ const formattedDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 
 	<article class="bg-bridge-light font-sans">
 		<header class="relative overflow-hidden bg-bridge-dark pt-36 pb-16 md:pt-44 md:pb-24">
 			<div class="absolute inset-0 z-0">
-				<img src="/images/news/news-cover.jpg" alt="" class="h-full w-full object-cover opacity-30" />
+				<img src="/news-cover.jpg" alt="" class="h-full w-full object-cover opacity-30" />
 				<div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/75 to-bridge-dark"></div>
 			</div>
 			<div class="absolute left-1/2 top-1/2 z-[1] h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-bridge-taupe/20 blur-[150px]"></div>
@@ -57,6 +58,20 @@ const formattedDate = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 
 				</figure>
 				<p class="mb-10 border-l-2 border-bridge-taupe pl-6 text-lg font-light italic leading-relaxed text-bridge-dark md:text-xl" data-aos="fade-up">{excerpt}</p>
 				<div class="news-body" data-aos="fade-up" data-aos-delay="100"><Content /></div>
+
+				{video && (
+					<div class="my-14 flex flex-col items-center" data-aos="fade-up">
+						<div class="w-full max-w-[320px] overflow-hidden rounded-3xl bg-bridge-dark shadow-[0_40px_90px_-15px_rgba(26,24,22,0.6)] ring-1 ring-white/10">
+							<div class="relative w-full" style="aspect-ratio:9/16">
+								<video autoplay loop muted playsinline class="absolute inset-0 h-full w-full object-cover">
+									<source src={video} type="video/mp4" />
+								</video>
+							</div>
+						</div>
+						<p class="mt-4 text-[10px] font-bold uppercase tracking-[0.28em] text-bridge-taupe">FIDIC OSH — First Meeting</p>
+					</div>
+				)}
+
 				<div class="mt-12 flex flex-col items-center justify-between gap-6 border-t border-gray-200 pt-8 sm:flex-row">
 					<a href="/news/en/" class="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-bridge-dark transition-colors hover:text-bridge-taupe">
 						<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
