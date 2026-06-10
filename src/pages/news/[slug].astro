@@ -130,10 +130,9 @@ const newsArticleJsonLd = {
 						<div class="w-full max-w-[320px] overflow-hidden rounded-3xl bg-bridge-dark shadow-[0_40px_90px_-15px_rgba(26,24,22,0.6)] ring-1 ring-white/10">
 							<div class="relative w-full" style="aspect-ratio:9/16">
 								<video
-									autoplay
-									loop
-									muted
+									controls
 									playsinline
+									preload="metadata"
 									class="absolute inset-0 h-full w-full object-cover"
 								>
 									<source src={video} type="video/mp4" />
