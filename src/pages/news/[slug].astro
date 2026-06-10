@@ -7,7 +7,7 @@ export async function getStaticPaths() {
 	const posts = await getCollection('news');
 
 	return posts.map((post) => ({
-		params: { slug: post.slug },
+		params: { slug: post.id.replace(/\.(md|mdx)$/i, '') },
 		props: { post },
 	}));
 }

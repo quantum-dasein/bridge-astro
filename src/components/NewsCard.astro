@@ -8,6 +8,7 @@ interface Props {
 
 const { post, index = 0 } = Astro.props;
 const { title, date, excerpt, coverImage, tags } = post.data;
+const slug = post.id.replace(/\.(md|mdx)$/i, '');
 const formattedDate = new Intl.DateTimeFormat('ru-RU', {
 	day: 'numeric',
 	month: 'long',
@@ -20,7 +21,7 @@ const formattedDate = new Intl.DateTimeFormat('ru-RU', {
 	data-aos="fade-up"
 	data-aos-delay={index * 100}
 >
-	<a href={`/news/${post.slug}/`} class="block h-full">
+	<a href={`/news/${slug}/`} class="block h-full">
 		<div class="relative aspect-[16/10] overflow-hidden bg-bridge-dark">
 			<img
 				src={coverImage}
