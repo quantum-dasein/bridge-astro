@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
 
 const newsPosts = (await getCollection('news')).sort(
 	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
@@ -12,15 +13,15 @@ const newsPosts = (await getCollection('news')).sort(
 <Layout
 	title="Новости | Bridge Consult"
 	description="Новости, аналитика и профессиональные публикации Bridge Consult о FIDIC, инфраструктурных контрактах и управлении строительными проектами."
-	image="/og-image.jpg"
+	image="/images/news/news-cover.jpg"
 >
-	<SiteHeader />
+	<SiteHeader active="news" />
 
 	<section class="relative overflow-hidden bg-bridge-dark pt-40 pb-28 font-sans md:pt-48 md:pb-36">
 		<div class="absolute inset-0 z-0">
-			<img src="/images/news/fidic-osh-cover.jpg" alt="" class="h-full w-full object-cover opacity-40 grayscale" />
+			<img src="/images/news/news-cover.jpg" alt="" class="h-full w-full object-cover opacity-40" />
 		</div>
-		<div class="absolute inset-0 z-[1] bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/60 to-bridge-dark"></div>
+		<div class="absolute inset-0 z-[1] bg-gradient-to-b from-bridge-dark/90 via-bridge-dark/70 to-bridge-dark"></div>
 		<div class="absolute left-1/2 top-1/2 z-[1] h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-bridge-taupe/20 blur-[140px]"></div>
 
 		<div class="relative z-10 mx-auto max-w-7xl px-6 text-center">
@@ -67,4 +68,6 @@ const newsPosts = (await getCollection('news')).sort(
 			)}
 		</div>
 	</section>
+
+	<SiteFooter />
 </Layout>
