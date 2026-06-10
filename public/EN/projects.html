@@ -36,91 +36,122 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        html, body {
-            max-width: 100vw;
-            overflow-x: hidden;
-            position: relative;
-        }
-        .chapter-number {
-            font-size: 20rem;
-            line-height: 1;
-            font-weight: 700;
-            color: rgba(41, 39, 36, 0.03); 
-            position: absolute;
-            top: -50px;
-            z-index: 0;
-            pointer-events: none;
-            user-select: none;
-        }
+        html, body { max-width:100vw; overflow-x:hidden; position:relative; }
+        .chapter-number { font-size:20rem; line-height:1; font-weight:700; color:rgba(41,39,36,0.03); position:absolute; top:-50px; z-index:0; pointer-events:none; user-select:none; }
+        .svg-draw{stroke-dasharray:4000;stroke-dashoffset:4000;animation:drawBP 5s cubic-bezier(.2,0,.1,1) forwards}.svg-draw-fast{stroke-dasharray:2000;stroke-dashoffset:2000;animation:drawBP 3s cubic-bezier(.2,0,.1,1) forwards}.d1{animation-delay:.3s}.d2{animation-delay:1s}.d3{animation-delay:2s}.d4{animation-delay:2.5s}@keyframes drawBP{to{stroke-dashoffset:0}}
+        .laser-scanner{background:linear-gradient(to bottom,transparent,rgba(138,123,102,.02) 50%,rgba(138,123,102,.4) 95%,rgba(255,255,255,.8) 100%);animation:scan 4s ease-in-out infinite;border-bottom:1px solid rgba(255,255,255,.5);box-shadow:0 10px 30px rgba(138,123,102,.3)}@keyframes scan{0%{transform:translateY(-100%);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(1080px);opacity:0}}
+        .glow-dot{box-shadow:0 0 15px 3px rgba(255,255,255,.9),0 0 30px 6px rgba(138,123,102,.6)}
+        #logo-svg{overflow:visible;transition:transform 1s cubic-bezier(.16,1,.3,1),opacity 1s ease}
+        .lp{fill:#1d1814}@keyframes neonOn{0%{fill:#1d1814;filter:none}21%{fill:#c4ae96;filter:drop-shadow(0 0 10px #8A7B66) drop-shadow(0 0 28px rgba(138,123,102,.75))}100%{fill:#8c7e6e;filter:drop-shadow(0 0 8px rgba(138,123,102,.8)) drop-shadow(0 0 20px rgba(138,123,102,.45))}}.lp.lit{animation:neonOn 1.1s cubic-bezier(.4,0,.2,1) forwards}
+        @keyframes neonBreathe{0%,100%{fill:#8c7e6e;filter:drop-shadow(0 0 8px rgba(138,123,102,.8)) drop-shadow(0 0 20px rgba(138,123,102,.45))}50%{fill:#a09080;filter:drop-shadow(0 0 14px rgba(138,123,102,1)) drop-shadow(0 0 35px rgba(138,123,102,.65))}}.lp.breathe{animation:neonBreathe 3s ease-in-out infinite}
     </style>
 </head>
 <body class="font-sans text-bridge-dark antialiased bg-bridge-light relative selection:bg-bridge-taupe/20 overflow-x-hidden">
+<script>
+(function(){var K='bc_preloader_ts',S='bc_preloader_shown',l=localStorage.getItem(K),s=sessionStorage.getItem(S),show=!l||!s;if(!show){document.write('<style>#preloader{display:none!important}</style>');return;}localStorage.setItem(K,String(Date.now()));sessionStorage.setItem(S,'1');document.documentElement.style.overflow='hidden';document.addEventListener('DOMContentLoaded',function(){var pl=document.getElementById('preloader'),lg=document.getElementById('logo-svg'),cg=document.getElementById('preloader-center-glow'),bc=document.getElementById('preloader-bar-container'),pb=document.getElementById('preloader-progress'),bb=document.getElementById('preloader-buffer'),ce=document.getElementById('preloader-counter'),hc=document.getElementById('huge-counter'),st=document.getElementById('preloader-status');document.documentElement.style.overflow='';var W=['lp-B','lp-R','lp-I','lp-D','lp-G','lp-E','lp-deco','lp-C','lp-O','lp-N','lp-S','lp-U','lp-L','lp-T'];function wave(fn){W.forEach(function(id,i){setTimeout(function(){var e=document.getElementById(id);if(!e)return;e.classList.add('lit');setTimeout(function(){e.classList.remove('lit');e.classList.add('breathe');},350);if(i===W.length-1&&fn)setTimeout(fn,350);},i*45);})}setTimeout(function(){if(lg){lg.style.transform='translateY(0)';lg.style.opacity='1';}},200);setTimeout(function(){if(bc)bc.style.opacity='1';var c=0;function tick(){var inc=Math.random()*4+2.5,delay=Math.random()*18+12;if(c>22&&c<24){delay=180;inc=2;}else if(c>55&&c<57){delay=220;inc=3;}else if(c>85){inc=Math.random()*1.5+0.8;delay=30;}c=Math.min(c+inc,100);var i=Math.floor(c);if(pb)pb.style.width=c+'%';if(bb)bb.style.width=Math.min(c+Math.random()*12+6,100)+'%';if(ce)ce.innerText=(c===100?'100.00':c.toFixed(2))+'%';if(hc)hc.innerText=i;if(st){if(i>2&&i<=22)st.innerText='Erecting main pillars...';else if(i>22&&i<=55)st.innerText='Tensioning suspension cables...';else if(i>55&&i<=85)st.innerText='Installing bridge deck...';else if(i>85&&i<100)st.innerText='Finalizing FIDIC compliance...';}if(c===100){if(st){st.innerText='INFRASTRUCTURE READY.';st.classList.remove('animate-pulse');st.style.color='#fff';}setTimeout(function(){if(bc)bc.style.opacity='0';if(hc)hc.style.opacity='0';if(lg)lg.style.transform='scale(1.08)';if(cg){cg.style.background='radial-gradient(ellipse,rgba(138,123,102,.2) 0%,transparent 70%)';cg.style.transform='translate(-50%,-50%) scale(1.3)';}wave(function(){setTimeout(function(){if(pl)pl.style.transform='translateY(-100%)';document.body.style.overflow='';setTimeout(function(){if(pl)pl.remove();},900);},300);});},250);}else{setTimeout(tick,delay);}}setTimeout(tick,150);},400);});})();
+</script>
+<div id="preloader" class="fixed inset-0 z-[999999] bg-[#090807] flex flex-col items-center justify-center transition-transform duration-[1.8s] ease-[cubic-bezier(0.76,0,0.24,1)] overflow-hidden">
+    <div class="absolute inset-0 z-0 opacity-[0.05] pointer-events-none mix-blend-overlay" style="background-image:url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E')"></div>
+    <div id="preloader-center-glow" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[50vw] rounded-full blur-[100px] pointer-events-none z-0" style="background:transparent;transition:background 2.5s ease,transform 2.5s ease"></div>
+    <div id="huge-counter" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[45vw] md:text-[35vw] font-bold pointer-events-none select-none font-serif tracking-tighter z-0" style="-webkit-text-stroke:2px rgba(138,123,102,.12);color:transparent;transition:opacity 1s ease">0</div>
+    <div class="absolute inset-0 z-10 pointer-events-none opacity-90 flex items-end justify-center mix-blend-screen overflow-hidden">
+        <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" class="absolute w-[300%] sm:w-[200%] md:w-full h-full left-1/2 -translate-x-1/2 fill-none" style="stroke:#8A7B66;filter:drop-shadow(0 0 15px rgba(138,123,102,.6))"><g style="stroke:rgba(255,255,255,.1);stroke-width:1.5;stroke-dasharray:4 8"><line x1="0" y1="270" x2="1920" y2="270" class="svg-draw-fast"/><line x1="0" y1="540" x2="1920" y2="540" class="svg-draw-fast"/><line x1="960" y1="0" x2="960" y2="1080" class="svg-draw-fast"/></g><g style="stroke-width:4" class="svg-draw d1"><path d="M 400 1080 L 480 300 L 520 300 L 600 1080"/><line x1="420" y1="800" x2="580" y2="800" style="stroke-width:3"/><line x1="440" y1="600" x2="560" y2="600" style="stroke-width:3"/><line x1="465" y1="400" x2="535" y2="400" style="stroke-width:3"/><path d="M 1320 1080 L 1400 300 L 1440 300 L 1520 1080"/><line x1="1340" y1="800" x2="1500" y2="800" style="stroke-width:3"/><line x1="1360" y1="600" x2="1480" y2="600" style="stroke-width:3"/><line x1="1385" y1="400" x2="1455" y2="400" style="stroke-width:3"/></g><path d="M -200 100 Q 960 1100 2120 100" style="stroke-width:5;filter:drop-shadow(0 0 20px rgba(138,123,102,1))" class="svg-draw d2"/><path d="M 0 850 L 1920 850" style="stroke:white;stroke-width:6;filter:drop-shadow(0 0 20px rgba(255,255,255,.8))" class="svg-draw d4"/></svg>
+    </div>
+    <div class="laser-scanner absolute top-0 left-0 w-full h-[15vh] z-10 pointer-events-none"></div>
+    <div class="relative z-20 flex flex-col items-center w-[90%] max-w-[500px] px-4 md:px-6 mt-10 bg-black/40 py-8 rounded-3xl backdrop-blur-lg border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,.8)]">
+        <div class="relative mb-12 w-full flex justify-center py-2 h-16 md:h-20">
+            <svg id="logo-svg" viewBox="0 0 1705 641" xmlns="http://www.w3.org/2000/svg" class="absolute h-full w-auto max-w-full" style="transform:translateY(120%);opacity:0;overflow:visible" fill="none">
+                <path class="lp" id="lp-B" d="M106.588 74.0645C267.594 74.0645 267.699 144.585 269.688 153.441C286.416 227.912 229.553 267.836 221.893 273.215L221.869 273.231C229.275 273.231 280.118 300.442 281.12 368.065C282.537 463.639 191.385 483.829 146.195 482.541H1.77148V75.0312L106.588 74.0645ZM184.998 354.7C182.905 295.288 105.299 298.991 94.3506 304.787V407.511C125.264 409.711 186.672 402.229 184.998 354.7ZM94.3506 244.41H137.984C156.5 244.41 176.948 218.017 176.948 193.532C176.948 168.737 157.949 146.035 137.984 146.035H94.3506V244.41Z"/>
+                <path class="lp" id="lp-R" d="M302.05 197.881V479.001L390.605 392.057V316.383C534.095 100.761 862.572 51.6862 1008.87 54.1013C1426.08 50.8812 1635.29 266.632 1705.23 417.174C1521.52 21.7387 1164.09 0.96875 1008.87 0.96875C735 0.96875 497.031 105.463 390.605 217.202V197.881H302.05Z"/>
+                <path class="lp" id="lp-I" d="M515.547 223.162L426.027 304.471V482.546H515.547V223.162Z"/>
+                <path class="lp" id="lp-D" d="M836.596 482.227H751.584V446.161C751.584 480.295 693.299 485.608 672.207 486.735C651.115 487.862 532.774 474.66 532.774 343.277C532.774 211.895 627.447 192.896 672.207 192.413C708.015 192.027 740.045 218.657 751.584 232.021V104.664C751.636 104.647 775.271 96.9851 792.479 92.749C809.707 88.5083 835.63 85.8262 835.63 85.8262L836.596 482.227ZM673.979 260.841C637.876 260.841 608.609 296.667 608.609 340.861C608.609 385.055 637.876 420.882 673.979 420.882C710.081 420.882 739.348 385.056 739.348 340.861C739.348 296.667 710.081 260.841 673.979 260.841Z"/>
+                <path class="lp" id="lp-G" d="M1070.38 95.1602C1103.39 97.4143 1125.93 97.7359 1160.87 107.718V433.437C1160.87 565.784 1070.22 590.096 998.573 594.282C941.254 597.631 882.701 564.979 860.589 548.234L896.172 496.712C905.886 508.09 939.966 530.716 998.573 530.201C1057.18 529.686 1070.76 474.278 1070.22 446.639C1068.55 474.59 1018.64 484.368 993.903 485.764C882.357 488.468 854.363 384.276 854.309 331.841C852.892 238.07 943.347 191.442 993.903 191.441C1028.68 191.441 1059.27 218.062 1070.22 231.372L1070.38 95.1602ZM997.124 257.617C961.466 257.618 932.56 293.588 932.56 337.96C932.56 382.332 961.466 418.303 997.124 418.304C1032.78 418.304 1061.69 382.332 1061.69 337.96C1061.69 293.588 1032.78 257.617 997.124 257.617Z"/>
+                <path class="lp" id="lp-E" d="M1340.23 189.833C1404.49 190.284 1443.28 218.368 1465.64 253.3C1488 288.221 1493.94 329.974 1492.54 357.771L1492.53 357.925H1275.99C1276.91 378.817 1284.41 394.657 1295.94 405.202C1307.5 415.776 1323.11 421.039 1340.23 420.718C1353.9 420.461 1366.15 415.216 1375.91 408.758C1385.66 402.299 1392.92 394.632 1396.61 389.549L1481.79 405.779C1477.23 424.351 1460.81 445.217 1436.06 461.505C1411.3 477.796 1378.18 489.52 1340.23 489.629C1273.07 489.822 1232.29 463.677 1208.6 430.899C1184.92 398.134 1178.34 358.757 1179.54 332.485C1179.54 308.519 1187.58 272.633 1211.68 242.848C1235.8 213.055 1275.97 189.382 1340.23 189.833ZM1337.81 245.863C1293.76 246.378 1276.42 283.539 1273.25 302.055H1406.72C1402.27 283.861 1386.92 245.289 1337.81 245.863Z"/>
+                <path class="lp" id="lp-deco" d="M1703.62 465.477C1510.9 76.804 1171.49 60.059 929.82 76.804C1464.69 59.7369 1560 338.441 1606.54 432.47L1703.62 465.477Z"/>
+                <path class="lp" id="lp-C" d="M109.486 544.855L95.961 550.007C89.5207 526.693 70.1997 522.797 57.4802 522.797C43.1202 522.797 15.2961 531.974 15.2961 575.768C15.2961 619.563 43.4188 629.545 57.4802 629.062C85.3345 629.062 94.9413 607.916 97.5711 597.344L111.418 600.725C108.842 610.643 103.475 619.241 101.113 622.3C94.5119 630.672 89.0376 639.756 57.4802 640.172C20.7704 640.655 7.56776 616.02 2.41551 596.055C-1.70629 580.083 0.698091 562.781 2.41551 556.126C6.27969 541.044 22.7025 510.85 57.4802 510.721C92.2578 510.592 106.641 533.423 109.486 544.855Z"/>
+                <path class="lp" id="lp-O" d="M191.438 510.719C225.139 510.719 252.46 539.697 252.46 575.443C252.46 611.19 225.139 640.169 191.438 640.169C157.737 640.169 130.417 611.19 130.417 575.443C130.417 539.697 157.737 510.719 191.438 510.719ZM191.438 523.6C165.917 523.6 145.228 547.315 145.228 576.57C145.228 605.826 165.917 629.542 191.438 629.542C216.959 629.542 237.647 605.826 237.647 576.57C237.647 547.315 216.958 523.6 191.438 523.6Z"/>
+                <path class="lp" id="lp-N" d="M290.619 638.882H277.738V513.135H290.619L362.106 615.214V513.135H376.758V638.882H362.106L290.619 536.481V638.882Z"/>
+                <path class="lp" id="lp-S" d="M498.798 544.209L485.435 548.878C483.668 544.209 484.859 538.735 476.1 531.007C467.342 523.278 455.596 523.064 450.818 523.922C441.964 523.922 423.709 527.078 421.519 539.701C419.329 552.324 427.905 558.593 432.467 560.149C439.391 561.866 457.585 566.718 474.973 572.386C497.353 579.47 499.393 588.916 501.862 595.41C505.082 601.528 504.599 640.331 457.585 640.331C414.306 640.331 402.305 614.784 401.715 602.011L415.239 598.147C420.714 628.255 447.439 628.255 457.585 628.255C467.084 628.255 483.378 625.132 488.015 610.705C492.652 596.279 478.14 587.628 470.304 585.105C459.141 582.475 433.594 575.767 420.714 569.97C407.833 564.174 406.652 547.376 407.672 539.701C407.672 534.388 418.136 510.559 450.818 510.559C484.952 510.559 497.027 533.046 498.798 544.209Z"/>
+                <path class="lp" id="lp-U" d="M529.394 514.422H543.724V590.579C543.724 603.459 548.296 628.898 578.823 628.254C609.351 627.61 614.943 605.445 613.923 594.443V514.422H627.931V590.579C627.931 602.493 629.702 640.652 578.823 640.652C564.655 641.564 535.223 635.435 530.843 603.62C530.221 599.098 529.914 594.391 529.57 589.597L529.394 587.197 529.394 514.422Z"/>
+                <path class="lp" id="lp-L" d="M672.852 513.619H658.844L659.005 638.561H735.001V626.164H672.852V513.619Z"/>
+                <path class="lp" id="lp-T" d="M793.769 638.72H780.566L780.083 525.854H737.899V513.939H838.851V525.854H793.769V638.72Z"/>
+            </svg>
+        </div>
+        <div id="preloader-bar-container" class="w-full opacity-0" style="transition:opacity .7s ease">
+            <div class="flex justify-between w-full text-[10px] md:text-sm font-bold uppercase tracking-[.2em] text-gray-400 font-sans mb-5">
+                <span id="preloader-status" class="animate-pulse" style="color:#8A7B66">Initializing CAD...</span>
+                <span id="preloader-counter" class="text-white tracking-widest font-mono" style="text-shadow:0 0 8px rgba(255,255,255,.6)">0.00%</span>
+            </div>
+            <div class="w-full h-[2px] relative overflow-visible rounded-full" style="background:rgba(255,255,255,.1)">
+                <div id="preloader-buffer" class="absolute inset-y-0 left-0 w-0 rounded-full" style="background:rgba(138,123,102,.2);transition:width .2s ease-out"></div>
+                <div id="preloader-progress" class="absolute inset-y-0 left-0 w-0" style="background:#8A7B66;box-shadow:0 0 15px #8A7B66;transition:width .1s linear">
+                    <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-[4px] h-[4px] bg-white rounded-full glow-dot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <header class="fixed w-full top-0 z-[100] bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between relative z-[101]">
-        <a href="index.html" class="block relative z-[101]">
-            <img src="../bridge 2.png" alt="Bridge Consult" class="h-10 md:h-12 object-contain relative z-[101]">
+    <div class="max-w-[1400px] mx-auto px-4 md:px-6 h-20 flex items-center justify-between relative z-[101]">
+        <a href="index.html" class="block relative z-[101] shrink-0">
+            <img src="../bridge 2.svg" alt="Bridge Consult" class="site-logo h-9 md:h-11 object-contain relative z-[101]">
         </a>
-        
-        <nav class="hidden lg:flex space-x-8">
-            <a href="index.html#about" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors">About Us</a>
-            <a href="index.html#services" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors">Services</a>
-            <a href="projects.html" class="nav-link text-sm font-medium text-bridge-taupe transition-colors">Project Experience</a>
-            <a href="/news/" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors">News</a>
-            <a href="index.html#team" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors">Team</a>
-        </nav>
-
-        <div class="hidden lg:flex items-center space-x-6 ml-4">
-            <div class="flex items-center space-x-3 pr-6 border-r border-gray-200">
-                <a href="https://www.linkedin.com/in/larissalk" target="_blank" class="w-10 h-10 rounded-full bg-bridge-light flex items-center justify-center text-bridge-taupe hover:bg-bridge-taupe hover:text-white transition-all duration-300 shadow-sm hover:shadow-md" title="LinkedIn">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                </a>
-                <a href="https://t.me/fidicuzb" target="_blank" class="w-10 h-10 rounded-full bg-bridge-light flex items-center justify-center text-bridge-taupe hover:bg-bridge-taupe hover:text-white transition-all duration-300 shadow-sm hover:shadow-md" title="Telegram">
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.11.03-1.84 1.18-5.2 3.45-.49.33-.94.5-1.35.49-.45-.01-1.3-.25-1.94-.46-.78-.26-1.4-.4-1.34-.84.03-.23.36-.47.98-.72 3.85-1.68 6.42-2.78 7.71-3.32 3.67-1.53 4.43-1.8 4.93-1.81.11 0 .36.03.49.13.11.09.14.22.15.34.01.07.01.18 0 .22z"/></svg>
-                </a>
+        <nav class="hidden lg:flex items-center space-x-6 lg:space-x-8">
+            <a href="index.html#about" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">About Us</a>
+            <a href="index.html#services" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Services</a>
+            <a href="projects.html" class="nav-link text-sm font-bold text-bridge-taupe whitespace-nowrap border-b-2 border-bridge-taupe pb-1">Project Experience</a>
+            <a href="/news/en/" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">News</a>
+            <a href="index.html#trainings" class="nav-link text-sm font-bold text-bridge-taupe hover:text-bridge-dark transition-colors whitespace-nowrap">FIDIC Training</a>
+            <div class="relative group">
+                <button type="button" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors flex items-center gap-1.5 cursor-pointer whitespace-nowrap py-4">Expertise <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
+                <div class="absolute top-full right-0 mt-0 w-56 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-2xl shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
+                    <a href="index.html#team" class="flex items-center gap-3 px-5 py-3 text-sm text-bridge-dark hover:text-bridge-taupe hover:bg-bridge-light/50 transition-colors mx-2 rounded-xl">Our Team</a>
+                    <a href="index.html#media" class="flex items-center gap-3 px-5 py-3 text-sm text-bridge-dark hover:text-bridge-taupe hover:bg-bridge-light/50 transition-colors mx-2 rounded-xl">Media &amp; Publications</a>
+                </div>
             </div>
-
-            <!-- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ (ПК) -->
-            <div class="flex items-center space-x-2 pr-6 border-r border-gray-200 font-bold text-xs uppercase tracking-widest">
+        </nav>
+        <div class="hidden lg:flex items-center space-x-4">
+            <div class="flex items-center space-x-2 pr-4 border-r border-gray-200">
+                <a href="https://www.linkedin.com/in/larissalk" target="_blank" class="w-9 h-9 rounded-full bg-bridge-light flex items-center justify-center text-bridge-taupe hover:bg-bridge-taupe hover:text-white transition-all duration-300 shadow-sm"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                <a href="https://t.me/fidicuzb" target="_blank" class="w-9 h-9 rounded-full bg-bridge-light flex items-center justify-center text-bridge-taupe hover:bg-bridge-taupe hover:text-white transition-all duration-300 shadow-sm"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.11.03-1.84 1.18-5.2 3.45-.49.33-.94.5-1.35.49z"/></svg></a>
+            </div>
+            <div class="flex items-center space-x-1.5 pr-4 border-r border-gray-200 font-bold text-xs uppercase tracking-widest">
                 <a href="../projects.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-0.5">RU</a>
                 <span class="text-gray-200">|</span>
                 <a href="projects.html" class="text-bridge-taupe border-b-2 border-bridge-taupe pb-0.5">EN</a>
                 <span class="text-gray-200">|</span>
                 <a href="../UZ/projects.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-0.5">UZ</a>
             </div>
-            
-            <div class="flex items-center space-x-5">
-                <a href="tel:+998330001530" class="text-sm font-bold text-bridge-dark hover:text-bridge-taupe transition-colors tracking-wide">+998 33 000 15 30</a>
-                <a href="index.html#contact-form" class="bg-bridge-dark text-white px-7 py-3 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-bridge-taupe transition-colors shadow-md hover:-translate-y-0.5">Contact Us</a>
+            <button id="theme-toggle" type="button" title="Switch theme" class="shrink-0 text-gray-500 hover:text-bridge-taupe focus:outline-none pr-1">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+            </button>
+            <div class="flex items-center space-x-3">
+                <a href="tel:+998330001530" class="text-xs font-bold text-bridge-dark hover:text-bridge-taupe transition-colors tracking-wide whitespace-nowrap">+998 33 000 15 30</a>
+                <a href="index.html#contact-form" class="bg-bridge-dark text-white px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-bridge-taupe transition-colors shadow-md whitespace-nowrap">Contact Us</a>
             </div>
         </div>
-
         <button id="mobile-menu-btn" class="lg:hidden flex flex-col justify-between w-7 h-5 text-bridge-dark focus:outline-none relative z-[101] cursor-pointer">
             <span class="w-full h-[2px] bg-current transition-all duration-300 origin-left burger-line-1"></span>
             <span class="w-full h-[2px] bg-current transition-all duration-300 burger-line-2"></span>
             <span class="w-full h-[2px] bg-current transition-all duration-300 origin-left burger-line-3"></span>
         </button>
     </div>
-
     <div id="mobile-menu" class="fixed inset-0 w-full h-[100dvh] bg-white z-[100] flex flex-col p-8 transition-transform duration-500 translate-x-full lg:hidden pt-28 overflow-y-auto">
-        <!-- ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ (МОБИЛКА) -->
         <div class="flex items-center justify-center space-x-6 mb-10 pb-6 border-b border-gray-100 font-bold text-sm uppercase tracking-widest font-sans">
             <a href="../projects.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-1">RU</a>
             <a href="projects.html" class="text-bridge-taupe border-b-2 border-bridge-taupe pb-1">EN</a>
             <a href="../UZ/projects.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-1">UZ</a>
+            <button id="mobile-theme-toggle" type="button" class="text-gray-400 hover:text-bridge-taupe transition-colors focus:outline-none ml-2"><svg id="mobile-theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg><svg id="mobile-theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0z"></path></svg></button>
         </div>
-
-        <div class="flex flex-col space-y-6 font-sans">
-            <a href="index.html#about" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-4">About Us</a>
-            <a href="index.html#services" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-4">Services</a>
-            <a href="projects.html" class="text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-4">Project Experience</a>
-            <a href="/news/" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-4">News</a>
-            <a href="index.html#team" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-4">Team</a>
-            <a href="index.html#contact-form" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-4">Contact</a>
-        </div>
-        <div class="mt-12 flex flex-col space-y-4 font-sans">
-            <a href="tel:+998330001530" class="text-xl font-semibold text-bridge-dark text-center">+998 33 000 15 30</a>
-            <a href="index.html#contact-form" class="mobile-nav-link text-center bg-bridge-taupe text-white py-4 rounded-xl text-sm font-bold uppercase tracking-widest shadow-md">Contact Us</a>
+        <div class="flex flex-col space-y-5 font-sans pb-8">
+            <a href="index.html#about" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">About Us</a>
+            <a href="index.html#services" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">Services</a>
+            <a href="projects.html" class="text-2xl font-bold text-bridge-taupe border-b border-gray-100 pb-3">Project Experience</a>
+            <a href="/news/en/" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">News</a>
+            <a href="index.html#trainings" class="mobile-nav-link text-2xl font-bold text-bridge-taupe border-b border-gray-100 pb-3">FIDIC Training</a>
+            <a href="index.html#contact-form" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3 pt-4">Contact Us</a>
         </div>
     </div>
 </header>

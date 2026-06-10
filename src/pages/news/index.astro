@@ -5,9 +5,9 @@ import NewsCard from '../../components/NewsCard.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 
-const newsPosts = (await getCollection('news')).sort(
-	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const newsPosts = (await getCollection('news'))
+	.filter((p) => p.data.lang === 'ru')
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <Layout

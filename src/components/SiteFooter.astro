@@ -1,4 +1,6 @@
 ---
+interface Props { lang?: string; }
+const { lang = 'ru' } = Astro.props;
 ---
 
 <footer class="bg-bridge-dark pt-16 md:pt-20 pb-8 border-t-4 border-bridge-taupe relative overflow-hidden font-sans">

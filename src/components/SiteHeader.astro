@@ -1,8 +1,15 @@
 ---
 interface Props {
 	active?: string;
+	lang?: string;
 }
-const { active = 'news' } = Astro.props;
+const { active = 'news', lang = 'ru' } = Astro.props;
+const newsUrl = lang === 'en' ? '/news/en/' : lang === 'uz' ? '/news/uz/' : '/news/';
+const langLinks = {
+	ru: { href: '/news/', label: 'RU', active: lang === 'ru' },
+	en: { href: '/news/en/', label: 'EN', active: lang === 'en' },
+	uz: { href: '/news/uz/', label: 'UZ', active: lang === 'uz' },
+};
 ---
 
 <header class="fixed w-full top-0 z-[100] bg-bridge-dark/60 backdrop-blur-xl border-b border-white/10 transition-all duration-300">
@@ -15,7 +22,9 @@ const { active = 'news' } = Astro.props;
 			<a href="/index.html#about" class="nav-link text-sm font-medium text-gray-300 hover:text-bridge-taupe transition-colors whitespace-nowrap">О компании</a>
 			<a href="/index.html#services" class="nav-link text-sm font-medium text-gray-300 hover:text-bridge-taupe transition-colors whitespace-nowrap">Услуги</a>
 			<a href="/projects.html" class="nav-link text-sm font-medium text-gray-300 hover:text-bridge-taupe transition-colors whitespace-nowrap">Проекты</a>
-			<a href="/news/" class:list={["nav-link text-sm font-medium transition-colors whitespace-nowrap", active === 'news' ? 'text-bridge-taupe is-active' : 'text-gray-300 hover:text-bridge-taupe']}>Новости</a>
+			<a href={newsUrl} class:list={["nav-link text-sm font-medium transition-colors whitespace-nowrap", active === 'news' ? 'text-bridge-taupe is-active' : 'text-gray-300 hover:text-bridge-taupe']}>
+			{lang === 'en' ? 'News' : lang === 'uz' ? 'Yangiliklar' : 'Новости'}
+		</a>
 			<a href="/index.html#trainings" class="nav-link text-sm font-bold text-bridge-taupe hover:text-white transition-colors whitespace-nowrap">Тренинги FIDIC</a>
 
 			<div class="relative group">
@@ -51,11 +60,11 @@ const { active = 'news' } = Astro.props;
 			</div>
 
 			<div class="flex items-center space-x-1.5 pr-4 border-r border-white/10 font-bold text-xs uppercase tracking-widest">
-				<a href="/news/" class="text-bridge-taupe border-b-2 border-bridge-taupe pb-0.5">RU</a>
+				<a href="/news/" class:list={[lang === 'ru' ? 'text-bridge-taupe border-b-2 border-bridge-taupe pb-0.5' : 'text-gray-400 hover:text-bridge-taupe transition-colors pb-0.5']}>RU</a>
 				<span class="text-white/20">|</span>
-				<a href="/EN/index.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-0.5">EN</a>
+				<a href="/news/en/" class:list={[lang === 'en' ? 'text-bridge-taupe border-b-2 border-bridge-taupe pb-0.5' : 'text-gray-400 hover:text-bridge-taupe transition-colors pb-0.5']}>EN</a>
 				<span class="text-white/20">|</span>
-				<a href="/UZ/index.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-0.5">UZ</a>
+				<a href="/news/uz/" class:list={[lang === 'uz' ? 'text-bridge-taupe border-b-2 border-bridge-taupe pb-0.5' : 'text-gray-400 hover:text-bridge-taupe transition-colors pb-0.5']}>UZ</a>
 			</div>
 
 			<button id="theme-toggle" type="button" title="Сменить тему" class="shrink-0 text-gray-400 hover:text-bridge-taupe focus:outline-none">
@@ -78,9 +87,9 @@ const { active = 'news' } = Astro.props;
 
 	<div id="mobile-menu" class="fixed inset-0 w-full h-[100dvh] bg-bridge-dark z-[100] flex flex-col p-8 transition-transform duration-500 translate-x-full lg:hidden pt-28 overflow-y-auto">
 		<div class="flex items-center justify-center space-x-6 mb-10 pb-6 border-b border-white/10 font-bold text-sm uppercase tracking-widest font-sans">
-			<a href="/news/" class="text-bridge-taupe border-b-2 border-bridge-taupe pb-1">RU</a>
-			<a href="/EN/index.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-1">EN</a>
-			<a href="/UZ/index.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-1">UZ</a>
+			<a href="/news/" class:list={[lang === 'ru' ? 'text-bridge-taupe border-b-2 border-bridge-taupe pb-1' : 'text-gray-400 hover:text-bridge-taupe transition-colors pb-1']}>RU</a>
+			<a href="/news/en/" class:list={[lang === 'en' ? 'text-bridge-taupe border-b-2 border-bridge-taupe pb-1' : 'text-gray-400 hover:text-bridge-taupe transition-colors pb-1']}>EN</a>
+			<a href="/news/uz/" class:list={[lang === 'uz' ? 'text-bridge-taupe border-b-2 border-bridge-taupe pb-1' : 'text-gray-400 hover:text-bridge-taupe transition-colors pb-1']}>UZ</a>
 			<button id="mobile-theme-toggle" type="button" class="text-gray-400 hover:text-bridge-taupe transition-colors focus:outline-none ml-2" title="Сменить тему">
 				<svg id="mobile-theme-toggle-dark-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
 				<svg id="mobile-theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
@@ -90,7 +99,9 @@ const { active = 'news' } = Astro.props;
 			<a href="/index.html#about" class="mobile-nav-link text-2xl font-bold text-white border-b border-white/10 pb-3">О компании</a>
 			<a href="/index.html#services" class="mobile-nav-link text-2xl font-bold text-white border-b border-white/10 pb-3">Услуги</a>
 			<a href="/projects.html" class="mobile-nav-link text-2xl font-bold text-white border-b border-white/10 pb-3">Проекты</a>
-			<a href="/news/" class="mobile-nav-link text-2xl font-bold text-bridge-taupe border-b border-white/10 pb-3">Новости</a>
+			<a href={newsUrl} class="mobile-nav-link text-2xl font-bold text-bridge-taupe border-b border-white/10 pb-3">
+			{lang === 'en' ? 'News' : lang === 'uz' ? 'Yangiliklar' : 'Новости'}
+		</a>
 			<a href="/index.html#trainings" class="mobile-nav-link text-2xl font-bold text-bridge-taupe border-b border-white/10 pb-3">Тренинги FIDIC</a>
 			<a href="/index.html#contact-form" class="mobile-nav-link text-2xl font-bold text-white border-b border-white/10 pb-3 pt-4">Оставить заявку</a>
 		</div>

@@ -5,10 +5,10 @@ import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 
 export async function getStaticPaths() {
-	const posts = await getCollection('news');
+	const posts = (await getCollection('news')).filter((p) => p.data.lang === 'ru');
 
 	return posts.map((post) => ({
-		params: { slug: post.id.replace(/\.(md|mdx)$/i, '') },
+		params: { slug: post.id.replace(/^ru-/, '').replace(/\.(md|mdx)$/i, '') },
 		props: { post },
 	}));
 }
