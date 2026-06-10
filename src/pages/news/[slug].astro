@@ -1,0 +1,141 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('news');
+
+	return posts.map((post) => ({
+		params: { slug: post.id.replace(/\.(md|mdx)$/i, '') },
+		props: { post },
+	}));
+}
+
+interface Props {
+	post: CollectionEntry<'news'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, date, excerpt, coverImage, tags, lang } = post.data;
+const pageTitle = `${title} | Bridge Consult`;
+const pageUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
+const absoluteImage = coverImage.startsWith('http') ? coverImage : new URL(coverImage, pageUrl).toString();
+const formattedDate = new Intl.DateTimeFormat('ru-RU', {
+	day: 'numeric',
+	month: 'long',
+	year: 'numeric',
+}).format(date);
+
+const newsArticleJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'NewsArticle',
+	headline: title,
+	description: excerpt,
+	image: [absoluteImage],
+	datePublished: date.toISOString(),
+	dateModified: date.toISOString(),
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': pageUrl,
+	},
+	author: {
+		'@type': 'Organization',
+		name: 'Bridge Consult',
+		url: new URL('/index.html', pageUrl).toString(),
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: 'Bridge Consult',
+		logo: {
+			'@type': 'ImageObject',
+			url: new URL('/bridge%202.png', pageUrl).toString(),
+		},
+	},
+};
+---
+
+<Layout title={pageTitle} description={excerpt} image={coverImage} type="article" lang={lang}>
+	<Fragment slot="head">
+		<meta property="article:published_time" content={date.toISOString()} />
+		<meta property="article:modified_time" content={date.toISOString()} />
+		{tags.map((tag) => <meta property="article:tag" content={tag} />)}
+		<script type="application/ld+json" set:html={JSON.stringify(newsArticleJsonLd)}></script>
+	</Fragment>
+
+	<SiteHeader />
+
+	<article class="bg-bridge-light font-sans">
+		<header class="relative overflow-hidden bg-bridge-dark pt-36 pb-16 md:pt-44 md:pb-24">
+			<div class="absolute inset-0 z-0">
+				<img src={coverImage} alt="" class="h-full w-full object-cover opacity-35 grayscale" />
+				<div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/70 to-bridge-dark"></div>
+			</div>
+			<div class="absolute left-1/2 top-1/2 z-[1] h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-bridge-taupe/20 blur-[150px]"></div>
+
+			<div class="relative z-10 mx-auto max-w-5xl px-6 text-center">
+				<a href="/news/" class="mb-8 inline-flex items-center text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe transition-colors hover:text-white" data-aos="fade-up">
+					<span class="mr-3 h-px w-8 bg-bridge-taupe"></span>
+					Все новости
+				</a>
+				<div class="mb-5 flex flex-wrap justify-center gap-2" data-aos="fade-up" data-aos-delay="50">
+					{tags.map((tag) => (
+						<span class="rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white backdrop-blur-md">
+							{tag}
+						</span>
+					))}
+				</div>
+				<h1 class="mb-6 text-4xl font-bold leading-tight tracking-tight text-white md:text-6xl" data-aos="fade-up" data-aos-delay="100">
+					{title}
+				</h1>
+				<p class="mx-auto mb-6 max-w-3xl text-lg font-light leading-relaxed text-gray-300 md:text-xl" data-aos="fade-up" data-aos-delay="200">
+					{excerpt}
+				</p>
+				<time class="text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe" datetime={date.toISOString()} data-aos="fade-up" data-aos-delay="300">
+					{formattedDate}
+				</time>
+			</div>
+		</header>
+
+		<section class="relative py-12 md:py-20">
+			<div class="absolute -left-32 top-20 h-72 w-72 rounded-full bg-bridge-taupe/10 blur-3xl"></div>
+			<div class="absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-dark/10 blur-3xl"></div>
+
+			<div class="relative z-10 mx-auto max-w-4xl px-6">
+				<div class="mb-10 overflow-hidden rounded-3xl bg-bridge-dark premium-shadow" data-aos="fade-up">
+					<img src={coverImage} alt={title} class="h-full w-full object-cover" />
+				</div>
+
+				<div class="news-body rounded-3xl border border-white/70 bg-white p-7 premium-shadow md:p-12" data-aos="fade-up" data-aos-delay="100">
+					<Content />
+				</div>
+			</div>
+		</section>
+	</article>
+</Layout>
+
+<style>
+	.news-body :global(p) {
+		margin-bottom: 1.5rem;
+		color: #4b5563;
+		font-size: 1.08rem;
+		font-weight: 300;
+		line-height: 1.85;
+	}
+
+	.news-body :global(p:first-child) {
+		color: #292724;
+		font-size: 1.22rem;
+	}
+
+	.news-body :global(strong) {
+		color: #292724;
+		font-weight: 700;
+	}
+
+	.news-body :global(video) {
+		margin-top: 2.5rem;
+		background: #292724;
+	}
+</style>

@@ -1,30 +1,71 @@
 ---
 import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	type?: string;
+	lang?: string;
+}
+
+const {
+	title = 'Bridge Consult | Инфраструктурные контракты и разрешение споров',
+	description = 'Независимая экспертиза международного уровня. Сопровождение проектов FIDIC и EPC.',
+	image = '/og-image.jpg',
+	type = 'website',
+	lang = 'ru',
+} = Astro.props;
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
+const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toString();
 ---
 
 <!doctype html>
-<html lang="en">
-...
-<!doctype html>
-<html lang="en">
+<html lang={lang} class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#292724" />
+		<meta property="og:type" content={type} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:url" content={pageUrl} />
+		<title>{title}</title>
+		<script is:inline>
+			(function() {
+				var t = localStorage.getItem('bc-theme');
+				if (t === 'dark') {
+					document.documentElement.classList.add('dark-theme');
+				}
+			})();
+		</script>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+		<link rel="stylesheet" href="/style.css" />
+		<slot name="head" />
 	</head>
-	<body>
+	<body class="font-sans text-bridge-dark antialiased bg-bridge-light selection:bg-bridge-taupe/20 overflow-x-hidden">
 		<slot />
+		<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+		<script is:inline>
+			window.addEventListener('DOMContentLoaded', function() {
+				if (window.AOS) {
+					window.AOS.init({
+						duration: 800,
+						once: true,
+						offset: 80
+					});
+				}
+			});
+		</script>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

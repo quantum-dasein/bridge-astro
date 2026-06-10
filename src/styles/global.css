@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@theme {
+  --color-bridge-taupe: #8A7B66;
+  --color-bridge-dark: #292724;
+  --color-bridge-light: #F5F4F2;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+}
+
+html,
+body {
+  margin: 0;
+  max-width: 100vw;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
