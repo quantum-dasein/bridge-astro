@@ -1,24 +1,25 @@
 ---
-import { getCollection, render } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import SiteFooter from '../../components/SiteFooter.astro';
-
+export const prerender = true;
 export async function getStaticPaths() {
 	const posts = await getCollection('news');
+
 	return posts.map((post) => ({
 		params: { slug: post.id.replace(/\.(md|mdx)$/i, '') },
 		props: { post },
 	}));
 }
 
-type Props = { post: CollectionEntry<"news">; };
+interface Props {
+	post: CollectionEntry<'news'>;
+}
 
 const { post } = Astro.props;
 const { Content } = await render(post);
 const { title, date, excerpt, coverImage, tags, lang } = post.data;
-
+const video = post.data.videoUrl;
 const currentSlug = Astro.params.slug as string;
 const baseSlug = currentSlug.replace(/^(ru|en|uz)-/, '');
 const langUrls = {
@@ -26,64 +27,199 @@ const langUrls = {
   en: `/news/en-${baseSlug}/`,
   uz: `/news/uz-${baseSlug}/`,
 };
+const newsBase = lang === 'uz' ? '/news/uz/' : lang === 'en' ? '/news/en/' : '/news/';
+const locale = lang === 'uz' ? 'uz-UZ' : lang === 'en' ? 'en-US' : 'ru-RU';
+const backLabel = lang === 'uz' ? 'Barcha yangiliklar' : lang === 'en' ? 'All news' : 'Все публикации';
+const videoCaption = lang === 'uz' ? 'FIDIC OSH — Birinchi uchrashuv' : lang === 'en' ? 'FIDIC OSH — First Meeting' : 'FIDIC OSH — Первая встреча';
+const fallbackImage = '/larisa-belousova-uznews.png';
 
 const pageTitle = `${title} | Bridge Consult`;
 const pageUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
 const absoluteImage = coverImage.startsWith('http') ? coverImage : new URL(coverImage, pageUrl).toString();
-const formattedDate = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+const formattedDate = new Intl.DateTimeFormat(locale, {
+	day: 'numeric',
+	month: 'long',
+	year: 'numeric',
+}).format(date);
+
+const newsArticleJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'NewsArticle',
+	headline: title,
+	description: excerpt,
+	image: [absoluteImage],
+	datePublished: date.toISOString(),
+	dateModified: date.toISOString(),
+	mainEntityOfPage: {
+		'@type': 'WebPage',
+		'@id': pageUrl,
+	},
+	author: {
+		'@type': 'Organization',
+		name: 'Bridge Consult',
+		url: new URL('/index.html', pageUrl).toString(),
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: 'Bridge Consult',
+		logo: {
+			'@type': 'ImageObject',
+			url: new URL('/bridge%202.png', pageUrl).toString(),
+		},
+	},
+};
 ---
 
 <Layout title={pageTitle} description={excerpt} image={coverImage} type="article" lang={lang}>
-	<SiteHeader lang={lang} />
-	
-	<article class="bg-bridge-light font-sans pb-16 md:pb-24">
+	<Fragment slot="head">
+		<meta property="article:published_time" content={date.toISOString()} />
+		<meta property="article:modified_time" content={date.toISOString()} />
+		{tags.map((tag) => <meta property="article:tag" content={tag} />)}
+		<script type="application/ld+json" set:html={JSON.stringify(newsArticleJsonLd)}></script>
+	</Fragment>
+
+	<SiteHeader lang={lang} langUrls={langUrls} />
+	<article class="bg-bridge-light font-sans">
 		<header class="relative overflow-hidden bg-bridge-dark pt-36 pb-16 md:pt-44 md:pb-24">
 			<div class="absolute inset-0 z-0">
-				<img src={coverImage} alt="" class="h-full w-full object-cover opacity-30 grayscale" />
+				<img src={coverImage} alt="" onerror={`this.onerror=null;this.src='${fallbackImage}'`} class="h-full w-full object-cover object-center opacity-35 grayscale" />
 				<div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/75 to-bridge-dark"></div>
 			</div>
-			
+			<div class="absolute left-1/2 top-1/2 z-[1] h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-bridge-taupe/20 blur-[150px]"></div>
+
 			<div class="relative z-10 mx-auto max-w-5xl px-6 text-center">
-				<div class="mb-8 flex items-center justify-between flex-wrap gap-4">
-					<a href="/news/" class="inline-flex items-center text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe transition-colors hover:text-white">
-					  <span class="mr-3 h-px w-8 bg-bridge-taupe"></span>
-					  Newsroom
-					</a>
-					<div class="flex items-center gap-3 text-xs font-bold uppercase tracking-widest">
-					  <a href={langUrls.ru} class={`transition-colors ${lang === 'ru' ? 'text-bridge-taupe' : 'text-white/40 hover:text-white'}`}>RU</a>
-					  <span class="text-white/20">|</span>
-					  <a href={langUrls.en} class={`transition-colors ${lang === 'en' ? 'text-bridge-taupe' : 'text-white/40 hover:text-white'}`}>EN</a>
-					  <span class="text-white/20">|</span>
-					  <a href={langUrls.uz} class={`transition-colors ${lang === 'uz' ? 'text-bridge-taupe' : 'text-white/40 hover:text-white'}`}>UZ</a>
-					</div>
+				<a href={newsBase} class="mb-8 inline-flex items-center text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe transition-colors hover:text-white" data-aos="fade-up">
+					<svg class="mr-3 h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+					{backLabel}
+				</a>
+				<div class="mb-5 flex flex-wrap justify-center gap-2" data-aos="fade-up" data-aos-delay="50">
+					{tags.map((tag) => (
+						<span class="rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white backdrop-blur-md">
+							{tag}
+						</span>
+					))}
 				</div>
-				<h1 class="mb-6 text-3xl font-bold leading-tight tracking-tight text-white md:text-5xl lg:text-6xl">{title}</h1>
-				<div class="flex items-center justify-center gap-4 text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe">
-					<time datetime={date.toISOString()}>{formattedDate}</time>
-					<span class="h-1 w-1 rounded-full bg-bridge-taupe/50"></span>
-					<span>Bridge Consult</span>
-				</div>
+				<h1 class="mb-6 text-4xl font-bold leading-tight tracking-tight text-white md:text-6xl" data-aos="fade-up" data-aos-delay="100">
+					{title}
+				</h1>
+				<time class="text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe" datetime={date.toISOString()} data-aos="fade-up" data-aos-delay="200">
+					{formattedDate}
+				</time>
 			</div>
 		</header>
 
 		<section class="relative py-12 md:py-20">
+			<div class="absolute -left-32 top-20 h-72 w-72 rounded-full bg-bridge-taupe/10 blur-3xl"></div>
+			<div class="absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-dark/10 blur-3xl"></div>
+
 			<div class="relative z-10 mx-auto max-w-3xl px-6">
-				<div class="news-body rounded-3xl border border-gray-200 bg-white p-7 shadow-xl md:p-12">
+				<figure class="-mt-24 mb-10 overflow-hidden rounded-3xl bg-bridge-dark shadow-[0_30px_70px_-20px_rgba(26,24,22,0.45)] md:-mt-32" data-aos="fade-up">
+					<img src={coverImage} alt={title} onerror={`this.onerror=null;this.src='${fallbackImage}'`} class="aspect-[16/10] w-full object-cover object-center" />
+				</figure>
+
+				<p class="mb-10 border-l-2 border-bridge-taupe pl-6 text-lg font-light italic leading-relaxed text-bridge-dark md:text-xl" data-aos="fade-up">
+					{excerpt}
+				</p>
+
+				<div class="news-body" data-aos="fade-up" data-aos-delay="100">
 					<Content />
 				</div>
-				<div class="mt-12 pt-8 text-center md:text-left">
-					<a href={`/news/${lang === 'ru' ? '' : lang + '/'}`} class="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-bridge-dark transition-colors hover:text-bridge-taupe">
-						<svg class="h-4 w-4 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-						Назад к публикациям
+
+				{video && (
+					<div class="my-14 flex flex-col items-center" data-aos="fade-up">
+						<div class="w-full max-w-[320px] overflow-hidden rounded-3xl bg-bridge-dark shadow-[0_40px_90px_-15px_rgba(26,24,22,0.6)] ring-1 ring-white/10">
+							<div class="relative w-full" style="aspect-ratio:9/16">
+								<video
+									controls
+									playsinline
+									preload="metadata"
+									class="absolute inset-0 h-full w-full object-cover"
+								>
+									<source src={video} type="video/mp4" />
+								</video>
+							</div>
+						</div>
+						<p class="mt-4 text-[10px] font-bold uppercase tracking-[0.28em] text-bridge-taupe">{videoCaption}</p>
+					</div>
+				)}
+
+				<div class="mt-12 border-t border-gray-200 pt-8">
+					<a href={newsBase} class="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-bridge-dark transition-colors hover:text-bridge-taupe">
+						<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg>
+						{backLabel}
 					</a>
 				</div>
 			</div>
 		</section>
 	</article>
-	<SiteFooter />
 </Layout>
 
 <style>
-	.news-body :global(p) { margin-bottom: 1.5rem; color: #4b5563; line-height: 1.9; }
-	.news-body :global(h2) { font-size: 1.5rem; font-weight: 700; color: #292724; margin: 2.5rem 0 1.25rem; }
+	.news-body :global(p) {
+		margin-bottom: 1.5rem;
+		color: #4b5563;
+		font-size: 1.08rem;
+		font-weight: 300;
+		line-height: 1.9;
+	}
+
+	.news-body :global(strong) {
+		color: #292724;
+		font-weight: 700;
+	}
+
+	.news-body :global(h2) {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin: 2.5rem 0 1.25rem;
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #292724;
+	}
+
+	.news-body :global(h2::before) {
+		content: '';
+		display: inline-block;
+		width: 2rem;
+		height: 3px;
+		border-radius: 999px;
+		background: #8A7B66;
+	}
+
+	.news-body :global(ul) {
+		margin: 0 0 1.5rem;
+		padding-left: 1.25rem;
+		list-style: none;
+	}
+
+	.news-body :global(li) {
+		position: relative;
+		margin-bottom: 0.75rem;
+		padding-left: 1.25rem;
+		color: #4b5563;
+		font-weight: 300;
+		line-height: 1.8;
+	}
+
+	.news-body :global(li::before) {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.7em;
+		width: 6px;
+		height: 6px;
+		border-radius: 999px;
+		background: #8A7B66;
+	}
+
+	.news-body :global(blockquote) {
+		margin: 2rem 0;
+		padding: 1.25rem 1.5rem;
+		border-left: 3px solid #8A7B66;
+		background: #f5f4f2;
+		border-radius: 0 1rem 1rem 0;
+		font-style: italic;
+		color: #292724;
+	}
 </style>
