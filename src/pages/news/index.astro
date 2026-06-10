@@ -38,9 +38,9 @@ const newsPosts = (await getCollection('news')).sort(
 		</div>
 	</section>
 
-	<section class="relative overflow-hidden bg-bridge-light py-16 font-sans md:py-24">
+	<section class="relative overflow-hidden bg-bridge-dark py-16 font-sans md:py-24">
 		<div class="absolute -left-32 top-20 h-72 w-72 rounded-full bg-bridge-taupe/10 blur-3xl"></div>
-		<div class="absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-dark/10 blur-3xl"></div>
+		<div class="absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-taupe/5 blur-3xl"></div>
 
 		<div class="relative z-10 mx-auto max-w-7xl px-6">
 			<div class="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
@@ -49,9 +49,9 @@ const newsPosts = (await getCollection('news')).sort(
 						<span class="mr-4 h-px w-8 bg-bridge-taupe"></span>
 						Latest insights
 					</div>
-					<h2 class="text-3xl font-bold leading-tight text-bridge-dark md:text-5xl">Актуальные материалы</h2>
+					<h2 class="text-3xl font-bold leading-tight text-white md:text-5xl">Актуальные материалы</h2>
 				</div>
-				<p class="max-w-md text-base font-light leading-relaxed text-gray-600 md:text-lg" data-aos="fade-up" data-aos-delay="100">
+				<p class="max-w-md text-base font-light leading-relaxed text-gray-400 md:text-lg" data-aos="fade-up" data-aos-delay="100">
 					Короткая форма, сильная экспертиза и практический взгляд на управление инфраструктурными контрактами.
 				</p>
 			</div>
@@ -61,8 +61,8 @@ const newsPosts = (await getCollection('news')).sort(
 					{newsPosts.map((post, index) => <NewsCard post={post} index={index} />)}
 				</div>
 			) : (
-				<div class="rounded-3xl border border-white/70 bg-white p-10 text-center premium-shadow" data-aos="fade-up">
-					<p class="text-lg font-light text-gray-600">Публикации скоро появятся.</p>
+				<div class="rounded-3xl border border-white/10 bg-white/5 p-10 text-center premium-shadow" data-aos="fade-up">
+					<p class="text-lg font-light text-gray-400">Публикации скоро появятся.</p>
 				</div>
 			)}
 		</div>
