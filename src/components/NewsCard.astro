@@ -1,0 +1,56 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	post: CollectionEntry<'news'>;
+	index?: number;
+}
+
+const { post, index = 0 } = Astro.props;
+const { title, date, excerpt, coverImage, tags } = post.data;
+const formattedDate = new Intl.DateTimeFormat('ru-RU', {
+	day: 'numeric',
+	month: 'long',
+	year: 'numeric',
+}).format(date);
+---
+
+<article
+	class="glass-card premium-shadow hover-float rounded-3xl bg-white border border-white/70 overflow-hidden group"
+	data-aos="fade-up"
+	data-aos-delay={index * 100}
+>
+	<a href={`/news/${post.slug}/`} class="block h-full">
+		<div class="relative aspect-[16/10] overflow-hidden bg-bridge-dark">
+			<img
+				src={coverImage}
+				alt={title}
+				class="h-full w-full object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
+				loading="lazy"
+			/>
+			<div class="absolute inset-0 bg-gradient-to-t from-bridge-dark/70 via-bridge-dark/10 to-transparent"></div>
+			<div class="absolute left-5 top-5 flex flex-wrap gap-2">
+				{tags.slice(0, 2).map((tag) => (
+					<span class="rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-bridge-dark shadow-lg">
+						{tag}
+					</span>
+				))}
+			</div>
+		</div>
+		<div class="flex h-full flex-col p-6 md:p-8">
+			<time class="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-bridge-taupe" datetime={date.toISOString()}>
+				{formattedDate}
+			</time>
+			<h2 class="mb-4 text-2xl font-bold leading-tight text-bridge-dark transition-colors group-hover:text-bridge-taupe md:text-3xl">
+				{title}
+			</h2>
+			<p class="mb-6 text-sm font-light leading-relaxed text-gray-600 md:text-base">
+				{excerpt}
+			</p>
+			<span class="mt-auto inline-flex items-center text-xs font-bold uppercase tracking-widest text-bridge-dark">
+				Читать публикацию
+				<span class="ml-3 h-px w-10 bg-bridge-taupe transition-all duration-300 group-hover:w-16"></span>
+			</span>
+		</div>
+	</a>
+</article>

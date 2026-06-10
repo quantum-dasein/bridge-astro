@@ -1,0 +1,12 @@
+---
+interface Props {
+	src: string;
+}
+
+const { src } = Astro.props;
+---
+
+<video controls playsinline class="w-full rounded-2xl shadow-xl">
+	<source src={src} type="video/mp4" />
+	Ваш браузер не поддерживает HTML5-видео.
+</video>
