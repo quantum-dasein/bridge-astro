@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новости | Bridge Consult</title>
+    <meta name="description" content="Новости, аналитика и профессиональные публикации Bridge Consult о FIDIC, инфраструктурных контрактах и управлении строительными проектами.">
+    <meta property="og:title" content="Новости | Bridge Consult">
+    <meta property="og:image" content="https://bridgeconsult.uz/og-image.png">
+    <meta name="theme-color" content="#1a1816">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bridge-taupe': '#8A7B66',
+                        'bridge-dark': '#1a1816',
+                        'bridge-light': '#F5F4F2',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        html, body { max-width: 100vw; overflow-x: hidden; }
+    </style>
+</head>
+<body class="font-sans antialiased overflow-x-hidden" style="background:#1a1816; color:#fff;">
+
+<!-- HEADER -->
+<header class="fixed w-full top-0 z-[100] backdrop-blur-md border-b transition-all duration-300" style="background:rgba(26,24,22,0.95); border-color:rgba(255,255,255,0.06);">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="../" class="block shrink-0">
+            <img src="../bridge 2.svg" alt="Bridge Consult" class="h-10 md:h-12 object-contain" style="filter: brightness(0) invert(1);">
+        </a>
+        <nav class="hidden lg:flex space-x-6">
+            <a href="../#about" class="nav-link text-sm font-medium transition-colors whitespace-nowrap" style="color:#9ca3af;" onmouseover="this.style.color='#8A7B66'" onmouseout="this.style.color='#9ca3af'">О компании</a>
+            <a href="../#services" class="nav-link text-sm font-medium transition-colors whitespace-nowrap" style="color:#9ca3af;" onmouseover="this.style.color='#8A7B66'" onmouseout="this.style.color='#9ca3af'">Услуги</a>
+            <a href="../projects.html" class="nav-link text-sm font-medium transition-colors whitespace-nowrap" style="color:#9ca3af;" onmouseover="this.style.color='#8A7B66'" onmouseout="this.style.color='#9ca3af'">Проекты</a>
+            <a href="." class="nav-link text-sm font-medium whitespace-nowrap" style="color:#8A7B66;">Новости</a>
+        </nav>
+        <a href="../#contact-form" class="rounded-full text-white text-xs font-bold uppercase tracking-widest px-7 py-3 transition-colors" style="background:#8A7B66;" onmouseover="this.style.background='#fff';this.style.color='#1a1816';" onmouseout="this.style.background='#8A7B66';this.style.color='#fff';">Оставить заявку</a>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="relative overflow-hidden pt-40 pb-28 md:pt-48 md:pb-36" style="background:#1a1816;">
+    <video autoplay loop muted playsinline class="absolute inset-0 z-0 h-full w-full object-cover" style="opacity:0.35;">
+        <source src="../drone-highway.mp4" type="video/mp4">
+    </video>
+    <div class="absolute inset-0 z-[1]" style="background: linear-gradient(to bottom, rgba(26,24,22,0.95) 0%, rgba(26,24,22,0.6) 50%, rgba(26,24,22,1) 100%);"></div>
+    <div class="absolute left-1/2 top-1/2 z-[1] h-[500px] w-[500px] rounded-full -translate-x-1/2 -translate-y-1/2" style="background:rgba(138,123,102,0.18); filter:blur(140px);"></div>
+
+    <div class="relative z-10 mx-auto max-w-7xl px-6 text-center">
+        <div class="mb-5 flex items-center justify-center text-xs font-bold uppercase tracking-[0.28em]" style="color:#8A7B66;" data-aos="fade-up">
+            <span class="mr-4 h-px w-10" style="background:#8A7B66;"></span>
+            Newsroom
+            <span class="ml-4 h-px w-10" style="background:#8A7B66;"></span>
+        </div>
+        <h1 class="mb-6 text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl" data-aos="fade-up" data-aos-delay="100">
+            Новости и <span style="color:#8A7B66;">экспертные публикации</span>
+        </h1>
+        <p class="mx-auto max-w-3xl text-lg font-light leading-relaxed md:text-xl" style="color:#9ca3af;" data-aos="fade-up" data-aos-delay="200">
+            Профессиональные заметки о контрактах FIDIC, инфраструктурных проектах, роли Инженера и развитии отраслевого сообщества.
+        </p>
+    </div>
+</section>
+
+<!-- СПИСОК НОВОСТЕЙ -->
+<section class="relative overflow-hidden py-16 md:py-24" style="background:#F5F4F2;">
+    <div class="absolute -left-32 top-20 h-72 w-72 rounded-full" style="background:rgba(138,123,102,0.08); filter:blur(48px);"></div>
+    <div class="absolute -right-32 bottom-20 h-72 w-72 rounded-full" style="background:rgba(26,24,22,0.06); filter:blur(48px);"></div>
+
+    <div class="relative z-10 mx-auto max-w-7xl px-6">
+        <div class="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
+            <div class="max-w-2xl" data-aos="fade-up">
+                <div class="mb-4 flex items-center text-xs font-bold uppercase tracking-widest" style="color:#8A7B66;">
+                    <span class="mr-4 h-px w-8" style="background:#8A7B66;"></span>
+                    Latest insights
+                </div>
+                <h2 class="text-3xl font-bold leading-tight md:text-5xl" style="color:#1a1816;">Актуальные материалы</h2>
+            </div>
+            <p class="max-w-md text-base font-light leading-relaxed" style="color:#6b7280;" data-aos="fade-up" data-aos-delay="100">
+                Короткая форма, сильная экспертиза и практический взгляд на управление инфраструктурными контрактами.
+            </p>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <!-- Карточка 1 -->
+            <article class="rounded-3xl bg-white overflow-hidden group hover:-translate-y-2 transition-all duration-500 border" style="border-color:rgba(255,255,255,0.7); box-shadow:0 20px 40px -5px rgba(26,24,22,0.08);" data-aos="fade-up" data-aos-delay="100">
+                <a href="fidic-osh-first-meeting/" class="block h-full">
+                    <div class="relative overflow-hidden" style="aspect-ratio:16/10; background:#1a1816;">
+                        <img src="../larisa-belousova-uznews.png" alt="Первая встреча FIDIC OSH" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" style="filter:grayscale(100%);" onmouseover="this.style.filter='grayscale(0%)'" onmouseout="this.style.filter='grayscale(100%)'">
+                        <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(26,24,22,0.7) 0%, transparent 60%);"></div>
+                        <div class="absolute top-5 left-5 flex gap-2">
+                            <span class="text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest" style="background:rgba(138,123,102,0.9); color:#fff;">FIDIC</span>
+                            <span class="text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest" style="background:rgba(255,255,255,0.95); color:#1a1816; box-shadow:0 4px 12px rgba(0,0,0,0.15);">OSH</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col p-6 md:p-8">
+                        <time class="mb-4 text-xs font-bold uppercase tracking-[0.22em]" style="color:#8A7B66;">10 июня 2026</time>
+                        <h2 class="mb-4 text-2xl font-bold leading-tight transition-colors" style="color:#1a1816;">Первая встреча FIDIC OSH состоялась</h2>
+                        <p class="mb-6 text-sm font-light leading-relaxed" style="color:#6b7280;">Участники обсудили применение контрактов FIDIC, роль Инженера, качество строительства и инициативу по созданию FIDIC Club.</p>
+                        <span class="mt-auto inline-flex items-center text-xs font-bold uppercase tracking-widest" style="color:#1a1816;">
+                            Читать публикацию
+                            <span class="ml-3 h-px w-10 transition-all duration-300 group-hover:w-16" style="background:#8A7B66;"></span>
+                        </span>
+                    </div>
+                </a>
+            </article>
+
+            <!-- Заглушка — скоро -->
+            <article class="rounded-3xl overflow-hidden flex flex-col items-center justify-center p-10 text-center border" style="background:#fff; border-color:rgba(138,123,102,0.15); min-height:340px; box-shadow:0 20px 40px -5px rgba(26,24,22,0.06);" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-6" style="background:rgba(138,123,102,0.1);">
+                    <svg class="w-7 h-7" style="color:#8A7B66;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/></svg>
+                </div>
+                <p class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#8A7B66;">Скоро</p>
+                <h3 class="text-xl font-bold mb-3" style="color:#1a1816;">FIDIC Club: профессиональное сообщество</h3>
+                <p class="text-sm font-light" style="color:#9ca3af;">Новая публикация готовится к выходу</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER MINI -->
+<footer class="py-10 text-center border-t" style="background:#1a1816; border-color:rgba(255,255,255,0.06);">
+    <a href="../" class="inline-block mb-4">
+        <img src="../bridge 2.svg" alt="Bridge Consult" class="h-8 object-contain mx-auto" style="filter:brightness(0) invert(1);">
+    </a>
+    <p class="text-xs" style="color:#4b5563;">© 2026 Bridge Consult. Все права защищены.</p>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init({ duration: 800, once: true, offset: 80 });</script>
+</body>
+</html>
