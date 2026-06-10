@@ -2,7 +2,7 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-
+export const prerender = true;
 export async function getStaticPaths() {
 	const posts = await getCollection('news');
 
@@ -19,6 +19,13 @@ interface Props {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const { title, date, excerpt, coverImage, tags, lang } = post.data;
+const currentSlug = Astro.params.slug as string;
+const baseSlug = currentSlug.replace(/^(ru|en|uz)-/, '');
+const langUrls = {
+  ru: `/news/ru-${baseSlug}/`,
+  en: `/news/en-${baseSlug}/`,
+  uz: `/news/uz-${baseSlug}/`,
+};
 const pageTitle = `${title} | Bridge Consult`;
 const pageUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
 const absoluteImage = coverImage.startsWith('http') ? coverImage : new URL(coverImage, pageUrl).toString();
@@ -64,8 +71,7 @@ const newsArticleJsonLd = {
 		<script type="application/ld+json" set:html={JSON.stringify(newsArticleJsonLd)}></script>
 	</Fragment>
 
-	<SiteHeader />
-
+	<SiteHeader lang={lang} />
 	<article class="bg-bridge-light font-sans">
 		<header class="relative overflow-hidden bg-bridge-dark pt-36 pb-16 md:pt-44 md:pb-24">
 			<div class="absolute inset-0 z-0">
@@ -75,10 +81,19 @@ const newsArticleJsonLd = {
 			<div class="absolute left-1/2 top-1/2 z-[1] h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-bridge-taupe/20 blur-[150px]"></div>
 
 			<div class="relative z-10 mx-auto max-w-5xl px-6 text-center">
-				<a href="/news/" class="mb-8 inline-flex items-center text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe transition-colors hover:text-white" data-aos="fade-up">
-					<span class="mr-3 h-px w-8 bg-bridge-taupe"></span>
-					Все новости
-				</a>
+				<div class="mb-8 flex items-center justify-between flex-wrap gap-4" data-aos="fade-up">
+					<a href="/news/" class="inline-flex items-center text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe transition-colors hover:text-white">
+					  <span class="mr-3 h-px w-8 bg-bridge-taupe"></span>
+					  Newsroom
+					</a>
+					<div class="flex items-center gap-3 text-xs font-bold uppercase tracking-widest">
+					  <a href={langUrls.ru} class={`transition-colors ${lang === 'ru' ? 'text-bridge-taupe' : 'text-white/40 hover:text-white'}`}>RU</a>
+					  <span class="text-white/20">|</span>
+					  <a href={langUrls.en} class={`transition-colors ${lang === 'en' ? 'text-bridge-taupe' : 'text-white/40 hover:text-white'}`}>EN</a>
+					  <span class="text-white/20">|</span>
+					  <a href={langUrls.uz} class={`transition-colors ${lang === 'uz' ? 'text-bridge-taupe' : 'text-white/40 hover:text-white'}`}>UZ</a>
+					</div>
+				  </div>
 				<div class="mb-5 flex flex-wrap justify-center gap-2" data-aos="fade-up" data-aos-delay="50">
 					{tags.map((tag) => (
 						<span class="rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white backdrop-blur-md">

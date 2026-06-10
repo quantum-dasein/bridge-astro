@@ -1,3 +1,16 @@
+---
+interface Props { lang?: string; }
+const { lang = 'ru' } = Astro.props;
+const base = lang === 'uz' ? '/UZ' : lang === 'en' ? '/EN' : '';
+const t = {
+  about:    lang === 'uz' ? 'Kompaniya haqida'   : lang === 'en' ? 'About Us'         : 'О компании',
+  services: lang === 'uz' ? 'Xizmatlar'          : lang === 'en' ? 'Services'         : 'Услуги',
+  projects: lang === 'uz' ? 'Loyihalar tajribasi' : lang === 'en' ? 'Project Experience' : 'Опыт проектов',
+  news:     lang === 'uz' ? 'Yangiliklar'         : lang === 'en' ? 'News'             : 'Новости',
+  team:     lang === 'uz' ? 'Jamoa'               : lang === 'en' ? 'Team'             : 'Команда',
+  contact:  lang === 'uz' ? 'Ariza qoldirish'     : lang === 'en' ? 'Contact Us'       : 'Оставить заявку',
+};
+---
 <header class="fixed top-0 z-[100] w-full border-b border-gray-100 bg-white/95 backdrop-blur-md transition-all duration-300">
 	<div class="relative z-[101] mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
 		<a href="/index.html" class="relative z-[101] block shrink-0">
