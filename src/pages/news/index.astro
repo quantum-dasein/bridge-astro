@@ -19,10 +19,12 @@ const newsPosts = (await getCollection('news')).sort(
 
 	<section class="relative overflow-hidden bg-bridge-dark pt-40 pb-28 font-sans md:pt-48 md:pb-36">
 		<div class="absolute inset-0 z-0">
-			<img src="/images/news/news-cover.jpg" alt="" class="h-full w-full object-cover opacity-40" />
+			<img src="/images/news/news-cover.jpg" alt="" class="h-full w-full object-cover" />
 		</div>
-		<div class="absolute inset-0 z-[1] bg-gradient-to-b from-bridge-dark/90 via-bridge-dark/70 to-bridge-dark"></div>
-		<div class="absolute left-1/2 top-1/2 z-[1] h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-bridge-taupe/20 blur-[140px]"></div>
+		<!-- Виньетка: затемняет края для читаемости, центр оставляет открытым -->
+		<div class="absolute inset-0 z-[1]" style="background: radial-gradient(ellipse 80% 70% at center, rgba(26,24,22,0.15) 0%, rgba(26,24,22,0.5) 60%, rgba(26,24,22,0.85) 100%);"></div>
+		<!-- Плавный переход к секции ниже + затемнение под шапкой -->
+		<div class="absolute inset-0 z-[1] bg-gradient-to-b from-bridge-dark/70 via-transparent to-bridge-dark"></div>
 
 		<div class="relative z-10 mx-auto max-w-7xl px-6 text-center">
 			<div class="mb-5 flex items-center justify-center text-xs font-bold uppercase tracking-[0.28em] text-bridge-taupe" data-aos="fade-up">
