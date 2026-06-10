@@ -1,0 +1,143 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import NewsCard from './NewsCard.astro';
+import SiteHeader from './SiteHeader.astro';
+
+interface Props {
+	lang?: string;
+}
+const { lang = 'ru' } = Astro.props;
+
+const newsPosts = (await getCollection('news'))
+	.filter((p) => (p.data.lang ?? 'ru') === lang)
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const t = {
+	ru: {
+		title: 'Новости | Bridge Consult',
+		description: 'Новости, аналитика и профессиональные публикации Bridge Consult о FIDIC, инфраструктурных контрактах и управлении строительными проектами.',
+		heroHeadingA: 'Новости и',
+		heroHeadingB: 'экспертные публикации',
+		heroSub: 'Профессиональные заметки о контрактах FIDIC, инфраструктурных проектах, роли Инженера и развитии отраслевого сообщества.',
+		sectionEyebrow: 'Актуальное',
+		sectionHeading: 'Актуальные материалы',
+		sectionSub: 'Короткая форма, сильная экспертиза и практический взгляд на управление инфраструктурными контрактами.',
+		empty: 'Публикации скоро появятся.',
+		tgEyebrow: 'Telegram-канал',
+		tgTitle: 'FIDIC Uzbekistan',
+		tgDesc: 'Анонсы встреч, разбор кейсов и экспертные материалы по контрактам FIDIC — первыми в нашем Telegram-канале.',
+		tgBtn: 'Подписаться',
+	},
+	en: {
+		title: 'News | Bridge Consult',
+		description: 'News, analysis and professional publications by Bridge Consult on FIDIC, infrastructure contracts and construction project management.',
+		heroHeadingA: 'News &',
+		heroHeadingB: 'expert publications',
+		heroSub: 'Professional notes on FIDIC contracts, infrastructure projects, the role of the Engineer, and the growth of the industry community.',
+		sectionEyebrow: 'Latest',
+		sectionHeading: 'Latest materials',
+		sectionSub: 'Short form, strong expertise and a practical view on managing infrastructure contracts.',
+		empty: 'Publications coming soon.',
+		tgEyebrow: 'Telegram channel',
+		tgTitle: 'FIDIC Uzbekistan',
+		tgDesc: 'Meeting announcements, case studies and expert materials on FIDIC contracts — first in our Telegram channel.',
+		tgBtn: 'Subscribe',
+	},
+	uz: {
+		title: 'Yangiliklar | Bridge Consult',
+		description: 'Bridge Consult kompaniyasining FIDIC, infratuzilma shartnomalari va qurilish loyihalarini boshqarish haqidagi yangiliklari, tahlillari va professional nashrlari.',
+		heroHeadingA: 'Yangiliklar va',
+		heroHeadingB: 'ekspert nashrlari',
+		heroSub: 'FIDIC shartnomalari, infratuzilma loyihalari, Muhandis roli va soha hamjamiyatining rivoji haqida professional yozuvlar.',
+		sectionEyebrow: 'Dolzarb',
+		sectionHeading: 'So‘nggi materiallar',
+		sectionSub: 'Qisqa shakl, kuchli ekspertiza va infratuzilma shartnomalarini boshqarishga amaliy nazar.',
+		empty: 'Nashrlar tez orada paydo bo‘ladi.',
+		tgEyebrow: 'Telegram kanali',
+		tgTitle: 'FIDIC Uzbekistan',
+		tgDesc: 'Uchrashuvlar e’lonlari, keyslar tahlili va FIDIC shartnomalari bo‘yicha ekspert materiallari — birinchi bo‘lib Telegram kanalimizda.',
+		tgBtn: 'Obuna bo‘lish',
+	},
+}[lang as 'ru' | 'en' | 'uz'] ?? null as never;
+---
+
+<Layout title={t.title} description={t.description} image="/og-image.jpg" lang={lang}>
+	<SiteHeader lang={lang} />
+
+	<section class="relative overflow-hidden bg-bridge-dark pt-40 pb-28 font-sans md:pt-48 md:pb-36">
+		<video autoplay loop muted playsinline class="absolute inset-0 z-0 h-full w-full object-cover opacity-40">
+			<source src="/drone-highway.mp4" type="video/mp4" />
+		</video>
+		<div class="absolute inset-0 z-[1] bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/70 to-bridge-dark"></div>
+		<div class="absolute left-1/2 top-1/2 z-[1] h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-bridge-taupe/20 blur-[140px]"></div>
+
+		<div class="relative z-10 mx-auto max-w-7xl px-6 text-center">
+			<div class="mb-5 flex items-center justify-center text-xs font-bold uppercase tracking-[0.28em] text-bridge-taupe" data-aos="fade-up">
+				<span class="mr-4 h-px w-10 bg-bridge-taupe"></span>
+				Newsroom
+				<span class="ml-4 h-px w-10 bg-bridge-taupe"></span>
+			</div>
+			<h1 class="mb-6 text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl" data-aos="fade-up" data-aos-delay="100">
+				{t.heroHeadingA} <span class="text-bridge-taupe">{t.heroHeadingB}</span>
+			</h1>
+			<p class="mx-auto max-w-3xl text-lg font-light leading-relaxed text-gray-300 md:text-xl" data-aos="fade-up" data-aos-delay="200">
+				{t.heroSub}
+			</p>
+		</div>
+	</section>
+
+	<section class="relative overflow-hidden bg-bridge-light py-16 font-sans md:py-24">
+		<div class="absolute -left-32 top-20 h-72 w-72 rounded-full bg-bridge-taupe/10 blur-3xl"></div>
+		<div class="absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-dark/10 blur-3xl"></div>
+
+		<div class="relative z-10 mx-auto max-w-7xl px-6">
+			<div class="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
+				<div class="max-w-2xl" data-aos="fade-up">
+					<div class="mb-4 flex items-center text-xs font-bold uppercase tracking-widest text-bridge-taupe">
+						<span class="mr-4 h-px w-8 bg-bridge-taupe"></span>
+						{t.sectionEyebrow}
+					</div>
+					<h2 class="text-3xl font-bold leading-tight text-bridge-dark md:text-5xl">{t.sectionHeading}</h2>
+				</div>
+				<p class="max-w-md text-base font-light leading-relaxed text-gray-600 md:text-lg" data-aos="fade-up" data-aos-delay="100">
+					{t.sectionSub}
+				</p>
+			</div>
+
+			{newsPosts.length > 0 ? (
+				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+					{newsPosts.map((post, index) => <NewsCard post={post} index={index} lang={lang} />)}
+				</div>
+			) : (
+				<div class="news-surface rounded-3xl border border-white/70 bg-white p-10 text-center premium-shadow" data-aos="fade-up">
+					<p class="text-lg font-light text-gray-600">{t.empty}</p>
+				</div>
+			)}
+
+			<!-- Telegram subscribe banner (brand colours, not blue) -->
+			<a
+				href="https://t.me/fidicuzb"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="tg-cta group mt-10 flex flex-col items-start justify-between gap-6 rounded-3xl p-8 premium-shadow md:mt-12 md:flex-row md:items-center md:p-10"
+				data-aos="fade-up"
+			>
+				<div class="flex items-start gap-5">
+					<div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-bridge-taupe/20 text-bridge-taupe">
+						<svg class="h-7 w-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.11.03-1.84 1.18-5.2 3.45-.49.33-.94.5-1.35.49-.45-.01-1.3-.25-1.94-.46-.78-.26-1.4-.4-1.34-.84.03-.23.36-.47.98-.72 3.85-1.68 6.42-2.78 7.71-3.32 3.67-1.53 4.43-1.8 4.93-1.81.11 0 .36.03.49.13.11.09.14.22.15.34.01.07.01.18 0 .22z"/></svg>
+					</div>
+					<div>
+						<span class="mb-1 block text-[10px] font-bold uppercase tracking-[0.28em] text-bridge-taupe">{t.tgEyebrow}</span>
+						<h3 class="mb-2 text-xl font-bold text-bridge-dark md:text-2xl">{t.tgTitle}</h3>
+						<p class="max-w-xl text-sm font-light leading-relaxed text-gray-600">{t.tgDesc}</p>
+					</div>
+				</div>
+				<span class="inline-flex shrink-0 items-center gap-3 rounded-full bg-bridge-dark px-7 py-3.5 text-xs font-bold uppercase tracking-widest text-white transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:bg-bridge-taupe">
+					{t.tgBtn}
+					<svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+				</span>
+			</a>
+		</div>
+	</section>
+</Layout>

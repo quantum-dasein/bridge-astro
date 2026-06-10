@@ -26,10 +26,15 @@ const langUrls = {
   en: `/news/en-${baseSlug}/`,
   uz: `/news/uz-${baseSlug}/`,
 };
+const newsBase = lang === 'uz' ? '/news/uz/' : lang === 'en' ? '/news/en/' : '/news/';
+const locale = lang === 'uz' ? 'uz-UZ' : lang === 'en' ? 'en-US' : 'ru-RU';
+const backLabel = lang === 'uz' ? 'Barcha yangiliklar' : lang === 'en' ? 'All news' : 'Все публикации';
+const fallbackImage = '/larisa-belousova-uznews.png';
+
 const pageTitle = `${title} | Bridge Consult`;
 const pageUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
 const absoluteImage = coverImage.startsWith('http') ? coverImage : new URL(coverImage, pageUrl).toString();
-const formattedDate = new Intl.DateTimeFormat('ru-RU', {
+const formattedDate = new Intl.DateTimeFormat(locale, {
 	day: 'numeric',
 	month: 'long',
 	year: 'numeric',
@@ -71,29 +76,20 @@ const newsArticleJsonLd = {
 		<script type="application/ld+json" set:html={JSON.stringify(newsArticleJsonLd)}></script>
 	</Fragment>
 
-	<SiteHeader lang={lang} />
+	<SiteHeader lang={lang} langUrls={langUrls} />
 	<article class="bg-bridge-light font-sans">
 		<header class="relative overflow-hidden bg-bridge-dark pt-36 pb-16 md:pt-44 md:pb-24">
 			<div class="absolute inset-0 z-0">
-				<img src={coverImage} alt="" class="h-full w-full object-cover opacity-35 grayscale" />
-				<div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/70 to-bridge-dark"></div>
+				<img src={coverImage} alt="" onerror={`this.onerror=null;this.src='${fallbackImage}'`} class="h-full w-full object-cover object-center opacity-35 grayscale" />
+				<div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/75 to-bridge-dark"></div>
 			</div>
 			<div class="absolute left-1/2 top-1/2 z-[1] h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-bridge-taupe/20 blur-[150px]"></div>
 
 			<div class="relative z-10 mx-auto max-w-5xl px-6 text-center">
-				<div class="mb-8 flex items-center justify-between flex-wrap gap-4" data-aos="fade-up">
-					<a href="/news/" class="inline-flex items-center text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe transition-colors hover:text-white">
-					  <span class="mr-3 h-px w-8 bg-bridge-taupe"></span>
-					  Newsroom
-					</a>
-					<div class="flex items-center gap-3 text-xs font-bold uppercase tracking-widest">
-					  <a href={langUrls.ru} class={`transition-colors ${lang === 'ru' ? 'text-bridge-taupe' : 'text-white/40 hover:text-white'}`}>RU</a>
-					  <span class="text-white/20">|</span>
-					  <a href={langUrls.en} class={`transition-colors ${lang === 'en' ? 'text-bridge-taupe' : 'text-white/40 hover:text-white'}`}>EN</a>
-					  <span class="text-white/20">|</span>
-					  <a href={langUrls.uz} class={`transition-colors ${lang === 'uz' ? 'text-bridge-taupe' : 'text-white/40 hover:text-white'}`}>UZ</a>
-					</div>
-				  </div>
+				<a href={newsBase} class="mb-8 inline-flex items-center text-xs font-bold uppercase tracking-[0.24em] text-bridge-taupe transition-colors hover:text-white" data-aos="fade-up">
+					<svg class="mr-3 h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"/></svg>
+					{backLabel}
+				</a>
 				<div class="mb-5 flex flex-wrap justify-center gap-2" data-aos="fade-up" data-aos-delay="50">
 					{tags.map((tag) => (
 						<span class="rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white backdrop-blur-md">
@@ -118,11 +114,11 @@ const newsArticleJsonLd = {
 			<div class="absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-dark/10 blur-3xl"></div>
 
 			<div class="relative z-10 mx-auto max-w-4xl px-6">
-				<div class="mb-10 overflow-hidden rounded-3xl bg-bridge-dark premium-shadow" data-aos="fade-up">
-					<img src={coverImage} alt={title} class="h-full w-full object-cover" />
-				</div>
+				<figure class="mb-10 overflow-hidden rounded-3xl bg-bridge-dark premium-shadow" data-aos="fade-up">
+					<img src={coverImage} alt={title} onerror={`this.onerror=null;this.src='${fallbackImage}'`} class="aspect-[16/10] w-full object-cover object-center" />
+				</figure>
 
-				<div class="news-body rounded-3xl border border-white/70 bg-white p-7 premium-shadow md:p-12" data-aos="fade-up" data-aos-delay="100">
+				<div class="news-body news-surface rounded-3xl border border-white/70 bg-white p-7 premium-shadow md:p-12" data-aos="fade-up" data-aos-delay="100">
 					<Content />
 				</div>
 			</div>
@@ -151,6 +147,8 @@ const newsArticleJsonLd = {
 
 	.news-body :global(video) {
 		margin-top: 2.5rem;
+		width: 100%;
+		border-radius: 1rem;
 		background: #292724;
 	}
 </style>
