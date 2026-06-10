@@ -66,11 +66,11 @@ const newsArticleJsonLd = {
 
 	<SiteHeader />
 
-	<article class="bg-bridge-light font-sans">
+	<article class="bg-bridge-dark font-sans">
 		<header class="relative overflow-hidden bg-bridge-dark pt-36 pb-16 md:pt-44 md:pb-24">
 			<div class="absolute inset-0 z-0">
-				<img src={coverImage} alt="" class="h-full w-full object-cover opacity-35 grayscale" />
-				<div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/70 to-bridge-dark"></div>
+				<img src={coverImage} alt="" class="h-full w-full object-cover opacity-20 grayscale" />
+				<div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/75 to-bridge-dark"></div>
 			</div>
 			<div class="absolute left-1/2 top-1/2 z-[1] h-[560px] w-[560px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-bridge-taupe/20 blur-[150px]"></div>
 
@@ -99,15 +99,19 @@ const newsArticleJsonLd = {
 		</header>
 
 		<section class="relative py-12 md:py-20">
-			<div class="absolute -left-32 top-20 h-72 w-72 rounded-full bg-bridge-taupe/10 blur-3xl"></div>
-			<div class="absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-dark/10 blur-3xl"></div>
+			<div class="absolute -left-32 top-20 h-72 w-72 rounded-full bg-bridge-taupe/8 blur-3xl"></div>
+			<div class="absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-taupe/5 blur-3xl"></div>
 
 			<div class="relative z-10 mx-auto max-w-4xl px-6">
-				<div class="mb-10 overflow-hidden rounded-3xl bg-bridge-dark premium-shadow" data-aos="fade-up">
-					<img src={coverImage} alt={title} class="h-full w-full object-cover" />
+				<div class="mb-10 overflow-hidden" data-aos="fade-up">
+					<img
+						src={coverImage}
+						alt={title}
+						class="max-h-[50vh] w-full object-cover rounded-3xl premium-shadow"
+					/>
 				</div>
 
-				<div class="news-body rounded-3xl border border-white/70 bg-white p-7 premium-shadow md:p-12" data-aos="fade-up" data-aos-delay="100">
+				<div class="news-body rounded-3xl border border-white/10 bg-white/4 p-7 premium-shadow md:p-12" data-aos="fade-up" data-aos-delay="100">
 					<Content />
 				</div>
 			</div>
@@ -117,25 +121,73 @@ const newsArticleJsonLd = {
 
 <style>
 	.news-body :global(p) {
-		margin-bottom: 1.5rem;
-		color: #4b5563;
+		margin-bottom: 1.75rem;
+		color: #d1d5db;
 		font-size: 1.08rem;
 		font-weight: 300;
-		line-height: 1.85;
+		line-height: 1.9;
 	}
 
 	.news-body :global(p:first-child) {
-		color: #292724;
-		font-size: 1.22rem;
+		color: #e5e7eb;
+		font-size: 1.18rem;
+		line-height: 1.85;
 	}
 
 	.news-body :global(strong) {
-		color: #292724;
+		color: #f3f4f6;
+		font-weight: 600;
+	}
+
+	.news-body :global(h2),
+	.news-body :global(h3) {
+		color: #f9fafb;
 		font-weight: 700;
+		margin-top: 2.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.news-body :global(h2) {
+		font-size: 1.5rem;
+	}
+
+	.news-body :global(h3) {
+		font-size: 1.25rem;
+	}
+
+	.news-body :global(a) {
+		color: #8A7B66;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		transition: color 0.2s;
+	}
+
+	.news-body :global(a:hover) {
+		color: #a89880;
+	}
+
+	.news-body :global(ul),
+	.news-body :global(ol) {
+		color: #d1d5db;
+		padding-left: 1.5rem;
+		margin-bottom: 1.75rem;
+		line-height: 1.9;
+	}
+
+	.news-body :global(li) {
+		margin-bottom: 0.5rem;
+	}
+
+	.news-body :global(blockquote) {
+		border-left: 3px solid #8A7B66;
+		padding-left: 1.25rem;
+		margin: 2rem 0;
+		color: #9ca3af;
+		font-style: italic;
 	}
 
 	.news-body :global(video) {
 		margin-top: 2.5rem;
-		background: #292724;
+		margin-bottom: 2.5rem;
 	}
 </style>

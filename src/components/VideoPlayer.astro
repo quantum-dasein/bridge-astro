@@ -6,7 +6,10 @@ interface Props {
 const { src } = Astro.props;
 ---
 
-<video controls playsinline class="w-full rounded-2xl shadow-xl">
-	<source src={src} type="video/mp4" />
-	Ваш браузер не поддерживает HTML5-видео.
-</video>
+<video
+	src={src}
+	controls
+	playsinline
+	preload="metadata"
+	class="w-full rounded-3xl border border-white/10 shadow-2xl mt-8 mb-8"
+></video>
