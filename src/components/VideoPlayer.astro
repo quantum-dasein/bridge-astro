@@ -7,19 +7,22 @@ interface Props {
 const { src, poster } = Astro.props;
 ---
 
-<figure class="news-video group relative my-10 overflow-hidden rounded-3xl bg-bridge-dark shadow-[0_30px_60px_-15px_rgba(26,24,22,0.5)]">
-	<div class="pointer-events-none absolute left-5 top-5 z-10 flex items-center gap-2 rounded-full bg-black/40 px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white backdrop-blur-md">
-		<span class="inline-block h-2 w-2 rounded-full bg-bridge-taupe"></span>
-		Видео со встречи
+<figure class="news-video my-12 flex flex-col items-center">
+	<div class="relative w-full max-w-[340px] overflow-hidden rounded-[2rem] border border-bridge-dark/10 bg-bridge-dark shadow-[0_40px_80px_-20px_rgba(26,24,22,0.55)]">
+		<div class="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2 rounded-full bg-black/45 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white backdrop-blur-md">
+			<span class="inline-block h-2 w-2 animate-pulse rounded-full bg-bridge-taupe"></span>
+			Видео со встречи
+		</div>
+		<video
+			controls
+			playsinline
+			preload="metadata"
+			poster={poster}
+			class="block aspect-[9/16] w-full bg-bridge-dark object-cover"
+		>
+			<source src={src} type="video/mp4" />
+			Ваш браузер не поддерживает HTML5-видео.
+		</video>
 	</div>
-	<video
-		controls
-		playsinline
-		preload="metadata"
-		poster={poster}
-		class="block aspect-video w-full bg-bridge-dark object-cover"
-	>
-		<source src={src} type="video/mp4" />
-		Ваш браузер не поддерживает HTML5-видео.
-	</video>
+	<figcaption class="mt-4 text-xs font-light text-gray-400">Bridge Consult · FIDIC OSH</figcaption>
 </figure>
