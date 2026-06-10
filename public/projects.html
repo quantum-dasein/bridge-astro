@@ -293,6 +293,12 @@ document.body && (document.body.style.width = '100%');
                       setTimeout(function() {
                         if (preloader) preloader.style.transform = 'translateY(-100%)';
                         document.body.style.overflow = '';
+                        document.body.style.height = '';
+                        document.body.style.position = '';
+                        document.body.style.width = '';
+                        document.documentElement.style.height = '';
+                        if (window.AOS) { try { AOS.refreshHard(); } catch(e) {} }
+                        window.dispatchEvent(new Event('scroll'));
                         setTimeout(function() { if (preloader) preloader.remove(); }, 900);
                       }, 300);
                     });

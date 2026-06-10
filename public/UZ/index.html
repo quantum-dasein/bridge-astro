@@ -232,6 +232,8 @@ document.body.style.height = '';
 document.body.style.position = '';
 document.body.style.width = '';
 document.documentElement.style.height = '';
+                        if (window.AOS) { try { AOS.refreshHard(); } catch(e) {} }
+                        window.dispatchEvent(new Event('scroll'));
                         setTimeout(function() { if (preloader) preloader.remove(); }, 900);
                       }, 300);
                     });
@@ -1408,7 +1410,7 @@ document.documentElement.style.height = '';
 <!-- ======================================================== -->
 <!-- YANGILIKLAR BLOKI                                        -->
 <!-- ======================================================== -->
-<section id="news" class="py-24 md:py-32 relative overflow-hidden font-sans" style="background: linear-gradient(to bottom, #292724 0%, #1f1d1b 50%, #1a1816 100%);">
+<section id="news" class="py-24 md:py-32 relative overflow-hidden font-sans" style="background: #1a1816;">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full pointer-events-none" style="background: rgba(138,123,102,0.12); filter: blur(120px);"></div>
     <div class="absolute bottom-0 right-0 w-80 h-80 rounded-full pointer-events-none" style="background: rgba(138,123,102,0.08); filter: blur(80px);"></div>
 
@@ -1423,44 +1425,68 @@ document.documentElement.style.height = '';
                     Yangiliklar va<br><span style="background: linear-gradient(to right,#8A7B66,#D4C3A3); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">ekspert nashrlar</span>
                 </h2>
             </div>
-            <a href="/news/" class="shrink-0 inline-flex items-center gap-3 border text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 self-start md:self-auto" style="border-color:rgba(255,255,255,0.2);color:#fff;" onmouseover="this.style.background='rgba(255,255,255,0.08)';this.style.borderColor='#8A7B66';" onmouseout="this.style.background='';this.style.borderColor='rgba(255,255,255,0.2)';">
+            <a href="/news/uz/" class="shrink-0 inline-flex items-center gap-3 border text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 self-start md:self-auto" style="border-color:rgba(255,255,255,0.2);color:#fff;" onmouseover="this.style.background='rgba(255,255,255,0.08)';this.style.borderColor='#8A7B66';" onmouseout="this.style.background='';this.style.borderColor='rgba(255,255,255,0.2)';">
                 Barcha nashrlar
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-stretch">
-            <a href="/news/uz-fidic-osh-first-meeting/" class="group relative lg:col-span-7 rounded-3xl overflow-hidden flex flex-col transition-all duration-500" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor='rgba(138,123,102,0.6)';this.style.boxShadow='0 0 50px -10px rgba(138,123,102,0.35)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)';this.style.boxShadow='none';">
-                <div class="relative overflow-hidden shrink-0" style="aspect-ratio:16/10; background:#1a1816;">
-                    <img src="../fidic-osh-cover.jpg" alt="FIDIC OSH birinchi uchrashuvi" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                    <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(26,24,22,0.55) 0%,transparent 50%);"></div>
+        <!-- Static news grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <!-- Main publication -->
+            <a href="/news/uz-fidic-osh-first-meeting/" class="group relative md:col-span-2 rounded-3xl overflow-hidden flex flex-col bg-white/5 border border-white/10 hover:border-bridge-taupe/60 transition-all duration-500 hover:shadow-[0_0_50px_-10px_rgba(138,123,102,0.4)]" data-aos="fade-up" data-aos-delay="100">
+                <div class="relative aspect-[16/9] overflow-hidden bg-bridge-dark/60 shrink-0">
+                    <img src="../fidic-osh-cover.jpg" alt="FIDIC OSH birinchi uchrashuvi" onerror="this.onerror=null;this.src='../larisa-belousova-uznews.png'" class="w-full h-full object-cover object-center grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0">
+                    <div class="absolute inset-0 bg-gradient-to-t from-bridge-dark/90 via-bridge-dark/30 to-transparent"></div>
                     <div class="absolute top-5 left-5 flex gap-2">
-                        <span class="text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest" style="background:rgba(138,123,102,0.9);">FIDIC</span>
-                        <span class="text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);">OSH</span>
+                        <span class="bg-bridge-taupe/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">FIDIC</span>
+                        <span class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">OSH</span>
                     </div>
                 </div>
-                <div class="flex flex-col flex-grow p-6 sm:p-7 md:p-9">
-                    <time class="text-[10px] font-bold uppercase tracking-[0.22em] mb-3 block" style="color:#D4C3A3;">10-iyun, 2026</time>
-                    <h3 class="text-xl sm:text-2xl md:text-3xl font-bold leading-tight mb-3" style="color:#fff;">FIDIC OSH birinchi uchrashuvi bo'lib o'tdi</h3>
-                    <p class="text-sm md:text-base font-light leading-relaxed mb-5 flex-grow" style="color:#9ca3af;">Ishtirokchilar FIDIC shartnomalarini qo'llash, Muhandis roli, qurilish sifati va FIDIC Club tashabbusini muhokama qildilar.</p>
-                    <span class="inline-flex items-center text-[11px] font-bold uppercase tracking-widest" style="color:#fff;">Nashrni o'qish<span class="ml-3 h-px w-8 transition-all duration-300 group-hover:w-14" style="background:#8A7B66;"></span></span>
+                <div class="flex flex-col flex-grow p-7 md:p-8">
+                    <time class="text-bridge-taupe text-[10px] font-bold uppercase tracking-[0.22em] mb-3 block">10-iyun, 2026-yil</time>
+                    <h3 class="text-xl md:text-2xl font-bold text-white group-hover:text-bridge-taupe transition-colors leading-tight mb-3">FIDIC OSH'ning birinchi uchrashuvi bo'lib o'tdi</h3>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed mb-6 flex-grow">Ishtirokchilar FIDIC shartnomalarini qo'llash, Muhandis roli, qurilish sifati va FIDIC Club tashkil etish tashabbusini muhokama qildilar.</p>
+                    <span class="inline-flex items-center text-[11px] font-bold uppercase tracking-widest text-bridge-taupe">
+                        Nashrni o'qish
+                        <span class="ml-3 h-px w-8 bg-bridge-taupe transition-all duration-300 group-hover:w-14"></span>
+                    </span>
                 </div>
             </a>
 
-            <div class="lg:col-span-5 flex flex-col gap-4">
-                <a href="https://t.me/fidicuzb" target="_blank" class="group relative overflow-hidden rounded-2xl p-7 flex flex-col justify-between transition-all duration-500" style="background:linear-gradient(135deg,rgba(138,123,102,0.18),rgba(138,123,102,0.06));border:1px solid rgba(138,123,102,0.28);min-height:200px;flex:1;" onmouseover="this.style.borderColor='rgba(138,123,102,0.7)';this.style.boxShadow='0 0 40px -12px rgba(138,123,102,0.5)';" onmouseout="this.style.borderColor='rgba(138,123,102,0.28)';this.style.boxShadow='none';">
-                    <div class="absolute -right-8 -top-8 w-32 h-32 rounded-full pointer-events-none" style="background:rgba(138,123,102,0.15);filter:blur(30px);"></div>
-                    <div class="relative z-10">
-                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:rgba(138,123,102,0.25);">
-                            <svg class="w-6 h-6" style="color:#D4C3A3;" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.11.03-1.84 1.18-5.2 3.45-.49.33-.94.5-1.35.49z"/></svg>
+            <div class="flex flex-col gap-6">
+                <!-- Telegram channel (brand color, no blue) -->
+                <a href="https://t.me/fidicuzb" target="_blank" rel="noopener noreferrer" class="group relative rounded-3xl overflow-hidden bg-bridge-taupe/10 border border-bridge-taupe/30 hover:bg-bridge-taupe/20 hover:border-bridge-taupe/70 transition-all duration-500 p-7 flex flex-col justify-between hover:shadow-[0_0_40px_-10px_rgba(138,123,102,0.5)]" data-aos="fade-up" data-aos-delay="200">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-bridge-taupe/25 flex items-center justify-center mb-5">
+                            <svg class="w-6 h-6 text-bridge-taupe" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.11.03-1.84 1.18-5.2 3.45-.49.33-.94.5-1.35.49-.45-.01-1.3-.25-1.94-.46-.78-.26-1.4-.4-1.34-.84.03-.23.36-.47.98-.72 3.85-1.68 6.42-2.78 7.71-3.32 3.67-1.53 4.43-1.8 4.93-1.81.11 0 .36.03.49.13.11.09.14.22.15.34.01.07.01.18 0 .22z"/></svg>
                         </div>
-                        <span class="text-[10px] font-bold uppercase tracking-widest mb-1.5 block" style="color:#8A7B66;">Telegram-kanal</span>
-                        <h4 class="text-lg font-bold mb-1.5" style="color:#fff;">FIDIC yangiliklarini kuzating</h4>
-                        <p class="text-sm font-light leading-relaxed" style="color:#9ca3af;">Uchrashuvlar e'lonlari, keyslar tahlili va nashrlar — birinchi bo'lib kanalimizda.</p>
+                        <span class="text-bridge-taupe text-[10px] font-bold uppercase tracking-[0.28em] mb-2 block">Telegram-kanal</span>
+                        <h3 class="text-xl font-bold text-white leading-tight mb-3">FIDIC Uzbekistan</h3>
+                        <p class="text-gray-400 font-light text-sm leading-relaxed">Markaziy Osiyoda FIDIC shartnomalari bo'yicha ekspert materiallari, keyslar va tadbirlar e'lonlari.</p>
                     </div>
-                    <span class="relative z-10 mt-5 inline-flex items-center text-[11px] font-bold uppercase tracking-widest" style="color:#D4C3A3;">Obuna bo'lish<span class="ml-3 h-px w-8 transition-all duration-300 group-hover:w-14" style="background:#8A7B66;"></span></span>
+                    <span class="mt-6 inline-flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-bridge-taupe">Obuna bo'lish<span class="h-px w-8 bg-bridge-taupe transition-all duration-300 group-hover:w-14"></span></span>
+                </a>
+
+                <!-- All publications -->
+                <a href="/news/uz/" class="group relative rounded-3xl overflow-hidden bg-white/5 border border-white/10 hover:bg-white/10 hover:border-bridge-taupe/60 transition-all duration-500 p-7 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="300">
+                    <div>
+                        <div class="w-10 h-10 rounded-2xl bg-bridge-taupe/20 flex items-center justify-center mb-5">
+                            <svg class="w-5 h-5 text-bridge-taupe" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"/></svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Barcha nashrlar</h3>
+                        <p class="text-gray-400 font-light text-sm leading-relaxed">FIDIC, infratuzilma loyihalari va shartnomalarni boshqarish bo'yicha professional materiallar.</p>
+                    </div>
+                    <span class="mt-6 inline-flex items-center text-[11px] font-bold uppercase tracking-widest text-bridge-taupe">Newsroom'ga o'tish<span class="ml-3 h-px w-8 bg-bridge-taupe transition-all duration-300 group-hover:w-14"></span></span>
                 </a>
             </div>
+        </div>
+
+        <div class="mt-12 flex flex-wrap gap-3 items-center" data-aos="fade-up" data-aos-delay="400">
+            <span class="text-gray-500 text-xs font-bold uppercase tracking-widest mr-2">Mavzular:</span>
+            <span class="bg-white/5 border border-white/10 text-gray-400 text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest hover:border-bridge-taupe/50 hover:text-bridge-taupe transition-colors cursor-default">#FIDIC</span>
+            <span class="bg-white/5 border border-white/10 text-gray-400 text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest hover:border-bridge-taupe/50 hover:text-bridge-taupe transition-colors cursor-default">#Infratuzilma</span>
+            <span class="bg-white/5 border border-white/10 text-gray-400 text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest hover:border-bridge-taupe/50 hover:text-bridge-taupe transition-colors cursor-default">#ShartnomaInjiniringi</span>
         </div>
     </div>
 </section>
