@@ -252,3 +252,85 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', update, { passive: true });
     update();
 });
+
+// Кнопка "Наверх" с кольцом прогресса прокрутки
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('back-to-top')) return;
+
+    const RADIUS = 21;
+    const CIRC = 2 * Math.PI * RADIUS;
+
+    const btn = document.createElement('button');
+    btn.id = 'back-to-top';
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Наверх');
+    btn.style.cssText = [
+        'position:fixed',
+        'right:24px',
+        'bottom:24px',
+        'width:48px',
+        'height:48px',
+        'border-radius:50%',
+        'border:1px solid rgba(138,123,102,0.35)',
+        'background:rgba(26,24,22,0.72)',
+        '-webkit-backdrop-filter:blur(8px)',
+        'backdrop-filter:blur(8px)',
+        'display:flex',
+        'align-items:center',
+        'justify-content:center',
+        'cursor:pointer',
+        'opacity:0',
+        'visibility:hidden',
+        'transform:translateY(12px)',
+        'transition:opacity .35s ease, transform .35s ease, visibility .35s ease',
+        'z-index:99990',
+        'box-shadow:0 8px 24px -8px rgba(0,0,0,0.5)'
+    ].join(';');
+
+    btn.innerHTML =
+        '<svg width="48" height="48" viewBox="0 0 48 48" style="position:absolute;inset:0;transform:rotate(-90deg);">' +
+        '<circle cx="24" cy="24" r="' + RADIUS + '" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="2"></circle>' +
+        '<circle id="btt-ring" cx="24" cy="24" r="' + RADIUS + '" fill="none" stroke="#8A7B66" stroke-width="2" stroke-linecap="round" stroke-dasharray="' + CIRC + '" stroke-dashoffset="' + CIRC + '" style="transition:stroke-dashoffset .1s linear"></circle>' +
+        '</svg>' +
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D4C3A3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="position:relative;z-index:1;"><path d="M12 19V5"></path><path d="M5 12l7-7 7 7"></path></svg>';
+
+    document.body.appendChild(btn);
+
+    const ring = btn.querySelector('#btt-ring');
+    const footer = document.querySelector('footer');
+
+    function updateBtn() {
+        const doc = document.documentElement;
+        const scrollable = (doc.scrollHeight - doc.clientHeight) || 1;
+        const ratio = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
+        if (ring) ring.style.strokeDashoffset = (CIRC * (1 - ratio)).toString();
+
+        let nearFooter = false;
+        if (footer) {
+            nearFooter = footer.getBoundingClientRect().top < window.innerHeight - 40;
+        }
+        const show = window.scrollY > 400 && !nearFooter;
+        if (show) {
+            btn.style.opacity = '1';
+            btn.style.visibility = 'visible';
+            btn.style.transform = 'translateY(0)';
+        } else {
+            btn.style.opacity = '0';
+            btn.style.visibility = 'hidden';
+            btn.style.transform = 'translateY(12px)';
+        }
+    }
+
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            window.requestAnimationFrame(() => { updateBtn(); ticking = false; });
+            ticking = true;
+        }
+    }, { passive: true });
+    window.addEventListener('resize', updateBtn, { passive: true });
+    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    btn.addEventListener('mouseenter', () => { btn.style.background = 'rgba(138,123,102,0.9)'; });
+    btn.addEventListener('mouseleave', () => { btn.style.background = 'rgba(26,24,22,0.72)'; });
+    updateBtn();
+});

@@ -56,13 +56,6 @@
 </head>
 <body class="font-sans text-bridge-dark antialiased bg-bridge-light relative selection:bg-bridge-taupe/20 overflow-x-hidden">
 
-<div id="preloader" class="fixed inset-0 z-[999999] bg-bridge-dark flex items-center justify-center transition-all duration-1000 ease-in-out">
-    <div class="relative overflow-visible flex items-center justify-center">
-        <div class="absolute inset-0 bg-bridge-taupe/30 blur-[40px] rounded-full scale-150"></div>
-        <img src="bridge 2.png" alt="Bridge Consult Loading" class="relative z-10 h-12 md:h-16 object-contain transform translate-y-full opacity-0 transition-all duration-1000 ease-out" id="preloader-logo" style="filter: brightness(0) invert(60%) sepia(20%) saturate(1000%) hue-rotate(350deg) drop-shadow(0px 0px 20px rgba(138,123,102,0.8));">
-    </div>
-</div>
-
 <header class="fixed w-full top-0 z-[100] bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between relative z-[101]">
         <a href="index.html" class="block relative z-[101]">
@@ -324,7 +317,7 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
-<script src="main.js"></script>
+<script src="../main.js"></script>
 <script>
     AOS.init({ once: true, offset: 50 });
     VanillaTilt.init(document.querySelectorAll(".tilt-card"), { max: 5, speed: 400, glare: true, "max-glare": 0.2 });

@@ -1595,14 +1595,15 @@ document.documentElement.style.height = '';
         return '<a href="' + post.url + '" class="group relative lg:col-span-7 rounded-3xl overflow-hidden flex flex-col transition-all duration-500" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);" onmouseover="this.style.borderColor=\'rgba(138,123,102,0.6)\';this.style.boxShadow=\'0 0 50px -10px rgba(138,123,102,0.35)\';" onmouseout="this.style.borderColor=\'rgba(255,255,255,0.08)\';this.style.boxShadow=\'none\';">'
             + '<div class="relative overflow-hidden shrink-0" style="aspect-ratio:16/10; background:#1a1816;">'
             + '<img src="' + post.coverImage + '" alt="' + esc(post.title) + '" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">'
-            + '<div class="absolute inset-0" style="background:linear-gradient(to top,rgba(26,24,22,0.92) 0%,rgba(26,24,22,0.25) 55%,transparent 100%);"></div>'
+            + '<div class="absolute inset-0" style="background:linear-gradient(to top,rgba(26,24,22,0.55) 0%,transparent 50%);"></div>'
             + '<div class="absolute top-5 left-5 flex gap-2">' + tags + '</div>'
-            + '<div class="absolute bottom-0 left-0 right-0 p-7 md:p-9">'
+            + '</div>'
+            + '<div class="flex flex-col flex-grow p-6 sm:p-7 md:p-9">'
             + '<time class="text-[10px] font-bold uppercase tracking-[0.22em] mb-3 block" style="color:#D4C3A3;">' + formatDate(post.date) + '</time>'
-            + '<h3 class="text-2xl md:text-3xl font-bold leading-tight mb-3" style="color:#fff;">' + esc(post.title) + '</h3>'
-            + '<p class="text-sm font-light leading-relaxed mb-5 max-w-xl" style="color:rgba(255,255,255,0.75);">' + esc(post.excerpt) + '</p>'
+            + '<h3 class="text-xl sm:text-2xl md:text-3xl font-bold leading-tight mb-3" style="color:#fff;">' + esc(post.title) + '</h3>'
+            + '<p class="text-sm md:text-base font-light leading-relaxed mb-5 flex-grow" style="color:#9ca3af;">' + esc(post.excerpt) + '</p>'
             + '<span class="inline-flex items-center text-[11px] font-bold uppercase tracking-widest" style="color:#fff;">Читать публикацию<span class="ml-3 h-px w-8 transition-all duration-300 group-hover:w-14" style="background:#8A7B66;"></span></span>'
-            + '</div></div></a>';
+            + '</div></a>';
     }
 
     function buildListRow(post) {
