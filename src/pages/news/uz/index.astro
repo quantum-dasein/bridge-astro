@@ -1,0 +1,110 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+
+const allPosts = await getCollection('news');
+const newsPosts = allPosts
+	.filter((p) => p.data.lang === 'uz')
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Layout
+	title="Yangiliklar | Bridge Consult"
+	description="Bridge Consult tomonidan FIDIC shartnomalari, infratuzilma loyihalari va nizolarni hal qilish bo'yicha professional nashrlar."
+	image="/images/news/news-cover.jpg"
+	lang="uz"
+>
+	<SiteHeader active="news" lang="uz" />
+
+	<section class="relative overflow-hidden bg-bridge-dark pt-40 pb-28 font-sans md:pt-48 md:pb-36">
+		<div class="absolute inset-0 z-0">
+			<img src="/images/news/news-cover.jpg" alt="" class="h-full w-full object-cover" />
+		</div>
+		<div class="absolute inset-0 z-[1]" style="background: radial-gradient(ellipse 80% 70% at center, rgba(26,24,22,0.15) 0%, rgba(26,24,22,0.5) 60%, rgba(26,24,22,0.85) 100%);"></div>
+		<div class="absolute inset-0 z-[1] bg-gradient-to-b from-bridge-dark/70 via-transparent to-bridge-dark"></div>
+
+		<div class="relative z-10 mx-auto max-w-7xl px-6 text-center">
+			<div class="mb-5 flex items-center justify-center text-xs font-bold uppercase tracking-[0.28em] text-bridge-taupe" data-aos="fade-up">
+				<span class="mr-4 h-px w-10 bg-bridge-taupe"></span>
+				Newsroom
+				<span class="ml-4 h-px w-10 bg-bridge-taupe"></span>
+			</div>
+			<h1 class="mb-6 text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl" data-aos="fade-up" data-aos-delay="100">
+				Yangiliklar va <span class="text-bridge-taupe">ekspert nashrlar</span>
+			</h1>
+			<p class="mx-auto max-w-3xl text-lg font-light leading-relaxed text-gray-300 md:text-xl" data-aos="fade-up" data-aos-delay="200">
+				FIDIC shartnomalari, infratuzilma loyihalari, Muhandis roli va soha hamjamiyatini rivojlantirish bo'yicha professional maqolalar.
+			</p>
+		</div>
+	</section>
+
+	<section class="relative overflow-hidden bg-bridge-dark py-16 font-sans md:py-24">
+		<div class="absolute -left-40 top-10 h-96 w-96 rounded-full bg-bridge-taupe/10 blur-[120px]"></div>
+		<div class="absolute -right-40 bottom-10 h-96 w-96 rounded-full bg-bridge-taupe/5 blur-[120px]"></div>
+		<div class="pointer-events-none absolute inset-0 opacity-[0.04]" style="background-image: linear-gradient(rgba(138,123,102,1) 1px, transparent 1px), linear-gradient(90deg, rgba(138,123,102,1) 1px, transparent 1px); background-size: 64px 64px;"></div>
+
+		<div class="relative z-10 mx-auto max-w-7xl px-6">
+			<div class="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
+				<div class="max-w-2xl" data-aos="fade-up">
+					<div class="mb-4 flex items-center text-xs font-bold uppercase tracking-widest text-bridge-taupe">
+						<span class="mr-4 h-px w-8 bg-bridge-taupe"></span>
+						So'nggi nashrlar
+					</div>
+					<h2 class="text-3xl font-bold leading-tight text-white md:text-5xl">Dolzarb materiallar</h2>
+				</div>
+				<p class="max-w-md text-base font-light leading-relaxed text-gray-400 md:text-lg" data-aos="fade-up" data-aos-delay="100">
+					Qisqa format, kuchli ekspertiza va infratuzilma shartnomalarini boshqarish bo'yicha amaliy nuqtai nazar.
+				</p>
+			</div>
+
+			{newsPosts.length > 0 ? (
+				<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 md:gap-8">
+					{newsPosts.map((post, index) => {
+						const slug = post.id.replace(/^uz-/, '').replace(/\.(md|mdx)$/i, '');
+						const formattedDate = new Intl.DateTimeFormat('uz-UZ', { day: 'numeric', month: 'long', year: 'numeric' }).format(post.data.date);
+						const featured = index === 0;
+						return (
+							<article class:list={['group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-lg transition-all duration-500 hover:-translate-y-1.5 hover:border-bridge-taupe/50 hover:shadow-[0_12px_50px_-10px_rgba(184,155,114,0.3)]', featured && 'md:col-span-2 lg:col-span-2']} data-aos="fade-up" data-aos-delay={index * 100}>
+								<span class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></span>
+								<a href={`/news/uz/${slug}/`} class:list={['block h-full', featured ? 'md:grid md:grid-cols-2 md:items-stretch' : 'flex flex-col']}>
+									<div class:list={['relative overflow-hidden bg-bridge-dark', featured ? 'h-64 md:h-full' : 'h-60']}>
+										<img src={post.data.coverImage} alt={post.data.title} class="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105" loading="lazy" />
+										<div class="absolute inset-0 bg-gradient-to-t from-bridge-dark/80 via-bridge-dark/10 to-transparent"></div>
+										<div class="absolute left-5 top-5 flex flex-wrap gap-2">
+											{post.data.tags.slice(0, 2).map((tag: string) => (
+												<span class="rounded-full border border-bridge-taupe/40 bg-bridge-dark/40 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-bridge-taupe backdrop-blur-md">{tag}</span>
+											))}
+										</div>
+									</div>
+									<div class:list={['flex h-full flex-col', featured ? 'p-8 md:p-12 md:justify-center' : 'p-8']}>
+										<time class="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-bridge-taupe">{formattedDate}</time>
+										<h2 class:list={['mb-4 font-bold leading-tight text-white transition-colors group-hover:text-bridge-taupe', featured ? 'text-2xl md:text-4xl' : 'text-xl md:text-2xl']}>{post.data.title}</h2>
+										<p class:list={['mb-7 font-light leading-relaxed text-gray-400', featured ? 'text-base md:text-lg' : 'text-sm md:text-base']}>{post.data.excerpt}</p>
+										<span class="mt-auto inline-flex items-center text-xs font-bold uppercase tracking-widest text-white">Nashrni o'qish<span class="ml-3 h-px w-10 bg-bridge-taupe transition-all duration-300 group-hover:w-16"></span></span>
+									</div>
+								</a>
+							</article>
+						);
+					})}
+					<a href="https://t.me/fidicuzb" target="_blank" class="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-bridge-taupe/25 bg-gradient-to-br from-bridge-taupe/15 to-bridge-taupe/5 p-8 backdrop-blur-lg transition-all duration-500 hover:-translate-y-1 hover:border-bridge-taupe/60 hover:shadow-[0_8px_40px_-8px_rgba(184,155,114,0.4)]" data-aos="fade-up" data-aos-delay="100">
+						<div class="relative z-10">
+							<div class="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-bridge-taupe/25">
+								<svg class="h-6 w-6 text-bridge-taupe" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.11.03-1.84 1.18-5.2 3.45-.49.33-.94.5-1.35.49z"/></svg>
+							</div>
+							<span class="mb-2 block text-[10px] font-bold uppercase tracking-widest text-bridge-taupe">Telegram-kanal</span>
+							<h3 class="mb-2 text-xl font-bold text-white">FIDIC yangiliklarini kuzating</h3>
+							<p class="text-sm font-light leading-relaxed text-gray-400">Uchrashuvlar e'lonlari, keyslar tahlili va nashrlar — birinchi bo'lib kanalimizda.</p>
+						</div>
+						<span class="relative z-10 mt-6 inline-flex items-center text-xs font-bold uppercase tracking-widest text-white">Obuna bo'lish<span class="ml-3 h-px w-10 bg-bridge-taupe transition-all duration-300 group-hover:w-16"></span></span>
+					</a>
+				</div>
+			) : (
+				<div class="rounded-3xl border border-white/10 bg-white/5 p-10 text-center backdrop-blur-lg"><p class="text-lg font-light text-gray-400">Nashrlar tez orada paydo bo'ladi.</p></div>
+			)}
+		</div>
+	</section>
+
+	<SiteFooter lang="uz" />
+</Layout>

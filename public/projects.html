@@ -237,27 +237,27 @@ document.body && (document.body.style.width = '100%');
                   setTimeout(function() {
                     el.classList.remove('lit');
                     el.classList.add('breathe');
-                  }, 1200);
-                  if (i === WAVE.length - 1 && onDone) setTimeout(onDone, 1300);
-                }, i * 140);
+                  }, 350);
+                  if (i === WAVE.length - 1 && onDone) setTimeout(onDone, 350);
+                }, i * 45);
               });
             }
         
             setTimeout(function() {
               if (logoSvg) { logoSvg.style.transform = 'translateY(0)'; logoSvg.style.opacity = '1'; }
-            }, 500);
+            }, 200);
         
             setTimeout(function() {
               if (barContainer) barContainer.style.opacity = '1';
               var count = 0;
         
               function tick() {
-                var inc = Math.random() * 1.5 + 0.3;
-                var delay = Math.random() * 50 + 40;
+                var inc = Math.random() * 4 + 2.5;
+                var delay = Math.random() * 18 + 12;
         
-                if      (count > 22 && count < 24)  { delay = 800;  inc = 1.2; }
-                else if (count > 55 && count < 57)  { delay = 1200; inc = 2.0; }
-                else if (count > 85)                { inc = Math.random() * 0.4 + 0.1; delay = 70; }
+                if      (count > 22 && count < 24)  { delay = 180;  inc = 2; }
+                else if (count > 55 && count < 57)  { delay = 220; inc = 3; }
+                else if (count > 85)                { inc = Math.random() * 1.5 + 0.8; delay = 30; }
         
                 count = Math.min(count + inc, 100);
                 var intC = Math.floor(count);
@@ -293,17 +293,17 @@ document.body && (document.body.style.width = '100%');
                       setTimeout(function() {
                         if (preloader) preloader.style.transform = 'translateY(-100%)';
                         document.body.style.overflow = '';
-                        setTimeout(function() { if (preloader) preloader.remove(); }, 1800);
-                      }, 900);
+                        setTimeout(function() { if (preloader) preloader.remove(); }, 900);
+                      }, 300);
                     });
-                  }, 800);
+                  }, 250);
                 } else {
                   setTimeout(tick, delay);
                 }
               }
         
-              setTimeout(tick, 600);
-            }, 1500);
+              setTimeout(tick, 150);
+            }, 400);
           });
         })();
         </script>
@@ -407,6 +407,7 @@ document.body && (document.body.style.width = '100%');
                 <a href="index.html#about" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">О компании</a>
                 <a href="index.html#services" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Услуги</a>
                 <a href="#" class="nav-link text-sm font-bold text-bridge-taupe whitespace-nowrap border-b-2 border-bridge-taupe pb-1">Проекты</a>
+                <a href="news/" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Новости</a>
                 <a href="index.html#trainings" class="nav-link text-sm font-bold text-bridge-taupe hover:text-bridge-dark transition-colors whitespace-nowrap">Тренинги FIDIC</a>
     
                 <div class="relative group">
@@ -482,6 +483,7 @@ document.body && (document.body.style.width = '100%');
                 <a href="index.html#about" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">О компании</a>
                 <a href="index.html#services" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">Услуги</a>
                 <a href="#" class="mobile-nav-link text-2xl font-bold text-bridge-taupe border-b border-gray-100 pb-3">Проекты</a>
+                <a href="news/" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">Новости</a>
                 <a href="index.html#trainings" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">Тренинги FIDIC</a>
                 <div class="pt-4 pb-2">
                     <span class="text-gray-400 font-bold uppercase tracking-widest text-[10px] block mb-4">Экспертиза</span>
@@ -664,6 +666,7 @@ document.body && (document.body.style.width = '100%');
                     <li><a href="index.html#about" class="hover:text-bridge-taupe transition-colors">О компании</a></li>
                     <li><a href="index.html#services" class="hover:text-bridge-taupe transition-colors">Услуги</a></li>
                     <li><a href="#" class="text-bridge-taupe font-medium transition-colors">Проекты</a></li>
+                    <li><a href="news/" class="hover:text-bridge-taupe transition-colors">Новости</a></li>
                     <li><a href="index.html#trainings" class="hover:text-bridge-taupe transition-colors">Тренинги FIDIC</a></li>
                     <li><a href="index.html#team" class="hover:text-bridge-taupe transition-colors">Лица компании</a></li>
                     <li><a href="index.html#faq" class="hover:text-bridge-taupe transition-colors">База знаний (FAQ)</a></li>
