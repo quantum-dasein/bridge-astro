@@ -1,3 +1,14 @@
+/* Плавные переходы между страницами (cross-document View Transitions).
+   В поддерживающих браузерах даёт мягкий кроссфейд index ↔ projects ↔ news.
+   В остальных — мгновенный переход (фолбэк). */
+@view-transition {
+    navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.4s;
+}
+
 /* Премиальный скроллбар */
 ::-webkit-scrollbar {
     width: 10px;
