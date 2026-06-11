@@ -497,3 +497,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { threshold: 0.1 }).observe(mv);
     });
 });
+
+// ── Cookie consent + Google Analytics (GDPR) ──────────────────────────────
+(function () {
+    var GA_ID = 'G-E5LN1D6KVN';
+    var STORAGE_KEY = 'bc-cookie';
+
+    function loadGA() {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { dataLayer.push(arguments); };
+        gtag('js', new Date());
+        gtag('config', GA_ID);
+    }
+
+    var stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === '1') loadGA();
+
+    window.cookieAccept = function () {
+        localStorage.setItem(STORAGE_KEY, '1');
+        var b = document.getElementById('cookie-banner');
+        if (b) { b.style.opacity = '0'; setTimeout(function () { b.remove(); }, 300); }
+        loadGA();
+    };
+    window.cookieDecline = function () {
+        localStorage.setItem(STORAGE_KEY, '0');
+        var b = document.getElementById('cookie-banner');
+        if (b) { b.style.opacity = '0'; setTimeout(function () { b.remove(); }, 300); }
+    };
+
+    if (!stored) {
+        document.addEventListener('DOMContentLoaded', function () {
+            var b = document.getElementById('cookie-banner');
+            if (b) { b.style.display = 'flex'; }
+        });
+    }
+}());
+
