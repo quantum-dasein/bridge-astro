@@ -55,6 +55,7 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 		<link rel="stylesheet" href="/style.css" />
+		<style>@view-transition { navigation: none; }</style>
 		<slot name="head" />
 	</head>
 	<body class="font-sans text-bridge-dark antialiased bg-bridge-light selection:bg-bridge-taupe/20 overflow-x-hidden">
