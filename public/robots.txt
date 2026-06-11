@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Disallow: /_astro/
+Disallow: /api/
+
+Sitemap: https://www.bridgeconsult.uz/sitemap.xml
