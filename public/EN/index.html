@@ -117,6 +117,55 @@
                 position: relative;
             }
         </style>
+    <link rel="preload" as="image" href="poster-ultra.jpg">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is FIDIC and why is it needed in construction projects?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "FIDIC is the International Federation of Consulting Engineers, which developed standard contract forms. Their application ensures legal reliability, objective risk distribution, and absolute transparency for clients, contractors, and IFIs (ADB, EBRD, World Bank)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between the Red Book, Yellow Book, and Silver Book?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Red Book — design is carried out by the employer. Yellow Book — the contractor designs and builds. Silver Book (EPC/Turnkey) — a turnkey contract where the contractor takes all risks and guarantees the final result at a fixed cost."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is Forensic Delay Analysis?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is a detailed retrospective investigation into the causes of project delays. Using strict international methods (SCL Protocol), our expert establishes who is responsible for the delay, legally justifying your right to an Extension of Time (EOT) and financial compensation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is DAAB (Dispute Avoidance/Adjudication Board)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "DAAB is an effective mechanism for resolving disagreements pre-trial, directly during construction. Independent experts make binding decisions on-site, saving millions of dollars and years of time in international arbitration proceedings."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is an EPC contract?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EPC is a turnkey contract (Engineering, Procurement, Construction). All risks and responsibilities for engineering, equipment procurement, and construction lie exclusively with the general contractor. It is the ideal standard for large infrastructure and energy projects."
+          }
+        }
+      ]
+    }
+    </script>
     </head>
 <body class="font-sans text-bridge-dark antialiased bg-white selection:bg-bridge-taupe/20 overflow-x-hidden">
     <script>
@@ -363,7 +412,7 @@ document.documentElement.style.height = '';
                 <a href="#about" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">About Us</a>
                 <a href="#services" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Services</a>
                 <a href="projects.html" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Projects</a>
-                <a href="/news/" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">News</a>
+                <a href="/news/en/" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">News</a>
                 <a href="#trainings" class="nav-link text-sm font-bold text-bridge-taupe hover:text-bridge-dark transition-colors whitespace-nowrap">FIDIC Training</a>
     
                 <div class="relative group">
@@ -444,7 +493,7 @@ document.documentElement.style.height = '';
                 <a href="#about" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">About Us</a>
                 <a href="#services" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">Services</a>
                 <a href="projects.html" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">Projects</a>
-                <a href="/news/" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">News</a>
+                <a href="/news/en/" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">News</a>
                 <a href="#trainings" class="mobile-nav-link text-2xl font-bold text-bridge-taupe border-b border-gray-100 pb-3">FIDIC Training</a>
                 <div class="pt-4 pb-2">
                     <span class="text-gray-400 font-bold uppercase tracking-widest text-[10px] block mb-4">Expertise</span>
@@ -475,7 +524,7 @@ document.documentElement.style.height = '';
             </h1>
             
             <p class="text-gray-300 text-lg md:text-xl font-light leading-relaxed mb-10 max-w-2xl font-sans" data-aos="fade-up" data-aos-delay="200">
-                Comprehensive advisory for complex infrastructure projects: from contract structuring to dispute resolution.
+                Expertise in: <span id="hero-typed" class="text-bridge-taupe font-medium"></span>
             </p>
             <div class="flex flex-col sm:flex-row gap-4" data-aos="fade-up" data-aos-delay="300">
                 <a href="#contact-form" class="text-center bg-white text-bridge-dark px-8 py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-bridge-taupe hover:text-white transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1">Discuss a Project</a>
@@ -510,7 +559,7 @@ document.documentElement.style.height = '';
     </div>
 </section>
 
-<section id="about" class="py-24 bg-white font-sans">
+<section id="about" class="pt-8 pb-24 bg-white font-sans">
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div data-aos="fade-right" data-aos-duration="1000">
@@ -538,7 +587,7 @@ document.documentElement.style.height = '';
 </section>
 
 <section id="services" class="py-16 md:py-32 bg-bridge-dark relative font-sans overflow-hidden">
-    <video autoplay loop muted playsinline poster="poster-ultra.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
+    <video autoplay loop muted playsinline preload="none" poster="poster-ultra.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
         <source src="../ultra-bridge.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/70 to-bridge-dark/95 z-[1]"></div>
@@ -672,7 +721,7 @@ document.documentElement.style.height = '';
 </section>
 
 <section class="py-32 relative overflow-hidden bg-bridge-dark font-sans">
-    <video autoplay loop muted playsinline poster="poster-elegant.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-70">
+    <video autoplay loop muted playsinline preload="none" poster="poster-elegant.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-70">
         <source src="../elegant-video.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-gradient-to-t from-bridge-dark via-bridge-dark/60 to-bridge-dark/95 z-[1]"></div>
@@ -1000,7 +1049,7 @@ document.documentElement.style.height = '';
     </div>
 
     <div class="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-1/4 w-[600px] h-[600px] z-0 pointer-events-none opacity-30 mix-blend-screen" style="mask-image: radial-gradient(circle, black 30%, transparent 70%); -webkit-mask-image: radial-gradient(circle, black 40%, transparent 70%);">
-        <model-viewer src="../TrainingModel.glb" auto-rotate auto-rotate-delay="0" rotation-per-second="2deg" camera-orbit="0deg 90deg 2.5m" disable-zoom interaction-prompt="none" exposure="1.5" class="w-full h-full" style="background: transparent;"></model-viewer>
+        <model-viewer data-src="../TrainingModel.glb" auto-rotate auto-rotate-delay="0" rotation-per-second="2deg" camera-orbit="0deg 90deg 2.5m" disable-zoom interaction-prompt="none" exposure="1.5" class="w-full h-full" style="background: transparent;"></model-viewer>
     </div>
 
     <div class="max-w-7xl mx-auto px-6 relative z-10">
@@ -1581,7 +1630,7 @@ document.documentElement.style.height = '';
                 <!-- model-viewer — 3D statue -->
                 <!-- NOTE: path is ../JusticeStatue.glb because EN page is in /EN/ subfolder -->
                 <model-viewer
-                    src="../JusticeStatue.glb"
+                    data-src="../JusticeStatue.glb"
                     alt="Statue of Themis — symbol of justice and dispute resolution"
                     auto-rotate
                     auto-rotate-delay="800"
@@ -1939,7 +1988,7 @@ document.documentElement.style.height = '';
                     <li><a href="#about" class="hover:text-bridge-taupe transition-colors">About Us</a></li>
                     <li><a href="#services" class="hover:text-bridge-taupe transition-colors">Services</a></li>
                     <li><a href="projects.html" class="hover:text-bridge-taupe transition-colors">Projects</a></li>
-                    <li><a href="/news/" class="hover:text-bridge-taupe transition-colors">News</a></li>
+                    <li><a href="/news/en/" class="hover:text-bridge-taupe transition-colors">News</a></li>
                     <li><a href="#trainings" class="hover:text-bridge-taupe transition-colors">FIDIC Training</a></li>
                     <li><a href="#team" class="hover:text-bridge-taupe transition-colors">Our Team</a></li>
                     <li><a href="#faq" class="hover:text-bridge-taupe transition-colors">Knowledge Base (FAQ)</a></li>
@@ -1956,13 +2005,22 @@ document.documentElement.style.height = '';
                     </li>
                     <li class="flex items-center">
                         <svg class="w-5 h-5 md:w-6 md:h-6 text-bridge-taupe mr-3 md:mr-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                        <a href="tel:+998330001530" class="hover:text-bridge-taupe transition-colors text-base md:text-lg">+998 33 000 15 30</a>
+                        <a href="tel:+998330001530" data-copy="+998330001530" data-copy-label="Copied ✓" class="hover:text-bridge-taupe transition-colors text-base md:text-lg">+998 33 000 15 30</a>
                     </li>
                     <li class="flex items-center">
                         <svg class="w-5 h-5 md:w-6 md:h-6 text-bridge-taupe mr-3 md:mr-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        <a href="mailto:info@bridgeconsult.uz" class="hover:text-bridge-taupe transition-colors break-all">info@bridgeconsult.uz</a>
+                        <a href="mailto:info@bridgeconsult.uz" data-copy="info@bridgeconsult.uz" data-copy-label="Copied ✓" class="hover:text-bridge-taupe transition-colors break-all">info@bridgeconsult.uz</a>
                     </li>
                 </ul>
+                <div id="map-wrapper">
+                    <iframe id="map-iframe"
+                        data-src="https://www.openstreetmap.org/export/embed.html?bbox=69.2351%2C41.2965%2C69.2451%2C41.3025&amp;layer=mapnik&amp;marker=41.2995%2C69.2401"
+                        src="about:blank"
+                        loading="lazy"
+                        allowfullscreen
+                        title="Bridge Consult office map">
+                    </iframe>
+                </div>
             </div>
         </div>
         <div class="pt-6 md:pt-8 border-t border-gray-800 flex flex-col items-center justify-center text-xs md:text-sm text-gray-500 font-light text-center">
@@ -2081,6 +2139,25 @@ document.documentElement.style.height = '';
             // Удаляем запись, чтобы при обычном обновлении страницы не скроллило
             sessionStorage.removeItem('langSwitchScrollPosition');
         }
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!document.getElementById('hero-typed')) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.getElementById('hero-typed').textContent = 'FIDIC Contracts';
+            return;
+        }
+        new Typed('#hero-typed', {
+            strings: ['FIDIC Contracts', 'Forensic Delay Analysis', 'Dispute Resolution', 'Claims Management'],
+            typeSpeed: 60,
+            backSpeed: 35,
+            backDelay: 2200,
+            loop: true,
+            cursorChar: '|'
+        });
     });
 </script>
 </body>

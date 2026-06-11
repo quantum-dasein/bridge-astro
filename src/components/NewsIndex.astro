@@ -63,6 +63,12 @@ const t = {
 ---
 
 <Layout title={t.title} description={t.description} image="/og-image.jpg" lang={lang}>
+	<Fragment slot="head">
+		<link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/" />
+		<link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en/" />
+		<link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz/" />
+		<link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/news/" />
+	</Fragment>
 	<SiteHeader lang={lang} />
 
 	<section class="relative overflow-hidden bg-bridge-dark pt-40 pb-28 font-sans md:pt-48 md:pb-36">

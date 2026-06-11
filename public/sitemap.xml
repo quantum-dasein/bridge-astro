@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Главная страница (RU) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/"/>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Главная страница (EN) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/EN/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Главная страница (UZ) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/UZ/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Проекты (RU) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/projects.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects.html"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Проекты (EN) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/EN/projects.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects.html"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Проекты (UZ) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/UZ/projects.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects.html"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects.html"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Новости (RU) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Новости (EN) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/en/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Новости (UZ) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/uz/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Статья: FIDIC OSH первая встреча (RU) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/ru-fidic-osh-first-meeting/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/ru-fidic-osh-first-meeting/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en-fidic-osh-first-meeting/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz-fidic-osh-first-meeting/"/>
+    <changefreq>never</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Статья: FIDIC OSH первая встреча (EN) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/en-fidic-osh-first-meeting/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/ru-fidic-osh-first-meeting/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en-fidic-osh-first-meeting/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz-fidic-osh-first-meeting/"/>
+    <changefreq>never</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Статья: FIDIC OSH первая встреча (UZ) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/uz-fidic-osh-first-meeting/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/ru-fidic-osh-first-meeting/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en-fidic-osh-first-meeting/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz-fidic-osh-first-meeting/"/>
+    <changefreq>never</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>

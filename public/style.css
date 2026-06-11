@@ -517,3 +517,70 @@ html.dark-theme .fade-overlay {
     /* Цвет #1e1d1b - это цвет карточек команды в твоей темной теме */
     background: linear-gradient(to top, #1e1d1b 15%, rgba(30, 29, 27, 0));
 }
+
+/* ── Scrollspy: активный раздел подчёркивается в nav ──────── */
+.nav-link.is-active::after {
+    width: 100%;
+}
+
+/* ── Плавающая кнопка Telegram: пульсирующее кольцо ──────── */
+#tg-float-btn {
+    position: fixed;
+}
+#tg-float-btn::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 2px solid rgba(138, 123, 102, 0.6);
+    animation: tg-pulse 2.6s ease-in-out infinite;
+    pointer-events: none;
+}
+@keyframes tg-pulse {
+    0%, 100% { transform: scale(1);    opacity: 0.7; }
+    60%       { transform: scale(1.22); opacity: 0;   }
+}
+
+/* ── Typed.js курсор (согласован с палитрой) ──────────────── */
+.typed-cursor {
+    color: #8A7B66;
+    font-weight: 300;
+    opacity: 1;
+    animation: typed-blink 0.7s infinite;
+}
+@keyframes typed-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+
+/* ── Карта в футере ───────────────────────────────────────── */
+#map-wrapper {
+    margin-top: 1.25rem;
+    border-radius: 0.875rem;
+    overflow: hidden;
+    height: 180px;
+    border: 1px solid rgba(138, 123, 102, 0.2);
+    opacity: 0.88;
+    transition: opacity 0.3s ease;
+}
+#map-wrapper:hover { opacity: 1; }
+#map-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: grayscale(20%) contrast(1.05);
+}
+html.dark-theme #map-wrapper iframe {
+    filter: grayscale(40%) invert(0.9) hue-rotate(180deg) brightness(0.85);
+}
+
+/* ── prefers-reduced-motion: глобальное отключение анимаций ── */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
