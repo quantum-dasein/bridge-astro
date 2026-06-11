@@ -43,9 +43,11 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 		<script is:inline>
 			(function() {
 				var t = localStorage.getItem('bc-theme');
-				if (t === 'dark') {
-					document.documentElement.classList.add('dark-theme');
+				if (!t) {
+					t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+					localStorage.setItem('bc-theme', t);
 				}
+				if (t === 'dark') document.documentElement.classList.add('dark-theme');
 			})();
 		</script>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />

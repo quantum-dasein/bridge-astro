@@ -2,14 +2,7 @@
 <html lang="ru" class="scroll-smooth">
     <head>
         <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-E5LN1D6KVN"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-E5LN1D6KVN');
-        </script>
+        <!-- Google Analytics загружается только после согласия (см. main.js) -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
@@ -96,9 +89,8 @@
         <script>
             (function() {
                 var t = localStorage.getItem('bc-theme');
-                if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                    document.documentElement.classList.add('dark-theme');
-                }
+                if (!t) { t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; localStorage.setItem('bc-theme', t); }
+                if (t === 'dark') document.documentElement.classList.add('dark-theme');
             })();
         </script>
     
@@ -985,6 +977,41 @@ document.documentElement.style.height = '';
                         Скачать CV (PDF)
                     </a>
                 </div>
+
+                <!-- Аккредитации и членство -->
+                <div class="mt-6 pt-6 border-t border-gray-100">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Аккредитации и членство</p>
+                    <div class="flex flex-wrap gap-3 items-center">
+                        <a href="https://www.ciarb.org" target="_blank" rel="noopener" title="Chartered Institute of Arbitrators — MCIArb" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
+                            <img src="ciarb-logo.png" alt="CIArb — Chartered Institute of Arbitrators" loading="lazy" class="h-8 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                        </a>
+                        <a href="https://www.drb.org" target="_blank" rel="noopener" title="Dispute Resolution Board Foundation" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
+                            <img src="drbf-logo.png" alt="DRBF — Dispute Resolution Board Foundation" loading="lazy" class="h-8 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                        </a>
+                        <div class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300" title="International Construction Arbitrators Association — Next Generation">
+                            <img src="icaa-logo.png" alt="ICAA — International Construction Arbitrators Association" loading="lazy" class="h-8 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                        </div>
+                        <a href="https://hyperstack.id/arisaelousova" target="_blank" rel="noopener" title="ICAgile Certified Professional (ICP)" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
+                            <img src="icagile-icp-badge.png" alt="ICAgile ICP — Certified Professional" loading="lazy" class="h-10 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                        </a>
+                        <a href="https://www.lcia.org" target="_blank" rel="noopener" title="London Court of International Arbitration" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
+                            <img src="lcia-logo.png" alt="LCIA — Arbitration and ADR worldwide" loading="lazy" class="h-8 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                        </a>
+                        <a href="https://fidic.org/professional-credentialing" target="_blank" rel="noopener" title="FIDIC Certified Consulting Engineer (FCCE) 2024–2027" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
+                            <img src="fidic-fcce-badge.png" alt="FIDIC FCCE — Certified Consulting Engineer 2024–2027" loading="lazy" class="h-10 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                        </a>
+                        <a href="https://fidic.org/professional-credentialing" target="_blank" rel="noopener" title="FIDIC Certified Consulting Professional (FCCP) 2024–2027" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
+                            <img src="fidic-fccp-badge.png" alt="FIDIC FCCP — Certified Consulting Professional 2024–2027" loading="lazy" class="h-10 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                        </a>
+                        <a href="https://www.quality.org" target="_blank" rel="noopener" title="CQI Practitioner — IRCA, Leading Quality Since 1919" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
+                            <img src="cqi-irca-practitioner-badge.png" alt="CQI Practitioner — IRCA" loading="lazy" class="h-10 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                        </a>
+                    </div>
+                    <a href="https://hyperstack.id/arisaelousova" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-bridge-taupe text-[10px] font-bold uppercase tracking-widest mt-4 hover:text-bridge-dark transition-colors duration-300">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        Все сертификаты и аккредитации
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -1374,24 +1401,24 @@ document.documentElement.style.height = '';
         </div>
 
         <!-- KNAPEC (Светлый логотип -> Темный бейдж) -->
-        <div class="group flex items-center justify-center h-20 md:h-24 px-8 bg-bridge-dark border border-gray-800 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-bridge-taupe/30 transition-all duration-500 hover:-translate-y-1 cursor-pointer">
+        <a href="https://knapec.kz/ru" target="_blank" rel="noopener" class="group flex items-center justify-center h-20 md:h-24 px-8 bg-bridge-dark border border-gray-800 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-bridge-taupe/30 transition-all duration-500 hover:-translate-y-1">
             <img src="knapec-logo.png" alt="KNAPEC" loading="lazy" class="h-10 md:h-12 w-auto object-contain opacity-50 group-hover:opacity-100 transition-opacity duration-500">
-        </div>
+        </a>
         
         <!-- Intelligent Solution (Защита от темной темы через bg-image) -->
-        <div class="group flex items-center justify-center h-20 md:h-24 px-8 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 cursor-pointer">
+        <a href="https://www.isolution.ge/about" target="_blank" rel="noopener" class="group flex items-center justify-center h-20 md:h-24 px-8 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
             <div class="h-10 md:h-12 w-32 md:w-40 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" style="background-image: url('intelligent-solution-logo.webp'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div>
-        </div>
+        </a>
         
         <!-- Bureau Veritas -->
-        <div class="group flex items-center justify-center h-20 md:h-24 px-8 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 cursor-pointer">
+        <a href="https://group.bureauveritas.com/" target="_blank" rel="noopener" class="group flex items-center justify-center h-20 md:h-24 px-8 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
             <img src="bureau-veritas.png" alt="Bureau Veritas" loading="lazy" class="h-10 md:h-14 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
-        </div>
+        </a>
         
         <!-- CMC -->
-        <div class="group flex items-center justify-center h-20 md:h-24 px-8 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 cursor-pointer">
+        <a href="https://cmc.ge/" target="_blank" rel="noopener" class="group flex items-center justify-center h-20 md:h-24 px-8 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1">
             <img src="cmc-logo-1.png" alt="CMC" loading="lazy" class="h-8 md:h-10 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
-        </div>
+        </a>
     </div>
 </section>
 <!-- ======================================================== -->
@@ -2058,5 +2085,14 @@ document.documentElement.style.height = '';
         });
     });
 </script>
+
+<!-- Cookie consent banner -->
+<div id="cookie-banner" role="dialog" aria-label="Использование cookies">
+    <p>Мы используем Google Analytics для анализа трафика. Вы можете отказаться — это не повлияет на работу сайта.</p>
+    <div style="display:flex;gap:8px;flex-shrink:0">
+        <button class="cookie-btn cookie-btn-decline" onclick="cookieDecline()">Отклонить</button>
+        <button class="cookie-btn cookie-btn-accept" onclick="cookieAccept()">Принять</button>
+    </div>
+</div>
 </body>
 </html>
