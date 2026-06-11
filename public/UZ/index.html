@@ -1667,6 +1667,44 @@ document.documentElement.style.height = '';
 
                     <form id="uz-contact-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
 
+                        <!-- So'rov turi -->
+                        <div>
+                            <label style="display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;font-family:Inter,sans-serif;">So'rov turi</label>
+                            <select name="request_type" id="uz-request-type" class="bc-input-uz bc-sel-uz" style="width:100%;box-sizing:border-box;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:0.75rem;padding:0.75rem 1rem;color:rgba(255,255,255,0.35);font-size:0.9rem;font-family:Inter,sans-serif;outline:none;transition:all 0.3s ease;">
+                                <option value="" disabled selected>So'rov turini tanlang...</option>
+                                <option value="FIDIC-maslahat">FIDIC-maslahat</option>
+                                <option value="Nizolarni hal etish">Nizolarni hal etish</option>
+                                <option value="Treninglar">Treninglar</option>
+                                <option value="Boshqa">Boshqa</option>
+                            </select>
+                        </div>
+
+                        <!-- Shartli: Nizo -->
+                        <div id="uz-dispute-fields" style="display:none;flex-direction:column;gap:1rem;">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                                <div>
+                                    <label style="display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;font-family:Inter,sans-serif;">Shartnoma summasi</label>
+                                    <input type="text" name="contract_amount" placeholder="mas. $5 mln" class="bc-input-uz" style="width:100%;box-sizing:border-box;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:0.75rem;padding:0.75rem 1rem;color:#fff;font-size:0.9rem;font-family:Inter,sans-serif;outline:none;transition:all 0.3s ease;">
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;font-family:Inter,sans-serif;">Loyiha bosqichi</label>
+                                    <select name="project_stage" class="bc-input-uz bc-sel-uz" style="width:100%;box-sizing:border-box;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:0.75rem;padding:0.75rem 1rem;color:#fff;font-size:0.9rem;font-family:Inter,sans-serif;outline:none;transition:all 0.3s ease;">
+                                        <option value="" disabled selected>Bosqichni tanlang...</option>
+                                        <option value="Qurilish">Qurilish</option>
+                                        <option value="Yakunlash">Yakunlash</option>
+                                        <option value="Kafolat muddati">Kafolat muddati</option>
+                                        <option value="Yakundan keyin">Yakundan keyin</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shartli: Trening -->
+                        <div id="uz-training-fields" style="display:none;">
+                            <label style="display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;font-family:Inter,sans-serif;">Ishtirokchilar soni</label>
+                            <input type="number" name="participants" min="1" max="999" placeholder="mas. 15" class="bc-input-uz" style="width:100%;box-sizing:border-box;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:0.75rem;padding:0.75rem 1rem;color:#fff;font-size:0.9rem;font-family:Inter,sans-serif;outline:none;transition:all 0.3s ease;">
+                        </div>
+
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                             <div>
                                 <label style="display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 0.5rem; font-family: Inter, sans-serif;">Ismingiz</label>
@@ -1721,6 +1759,8 @@ document.documentElement.style.height = '';
             box-shadow: 0 0 15px rgba(138, 123, 102, 0.3), inset 0 0 10px rgba(138, 123, 102, 0.1) !important;
         }
         .bc-input-uz::placeholder { color: rgba(255,255,255,0.2); }
+        .bc-sel-uz { appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 1rem center; background-size:1rem; padding-right:2.5rem !important; cursor:pointer; }
+        .bc-sel-uz option { background:#242220; }
         .bc-input-uz:-webkit-autofill,
         .bc-input-uz:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0 100px #242220 inset; -webkit-text-fill-color: #fff; }
         
@@ -1752,6 +1792,15 @@ document.documentElement.style.height = '';
         section.addEventListener('mouseleave', () => {
             glow.style.opacity = '0';
         });
+    });
+
+    // Aqlli forma: shartli maydonlar
+    document.getElementById('uz-request-type').addEventListener('change', function() {
+        this.style.color = '#fff';
+        const d = document.getElementById('uz-dispute-fields');
+        const t = document.getElementById('uz-training-fields');
+        d.style.display = this.value === 'Nizolarni hal etish' ? 'flex' : 'none';
+        t.style.display = this.value === 'Treninglar' ? 'block' : 'none';
     });
 
     document.getElementById('uz-contact-form').addEventListener('submit', async function(e) {

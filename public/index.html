@@ -1773,6 +1773,44 @@ document.documentElement.style.height = '';
                     <!-- Форма -->
                     <form id="ru-contact-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
 
+                        <!-- Тип запроса -->
+                        <div>
+                            <label style="display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;font-family:Inter,sans-serif;">Тип запроса</label>
+                            <select name="request_type" id="ru-request-type" class="bc-input bc-sel" style="width:100%;box-sizing:border-box;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:0.75rem;padding:0.75rem 1rem;color:rgba(255,255,255,0.35);font-size:0.9rem;font-family:Inter,sans-serif;outline:none;transition:all 0.3s ease;">
+                                <option value="" disabled selected>Выберите тип запроса...</option>
+                                <option value="FIDIC-консультация">FIDIC-консультация</option>
+                                <option value="Разрешение спора">Разрешение спора</option>
+                                <option value="Тренинг">Тренинг</option>
+                                <option value="Другое">Другое</option>
+                            </select>
+                        </div>
+
+                        <!-- Условные поля: Спор -->
+                        <div id="ru-dispute-fields" style="display:none;flex-direction:column;gap:1rem;">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                                <div>
+                                    <label style="display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;font-family:Inter,sans-serif;">Сумма контракта</label>
+                                    <input type="text" name="contract_amount" placeholder="напр. $5 млн" class="bc-input" style="width:100%;box-sizing:border-box;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:0.75rem;padding:0.75rem 1rem;color:#fff;font-size:0.9rem;font-family:Inter,sans-serif;outline:none;transition:all 0.3s ease;">
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;font-family:Inter,sans-serif;">Стадия проекта</label>
+                                    <select name="project_stage" class="bc-input bc-sel" style="width:100%;box-sizing:border-box;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:0.75rem;padding:0.75rem 1rem;color:#fff;font-size:0.9rem;font-family:Inter,sans-serif;outline:none;transition:all 0.3s ease;">
+                                        <option value="" disabled selected>Выберите стадию...</option>
+                                        <option value="Строительство">Строительство</option>
+                                        <option value="Завершение работ">Завершение работ</option>
+                                        <option value="Гарантийный период">Гарантийный период</option>
+                                        <option value="После завершения">После завершения</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Условные поля: Тренинг -->
+                        <div id="ru-training-fields" style="display:none;">
+                            <label style="display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;font-family:Inter,sans-serif;">Число участников</label>
+                            <input type="number" name="participants" min="1" max="999" placeholder="напр. 15" class="bc-input" style="width:100%;box-sizing:border-box;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:0.75rem;padding:0.75rem 1rem;color:#fff;font-size:0.9rem;font-family:Inter,sans-serif;outline:none;transition:all 0.3s ease;">
+                        </div>
+
                         <!-- Имя + Email -->
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                             <div>
@@ -1817,6 +1855,8 @@ document.documentElement.style.height = '';
             box-shadow: 0 0 15px rgba(138, 123, 102, 0.3), inset 0 0 10px rgba(138, 123, 102, 0.1) !important;
         }
         .bc-input::placeholder { color: rgba(255,255,255,0.2); }
+        .bc-sel { appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 1rem center; background-size:1rem; padding-right:2.5rem !important; cursor:pointer; }
+        .bc-sel option { background:#242220; }
         .bc-input:-webkit-autofill,
         .bc-input:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0 100px #242220 inset; -webkit-text-fill-color: #fff; }
         
@@ -1854,6 +1894,15 @@ document.documentElement.style.height = '';
         section.addEventListener('mouseleave', () => {
             glow.style.opacity = '0';
         });
+    });
+
+    // Умная форма: условные поля
+    document.getElementById('ru-request-type').addEventListener('change', function() {
+        this.style.color = '#fff';
+        const d = document.getElementById('ru-dispute-fields');
+        const t = document.getElementById('ru-training-fields');
+        d.style.display = this.value === 'Разрешение спора' ? 'flex' : 'none';
+        t.style.display = this.value === 'Тренинг' ? 'block' : 'none';
     });
 
     // Отправка формы
