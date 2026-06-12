@@ -178,7 +178,8 @@
                 }
             })();
         </script>
-    </head>
+        <link rel="stylesheet" href="projects-universe.css">
+</head>
 <body class="font-sans text-bridge-dark antialiased bg-bridge-light relative selection:bg-bridge-taupe/20">
     <script>
         (function() {
@@ -504,25 +505,35 @@ document.body && (document.body.style.width = '100%');
         </div>
     </header>
 
-<section class="pt-40 pb-32 md:pt-48 md:pb-40 bg-bridge-dark relative overflow-hidden font-sans">
-    
-    <div class="absolute inset-0 z-0">
-        <img src="hero-bg2.png" alt="Bridge Consult Projects" class="w-full h-full object-cover object-center opacity-70">
-        <div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/60 to-bridge-dark"></div>
+<!-- ============ 3D PROJECT UNIVERSE ============ -->
+<section id="universe">
+    <div class="uni-bg"></div>
+    <div id="uni-canvas-wrap"></div>
+    <div id="uni-labels">
+        <button class="uni-label" type="button" data-idx="0"><img class="uni-thumb" src="poster-olympic.jpg" alt="" loading="lazy"><span class="uni-label-txt"><span class="uni-num">01</span><span class="uni-cat">Спортивная инфраструктура</span><span class="uni-name">Олимпийский городок</span></span></button>
+        <button class="uni-label" type="button" data-idx="1"><img class="uni-thumb" src="tashkent-invest-company.png" alt="" loading="lazy"><span class="uni-label-txt"><span class="uni-num">02</span><span class="uni-cat">Институциональное развитие</span><span class="uni-name">Tashkent Invest Company</span></span></button>
+        <button class="uni-label" type="button" data-idx="2"><img class="uni-thumb" src="poster-drone.jpg" alt="" loading="lazy"><span class="uni-label-txt"><span class="uni-num">03</span><span class="uni-cat">Дорожное строительство</span><span class="uni-name">Реконструкция дорог</span></span></button>
+        <button class="uni-label" type="button" data-idx="3"><img class="uni-thumb" src="kamchik.avif" alt="" loading="lazy"><span class="uni-label-txt"><span class="uni-num">04</span><span class="uni-cat">Транспортный коридор</span><span class="uni-name">Автодорога А-373 (Камчик)</span></span></button>
     </div>
-    
-    <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
-        <h1 class="text-4xl md:text-6xl lg:text-7xl font-sans font-bold text-white mb-6 tracking-tight" data-aos="fade-up">Опыт реализации проектов</h1>
-        <p class="text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed" data-aos="fade-up" data-aos-delay="100">
-            Детальный референс-лист проектов с применением проформ контрактов FIDIC и участием международных финансовых институтов.
-        </p>
-    </div>
+
+    <div class="uni-head"><div class="uni-head-inner">
+        <div class="uni-eyebrow"><span></span>ПРОЕКТЫ<em>// PROJECTS UNIVERSE</em></div>
+        <h1 class="uni-h1">Опыт реализации проектов</h1>
+        <p class="uni-sub">Детальный референс-лист проектов с применением проформ контрактов FIDIC и участием международных финансовых институтов.</p>
+    </div></div>
+
+    <div class="uni-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="3" width="10" height="18" rx="5"/><line x1="12" y1="7" x2="12" y2="10"/></svg> Вращайте сферу · нажмите на проект</div>
+    <button id="uni-autorotate" class="uni-auto is-on" type="button"><span class="uni-auto-dot"></span>Автовращение</button>
+    <div id="uni-loading" class="uni-loading"><span class="uni-spinner"></span>Загрузка сцены</div>
 </section>
 
-<section class="py-16 md:py-24 overflow-hidden relative font-sans">
-    <div class="max-w-7xl mx-auto px-6">
-        
-        <article class="flex flex-col lg:flex-row items-center gap-10 md:gap-16 mb-24 relative" data-aos="fade-up">
+<!-- Project detail overlay -->
+<div id="uni-detail" class="uni-detail" aria-hidden="true">
+    <div class="uni-detail-backdrop" data-uni-close></div>
+    <div class="uni-detail-panel" role="dialog" aria-modal="true">
+        <button class="uni-detail-close" type="button" data-uni-close aria-label="Закрыть">&times;</button>
+        <div class="uni-detail-body">
+            <div class="uni-detail-card" data-idx="0"><article class="flex flex-col lg:flex-row items-center gap-10 md:gap-16 mb-24 relative">
             <div class="chapter-number -left-10 md:-left-20 font-sans hidden md:block">01</div>
             
 <!-- БЛОК С ИНТЕРАКТИВНЫМ ВИДЕО -->
@@ -566,9 +577,8 @@ document.body && (document.body.style.width = '100%');
                     <p class="text-bridge-dark font-medium"><span class="text-gray-400 font-bold text-xs uppercase tracking-widest mr-3">Заказчик:</span> Министерство строительства и ЖКХ РУз</p>
                 </div>
             </div>
-        </article>
-
-        <article class="flex flex-col lg:flex-row-reverse items-center gap-10 md:gap-16 mb-24 relative" data-aos="fade-up">
+        </article></div>
+            <div class="uni-detail-card" data-idx="1" hidden><article class="flex flex-col lg:flex-row-reverse items-center gap-10 md:gap-16 mb-24 relative">
             <div class="chapter-number -right-10 md:-right-20 font-sans text-right w-full">02</div>
             <div class="lg:w-1/2 w-full relative z-10 group">
                 <div class="aspect-video w-full bg-gray-200 rounded-3xl overflow-hidden premium-shadow relative">
@@ -584,9 +594,8 @@ document.body && (document.body.style.width = '100%');
                 <h2 class="text-3xl md:text-4xl font-bold text-bridge-dark mb-4">АО «Tashkent Invest Company»</h2>
                 <p class="text-gray-600 font-light text-lg">Разработка и внедрение системы закупок и управления контрактами для инфраструктурных проектов по модели EPC+F, включая EPC-контракты и контракты на инженерно-консультационные услуги.</p>
             </div>
-        </article>
-
-        <article class="flex flex-col lg:flex-row items-center gap-10 md:gap-16 mb-24 relative" data-aos="fade-up">
+        </article></div>
+            <div class="uni-detail-card" data-idx="2" hidden><article class="flex flex-col lg:flex-row items-center gap-10 md:gap-16 mb-24 relative">
             <div class="chapter-number -left-10 md:-left-20 font-sans hidden md:block">03</div>
             
             <!-- БЛОК С ВИДЕО ДРОНА (Реконструкция дорог) -->
@@ -616,9 +625,8 @@ document.body && (document.body.style.width = '100%');
                     <p class="text-bridge-dark font-medium"><span class="text-gray-400 font-bold text-xs uppercase tracking-widest mr-3">Институт:</span> Азиатский Банк Развития (АБР)</p>
                 </div>
             </div>
-        </article>
-
-        <article class="flex flex-col lg:flex-row-reverse items-center gap-10 md:gap-16 relative" data-aos="fade-up">
+        </article></div>
+            <div class="uni-detail-card" data-idx="3" hidden><article class="flex flex-col lg:flex-row-reverse items-center gap-10 md:gap-16 relative">
             <div class="chapter-number -right-10 md:-right-20 font-sans text-right w-full">04</div>
             <div class="lg:w-1/2 w-full relative z-10 group">
                 <div class="aspect-video w-full bg-gray-200 rounded-3xl overflow-hidden premium-shadow relative">
@@ -637,19 +645,31 @@ document.body && (document.body.style.width = '100%');
                     <p class="text-bridge-dark font-medium"><span class="text-gray-400 font-bold text-xs uppercase tracking-widest mr-3">Заказчик:</span> АО EVRASCON</p>
                 </div>
             </div>
-        </article>
-        
+        </article></div>
+        </div>
     </div>
-</section>
+</div>
 
-<section class="py-20 bg-white border-t border-bridge-taupe/20 font-sans">
-    <div class="max-w-4xl mx-auto px-6 text-center" data-aos="fade-up">
-        <h2 class="text-3xl font-bold text-bridge-dark mb-6">Полный референс-лист и профиль компании</h2>
-        <p class="text-gray-600 font-light mb-10 max-w-2xl mx-auto">Скачайте подробную презентацию с описанием нашей методологии, полного списка реализованных проектов и юридических кейсов.</p>
-        <a href="Bridge_Consult_–_Infrastructure_Contracts_&_Dispute_Resolution_Advisory.pdf" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center bg-bridge-dark text-white px-10 py-5 rounded-full text-sm font-bold uppercase tracking-wider hover:bg-bridge-taupe transition-all duration-300 shadow-xl hover-float">
-            <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-            Скачать PDF презентацию (12 MB)
-        </a>
+<!-- ============ PDF / COMPANY PROFILE CTA ============ -->
+<section class="uni-cta font-sans">
+    <div class="uni-cta-glow"></div>
+    <div class="uni-cta-grid"></div>
+    <span class="uni-cta-spark"></span><span class="uni-cta-spark"></span><span class="uni-cta-spark"></span><span class="uni-cta-spark"></span><span class="uni-cta-spark"></span>
+    <div class="uni-cta-inner" data-aos="fade-up">
+        <div class="uni-cta-doc">
+            <div class="uni-cta-doc-ring"></div>
+            <div class="uni-cta-doc-core"><svg class="uni-cta-doc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></div>
+            <span class="uni-cta-ext">PDF</span>
+        </div>
+        <div class="uni-cta-eyebrow"><span></span>ДОКУМЕНТ</div>
+        <h2 class="uni-cta-h2">Полный референс-лист и профиль компании</h2>
+        <p class="uni-cta-p">Скачайте подробную презентацию с описанием нашей методологии, полного списка реализованных проектов и юридических кейсов.</p>
+        <a href="Bridge_Consult_–_Infrastructure_Contracts_&_Dispute_Resolution_Advisory.pdf" target="_blank" rel="noopener noreferrer" class="uni-cta-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16v1a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg><span>Скачать PDF презентацию (12 MB)</span></a>
+        <div class="uni-cta-meta">
+            <span class="uni-cta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>PDF</span>
+            <span class="uni-cta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg>12 MB</span>
+            <span class="uni-cta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 12v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7S9 2 6.5 4 8 7 12 7zm0 0s3-5 5.5-3S16 7 12 7z"/></svg>Бесплатно</span>
+        </div>
     </div>
 </section>
 
@@ -703,6 +723,9 @@ document.body && (document.body.style.width = '100%');
         </div>
     </div>
 </footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="projects-universe.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 <script src="main.js"></script>

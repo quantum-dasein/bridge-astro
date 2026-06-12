@@ -109,7 +109,7 @@
             }
         body.chat-open #back-to-top,body.chat-open #tg-float-btn{opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
     </style>
-    <link rel="preload" as="image" href="poster-ultra.jpg">
+    <link rel="preload" as="image" href="../poster-ultra.jpg">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -396,7 +396,7 @@ document.documentElement.style.height = '';
     <header class="fixed w-full top-0 z-[100] bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
         <div class="max-w-[1400px] mx-auto px-4 md:px-6 h-20 flex items-center justify-between relative z-[101]">
             
-            <a href="/" class="block relative z-[101] shrink-0">
+            <a href="index.html" onclick="window.scrollTo({top:0,behavior:'smooth'});if(location.hash){history.replaceState(null,'',location.pathname+location.search);}return false;" class="block relative z-[101] shrink-0">
                 <img src="../bridge 2.svg" alt="Bridge Consult" class="site-logo h-9 md:h-11 object-contain relative z-[101]">
             </a>
             
@@ -579,7 +579,7 @@ document.documentElement.style.height = '';
 </section>
 
 <section id="services" class="py-16 md:py-32 bg-bridge-dark relative font-sans overflow-hidden">
-    <video autoplay loop muted playsinline preload="none" poster="poster-ultra.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
+    <video autoplay loop muted playsinline preload="none" poster="../poster-ultra.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
         <source src="../ultra-bridge.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/70 to-bridge-dark/95 z-[1]"></div>
@@ -1625,7 +1625,7 @@ document.documentElement.style.height = '';
             <div class="statue-col-en" style="
                 position: relative;
                 display: flex; flex-direction: column;
-                align-items: center; justify-content: flex-end;
+                align-items: center; justify-content: center;
                 padding: 3rem 2rem 0 2rem;
                 border-right: 1px solid rgba(138,123,102,0.15);
             ">
@@ -1647,7 +1647,7 @@ document.documentElement.style.height = '';
                 <!-- Aura glow behind statue -->
                 <div style="
                     position: absolute;
-                    bottom: 0; left: 50%; transform: translateX(-50%);
+                    top: 50%; left: 50%; transform: translate(-50%, 60px);
                     width: 340px; height: 340px;
                     background: radial-gradient(ellipse, rgba(138,123,102,0.15) 0%, rgba(138,123,102,0.05) 50%, transparent 75%);
                     border-radius: 50%;
@@ -1759,13 +1759,25 @@ document.documentElement.style.height = '';
                         <!-- Type of request -->
                         <div>
                             <label style="display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;font-family:Inter,sans-serif;">Type of Request</label>
-                            <select name="request_type" id="en-request-type" class="bc-input-en bc-sel-en" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:0.75rem;padding:0.75rem 1rem;color:rgba(255,255,255,0.35);font-size:0.9rem;font-family:Inter,sans-serif;outline:none;transition:border-color 0.2s,background 0.2s;">
-                                <option value="" disabled selected>Select request type...</option>
+                            <select name="request_type" id="en-request-type" style="display:none;">
+                                <option value="" disabled selected></option>
                                 <option value="FIDIC Consultation">FIDIC Consultation</option>
                                 <option value="Dispute Resolution">Dispute Resolution</option>
                                 <option value="Training">Training</option>
                                 <option value="Other">Other</option>
                             </select>
+                            <div class="bc-custom-sel" data-native="en-request-type">
+                                <div class="bc-sel-trigger">
+                                    <span class="bc-sel-val">Select request type...</span>
+                                    <svg class="bc-sel-ico" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"/></svg>
+                                </div>
+                                <div class="bc-sel-panel">
+                                    <div class="bc-sel-opt" data-val="FIDIC Consultation">FIDIC Consultation</div>
+                                    <div class="bc-sel-opt" data-val="Dispute Resolution">Dispute Resolution</div>
+                                    <div class="bc-sel-opt" data-val="Training">Training</div>
+                                    <div class="bc-sel-opt" data-val="Other">Other</div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Conditional: Dispute -->
@@ -1777,13 +1789,25 @@ document.documentElement.style.height = '';
                                 </div>
                                 <div>
                                     <label style="display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;font-family:Inter,sans-serif;">Project Stage</label>
-                                    <select name="project_stage" class="bc-input-en bc-sel-en" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:0.75rem;padding:0.75rem 1rem;color:#fff;font-size:0.9rem;font-family:Inter,sans-serif;outline:none;transition:border-color 0.2s,background 0.2s;">
-                                        <option value="" disabled selected>Select stage...</option>
+                                    <select name="project_stage" id="en-project-stage" style="display:none;">
+                                        <option value="" disabled selected></option>
                                         <option value="Construction">Construction</option>
                                         <option value="Completion">Completion</option>
                                         <option value="Defects Liability">Defects Liability Period</option>
                                         <option value="Post-completion">Post-completion</option>
                                     </select>
+                                    <div class="bc-custom-sel" data-native="en-project-stage">
+                                        <div class="bc-sel-trigger">
+                                            <span class="bc-sel-val">Select stage...</span>
+                                            <svg class="bc-sel-ico" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"/></svg>
+                                        </div>
+                                        <div class="bc-sel-panel">
+                                            <div class="bc-sel-opt" data-val="Construction">Construction</div>
+                                            <div class="bc-sel-opt" data-val="Completion">Completion</div>
+                                            <div class="bc-sel-opt" data-val="Defects Liability">Defects Liability Period</div>
+                                            <div class="bc-sel-opt" data-val="Post-completion">Post-completion</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1852,7 +1876,7 @@ document.documentElement.style.height = '';
                                 color: rgba(255,255,255,0.3); margin-bottom: 0.5rem;
                                 font-family: Inter, sans-serif;
                             ">Message or Inquiry Details</label>
-                            <textarea name="message" required rows="4"
+                            <textarea name="message" required rows="3"
                                 placeholder="Describe your situation..."
                                 class="bc-input-en"
                                 style="
@@ -1948,6 +1972,21 @@ document.documentElement.style.height = '';
             -webkit-box-shadow: 0 0 0 100px #1a1816 inset;
             -webkit-text-fill-color: #fff;
         }
+
+        /* ── Custom dropdown ─────────────────────── */
+        .bc-custom-sel{position:relative;width:100%;box-sizing:border-box;}
+        .bc-sel-trigger{display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:0.75rem;padding:0.75rem 1rem;cursor:pointer;user-select:none;font-size:0.9rem;font-family:Inter,sans-serif;transition:border-color 0.2s,background 0.2s;}
+        .bc-sel-trigger:hover,.bc-custom-sel.is-open .bc-sel-trigger{border-color:rgba(138,123,102,0.8)!important;background:rgba(138,123,102,0.1)!important;}
+        .bc-sel-val{color:rgba(255,255,255,0.35);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .bc-custom-sel.has-val .bc-sel-val{color:#fff;}
+        .bc-sel-ico{flex-shrink:0;width:16px;height:16px;stroke:rgba(255,255,255,0.3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform 0.2s;}
+        .bc-custom-sel.is-open .bc-sel-ico{transform:rotate(180deg);stroke:rgba(138,123,102,0.9);}
+        .bc-sel-panel{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:200;background:#1e1c1a;border:1px solid rgba(138,123,102,0.25);border-radius:0.75rem;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.7);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity 0.15s,transform 0.15s;}
+        .bc-custom-sel.is-open .bc-sel-panel{opacity:1;transform:translateY(0);pointer-events:all;}
+        .bc-sel-opt{padding:0.8rem 1.1rem;color:rgba(255,255,255,0.65);font-size:0.9rem;font-family:Inter,sans-serif;cursor:pointer;transition:background 0.15s,color 0.15s;white-space:normal;line-height:1.4;}
+        .bc-sel-opt:hover{background:rgba(138,123,102,0.15);color:#fff;}
+        .bc-sel-opt.bc-sel-active{background:rgba(138,123,102,0.1);color:#8A7B66;}
+        .bc-sel-opt+.bc-sel-opt{border-top:1px solid rgba(255,255,255,0.04);}
         @keyframes spin-en { to { transform: rotate(360deg); } }
 
         /* Mobile: single column, statue on top */
@@ -1993,6 +2032,33 @@ document.documentElement.style.height = '';
     <!-- ── Form submission script ────────────────────── -->
     <script>
     // Smart form: conditional fields
+
+    // Custom dropdown init
+    (function(){
+        var sels=document.querySelectorAll('.bc-custom-sel');
+        sels.forEach(function(sel){
+            var trigger=sel.querySelector('.bc-sel-trigger');
+            var valEl=sel.querySelector('.bc-sel-val');
+            var native=document.getElementById(sel.getAttribute('data-native'));
+            trigger.addEventListener('click',function(e){
+                e.stopPropagation();
+                sels.forEach(function(s){if(s!==sel)s.classList.remove('is-open');});
+                sel.classList.toggle('is-open');
+            });
+            sel.querySelectorAll('.bc-sel-opt').forEach(function(opt){
+                opt.addEventListener('click',function(){
+                    valEl.textContent=opt.textContent;
+                    sel.classList.add('has-val');
+                    sel.classList.remove('is-open');
+                    sel.querySelectorAll('.bc-sel-opt').forEach(function(o){o.classList.remove('bc-sel-active');});
+                    opt.classList.add('bc-sel-active');
+                    if(native){native.value=opt.getAttribute('data-val');native.dispatchEvent(new Event('change'));}
+                });
+            });
+        });
+        document.addEventListener('click',function(){sels.forEach(function(s){s.classList.remove('is-open');});});
+    })();
+
     document.getElementById('en-request-type').addEventListener('change', function() {
         this.style.color = '#fff';
         const d = document.getElementById('en-dispute-fields');
@@ -2244,74 +2310,247 @@ document.documentElement.style.height = '';
 #bc-chat-btn svg{flex-shrink:0;opacity:.85;}
 #bc-chat-panel{position:fixed;bottom:0;right:1.5rem;z-index:9981;width:360px;max-width:calc(100vw - 2rem);background:#1e1c1a;border:1px solid rgba(138,123,102,.25);border-bottom:none;border-radius:1.25rem 1.25rem 0 0;box-shadow:0 -12px 60px rgba(0,0,0,.5);display:none;flex-direction:column;overflow:hidden;font-family:inherit;}
 #bc-chat-head{display:flex;align-items:center;gap:.75rem;padding:.875rem 1.1rem;background:#292724;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;}
-#bc-chat-head-ico{width:32px;height:32px;border-radius:9999px;background:rgba(138,123,102,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#bc-chat-head-ico{width:32px;height:32px;border-radius:9999px;background:rgba(138,123,102,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;}
+#bc-chat-head-ico::after{content:'';position:absolute;bottom:1px;right:1px;width:8px;height:8px;background:#4ade80;border-radius:9999px;border:2px solid #292724;box-shadow:0 0 5px rgba(74,222,128,.5);}
 #bc-chat-head-title{flex:1;min-width:0;}
 #bc-chat-head-title b{display:block;color:#F5F4F2;font-size:13px;font-weight:700;}
 #bc-chat-head-title span{color:rgba(245,244,242,.4);font-size:10px;font-weight:500;letter-spacing:.04em;}
 #bc-chat-close{background:none;border:none;color:rgba(245,244,242,.4);cursor:pointer;padding:4px;border-radius:6px;display:flex;transition:color .2s;}
 #bc-chat-close:hover{color:#F5F4F2;}
-#bc-chat-msgs{flex:1;overflow-y:auto;padding:.875rem 1rem;display:flex;flex-direction:column;gap:.6rem;min-height:300px;max-height:340px;scroll-behavior:smooth;}
-#bc-chat-msgs::-webkit-scrollbar{width:4px;}
+#bc-chat-msgs{flex:1;overflow-y:auto;padding:.875rem 1rem;display:flex;flex-direction:column;gap:.6rem;min-height:280px;max-height:320px;scroll-behavior:smooth;}
+#bc-chat-msgs::-webkit-scrollbar{width:3px;}
 #bc-chat-msgs::-webkit-scrollbar-track{background:transparent;}
-#bc-chat-msgs::-webkit-scrollbar-thumb{background:rgba(138,123,102,.3);border-radius:9999px;}
+#bc-chat-msgs::-webkit-scrollbar-thumb{background:transparent;border-radius:9999px;transition:background .3s;}
+#bc-chat-msgs:hover::-webkit-scrollbar-thumb{background:rgba(138,123,102,.3);}
 .bc-msg{max-width:88%;padding:.6rem .875rem;border-radius:1rem;font-size:13px;line-height:1.55;animation:bcMsgIn .2s ease;}
 .bc-msg-bot{align-self:flex-start;background:#2e2b28;color:rgba(245,244,242,.85);border-bottom-left-radius:.25rem;}
 .bc-msg-user{align-self:flex-end;background:#8A7B66;color:#fff;border-bottom-right-radius:.25rem;}
+.bc-msg-bot ul,.bc-msg-bot ol{padding-left:1.3em;margin:.3em 0 .3em;}
+.bc-msg-bot li{margin-bottom:.2em;}
+.bc-msg-bot strong{color:#F5F4F2;font-weight:700;}
 .bc-msg-typing{align-self:flex-start;display:flex;gap:4px;align-items:center;padding:.6rem .875rem;background:#2e2b28;border-radius:1rem;border-bottom-left-radius:.25rem;}
 .bc-dot{width:6px;height:6px;background:rgba(245,244,242,.4);border-radius:9999px;animation:bcDot 1.2s infinite;}
 .bc-dot:nth-child(2){animation-delay:.2s;}.bc-dot:nth-child(3){animation-delay:.4s;}
 @keyframes bcDot{0%,80%,100%{transform:scale(.8);opacity:.4;}40%{transform:scale(1);opacity:1;}}
 @keyframes bcMsgIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+#bc-quick{padding:.5rem 1rem .65rem;display:flex;flex-wrap:wrap;gap:.4rem;border-bottom:1px solid rgba(255,255,255,.05);}
+.bc-qr{background:rgba(138,123,102,.12);border:1px solid rgba(138,123,102,.25);color:rgba(245,244,242,.7);font-size:11px;padding:.35rem .7rem;border-radius:9999px;cursor:pointer;transition:all .2s;font-family:inherit;line-height:1.3;}
+.bc-qr:hover{background:rgba(138,123,102,.28);border-color:#8A7B66;color:#F5F4F2;}
 #bc-chat-foot{padding:.6rem .75rem;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:.5rem;align-items:flex-end;flex-shrink:0;}
-#bc-chat-input{flex:1;background:#2e2b28;border:1px solid rgba(138,123,102,.2);border-radius:.75rem;padding:.55rem .8rem;color:#F5F4F2;font-family:inherit;font-size:13px;resize:none;max-height:90px;min-height:38px;outline:none;transition:border-color .2s;overflow-y:auto;}
+#bc-chat-input{flex:1;background:#2e2b28;border:1px solid rgba(138,123,102,.2);border-radius:.75rem;padding:.55rem .8rem;color:#F5F4F2;font-family:inherit;font-size:13px;resize:none;max-height:90px;min-height:38px;outline:none;transition:border-color .2s;overflow-y:auto;scrollbar-width:none;}
+#bc-chat-input::-webkit-scrollbar{display:none;}
 #bc-chat-input:focus{border-color:rgba(138,123,102,.5);}
 #bc-chat-input::placeholder{color:rgba(245,244,242,.3);}
 #bc-chat-send{background:#8A7B66;border:none;color:#fff;width:36px;height:36px;border-radius:.625rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s,transform .15s;}
 #bc-chat-send:hover{background:#7a6d5b;transform:scale(1.05);}
 #bc-chat-send:disabled{background:rgba(138,123,102,.3);cursor:default;transform:none;}
 </style>
+
 <button id="bc-chat-btn" aria-label="Ask about FIDIC" onclick="bcToggle()">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
     Assistant
 </button>
+
 <div id="bc-chat-panel" role="dialog" aria-label="FIDIC chat assistant">
     <div id="bc-chat-head">
-        <div id="bc-chat-head-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A7B66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <div id="bc-chat-head-title"><b>FIDIC Assistant</b><span>Bridge Consult · Powered by Claude</span></div>
-        <button id="bc-chat-close" onclick="bcToggle()" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <div id="bc-chat-head-ico">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A7B66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div id="bc-chat-head-title">
+            <b>FIDIC Assistant</b>
+            <span>Bridge Consult · Powered by Claude</span>
+        </div>
+        <button id="bc-chat-close" onclick="bcToggle()" aria-label="Close">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
     </div>
     <div id="bc-chat-msgs" aria-live="polite"></div>
+    <div id="bc-quick">
+        <button class="bc-qr" onclick="bcQuickReply('What is the difference between Red Book and Yellow Book?')">Red vs Yellow Book</button>
+        <button class="bc-qr" onclick="bcQuickReply('What is a DAAB and how does it work?')">What is a DAAB?</button>
+        <button class="bc-qr" onclick="bcQuickReply('When is Silver Book used instead of Yellow?')">When Silver Book?</button>
+    </div>
     <div id="bc-chat-foot">
         <textarea id="bc-chat-input" placeholder="How does Yellow Book differ from Red Book?" rows="1" onkeydown="bcKey(event)" oninput="bcAutoSize(this)"></textarea>
-        <button id="bc-chat-send" onclick="bcSend()" aria-label="Send"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+        <button id="bc-chat-send" onclick="bcSend()" aria-label="Send">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </button>
     </div>
 </div>
+
 <script>
 (function(){
     var BC_API_KEY = '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';
     var BC_MODEL = 'claude-haiku-4-5';
-    var BC_SYSTEM = 'You are a FIDIC expert assistant for Bridge Consult, a contract engineering and dispute resolution consultancy based in Uzbekistan. Answer questions about FIDIC contracts (Red, Yellow, Silver, Gold, White Book), EPC contracts, contract administration, delay analysis (FDA), DAB/DAAB, claims and disputes. For general questions, give clear expert answers in 2-4 sentences. For complex client-specific situations requiring document review, recommend contacting Bridge Consult directly: +998 33 000 15 30 or info@bridgeconsult.uz. Respond in the same language as the user. Be professional, friendly and concise.';
-    var msgs=[],open=false,panel=document.getElementById('bc-chat-panel'),msgsEl=document.getElementById('bc-chat-msgs');
-    function bcInit(){if(msgsEl.children.length===0)bcAddMsg('bot','Hello! Ask me anything about FIDIC contracts, dispute resolution, or Bridge Consult services. For complex cases, I\'ll connect you with our experts.');}
-    window.bcToggle=function(){open=!open;panel.style.display=open?'flex':'none';document.body.classList.toggle('chat-open',open);if(open){bcInit();setTimeout(function(){document.getElementById('bc-chat-input').focus();},100);}};
-    window.bcKey=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();bcSend();}};
-    window.bcAutoSize=function(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,90)+'px';};
-    window.bcSend=function(){
-        var input=document.getElementById('bc-chat-input'),text=input.value.trim();
-        if(!text)return;
-        if(!BC_API_KEY){bcAddMsg('bot','⚠️ Assistant not configured. Please contact Bridge Consult directly: +998 33 000 15 30');return;}
-        bcAddMsg('user',text);msgs.push({role:'user',content:text});input.value='';input.style.height='auto';
-        document.getElementById('bc-chat-send').disabled=true;
-        var tid=bcAddTyping();
-        fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':BC_API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-allow-browser':'true'},body:JSON.stringify({model:BC_MODEL,max_tokens:512,system:BC_SYSTEM,messages:msgs.slice(-8)})})
-        .then(function(r){return r.json();})
-        .then(function(d){bcRemoveTyping(tid);var r=(d.content&&d.content[0]&&d.content[0].text)?d.content[0].text:'Unable to get a response. Contact us: +998 33 000 15 30';msgs.push({role:'assistant',content:r});bcAddMsg('bot',r);})
-        .catch(function(){bcRemoveTyping(tid);bcAddMsg('bot','Connection error. Please call us: +998 33 000 15 30');})
-        .finally(function(){document.getElementById('bc-chat-send').disabled=false;document.getElementById('bc-chat-input').focus();});
+    var BC_SYSTEM = 'You are a professional FIDIC expert assistant for Bridge Consult.\n\nBridge Consult is a leading independent consultancy in Central Asia specializing in infrastructure contract management, contract engineering, claims, dispute resolution (DAB/DAAB/arbitration), and FIDIC training. Clients include MDBs (ADB, World Bank, EBRD), government entities, and international contractors. Contact: +998 33 000 15 30 | info@bridgeconsult.uz.\n\nYOUR EXPERTISE:\n• FIDIC: Red Book (MDB Harmonised), Yellow Book, Silver Book, White Book, Gold Book, Green Book, Emerald Book\n• Contracts: EPC, EPC+F, NEC3/NEC4, MDB Harmonised\n• Claims: FIDIC notices, Extension of Time (EOT), Loss & Expense, Time at Large\n• Disputes: DAB, DAAB, ICC/UNCITRAL arbitration, mediation, adjudication\n• Forensic Delay Analysis (FDA): CPM, Windows, Time Impact Analysis (TIA), Collapsed As-Built\n• DAAB (FIDIC 2017): functions, appointment, procedures, decisions\n\nSTYLE:\n— Clear technical questions: precise answer in 2–4 sentences\n— Comparisons/lists: structured format with key points\n— Document review, complex legal cases: recommend direct consultation +998 33 000 15 30\n— Respond in the user\'s language. No preamble. Professional and to the point.';
+
+    var BC_KB=[
+        {k:['red book','mdb harm'],a:'**Red Book (MDB Harmonised)** — used when the Employer provides a detailed design and the Contractor only constructs. Design risks remain with the Employer. Typical for roads, bridges, schools, hospitals financed by MDBs (ADB, World Bank). The Contractor can claim EOT and compensation for Employer-caused changes and delays.'},
+        {k:['yellow book','design build','plant'],a:'**Yellow Book** — Design & Build contract. The Contractor is responsible for both construction and design based on the Employer\'s Requirements. Used for industrial facilities, factories, and complex infrastructure. Design risk transfers to the Contractor.'},
+        {k:['silver book','epc','turnkey'],a:'**Silver Book (EPC Turnkey)** — a fixed-price "turn-key" contract placing maximum risk on the Contractor, who handles design, construction, and commissioning. Ideal for oil & gas facilities and power plants.'},
+        {k:['gold book','dbo','design build operate'],a:'**Gold Book (DBO, 2008)** — covers design, construction, and 20 years of operation. The Contractor remains responsible throughout the operational period. Used for hydroelectric plants and water treatment facilities.'},
+        {k:['daab','dispute avoidance','adjudication board'],a:'**DAAB** (Dispute Avoidance/Adjudication Board) — the key dispute mechanism in FIDIC 2017. 1–3 independent experts appointed at project start work proactively to prevent disputes. DAAB decisions are immediately binding but can be challenged in arbitration.'},
+        {k:['dab','dispute adjudication'],a:'**DAB** (Dispute Adjudication Board) — the FIDIC 1999 predecessor of DAAB. Issues temporarily binding decisions; notice of dissatisfaction must be given within 28 days, after which ICC arbitration follows.'},
+        {k:['eot','extension of time','delay','completion'],a:'**Extension of Time (EOT)** — the Contractor\'s right to extend the contract completion date. Grounds: Variations, force majeure, Employer delays, adverse physical conditions (Sub-Clause 4.12). Under FIDIC 1999, notice must be given within 28 days. Late notice may forfeit the right to EOT.'},
+        {k:['notice','28 days','claim notice'],a:'**Notices** are a strict FIDIC requirement. Under FIDIC 1999, a claim notice must be given within 28 days of the triggering event; under FIDIC 2017, "without undue delay." Late or improperly formatted notices can bar compensation.'},
+        {k:['variation','change order','variations'],a:'**Variations** — changes to the scope of work instructed by the Engineer or Employer. The Contractor must comply. Entitlement to price and time adjustments is preserved even when work is executed before cost is agreed.'},
+        {k:['forensic','delay analysis','fda','cpm','critical path'],a:'**Forensic Delay Analysis (FDA)** — a methodological analysis of construction delays per the SCL Protocol. Bridge Consult applies Windows Analysis, Time Impact Analysis (TIA), and Collapsed As-Built to substantiate EOT and loss-recovery Claims in arbitration.'},
+        {k:['loss','expense','additional cost','cost recovery'],a:'**Loss & Expense / Additional Costs** — the Contractor\'s right to recover direct losses caused by Employer actions (idling, acceleration, overhead). Bridge Consult prepares quantified Claim submissions.'},
+        {k:['force majeure','exceptional','unforeseeable'],a:'**Force Majeure** under FIDIC — an exceptional event beyond the parties\' control. Entitles the Contractor to EOT, but not to cost recovery. Notice must be given within 14 days of the event.'},
+        {k:['arbitration','icc','icsid','dispute resolution'],a:'Most FIDIC contracts provide for **international arbitration** (ICC, ICSID) as the final dispute resolution step — after DAAB/DAB and amicable settlement. Bridge Consult supports clients with position preparation, expert reports, and legal coordination.'},
+        {k:['services','bridge consult','what do you do'],a:'**Bridge Consult** is Central Asia\'s leading FIDIC contract engineering firm. Services: FIDIC consulting (Red/Yellow/Silver Book), Forensic Delay Analysis and Claims, dispute support (DAAB/mediation/ICC arbitration), certified FIDIC training. Contact: +998 33 000 15 30 | info@bridgeconsult.uz'},
+        {k:['contact','phone','email','reach'],a:'**Bridge Consult — Contact:**\n☎️ +998 33 000 15 30\n✉️ info@bridgeconsult.uz\n🌐 bridgeconsult.uz\n\nWe respond on working days (09:00–18:00 UTC+5).'},
+    ];
+    function bcLocalSearch(q){
+        q=q.toLowerCase();var best=null,bs=0;
+        BC_KB.forEach(function(item){
+            var s=0;item.k.forEach(function(kw){if(q.indexOf(kw.toLowerCase())>=0)s+=2;});
+            if(s>bs){bs=s;best=item;}
+        });
+        return bs>=2?best:null;
+    }
+    var msgs = [], open = false;
+    var panel = document.getElementById('bc-chat-panel');
+    var msgsEl = document.getElementById('bc-chat-msgs');
+
+    function bcInit() {
+        if (msgsEl.children.length === 0) bcAddMsg('bot', 'Hello! Ask me anything about FIDIC contracts, dispute resolution, or Bridge Consult services. For complex cases, I\'ll connect you with our experts.');
+    }
+
+    window.bcToggle = function() {
+        open = !open;
+        panel.style.display = open ? 'flex' : 'none';
+        document.body.classList.toggle('chat-open', open);
+        if (open) { bcInit(); setTimeout(function(){ document.getElementById('bc-chat-input').focus(); }, 100); }
     };
-    function bcAddMsg(t,x){var el=document.createElement('div');el.className='bc-msg bc-msg-'+(t==='bot'?'bot':'user');el.textContent=x;msgsEl.appendChild(el);msgsEl.scrollTop=msgsEl.scrollHeight;return el;}
-    function bcAddTyping(){var id='bc-typing-'+Date.now(),el=document.createElement('div');el.className='bc-msg-typing';el.id=id;el.innerHTML='<span class="bc-dot"></span><span class="bc-dot"></span><span class="bc-dot"></span>';msgsEl.appendChild(el);msgsEl.scrollTop=msgsEl.scrollHeight;return id;}
-    function bcRemoveTyping(id){var el=document.getElementById(id);if(el)el.remove();}
+
+    window.bcKey = function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); bcSend(); } };
+
+    window.bcAutoSize = function(el) {
+        el.style.height = 'auto';
+        el.style.height = Math.min(el.scrollHeight, 90) + 'px';
+    };
+
+    window.bcQuickReply = function(text) {
+        var qr = document.getElementById('bc-quick');
+        if (qr) qr.style.display = 'none';
+        var input = document.getElementById('bc-chat-input');
+        input.value = text;
+        bcSend();
+    };
+
+    function bcMarkdown(text) {
+        var s = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        s = s.replace(/\*\*(.*?)\*\*/gs,'<strong>$1</strong>');
+        s = s.replace(/\*(.*?)\*/gs,'<em>$1</em>');
+        s = s.replace(/^[\u2022\-]\s(.+)/gm,'<li>$1</li>');
+        s = s.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ul>$1</ul>');
+        s = s.replace(/\n\n+/g,'<br><br>');
+        s = s.replace(/\n/g,'<br>');
+        return s;
+    }
+
+    window.bcSend = function() {
+        var qr = document.getElementById('bc-quick');
+        if (qr) qr.style.display = 'none';
+        var input = document.getElementById('bc-chat-input');
+        var text = input.value.trim();
+        if (!text) return;
+        if (!BC_API_KEY) { bcAddMsg('bot', 'Could not get a response. Please call: +998 33 000 15 30'); return; }
+        bcAddMsg('user', text);
+        msgs.push({ role: 'user', content: text });
+        input.value = ''; input.style.height = 'auto';
+        document.getElementById('bc-chat-send').disabled = true;
+        var typingId = bcAddTyping();
+        fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': BC_API_KEY,
+                'anthropic-version': '2023-06-01',
+                'anthropic-dangerous-allow-browser': 'true'
+            },
+            body: JSON.stringify({ model: BC_MODEL, max_tokens: 800, system: BC_SYSTEM, messages: msgs.slice(-10), stream: true })
+        })
+        .then(function(response) {
+            bcRemoveTyping(typingId);
+            if (!response.ok) {
+                bcAddMsg('bot', 'Could not get a response. Please call: +998 33 000 15 30');
+                document.getElementById('bc-chat-send').disabled = false;
+                document.getElementById('bc-chat-input').focus();
+                return;
+            }
+            var reader = response.body.getReader();
+            var decoder = new TextDecoder();
+            var msgEl = bcAddMsg('bot', '');
+            var fullText = '', buf = '';
+            function read() {
+                reader.read().then(function(res) {
+                    if (res.done) {
+                        if (fullText) msgs.push({ role: 'assistant', content: fullText });
+                        document.getElementById('bc-chat-send').disabled = false;
+                        document.getElementById('bc-chat-input').focus();
+                        return;
+                    }
+                    buf += decoder.decode(res.value, { stream: true });
+                    var lines = buf.split('\n'); buf = lines.pop();
+                    lines.forEach(function(line) {
+                        if (!line.startsWith('data: ')) return;
+                        var d = line.slice(6).trim();
+                        if (!d || d === '[DONE]') return;
+                        try {
+                            var ev = JSON.parse(d);
+                            if (ev.type === 'content_block_delta' && ev.delta && ev.delta.type === 'text_delta') {
+                                fullText += ev.delta.text;
+                                msgEl.innerHTML = bcMarkdown(fullText);
+                                msgsEl.scrollTop = msgsEl.scrollHeight;
+                            }
+                        } catch(e) {}
+                    });
+                    read();
+                }).catch(function() {
+                    document.getElementById('bc-chat-send').disabled = false;
+                    document.getElementById('bc-chat-input').focus();
+                    if (!fullText && msgEl.parentNode) {
+                        msgEl.parentNode.removeChild(msgEl);
+                        var _l=bcLocalSearch(text);if(_l){bcAddMsg('bot',_l.a);}else{bcAddMsg('bot','Connection error. Please call: **+998 33 000 15 30**');}
+                    }
+                });
+            }
+            read();
+        })
+        .catch(function() {
+            bcRemoveTyping(typingId);
+            var _l=bcLocalSearch(text);if(_l){bcAddMsg('bot',_l.a);}else{bcAddMsg('bot','Connection error. Please call: **+998 33 000 15 30**');}
+            document.getElementById('bc-chat-send').disabled = false;
+            document.getElementById('bc-chat-input').focus();
+        });
+    };
+
+    function bcAddMsg(type, text) {
+        var el = document.createElement('div');
+        el.className = 'bc-msg bc-msg-' + (type === 'bot' ? 'bot' : 'user');
+        if (type === 'bot') el.innerHTML = bcMarkdown(text);
+        else el.textContent = text;
+        msgsEl.appendChild(el);
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+        return el;
+    }
+
+    function bcAddTyping() {
+        var id = 'bc-typing-' + Date.now();
+        var el = document.createElement('div');
+        el.className = 'bc-msg-typing'; el.id = id;
+        el.innerHTML = '<span class="bc-dot"></span><span class="bc-dot"></span><span class="bc-dot"></span>';
+        msgsEl.appendChild(el);
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+        return id;
+    }
+
+    function bcRemoveTyping(id) {
+        var el = document.getElementById(id);
+        if (el) el.remove();
+    }
 })();
 </script>
 
