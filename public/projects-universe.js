@@ -380,7 +380,7 @@
         camera.updateProjectionMatrix();
 
         var worldH = 2 * z * Math.tan(Math.PI * 45 / 360); // world units per canvas height
-        var targetPx = (mobile ? 0.80 : 0.66) * vp;        // planet centre in the 1st viewport
+        var targetPx = (mobile ? 0.86 : 0.72) * vp;        // planet centre in the 1st viewport
         var yOff = (1 - 2 * (targetPx / H)) * worldH / 2;
         universe.position.y = yOff;
         rings.position.y = yOff;

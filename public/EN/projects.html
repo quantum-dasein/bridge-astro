@@ -27,7 +27,8 @@
         })();
     </script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+        <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="../style.css">
     <link rel="icon" type="image/png" href="../favicon.png">
@@ -77,6 +78,52 @@
         .lp.breathe{animation:neonBreathe 3s ease-in-out infinite}
     </style>
     <link rel="stylesheet" href="../projects-universe.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Bridge Consult Projects — FIDIC and EPC Contracts",
+      "numberOfItems": 4,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Olympic City",
+            "description": "Construction of modern sports facilities for the IV Asian Youth Games in Tashkent. EPC+F contract, 2022-2025."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Tashkent Invest Company JSC",
+            "description": "Development and implementation of a procurement and contract management system for EPC+F infrastructure projects."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "Highway Reconstruction (SRRP)",
+            "description": "Reconstruction of 107 km of the 4R105 and 4R100 roads under FIDIC Red Book, financed by ADB."
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "CreativeWork",
+            "name": "A-373 Highway (Kamchik Pass)",
+            "description": "CAREC Corridor 2: reconstruction of the A-373 Tashkent-Osh highway, FIDIC MDB Harmonised."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 <body class="font-sans text-bridge-dark antialiased bg-bridge-light relative selection:bg-bridge-taupe/20 overflow-x-hidden">
     <script>
@@ -364,10 +411,10 @@
 
 <section id="universe">
     <div id="uni-labels">
-        <button class="uni-label" type="button" data-idx="0"><img class="uni-thumb" src="../poster-olympic.jpg" alt="" loading="lazy"><span class="uni-label-txt"><span class="uni-num">01</span><span class="uni-cat">Sports Infrastructure</span><span class="uni-name">Olympic City</span></span></button>
-        <button class="uni-label" type="button" data-idx="1"><img class="uni-thumb" src="../tashkent-invest-company.png" alt="" loading="lazy"><span class="uni-label-txt"><span class="uni-num">02</span><span class="uni-cat">Institutional Development</span><span class="uni-name">Tashkent Invest Company</span></span></button>
-        <button class="uni-label" type="button" data-idx="2"><img class="uni-thumb" src="../poster-drone.jpg" alt="" loading="lazy"><span class="uni-label-txt"><span class="uni-num">03</span><span class="uni-cat">Road Construction</span><span class="uni-name">Highway Reconstruction</span></span></button>
-        <button class="uni-label" type="button" data-idx="3"><img class="uni-thumb" src="../kamchik.avif" alt="" loading="lazy"><span class="uni-label-txt"><span class="uni-num">04</span><span class="uni-cat">Transport Corridor</span><span class="uni-name">A-373 Highway (Kamchik)</span></span></button>
+        <button class="uni-label" type="button" data-idx="0"><img class="uni-thumb" src="../poster-olympic.jpg" alt="Olympic City — sports infrastructure, Tashkent" loading="lazy"><span class="uni-label-txt"><span class="uni-num">01</span><span class="uni-cat">Sports Infrastructure</span><span class="uni-name">Olympic City</span></span></button>
+        <button class="uni-label" type="button" data-idx="1"><img class="uni-thumb" src="../tashkent-invest-company.png" alt="Tashkent Invest Company JSC — institutional development" loading="lazy"><span class="uni-label-txt"><span class="uni-num">02</span><span class="uni-cat">Institutional Development</span><span class="uni-name">Tashkent Invest Company</span></span></button>
+        <button class="uni-label" type="button" data-idx="2"><img class="uni-thumb" src="../poster-drone.jpg" alt="SRRP highway reconstruction — road construction, FIDIC Red Book" loading="lazy"><span class="uni-label-txt"><span class="uni-num">03</span><span class="uni-cat">Road Construction</span><span class="uni-name">Highway Reconstruction</span></span></button>
+        <button class="uni-label" type="button" data-idx="3"><img class="uni-thumb" src="../kamchik.avif" alt="A-373 Tashkent-Osh highway, Kamchik Pass" loading="lazy"><span class="uni-label-txt"><span class="uni-num">04</span><span class="uni-cat">Transport Corridor</span><span class="uni-name">A-373 Highway (Kamchik)</span></span></button>
     </div>
 
     <div class="uni-head"><div class="uni-head-inner">
