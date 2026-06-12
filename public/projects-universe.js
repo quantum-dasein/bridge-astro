@@ -68,7 +68,7 @@
     /* ========================================================== */
     /*  THREE.js scene                                            */
     /* ========================================================== */
-    var scene, camera, renderer, universe, rings, stars, planet;
+    var scene, camera, renderer, universe, rings, stars, planet, glowSprite;
     var nodeGroups = [], nodeCores = [], nodeGlows = [], pickables = [];
     var raycaster = new THREE.Raycaster();
     var occRay = new THREE.Raycaster();
@@ -103,10 +103,10 @@
         var W = wrap.clientWidth, H = wrap.clientHeight || window.innerHeight;
 
         scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x12100d, 0.045);
+        scene.fog = new THREE.FogExp2(0x12100d, 0.03);
 
         camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
-        camera.position.set(0, 0, W < 768 ? 8.2 : 6.4);
+        camera.position.set(0, 0, 7); // real z set by layoutScene()
         camera.lookAt(0, 0, 0);
 
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -123,8 +123,8 @@
         var gtex = glowTexture();
 
         // big atmospheric glow behind planet
-        var pg = new THREE.Sprite(new THREE.SpriteMaterial({ map: gtex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.7 }));
-        pg.scale.set(PR * 5.2, PR * 5.2, 1); scene.add(pg);
+        glowSprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: gtex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.7 }));
+        glowSprite.scale.set(PR * 5.2, PR * 5.2, 1); scene.add(glowSprite);
 
         universe = new THREE.Group(); scene.add(universe);
 
@@ -200,8 +200,9 @@
             nodeGroups.push(ng); nodeCores.push(core); nodeGlows.push(glow); pickables.push(hit);
         });
 
+        layoutScene();
         wireInput();
-        window.addEventListener('resize', onResize);
+        window.addEventListener('resize', layoutScene);
 
         if (loading) { loading.classList.add('hide'); setTimeout(function () { if (loading) loading.style.display = 'none'; }, 700); }
         animate();
@@ -360,10 +361,31 @@
         renderer.render(scene, camera);
     }
 
-    function onResize() {
+    /* The canvas spans the WHOLE .uni-scene (universe + document CTA), so the
+       3D starfield fills both. The planet must still sit inside the first
+       viewport, well below the heading text — this computes camera distance
+       (keeping the planet's on-screen size constant regardless of canvas
+       height) and the world-Y offset that pins the planet centre to a fixed
+       fraction of the first viewport. */
+    function layoutScene() {
         if (!renderer) return;
         var W = wrap.clientWidth, H = wrap.clientHeight || window.innerHeight;
-        camera.aspect = W / H; camera.updateProjectionMatrix();
+        var vp = window.innerHeight || H;
+        var mobile = W < 768;
+
+        var zBase = mobile ? 8.2 : 6.4;
+        var z = zBase * (H / vp);
+        camera.aspect = W / H;
+        camera.position.z = z;
+        camera.updateProjectionMatrix();
+
+        var worldH = 2 * z * Math.tan(Math.PI * 45 / 360); // world units per canvas height
+        var targetPx = (mobile ? 0.86 : 0.72) * vp;        // planet centre in the 1st viewport
+        var yOff = (1 - 2 * (targetPx / H)) * worldH / 2;
+        universe.position.y = yOff;
+        rings.position.y = yOff;
+        glowSprite.position.y = yOff;
+
         renderer.setSize(W, H);
     }
 
