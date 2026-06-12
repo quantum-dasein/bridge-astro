@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.style.cssText = [
         'position:fixed',
         'right:24px',
-        'bottom:84px',
+        'bottom:80px',
         'width:48px',
         'height:48px',
         'border-radius:50%',
