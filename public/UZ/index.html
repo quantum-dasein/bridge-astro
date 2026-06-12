@@ -112,7 +112,7 @@
             }
         body.chat-open #back-to-top,body.chat-open #tg-float-btn{opacity:0!important;visibility:hidden!important;pointer-events:none!important;}
     </style>
-    <link rel="preload" as="image" href="poster-ultra.jpg">
+    <link rel="preload" as="image" href="../poster-ultra.jpg">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -400,7 +400,7 @@ document.documentElement.style.height = '';
     <header class="fixed w-full top-0 z-[100] bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
         <div class="max-w-[1400px] mx-auto px-4 md:px-6 h-20 flex items-center justify-between relative z-[101]">
             
-            <a href="/" class="block relative z-[101] shrink-0">
+            <a href="index.html" onclick="window.scrollTo({top:0,behavior:'smooth'});if(location.hash){history.replaceState(null,'',location.pathname+location.search);}return false;" class="block relative z-[101] shrink-0">
                 <img src="../bridge 2.svg" alt="Bridge Consult" class="site-logo h-9 md:h-11 object-contain relative z-[101]">
             </a>
             
@@ -582,7 +582,7 @@ document.documentElement.style.height = '';
 </section>
 
 <section id="services" class="py-16 md:py-32 bg-bridge-dark relative font-sans overflow-hidden">
-    <video autoplay loop muted playsinline preload="none" poster="poster-ultra.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
+    <video autoplay loop muted playsinline preload="none" poster="../poster-ultra.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
         <source src="../ultra-bridge.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/70 to-bridge-dark/95 z-[1]"></div>
@@ -1615,14 +1615,14 @@ document.documentElement.style.height = '';
         <div style="display: grid; grid-template-columns: 1fr 1.05fr; gap: 0; min-height: 680px; align-items: stretch;">
 
             <!-- ── КОЛОНКА ЛЕВАЯ: 3D Статуя ───────────── -->
-            <div class="statue-col-uz pointer-events-auto" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 3rem 2rem 0 2rem; border-right: 1px solid rgba(138,123,102,0.15);">
+            <div class="statue-col-uz pointer-events-auto" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 2rem 0 2rem; border-right: 1px solid rgba(138,123,102,0.15);">
                 
                 <div style="position: absolute; top: 3rem; left: 2rem; right: 2rem; text-align: center;">
                     <span style="font-size: 10px; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(138,123,102,0.7); display: block; margin-bottom: 0.5rem; font-family: Inter, sans-serif;">Adolat</span>
                     <div style="width: 2rem; height: 1px; background: rgba(138,123,102,0.5); margin: 0 auto;"></div>
                 </div>
 
-                <div style="position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 340px; height: 340px; background: radial-gradient(ellipse, rgba(138,123,102,0.15) 0%, rgba(138,123,102,0.05) 50%, transparent 75%); border-radius: 50%; pointer-events: none;"></div>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, 60px); width: 340px; height: 340px; background: radial-gradient(ellipse, rgba(138,123,102,0.15) 0%, rgba(138,123,102,0.05) 50%, transparent 75%); border-radius: 50%; pointer-events: none;"></div>
 
                 <model-viewer
                     data-src="../JusticeStatue.glb"
@@ -1671,13 +1671,25 @@ document.documentElement.style.height = '';
                         <!-- So'rov turi -->
                         <div>
                             <label style="display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;font-family:Inter,sans-serif;">So'rov turi</label>
-                            <select name="request_type" id="uz-request-type" class="bc-input-uz bc-sel-uz" style="width:100%;box-sizing:border-box;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:0.75rem;padding:0.75rem 1rem;color:rgba(255,255,255,0.35);font-size:0.9rem;font-family:Inter,sans-serif;outline:none;transition:all 0.3s ease;">
-                                <option value="" disabled selected>So'rov turini tanlang...</option>
+                            <select name="request_type" id="uz-request-type" style="display:none;">
+                                <option value="" disabled selected></option>
                                 <option value="FIDIC-maslahat">FIDIC-maslahat</option>
                                 <option value="Nizolarni hal etish">Nizolarni hal etish</option>
                                 <option value="Treninglar">Treninglar</option>
                                 <option value="Boshqa">Boshqa</option>
                             </select>
+                            <div class="bc-custom-sel" data-native="uz-request-type">
+                                <div class="bc-sel-trigger">
+                                    <span class="bc-sel-val">So'rov turini tanlang...</span>
+                                    <svg class="bc-sel-ico" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"/></svg>
+                                </div>
+                                <div class="bc-sel-panel">
+                                    <div class="bc-sel-opt" data-val="FIDIC-maslahat">FIDIC-maslahat</div>
+                                    <div class="bc-sel-opt" data-val="Nizolarni hal etish">Nizolarni hal etish</div>
+                                    <div class="bc-sel-opt" data-val="Treninglar">Treninglar</div>
+                                    <div class="bc-sel-opt" data-val="Boshqa">Boshqa</div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Shartli: Nizo -->
@@ -1689,13 +1701,25 @@ document.documentElement.style.height = '';
                                 </div>
                                 <div>
                                     <label style="display:block;font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.5rem;font-family:Inter,sans-serif;">Loyiha bosqichi</label>
-                                    <select name="project_stage" class="bc-input-uz bc-sel-uz" style="width:100%;box-sizing:border-box;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:0.75rem;padding:0.75rem 1rem;color:#fff;font-size:0.9rem;font-family:Inter,sans-serif;outline:none;transition:all 0.3s ease;">
-                                        <option value="" disabled selected>Bosqichni tanlang...</option>
+                                    <select name="project_stage" id="uz-project-stage" style="display:none;">
+                                        <option value="" disabled selected></option>
                                         <option value="Qurilish">Qurilish</option>
                                         <option value="Yakunlash">Yakunlash</option>
                                         <option value="Kafolat muddati">Kafolat muddati</option>
                                         <option value="Yakundan keyin">Yakundan keyin</option>
                                     </select>
+                                    <div class="bc-custom-sel" data-native="uz-project-stage">
+                                        <div class="bc-sel-trigger">
+                                            <span class="bc-sel-val">Bosqichni tanlang...</span>
+                                            <svg class="bc-sel-ico" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"/></svg>
+                                        </div>
+                                        <div class="bc-sel-panel">
+                                            <div class="bc-sel-opt" data-val="Qurilish">Qurilish</div>
+                                            <div class="bc-sel-opt" data-val="Yakunlash">Yakunlash</div>
+                                            <div class="bc-sel-opt" data-val="Kafolat muddati">Kafolat muddati</div>
+                                            <div class="bc-sel-opt" data-val="Yakundan keyin">Yakundan keyin</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1765,6 +1789,21 @@ document.documentElement.style.height = '';
         .bc-input-uz:-webkit-autofill,
         .bc-input-uz:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0 100px #242220 inset; -webkit-text-fill-color: #fff; }
         
+
+        /* ── Custom dropdown ─────────────────────── */
+        .bc-custom-sel{position:relative;width:100%;box-sizing:border-box;}
+        .bc-sel-trigger{display:flex;align-items:center;justify-content:space-between;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05);border-radius:0.75rem;padding:0.75rem 1rem;cursor:pointer;user-select:none;font-size:0.9rem;font-family:Inter,sans-serif;transition:border-color 0.2s,background 0.2s;}
+        .bc-sel-trigger:hover,.bc-custom-sel.is-open .bc-sel-trigger{border-color:rgba(138,123,102,0.8)!important;background:rgba(138,123,102,0.1)!important;}
+        .bc-sel-val{color:rgba(255,255,255,0.35);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .bc-custom-sel.has-val .bc-sel-val{color:#fff;}
+        .bc-sel-ico{flex-shrink:0;width:16px;height:16px;stroke:rgba(255,255,255,0.3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform 0.2s;}
+        .bc-custom-sel.is-open .bc-sel-ico{transform:rotate(180deg);stroke:rgba(138,123,102,0.9);}
+        .bc-sel-panel{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:200;background:#1e1c1a;border:1px solid rgba(138,123,102,0.25);border-radius:0.75rem;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,0.7);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity 0.15s,transform 0.15s;}
+        .bc-custom-sel.is-open .bc-sel-panel{opacity:1;transform:translateY(0);pointer-events:all;}
+        .bc-sel-opt{padding:0.8rem 1.1rem;color:rgba(255,255,255,0.65);font-size:0.9rem;font-family:Inter,sans-serif;cursor:pointer;transition:background 0.15s,color 0.15s;white-space:normal;line-height:1.4;}
+        .bc-sel-opt:hover{background:rgba(138,123,102,0.15);color:#fff;}
+        .bc-sel-opt.bc-sel-active{background:rgba(138,123,102,0.1);color:#8A7B66;}
+        .bc-sel-opt+.bc-sel-opt{border-top:1px solid rgba(255,255,255,0.04);}
         @keyframes spin-uz { to { transform: rotate(360deg); } }
         
         @media (max-width: 1023px) {
@@ -1796,6 +1835,33 @@ document.documentElement.style.height = '';
     });
 
     // Aqlli forma: shartli maydonlar
+
+    // Custom dropdown init
+    (function(){
+        var sels=document.querySelectorAll('.bc-custom-sel');
+        sels.forEach(function(sel){
+            var trigger=sel.querySelector('.bc-sel-trigger');
+            var valEl=sel.querySelector('.bc-sel-val');
+            var native=document.getElementById(sel.getAttribute('data-native'));
+            trigger.addEventListener('click',function(e){
+                e.stopPropagation();
+                sels.forEach(function(s){if(s!==sel)s.classList.remove('is-open');});
+                sel.classList.toggle('is-open');
+            });
+            sel.querySelectorAll('.bc-sel-opt').forEach(function(opt){
+                opt.addEventListener('click',function(){
+                    valEl.textContent=opt.textContent;
+                    sel.classList.add('has-val');
+                    sel.classList.remove('is-open');
+                    sel.querySelectorAll('.bc-sel-opt').forEach(function(o){o.classList.remove('bc-sel-active');});
+                    opt.classList.add('bc-sel-active');
+                    if(native){native.value=opt.getAttribute('data-val');native.dispatchEvent(new Event('change'));}
+                });
+            });
+        });
+        document.addEventListener('click',function(){sels.forEach(function(s){s.classList.remove('is-open');});});
+    })();
+
     document.getElementById('uz-request-type').addEventListener('change', function() {
         this.style.color = '#fff';
         const d = document.getElementById('uz-dispute-fields');
@@ -2040,74 +2106,246 @@ document.documentElement.style.height = '';
 #bc-chat-btn svg{flex-shrink:0;opacity:.85;}
 #bc-chat-panel{position:fixed;bottom:0;right:1.5rem;z-index:9981;width:360px;max-width:calc(100vw - 2rem);background:#1e1c1a;border:1px solid rgba(138,123,102,.25);border-bottom:none;border-radius:1.25rem 1.25rem 0 0;box-shadow:0 -12px 60px rgba(0,0,0,.5);display:none;flex-direction:column;overflow:hidden;font-family:inherit;}
 #bc-chat-head{display:flex;align-items:center;gap:.75rem;padding:.875rem 1.1rem;background:#292724;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;}
-#bc-chat-head-ico{width:32px;height:32px;border-radius:9999px;background:rgba(138,123,102,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#bc-chat-head-ico{width:32px;height:32px;border-radius:9999px;background:rgba(138,123,102,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;}
+#bc-chat-head-ico::after{content:'';position:absolute;bottom:1px;right:1px;width:8px;height:8px;background:#4ade80;border-radius:9999px;border:2px solid #292724;box-shadow:0 0 5px rgba(74,222,128,.5);}
 #bc-chat-head-title{flex:1;min-width:0;}
 #bc-chat-head-title b{display:block;color:#F5F4F2;font-size:13px;font-weight:700;}
 #bc-chat-head-title span{color:rgba(245,244,242,.4);font-size:10px;font-weight:500;letter-spacing:.04em;}
 #bc-chat-close{background:none;border:none;color:rgba(245,244,242,.4);cursor:pointer;padding:4px;border-radius:6px;display:flex;transition:color .2s;}
 #bc-chat-close:hover{color:#F5F4F2;}
-#bc-chat-msgs{flex:1;overflow-y:auto;padding:.875rem 1rem;display:flex;flex-direction:column;gap:.6rem;min-height:300px;max-height:340px;scroll-behavior:smooth;}
-#bc-chat-msgs::-webkit-scrollbar{width:4px;}
+#bc-chat-msgs{flex:1;overflow-y:auto;padding:.875rem 1rem;display:flex;flex-direction:column;gap:.6rem;min-height:280px;max-height:320px;scroll-behavior:smooth;}
+#bc-chat-msgs::-webkit-scrollbar{width:3px;}
 #bc-chat-msgs::-webkit-scrollbar-track{background:transparent;}
-#bc-chat-msgs::-webkit-scrollbar-thumb{background:rgba(138,123,102,.3);border-radius:9999px;}
+#bc-chat-msgs::-webkit-scrollbar-thumb{background:transparent;border-radius:9999px;transition:background .3s;}
+#bc-chat-msgs:hover::-webkit-scrollbar-thumb{background:rgba(138,123,102,.3);}
 .bc-msg{max-width:88%;padding:.6rem .875rem;border-radius:1rem;font-size:13px;line-height:1.55;animation:bcMsgIn .2s ease;}
 .bc-msg-bot{align-self:flex-start;background:#2e2b28;color:rgba(245,244,242,.85);border-bottom-left-radius:.25rem;}
 .bc-msg-user{align-self:flex-end;background:#8A7B66;color:#fff;border-bottom-right-radius:.25rem;}
+.bc-msg-bot ul,.bc-msg-bot ol{padding-left:1.3em;margin:.3em 0 .3em;}
+.bc-msg-bot li{margin-bottom:.2em;}
+.bc-msg-bot strong{color:#F5F4F2;font-weight:700;}
 .bc-msg-typing{align-self:flex-start;display:flex;gap:4px;align-items:center;padding:.6rem .875rem;background:#2e2b28;border-radius:1rem;border-bottom-left-radius:.25rem;}
 .bc-dot{width:6px;height:6px;background:rgba(245,244,242,.4);border-radius:9999px;animation:bcDot 1.2s infinite;}
 .bc-dot:nth-child(2){animation-delay:.2s;}.bc-dot:nth-child(3){animation-delay:.4s;}
 @keyframes bcDot{0%,80%,100%{transform:scale(.8);opacity:.4;}40%{transform:scale(1);opacity:1;}}
 @keyframes bcMsgIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+#bc-quick{padding:.5rem 1rem .65rem;display:flex;flex-wrap:wrap;gap:.4rem;border-bottom:1px solid rgba(255,255,255,.05);}
+.bc-qr{background:rgba(138,123,102,.12);border:1px solid rgba(138,123,102,.25);color:rgba(245,244,242,.7);font-size:11px;padding:.35rem .7rem;border-radius:9999px;cursor:pointer;transition:all .2s;font-family:inherit;line-height:1.3;}
+.bc-qr:hover{background:rgba(138,123,102,.28);border-color:#8A7B66;color:#F5F4F2;}
 #bc-chat-foot{padding:.6rem .75rem;border-top:1px solid rgba(255,255,255,.07);display:flex;gap:.5rem;align-items:flex-end;flex-shrink:0;}
-#bc-chat-input{flex:1;background:#2e2b28;border:1px solid rgba(138,123,102,.2);border-radius:.75rem;padding:.55rem .8rem;color:#F5F4F2;font-family:inherit;font-size:13px;resize:none;max-height:90px;min-height:38px;outline:none;transition:border-color .2s;overflow-y:auto;}
+#bc-chat-input{flex:1;background:#2e2b28;border:1px solid rgba(138,123,102,.2);border-radius:.75rem;padding:.55rem .8rem;color:#F5F4F2;font-family:inherit;font-size:13px;resize:none;max-height:90px;min-height:38px;outline:none;transition:border-color .2s;overflow-y:auto;scrollbar-width:none;}
+#bc-chat-input::-webkit-scrollbar{display:none;}
 #bc-chat-input:focus{border-color:rgba(138,123,102,.5);}
 #bc-chat-input::placeholder{color:rgba(245,244,242,.3);}
 #bc-chat-send{background:#8A7B66;border:none;color:#fff;width:36px;height:36px;border-radius:.625rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s,transform .15s;}
 #bc-chat-send:hover{background:#7a6d5b;transform:scale(1.05);}
 #bc-chat-send:disabled{background:rgba(138,123,102,.3);cursor:default;transform:none;}
 </style>
+
 <button id="bc-chat-btn" aria-label="FIDIC haqida savol bering" onclick="bcToggle()">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-    Assistent
+    Yordamchi
 </button>
+
 <div id="bc-chat-panel" role="dialog" aria-label="FIDIC chat yordamchisi">
     <div id="bc-chat-head">
-        <div id="bc-chat-head-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A7B66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <div id="bc-chat-head-title"><b>FIDIC Yordamchi</b><span>Bridge Consult · Powered by Claude</span></div>
-        <button id="bc-chat-close" onclick="bcToggle()" aria-label="Yopish"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <div id="bc-chat-head-ico">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A7B66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div id="bc-chat-head-title">
+            <b>FIDIC Yordamchi</b>
+            <span>Bridge Consult · Powered by Claude</span>
+        </div>
+        <button id="bc-chat-close" onclick="bcToggle()" aria-label="Yopish">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
     </div>
     <div id="bc-chat-msgs" aria-live="polite"></div>
+    <div id="bc-quick">
+        <button class="bc-qr" onclick="bcQuickReply('Red Book va Yellow Book farqi nima?')">Red vs Yellow Book</button>
+        <button class="bc-qr" onclick="bcQuickReply('DAAB nima va u qanday ishlaydi?')">DAAB nima?</button>
+        <button class="bc-qr" onclick="bcQuickReply('Silver Book qachon qo'llaniladi?')">Silver Book qachon?</button>
+    </div>
     <div id="bc-chat-foot">
-        <textarea id="bc-chat-input" placeholder="FIDIC Sariq kitob Qizil kitobdan nima bilan farq qiladi?" rows="1" onkeydown="bcKey(event)" oninput="bcAutoSize(this)"></textarea>
-        <button id="bc-chat-send" onclick="bcSend()" aria-label="Yuborish"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+        <textarea id="bc-chat-input" placeholder="Yellow Book va Red Book farqi?" rows="1" onkeydown="bcKey(event)" oninput="bcAutoSize(this)"></textarea>
+        <button id="bc-chat-send" onclick="bcSend()" aria-label="Yuborish">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </button>
     </div>
 </div>
+
 <script>
 (function(){
     var BC_API_KEY = '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';
     var BC_MODEL = 'claude-haiku-4-5';
-    var BC_SYSTEM = 'Siz Bridge Consult kompaniyasining FIDIC bo\'yicha yordamchi mutaxassisisiz. Bridge Consult — O\'zbekistondagi shartnoma muhandisligi va nizolarni hal etish bo\'yicha yetakchi konsalting kompaniya. FIDIC shartnomalari (Red, Yellow, Silver, Gold, White Book), EPC shartnomalar, shartnoma boshqaruvi, kechikish tahlili, DAB/DAAB, da\'volar va nizolar bo\'yicha savollarga javob bering. Oddiy savollarga aniq va qisqa professional javob bering. Murakkab holatlarda Bridge Consult bilan bog\'lanishni tavsiya qiling: +998 33 000 15 30 yoki info@bridgeconsult.uz. Foydalanuvchi tilida javob bering — o\'zbek, rus yoki ingliz tilida.';
-    var msgs=[],open=false,panel=document.getElementById('bc-chat-panel'),msgsEl=document.getElementById('bc-chat-msgs');
-    function bcInit(){if(msgsEl.children.length===0)bcAddMsg('bot','Salom! FIDIC shartnomalari, nizo hal etish yoki Bridge Consult xizmatlari haqida savol bering. Murakkab holatlarda mutaxassislarimiz bilan bog\'layman.');}
-    window.bcToggle=function(){open=!open;panel.style.display=open?'flex':'none';document.body.classList.toggle('chat-open',open);if(open){bcInit();setTimeout(function(){document.getElementById('bc-chat-input').focus();},100);}};
-    window.bcKey=function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();bcSend();}};
-    window.bcAutoSize=function(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,90)+'px';};
-    window.bcSend=function(){
-        var input=document.getElementById('bc-chat-input'),text=input.value.trim();
-        if(!text)return;
-        if(!BC_API_KEY){bcAddMsg('bot','⚠️ Assistent sozlanmagan. Bridge Consult bilan bog\'laning: +998 33 000 15 30');return;}
-        bcAddMsg('user',text);msgs.push({role:'user',content:text});input.value='';input.style.height='auto';
-        document.getElementById('bc-chat-send').disabled=true;
-        var tid=bcAddTyping();
-        fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':BC_API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-allow-browser':'true'},body:JSON.stringify({model:BC_MODEL,max_tokens:512,system:BC_SYSTEM,messages:msgs.slice(-8)})})
-        .then(function(r){return r.json();})
-        .then(function(d){bcRemoveTyping(tid);var r=(d.content&&d.content[0]&&d.content[0].text)?d.content[0].text:'Javob olishda xatolik. Bog\'laning: +998 33 000 15 30';msgs.push({role:'assistant',content:r});bcAddMsg('bot',r);})
-        .catch(function(){bcRemoveTyping(tid);bcAddMsg('bot','Ulanish xatosi. Iltimos qo\'ng\'iroq qiling: +998 33 000 15 30');})
-        .finally(function(){document.getElementById('bc-chat-send').disabled=false;document.getElementById('bc-chat-input').focus();});
+    var BC_SYSTEM = 'Siz Bridge Consult kompaniyasining professional FIDIC ekspert yordamchisisiz.\n\nBridge Consult — Markaziy Osiyodagi yetakchi mustaqil konsalting kompaniya: infratuzilma shartnomalarini boshqarish, FIDIC/EPC shartnoma muhandisligi, da\'volarni boshqarish, nizolarni hal etish (DAB/DAAB/arbitraj), FIDIC treninglari. Mijozlar: MDB (ADB, Jahon Banki, EBRD), davlat buyurtmachilari, xalqaro pudratchilar. Aloqa: +998 33 000 15 30 | info@bridgeconsult.uz.\n\nMUTAXASSISLIK SOHALARI:\n• FIDIC: Red Book (MDB Harmonised), Yellow Book, Silver Book, White Book, Gold Book, Green Book, Emerald Book\n• Shartnomalar: EPC, EPC+F, NEC3/NEC4, MDB Harmonised\n• Da\'volar: FIDIC bildirishnomalar, Muddatni uzaytirish (EOT), Zarar va Xarajatlar\n• Nizolar: DAB, DAAB, ICC/UNCITRAL arbitraj, mediatsiya\n• Kechikish tahlili (FDA): CPM, Windows tahlili, Time Impact Analysis (TIA)\n• DAAB (FIDIC 2017): vazifalari, tayinlanishi, tartiblari\n\nJAVOB USLUBI:\n— Aniq savollarga: 2–4 jumlada professional javob\n— Taqqoslash/ro\'yxatlar: asosiy farqlar ko\'rsatilgan tuzilma\n— Murakkab huquqiy holatlar: Bridge Consult bilan maslahat tavsiya +998 33 000 15 30\n— Foydalanuvchi tilida javob bering. Ortiqcha so\'zboshi yo\'q. Professional va lo\'nda.';
+
+    var BC_KB=[
+        {k:['red book','qizil kitob','mdb'],a:'**Red Book (MDB Harmonised)** — buyurtmachi batafsil loyihani taqdim etganda, pudratchi faqat qurilish bajarganda qo\'llaniladi. Loyihalash xatarlari buyurtmachida. Yo\'llar, ko\'priklar, maktablar, kasalxonalar uchun (ADB, Jahon Banki). Pudratchi o\'zgarishlar uchun EOT va kompensatsiya talab qilishi mumkin.'},
+        {k:['yellow book','sariq kitob','design build'],a:'**Yellow Book** — "Loyihalash va qurilish" shartnomasi. Pudratchi ham qurilish, ham loyihalash uchun javobgar (buyurtmachining Talablariga asosan). Sanoat ob\'ektlari va murakkab infratuzilma uchun ishlatiladi.'},
+        {k:['silver book','kumush kitob','epc','turnkey','kalit topshirish'],a:'**Silver Book (EPC Turnkey)** — "kalit topshirish" shartnomasi, maksimal xatarlar pudratchiga. Narx qat\'iy, buyurtmachi minimal aralashadi. Neft-gaz ob\'ektlari va elektrostansiyalar uchun ideal.'},
+        {k:['daab','dispute avoidance','adjudication'],a:'**DAAB** (Nizolarni oldini olish va ko\'rib chiqish kengashi) — FIDIC 2017 asosiy mexanizmi. Loyiha boshida tayinlangan mustaqil ekspertlar proaktiv ishlaydi. Qarorlar darhol bajariladi, ammo arbitrajda e\'tiroz bildirish mumkin.'},
+        {k:['dab','nizo'],a:'**DAB** (Nizo ko\'rib chiqish kengashi) — FIDIC 1999 mexanizmi (2017 da DAAB bilan almashtirildi). Vaqtincha majburiy qarorlar chiqaradi. Norozilik bildirish muddati — 28 kun, keyin ICC arbitraj.'},
+        {k:['eot','extension of time','muddat uzaytirish','kechikish','delay'],a:'**Muddatni uzaytirish (EOT)** — pudratchining shartnoma tugash muddatini uzaytirish huquqi. Asoslar: Variatsiyalar, fors-major, buyurtmachi kechikishlari, noqulay sharoitlar. FIDIC 1999 — 28 kun ichida bildirishnoma. Kechikkan bildirishnoma EOT huquqini yo\'qotadi.'},
+        {k:['notice','bildirishnoma','28 kun'],a:'**Bildirishnomalar** — FIDIC ning qat\'iy talabi. FIDIC 1999 — 28 kun ichida; FIDIC 2017 — "asossiz kechikmasdan". Kechikkan bildirishnoma kompensatsiya huquqini yo\'qotishi mumkin.'},
+        {k:['variation','o\'zgartirish','variaciya'],a:'**Variatsiyalar** — muhandis tomonidan buyurilgan ish hajmidagi o\'zgarishlar. Pudratchi bajarishi shart. Narx kelishilgunga qadar ish bajarilsa ham kompensatsiya huquqi saqlanadi.'},
+        {k:['forensic','delay analysis','fda','kechikish tahlili'],a:'**Forensic Delay Analysis (FDA)** — qurilish kechikishlarini SCL Protocol bo\'yicha tahlil qilish. Bridge Consult Windows Analysis, TIA va Collapsed As-Built usullarini qo\'llaydi. Arbitrajda EOT va yo\'qotishlar da\'volarini asoslash uchun ishlatiladi.'},
+        {k:['loss','expense','yo\'qotish','kompensatsiya'],a:'**Yo\'qotishlar va qo\'shimcha xarajatlar** — buyurtmachi harakatlari natijasida pudratchining yo\'qotishlarini qoplash huquqi (majburiy to\'xtatish, jadallash, yuk xarajatlari). Bridge Consult miqdorlash tahlili bilan da\'vo paketini tayyorlaydi.'},
+        {k:['fors-major','fors major','force majeure'],a:'**Fors-major** — tomonlarning nazoratidan tashqaridagi favqulodda hodisa. EOT ga haq beradi, lekin xarajat qoplanmaydi. 14 kun ichida bildirishnoma shart.'},
+        {k:['arbitraj','icc','xalqaro arbitraj'],a:'Ko\'pchilik FIDIC shartnomalari **xalqaro arbitraj** (ICC, ICSID) ni yakuniy nizo hal etish usuli sifatida nazarda tutadi. Bridge Consult barcha bosqichlarda: pozitsiya tayyorlash, ekspert xulosalari.'},
+        {k:['xizmatlar','bridge consult','nima qilasiz'],a:'**Bridge Consult** — Markaziy Osiyodagi FIDIC shartnoma injiniringi yetakchisi. Xizmatlar: FIDIC konsultatsiyalar, Forensic Delay Analysis va da\'volar, nizo ko\'rib chiqish (DAAB/mediatsiya/ICC), sertifikatlangan FIDIC treninglar. Aloqa: +998 33 000 15 30 | info@bridgeconsult.uz'},
+        {k:['aloqa','telefon','bog\'lanish','qo\'ng\'iroq'],a:'**Bridge Consult — Aloqa:**\n☎️ +998 33 000 15 30\n✉️ info@bridgeconsult.uz\n🌐 bridgeconsult.uz\n\nIsh kunlari (09:00–18:00 UTC+5).'},
+    ];
+    function bcLocalSearch(q){
+        q=q.toLowerCase();var best=null,bs=0;
+        BC_KB.forEach(function(item){
+            var s=0;item.k.forEach(function(kw){if(q.indexOf(kw.toLowerCase())>=0)s+=2;});
+            if(s>bs){bs=s;best=item;}
+        });
+        return bs>=2?best:null;
+    }
+    var msgs = [], open = false;
+    var panel = document.getElementById('bc-chat-panel');
+    var msgsEl = document.getElementById('bc-chat-msgs');
+
+    function bcInit() {
+        if (msgsEl.children.length === 0) bcAddMsg('bot', 'Salom! FIDIC shartnomalari, nizo hal etish yoki Bridge Consult xizmatlari haqida savol bering. Murakkab holatlarda mutaxassislarimiz bilan bog\'layman.');
+    }
+
+    window.bcToggle = function() {
+        open = !open;
+        panel.style.display = open ? 'flex' : 'none';
+        document.body.classList.toggle('chat-open', open);
+        if (open) { bcInit(); setTimeout(function(){ document.getElementById('bc-chat-input').focus(); }, 100); }
     };
-    function bcAddMsg(t,x){var el=document.createElement('div');el.className='bc-msg bc-msg-'+(t==='bot'?'bot':'user');el.textContent=x;msgsEl.appendChild(el);msgsEl.scrollTop=msgsEl.scrollHeight;return el;}
-    function bcAddTyping(){var id='bc-typing-'+Date.now(),el=document.createElement('div');el.className='bc-msg-typing';el.id=id;el.innerHTML='<span class="bc-dot"></span><span class="bc-dot"></span><span class="bc-dot"></span>';msgsEl.appendChild(el);msgsEl.scrollTop=msgsEl.scrollHeight;return id;}
-    function bcRemoveTyping(id){var el=document.getElementById(id);if(el)el.remove();}
+
+    window.bcKey = function(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); bcSend(); } };
+
+    window.bcAutoSize = function(el) {
+        el.style.height = 'auto';
+        el.style.height = Math.min(el.scrollHeight, 90) + 'px';
+    };
+
+    window.bcQuickReply = function(text) {
+        var qr = document.getElementById('bc-quick');
+        if (qr) qr.style.display = 'none';
+        var input = document.getElementById('bc-chat-input');
+        input.value = text;
+        bcSend();
+    };
+
+    function bcMarkdown(text) {
+        var s = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        s = s.replace(/\*\*(.*?)\*\*/gs,'<strong>$1</strong>');
+        s = s.replace(/\*(.*?)\*/gs,'<em>$1</em>');
+        s = s.replace(/^[\u2022\-]\s(.+)/gm,'<li>$1</li>');
+        s = s.replace(/((?:<li>.*<\/li>\n?)+)/g,'<ul>$1</ul>');
+        s = s.replace(/\n\n+/g,'<br><br>');
+        s = s.replace(/\n/g,'<br>');
+        return s;
+    }
+
+    window.bcSend = function() {
+        var qr = document.getElementById('bc-quick');
+        if (qr) qr.style.display = 'none';
+        var input = document.getElementById('bc-chat-input');
+        var text = input.value.trim();
+        if (!text) return;
+        if (!BC_API_KEY) { bcAddMsg('bot', 'Javob olishning iloji bo\'lmadi. Qo\'ng\'iroq qiling: +998 33 000 15 30'); return; }
+        bcAddMsg('user', text);
+        msgs.push({ role: 'user', content: text });
+        input.value = ''; input.style.height = 'auto';
+        document.getElementById('bc-chat-send').disabled = true;
+        var typingId = bcAddTyping();
+        fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-api-key': BC_API_KEY,
+                'anthropic-version': '2023-06-01',
+                'anthropic-dangerous-allow-browser': 'true'
+            },
+            body: JSON.stringify({ model: BC_MODEL, max_tokens: 800, system: BC_SYSTEM, messages: msgs.slice(-10), stream: true })
+        })
+        .then(function(response) {
+            bcRemoveTyping(typingId);
+            if (!response.ok) {
+                bcAddMsg('bot', 'Javob olishning iloji bo\'lmadi. Qo\'ng\'iroq qiling: +998 33 000 15 30');
+                document.getElementById('bc-chat-send').disabled = false;
+                document.getElementById('bc-chat-input').focus();
+                return;
+            }
+            var reader = response.body.getReader();
+            var decoder = new TextDecoder();
+            var msgEl = bcAddMsg('bot', '');
+            var fullText = '', buf = '';
+            function read() {
+                reader.read().then(function(res) {
+                    if (res.done) {
+                        if (fullText) msgs.push({ role: 'assistant', content: fullText });
+                        document.getElementById('bc-chat-send').disabled = false;
+                        document.getElementById('bc-chat-input').focus();
+                        return;
+                    }
+                    buf += decoder.decode(res.value, { stream: true });
+                    var lines = buf.split('\n'); buf = lines.pop();
+                    lines.forEach(function(line) {
+                        if (!line.startsWith('data: ')) return;
+                        var d = line.slice(6).trim();
+                        if (!d || d === '[DONE]') return;
+                        try {
+                            var ev = JSON.parse(d);
+                            if (ev.type === 'content_block_delta' && ev.delta && ev.delta.type === 'text_delta') {
+                                fullText += ev.delta.text;
+                                msgEl.innerHTML = bcMarkdown(fullText);
+                                msgsEl.scrollTop = msgsEl.scrollHeight;
+                            }
+                        } catch(e) {}
+                    });
+                    read();
+                }).catch(function() {
+                    document.getElementById('bc-chat-send').disabled = false;
+                    document.getElementById('bc-chat-input').focus();
+                    if (!fullText && msgEl.parentNode) {
+                        msgEl.parentNode.removeChild(msgEl);
+                        var _l=bcLocalSearch(text);if(_l){bcAddMsg('bot',_l.a);}else{bcAddMsg('bot','Ulanish xatosi. Qo\'ng\'iroq qiling: **+998 33 000 15 30**');}
+                    }
+                });
+            }
+            read();
+        })
+        .catch(function() {
+            bcRemoveTyping(typingId);
+            var _l=bcLocalSearch(text);if(_l){bcAddMsg('bot',_l.a);}else{bcAddMsg('bot','Ulanish xatosi. Qo\'ng\'iroq qiling: **+998 33 000 15 30**');}
+            document.getElementById('bc-chat-send').disabled = false;
+            document.getElementById('bc-chat-input').focus();
+        });
+    };
+
+    function bcAddMsg(type, text) {
+        var el = document.createElement('div');
+        el.className = 'bc-msg bc-msg-' + (type === 'bot' ? 'bot' : 'user');
+        if (type === 'bot') el.innerHTML = bcMarkdown(text);
+        else el.textContent = text;
+        msgsEl.appendChild(el);
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+        return el;
+    }
+
+    function bcAddTyping() {
+        var id = 'bc-typing-' + Date.now();
+        var el = document.createElement('div');
+        el.className = 'bc-msg-typing'; el.id = id;
+        el.innerHTML = '<span class="bc-dot"></span><span class="bc-dot"></span><span class="bc-dot"></span>';
+        msgsEl.appendChild(el);
+        msgsEl.scrollTop = msgsEl.scrollHeight;
+        return id;
+    }
+
+    function bcRemoveTyping(id) {
+        var el = document.getElementById(id);
+        if (el) el.remove();
+    }
 })();
 </script>
 

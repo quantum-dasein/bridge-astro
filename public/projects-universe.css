@@ -1,0 +1,280 @@
+/* ============================================================
+   Bridge Consult — 3D Project Universe
+   Shared styles for projects.html (RU / EN / UZ)
+   ============================================================ */
+
+#universe {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    color: #fff;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.uni-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse 85% 80% at 50% 42%, #2b2723 0%, #1a1714 55%, #0c0b0a 100%);
+}
+.uni-bg::after {
+    content: ""; position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+    opacity: 0.04; mix-blend-mode: overlay; pointer-events: none;
+}
+
+#uni-canvas-wrap { position: absolute; inset: 0; z-index: 1; }
+#uni-canvas-wrap canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }
+
+/* ── Node labels (HTML, positioned by JS) ───────────────── */
+#uni-labels { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+
+.uni-label {
+    position: absolute; left: 0; top: 0;
+    display: flex; align-items: center; gap: 0.6rem;
+    background: rgba(20,18,16,0.55);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    border: 1px solid rgba(138,123,102,0.25);
+    border-radius: 999px;
+    padding: 0.35rem 0.95rem 0.35rem 0.35rem;
+    margin: 0;
+    cursor: pointer; pointer-events: auto;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.35s ease, border-color 0.25s, background 0.25s, box-shadow 0.25s;
+    font-family: Inter, system-ui, sans-serif; color: #fff; white-space: nowrap;
+    will-change: left, top, opacity;
+}
+.uni-label:hover, .uni-label.is-hover {
+    border-color: rgba(138,123,102,0.9);
+    background: rgba(42,35,28,0.9);
+    box-shadow: 0 12px 34px rgba(0,0,0,0.55), 0 0 0 4px rgba(138,123,102,0.08);
+}
+.uni-thumb {
+    width: 42px; height: 42px; border-radius: 50%; object-fit: cover;
+    border: 1px solid rgba(138,123,102,0.5); flex-shrink: 0; background: #1a1714;
+}
+.uni-label-txt { display: flex; flex-direction: column; line-height: 1.15; text-align: left; }
+.uni-num { font-size: 9px; font-weight: 700; letter-spacing: 0.2em; color: #8A7B66; }
+.uni-cat { font-size: 8px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-top: 1px; }
+.uni-name { font-size: 12.5px; font-weight: 600; color: #fff; max-width: 190px; overflow: hidden; text-overflow: ellipsis; }
+
+/* ── Heading overlay ────────────────────────────────────── */
+.uni-head {
+    position: absolute; z-index: 5; top: 0; left: 0; right: 0;
+    padding: 6.5rem 1.5rem 0; pointer-events: none;
+    animation: uni-fade-up 1s cubic-bezier(0.16,1,0.3,1) both;
+}
+.uni-head-inner { max-width: 1280px; margin: 0 auto; }
+/* keep container click-through for drag, but let the text be selectable */
+.uni-eyebrow, .uni-h1, .uni-sub { pointer-events: auto; -webkit-user-select: text; user-select: text; }
+.uni-h1, .uni-sub { cursor: text; }
+.uni-eyebrow {
+    display: flex; align-items: center; gap: 0.8rem;
+    color: #8A7B66; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; font-size: 11px; margin-bottom: 1rem;
+}
+.uni-eyebrow span { width: 2rem; height: 1px; background: #8A7B66; }
+.uni-eyebrow em { font-style: normal; color: rgba(255,255,255,0.3); letter-spacing: 0.2em; }
+.uni-h1 { font-size: clamp(1.9rem, 5vw, 3.6rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; color: #fff; max-width: 16em; }
+.uni-sub { color: rgba(255,255,255,0.55); font-weight: 300; margin-top: 1.1rem; max-width: 30rem; font-size: clamp(0.85rem, 1.4vw, 1rem); line-height: 1.6; }
+
+@media (min-width: 768px) { .uni-head { padding: 8rem 3rem 0; } }
+
+/* mobile: circular photo-marker + readable name caption below */
+@media (max-width: 640px) {
+    .uni-label { flex-direction: column; gap: 0.3rem; padding: 0; background: none; border: none;
+        -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; }
+    .uni-label:hover, .uni-label.is-hover { background: none; border: none; box-shadow: none; }
+    .uni-thumb { width: 42px; height: 42px; box-shadow: 0 4px 16px rgba(0,0,0,0.55); }
+    .uni-label.is-hover .uni-thumb { border-color: rgba(138,123,102,1); }
+    .uni-label-txt { display: block; text-align: center; }
+    .uni-num, .uni-cat { display: none; }
+    .uni-name {
+        font-size: 9.5px; font-weight: 600; max-width: 98px; white-space: normal; line-height: 1.18;
+        text-align: center; color: #fff; background: rgba(16,14,11,0.74); padding: 3px 7px; border-radius: 7px;
+        -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); border: 1px solid rgba(138,123,102,0.22);
+    }
+
+    /* (mobile control positioning lives at the very end of this file so it
+       wins the cascade over the base .uni-hint / .uni-auto rules) */
+
+    /* fallback keeps the full horizontal pills */
+    #uni-labels.uni-fallback .uni-label { flex-direction: row; padding: 0.35rem 0.95rem 0.35rem 0.35rem;
+        gap: 0.6rem; background: rgba(20,18,16,0.55); border: 1px solid rgba(138,123,102,0.25); }
+    #uni-labels.uni-fallback .uni-name { background: none; border: none; padding: 0; max-width: 190px;
+        -webkit-backdrop-filter: none; backdrop-filter: none; }
+    #uni-labels.uni-fallback .uni-num, #uni-labels.uni-fallback .uni-cat { display: block; }
+}
+
+/* ── Hint + auto-rotate ─────────────────────────────────── */
+.uni-hint {
+    position: absolute; z-index: 5; left: 1.5rem; bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.55rem;
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+    pointer-events: none;
+}
+.uni-hint svg { width: 16px; height: 16px; opacity: 0.7; }
+@media (min-width: 768px) { .uni-hint { left: 3rem; bottom: 2rem; } }
+
+.uni-auto {
+    position: absolute; z-index: 6; right: 1.5rem; bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.55rem;
+    background: rgba(20,18,16,0.55); border: 1px solid rgba(138,123,102,0.3);
+    color: rgba(255,255,255,0.7); border-radius: 999px; padding: 0.55rem 0.95rem;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer;
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    font-family: Inter, system-ui, sans-serif; transition: border-color 0.25s, color 0.25s;
+}
+.uni-auto:hover { border-color: rgba(138,123,102,0.8); color: #fff; }
+.uni-auto-dot { width: 8px; height: 8px; border-radius: 50%; background: #555; transition: 0.25s; }
+.uni-auto.is-on .uni-auto-dot { background: #8A7B66; box-shadow: 0 0 10px #8A7B66; }
+@media (min-width: 768px) { .uni-auto { right: 3rem; bottom: 2rem; } }
+
+/* ── Loading ────────────────────────────────────────────── */
+.uni-loading {
+    position: absolute; inset: 0; z-index: 7;
+    display: flex; align-items: center; justify-content: center; gap: 0.7rem;
+    color: rgba(255,255,255,0.5); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    background: #16140f; transition: opacity 0.6s ease;
+}
+.uni-loading.hide { opacity: 0; pointer-events: none; }
+.uni-spinner { width: 16px; height: 16px; border: 2px solid rgba(138,123,102,0.25); border-top-color: #8A7B66; border-radius: 50%; animation: uni-spin 1s linear infinite; }
+@keyframes uni-spin { to { transform: rotate(360deg); } }
+@keyframes uni-fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── Fallback (no WebGL / THREE failed) ─────────────────── */
+#uni-labels.uni-fallback {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: 1.25rem; padding: 11rem 1.5rem 4rem; pointer-events: auto;
+}
+#uni-labels.uni-fallback .uni-label {
+    position: relative !important; left: auto !important; top: auto !important;
+    transform: none !important; opacity: 1 !important;
+}
+#uni-labels.uni-fallback ~ #uni-canvas-wrap { display: none; }
+
+/* ── Detail overlay ─────────────────────────────────────── */
+.uni-detail {
+    position: fixed; inset: 0; z-index: 120;
+    display: none; align-items: flex-end; justify-content: center;
+}
+.uni-detail.is-open { display: flex; }
+.uni-detail-backdrop {
+    position: absolute; inset: 0; background: rgba(8,7,6,0.75);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    opacity: 0; transition: opacity 0.4s ease;
+}
+.uni-detail.is-open .uni-detail-backdrop { opacity: 1; }
+.uni-detail-panel {
+    position: relative; width: 100%; max-width: 1080px; max-height: 92vh;
+    margin: 0; background: #F5F4F2; border-radius: 1.75rem 1.75rem 0 0;
+    box-shadow: 0 -30px 80px rgba(0,0,0,0.6); overflow: hidden;
+    transform: translateY(48px); opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease;
+}
+.uni-detail.is-open .uni-detail-panel { transform: translateY(0); opacity: 1; }
+.uni-detail-body { max-height: 92vh; overflow-y: auto; padding: 2.5rem 1.25rem; -webkit-overflow-scrolling: touch; }
+.uni-detail-close {
+    position: absolute; top: 1rem; right: 1rem; z-index: 5;
+    width: 42px; height: 42px; border-radius: 50%; background: #fff; border: 1px solid #e5e3df;
+    color: #292724; font-size: 26px; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12); transition: 0.2s;
+}
+.uni-detail-close:hover { background: #292724; color: #fff; transform: rotate(90deg); }
+.uni-detail-card[hidden] { display: none; }
+/* the embedded article keeps its own light-theme styling */
+.uni-detail-card > article { margin-bottom: 0 !important; }
+
+@media (min-width: 768px) {
+    .uni-detail { align-items: center; }
+    .uni-detail-panel { border-radius: 1.75rem; margin: 1rem; }
+    .uni-detail-body { padding: 3.25rem 3rem; }
+}
+
+/* dark-theme awareness (site has a dark mode toggle) */
+.dark-theme .uni-detail-panel { background: #211d19; }
+.dark-theme .uni-detail-close { background: #2e2a25; border-color: rgba(255,255,255,0.1); color: #fff; }
+
+/* ============================================================
+   PDF / company-profile CTA — cosmic dark, flows from universe
+   ============================================================ */
+.uni-cta {
+    position: relative; overflow: hidden;
+    background: linear-gradient(180deg, #0c0b0a 0%, #161310 45%, #1b1815 100%);
+    padding: 5.5rem 1.5rem 6.5rem;
+    font-family: Inter, system-ui, sans-serif;
+}
+@media (min-width: 768px) { .uni-cta { padding: 8rem 2rem 9rem; } }
+/* wide dashed orbit arc descending from the universe above — visually
+   ties the CTA into the same cosmic scene as the project sphere */
+.uni-cta::before {
+    content: ""; position: absolute; left: 50%; top: -250px; width: 1100px; max-width: 178vw; height: 500px;
+    transform: translateX(-50%); border: 1px dashed rgba(138,123,102,0.22); border-radius: 50%;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 62%);
+    mask-image: linear-gradient(180deg, #000 0%, transparent 62%);
+    pointer-events: none; z-index: 1;
+}
+.uni-cta::after {
+    content: ""; position: absolute; left: 50%; top: -170px; width: 760px; max-width: 130vw; height: 340px;
+    transform: translateX(-50%); border: 1px solid rgba(138,123,102,0.14); border-radius: 50%;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 58%);
+    mask-image: linear-gradient(180deg, #000 0%, transparent 58%);
+    pointer-events: none; z-index: 1;
+}
+
+.uni-cta-glow {
+    position: absolute; left: 50%; top: 36%; width: 680px; max-width: 130vw; height: 680px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(138,123,102,0.16) 0%, transparent 62%);
+    pointer-events: none;
+}
+.uni-cta-grid {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.55;
+    background-image: linear-gradient(rgba(138,123,102,0.06) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(138,123,102,0.06) 1px, transparent 1px);
+    background-size: 54px 54px;
+    -webkit-mask-image: radial-gradient(ellipse 62% 60% at 50% 38%, #000 8%, transparent 75%);
+    mask-image: radial-gradient(ellipse 62% 60% at 50% 38%, #000 8%, transparent 75%);
+}
+/* drifting particles */
+.uni-cta-spark { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: rgba(138,123,102,0.7); box-shadow: 0 0 8px rgba(138,123,102,0.8); pointer-events: none; opacity: 0; animation: uni-drift 9s ease-in-out infinite; }
+.uni-cta-spark:nth-child(1){ left: 14%; top: 62%; animation-delay: 0s; }
+.uni-cta-spark:nth-child(2){ left: 82%; top: 30%; animation-delay: 1.6s; }
+.uni-cta-spark:nth-child(3){ left: 26%; top: 24%; animation-delay: 3.1s; }
+.uni-cta-spark:nth-child(4){ left: 70%; top: 70%; animation-delay: 4.4s; width: 2px; height: 2px; }
+.uni-cta-spark:nth-child(5){ left: 50%; top: 84%; animation-delay: 6s; }
+@keyframes uni-drift { 0%{ opacity:0; transform: translateY(14px);} 25%,70%{ opacity:1;} 100%{ opacity:0; transform: translateY(-22px);} }
+
+.uni-cta-inner { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; text-align: center; color: #fff; }
+
+.uni-cta-doc { position: relative; width: 104px; height: 104px; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center; }
+.uni-cta-doc-ring { position: absolute; inset: -8px; border-radius: 50%; border: 1px dashed rgba(138,123,102,0.45); animation: uni-spin 20s linear infinite; }
+.uni-cta-doc-ring::after { content: ""; position: absolute; top: -4px; left: 50%; width: 7px; height: 7px; border-radius: 50%; background: #8A7B66; box-shadow: 0 0 12px #8A7B66; transform: translateX(-50%); }
+.uni-cta-doc-core { position: absolute; inset: 14px; border-radius: 50%; background: radial-gradient(circle at 50% 35%, rgba(138,123,102,0.22), rgba(20,16,11,0.6)); border: 1px solid rgba(138,123,102,0.3); display: flex; align-items: center; justify-content: center; }
+.uni-cta-doc-icon { width: 40px; height: 40px; color: #cdb796; }
+.uni-cta-ext { position: absolute; bottom: 4px; right: 2px; font-size: 9px; font-weight: 800; letter-spacing: 0.06em; background: #8A7B66; color: #16140f; padding: 2px 6px; border-radius: 5px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+
+.uni-cta-eyebrow { display: inline-flex; align-items: center; gap: 0.6rem; color: #8A7B66; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; font-size: 10px; margin-bottom: 1.1rem; }
+.uni-cta-eyebrow span { width: 1.6rem; height: 1px; background: #8A7B66; }
+.uni-cta-h2 { font-size: clamp(1.55rem, 3.6vw, 2.4rem); font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 1.1rem; color: #fff; }
+.uni-cta-p { color: rgba(255,255,255,0.55); font-weight: 300; line-height: 1.7; max-width: 34rem; margin: 0 auto 2.2rem; font-size: clamp(0.9rem, 1.4vw, 1.02rem); }
+
+.uni-cta-btn { position: relative; display: inline-flex; align-items: center; gap: 0.75rem; overflow: hidden; background: #8A7B66; color: #16140f; padding: 1.05rem 2.2rem; border-radius: 999px; font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; box-shadow: 0 18px 40px -12px rgba(138,123,102,0.6); transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s; }
+.uni-cta-btn svg { width: 19px; height: 19px; position: relative; z-index: 2; }
+.uni-cta-btn span { position: relative; z-index: 2; }
+.uni-cta-btn:hover { transform: translateY(-3px); box-shadow: 0 26px 55px -10px rgba(138,123,102,0.78); }
+.uni-cta-btn::before { content: ""; position: absolute; top: 0; left: -130%; width: 55%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,0.55), transparent); transform: skewX(-18deg); transition: left 0.7s ease; z-index: 1; }
+.uni-cta-btn:hover::before { left: 150%; }
+
+.uni-cta-meta { margin-top: 1.6rem; display: flex; align-items: center; justify-content: center; gap: 0.55rem; flex-wrap: wrap; }
+.uni-cta-chip { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.42); border: 1px solid rgba(138,123,102,0.25); border-radius: 999px; padding: 0.42rem 0.8rem; }
+.uni-cta-chip svg { width: 12px; height: 12px; color: #8A7B66; }
+
+/* ── mobile control positioning (placed last to win the cascade) ── */
+@media (max-width: 640px) {
+    .uni-hint {
+        display: block; left: 50%; right: auto; transform: translateX(-50%); bottom: 4.7rem;
+        width: auto; max-width: 80vw; text-align: center; line-height: 1.5;
+    }
+    .uni-hint svg { display: inline-block; vertical-align: -3px; margin-right: 0.35rem; }
+    .uni-auto { left: 50%; right: auto; transform: translateX(-50%); bottom: 1.3rem; }
+}

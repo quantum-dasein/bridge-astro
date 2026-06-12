@@ -10,8 +10,8 @@
     {
       "name": "static-public",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["http-server", "public", "-p", "8080", "--cors", "-c-1"],
-      "port": 8080
+      "runtimeArgs": ["http-server", "public", "-p", "8099", "--cors", "-c-1"],
+      "port": 8099
     }
   ]
 }

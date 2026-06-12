@@ -66,7 +66,7 @@ html {
 
 /* Эффект матового стекла (Glassmorphism) для карточек */
 .glass-card {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(26, 24, 22, 0.6);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.05);
