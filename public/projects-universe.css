@@ -3,18 +3,30 @@
    Shared styles for projects.html (RU / EN / UZ)
    ============================================================ */
 
+/* ── shared scene wrapper: universe + PDF CTA live in ONE galaxy ── */
+.uni-scene {
+    position: relative;
+    color: #fff;
+    overflow: hidden;
+    isolation: isolate;
+    background: #0c0b0a;
+}
+
 #universe {
     position: relative;
     min-height: 100vh;
     min-height: 100svh;
     color: #fff;
-    overflow: hidden;
-    isolation: isolate;
 }
 
 .uni-bg {
     position: absolute; inset: 0; z-index: 0;
-    background: radial-gradient(ellipse 85% 80% at 50% 42%, #2b2723 0%, #1a1714 55%, #0c0b0a 100%);
+    /* warm core glow sits behind the sphere (~first viewport), then the same
+       deep space continues seamlessly down behind the document CTA */
+    background:
+        radial-gradient(ellipse 78% 58vh at 50% 46vh, #2b2723 0%, #1a1714 62%, rgba(26,23,20,0) 100%),
+        radial-gradient(ellipse 55% 38vh at 50% 108vh, rgba(138,123,102,0.10) 0%, rgba(138,123,102,0) 70%),
+        linear-gradient(180deg, #0e0d0b 0%, #12100d 45%, #181512 78%, #1b1815 100%);
 }
 .uni-bg::after {
     content: ""; position: absolute; inset: 0;
@@ -199,7 +211,8 @@
    ============================================================ */
 .uni-cta {
     position: relative; overflow: hidden;
-    background: linear-gradient(180deg, #0c0b0a 0%, #161310 45%, #1b1815 100%);
+    /* transparent: the shared .uni-scene galaxy shows through */
+    background: transparent;
     padding: 5.5rem 1.5rem 6.5rem;
     font-family: Inter, system-ui, sans-serif;
 }
@@ -219,6 +232,39 @@
     -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 58%);
     mask-image: linear-gradient(180deg, #000 0%, transparent 58%);
     pointer-events: none; z-index: 1;
+}
+
+/* ── light beam: thin luminous tether from the sphere down to the document ── */
+#universe::after {
+    content: ""; position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
+    width: 2px; height: 24vh; z-index: 3; pointer-events: none;
+    background: linear-gradient(180deg, rgba(138,123,102,0) 0%, rgba(138,123,102,0.35) 60%, rgba(205,183,150,0.6) 100%);
+}
+.uni-beam {
+    position: absolute; left: 50%; top: 0; transform: translateX(-50%);
+    width: 2px; height: calc(5.5rem + 8px); z-index: 1; pointer-events: none;
+    background: linear-gradient(180deg, rgba(205,183,150,0.6) 0%, rgba(138,123,102,0.45) 55%, rgba(205,183,150,0.85) 100%);
+}
+@media (min-width: 768px) { .uni-beam { height: calc(8rem + 8px); } }
+/* travelling pulse */
+.uni-beam::before {
+    content: ""; position: absolute; left: 50%; transform: translateX(-50%);
+    width: 5px; height: 14px; border-radius: 999px;
+    background: linear-gradient(180deg, rgba(232,217,191,0), #e8d9bf, rgba(232,217,191,0));
+    box-shadow: 0 0 12px 2px rgba(205,183,150,0.8);
+    animation: uni-beam-drop 2.6s ease-in-out infinite;
+}
+@keyframes uni-beam-drop {
+    0%   { top: -10%; opacity: 0; }
+    18%  { opacity: 1; }
+    82%  { opacity: 1; }
+    100% { top: 96%; opacity: 0; }
+}
+/* glowing anchor where the beam meets the document orbit */
+.uni-beam::after {
+    content: ""; position: absolute; left: 50%; bottom: -5px; transform: translateX(-50%);
+    width: 9px; height: 9px; border-radius: 50%;
+    background: #cdb796; box-shadow: 0 0 16px 5px rgba(138,123,102,0.65);
 }
 
 .uni-cta-glow {
