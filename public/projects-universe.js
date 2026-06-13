@@ -190,9 +190,9 @@
             var glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: gtex, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0.9 }));
             glow.scale.set(0.6, 0.6, 1); ng.add(glow);
 
-            // invisible larger hit target
+            // invisible larger hit target — bigger on mobile for easier tapping
             var hit = new THREE.Mesh(
-                new THREE.SphereGeometry(0.3, 12, 12),
+                new THREE.SphereGeometry(W < 768 ? 0.52 : 0.3, 12, 12),
                 new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false })
             );
             hit.userData.idx = i; ng.add(hit);
@@ -202,7 +202,13 @@
 
         layoutScene();
         wireInput();
-        window.addEventListener('resize', layoutScene);
+        // iOS Safari fires resize when the address bar shows/hides (height-only change).
+        // Only re-layout when the WIDTH changes to prevent the planet jumping on scroll.
+        var _resizeW = wrap.clientWidth;
+        window.addEventListener('resize', function () {
+            var W = wrap.clientWidth;
+            if (W !== _resizeW) { _resizeW = W; layoutScene(); }
+        });
 
         if (loading) { loading.classList.add('hide'); setTimeout(function () { if (loading) loading.style.display = 'none'; }, 700); }
         animate();
