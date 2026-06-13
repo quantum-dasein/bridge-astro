@@ -92,10 +92,11 @@
 
 /* mobile: circular photo-marker + readable name caption below */
 @media (max-width: 640px) {
-    .uni-label { flex-direction: column; gap: 0.3rem; padding: 0; background: none; border: none;
-        -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; }
+    .uni-label { flex-direction: column; gap: 0.3rem; padding: 0.35rem; background: none; border: none;
+        -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none;
+        min-width: 68px; min-height: 68px; align-items: center; justify-content: center; }
     .uni-label:hover, .uni-label.is-hover { background: none; border: none; box-shadow: none; }
-    .uni-thumb { width: 42px; height: 42px; box-shadow: 0 4px 16px rgba(0,0,0,0.55); }
+    .uni-thumb { width: 52px; height: 52px; box-shadow: 0 4px 16px rgba(0,0,0,0.55); }
     .uni-label.is-hover .uni-thumb { border-color: rgba(138,123,102,1); }
     .uni-label-txt { display: block; text-align: center; }
     .uni-num, .uni-cat { display: none; }
@@ -347,4 +348,5 @@
     }
     .uni-hint svg { display: inline-block; vertical-align: -3px; margin-right: 0.35rem; }
     .uni-auto { left: 50%; right: auto; transform: translateX(-50%); bottom: 1.3rem; }
+    .uni-cta { padding-top: 9rem; }
 }
