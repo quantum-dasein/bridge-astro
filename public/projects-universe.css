@@ -236,6 +236,9 @@
    ============================================================ */
 .uni-cta {
     position: relative; overflow: hidden;
+    /* z-index: 2 puts CTA above the canvas (z-index: 1) so touches here
+       use default scroll instead of the canvas's touch-action: none */
+    z-index: 2;
     /* transparent: the shared .uni-scene galaxy shows through */
     background: transparent;
     padding: 5.5rem 1.5rem 6.5rem;
@@ -348,5 +351,9 @@
     }
     .uni-hint svg { display: inline-block; vertical-align: -3px; margin-right: 0.35rem; }
     .uni-auto { left: 50%; right: auto; transform: translateX(-50%); bottom: 1.3rem; }
+    /* push CTA well below the planet */
+    #universe { min-height: 118svh; min-height: 118vh; }
     .uni-cta { padding-top: 9rem; }
+    /* elliptical orbit arcs overlap the planet on narrow screens — hide them */
+    .uni-cta::before, .uni-cta::after { display: none; }
 }

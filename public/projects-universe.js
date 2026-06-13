@@ -232,14 +232,21 @@
     /* ---- Input ---------------------------------------------- */
     function wireInput() {
         var dom = renderer.domElement;
+        var univEl = document.getElementById('universe');
         dom.style.cursor = 'grab';
         dom.addEventListener('pointerdown', function (e) {
+            // touches that start below #universe (in the CTA) should scroll, not rotate
+            if (univEl) {
+                var r = univEl.getBoundingClientRect();
+                if (e.clientY > r.bottom) return;
+            }
             isDown = true; moved = false; sx = lx = e.clientX; sy = ly = e.clientY;
             dom.style.cursor = 'grabbing';
             try { dom.setPointerCapture(e.pointerId); } catch (er) {}
         });
         dom.addEventListener('pointermove', function (e) {
             if (isDown) {
+                e.preventDefault(); // stop page scroll while dragging the sphere
                 var dx = e.clientX - lx, dy = e.clientY - ly; lx = e.clientX; ly = e.clientY;
                 if (Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy) > 6) moved = true;
                 universe.rotation.y += dx * 0.006;
@@ -248,7 +255,7 @@
             } else {
                 updateHover(e);
             }
-        });
+        }, { passive: false });
         dom.addEventListener('pointerup', function (e) {
             dom.style.cursor = 'grab';
             if (isDown && !moved) {
@@ -386,7 +393,7 @@
         camera.updateProjectionMatrix();
 
         var worldH = 2 * z * Math.tan(Math.PI * 45 / 360); // world units per canvas height
-        var targetPx = (mobile ? 0.86 : 0.72) * vp;        // planet centre in the 1st viewport
+        var targetPx = (mobile ? 0.74 : 0.72) * vp;        // planet centre in the 1st viewport
         var yOff = (1 - 2 * (targetPx / H)) * worldH / 2;
         universe.position.y = yOff;
         rings.position.y = yOff;
