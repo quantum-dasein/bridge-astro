@@ -77,12 +77,17 @@
     var velY = 0, isDown = false, moved = false, sx = 0, sy = 0, lx = 0, ly = 0;
     var tmpV = new THREE.Vector3();
 
-    // 4 node directions spread around the sphere (front / back / up / down)
+    // 8 node directions evenly spread around the sphere (longitudes 45° apart,
+    // alternating latitudes) so ~4 stay front-facing & spread at any rotation
     var DIRS = [
-        new THREE.Vector3( 1.15,  1.35,  1.7),
-        new THREE.Vector3(-1.95,  0.45,  1.35),
-        new THREE.Vector3(-1.25, -1.3,  -1.7),
-        new THREE.Vector3( 1.75, -0.6,  -1.55)
+        new THREE.Vector3( 0.26,  0.64,  0.72),
+        new THREE.Vector3( 0.93, -0.26,  0.25),
+        new THREE.Vector3( 0.66,  0.50, -0.56),
+        new THREE.Vector3( 0.07, -0.64, -0.76),
+        new THREE.Vector3(-0.55,  0.26, -0.79),
+        new THREE.Vector3(-0.85, -0.50, -0.15),
+        new THREE.Vector3(-0.58,  0.71,  0.41),
+        new THREE.Vector3(-0.34, -0.17,  0.93)
     ];
     var PR = 1.75;          // planet radius
     var NODE_R = PR + 0.95; // node orbit radius

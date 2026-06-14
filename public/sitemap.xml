@@ -125,4 +125,34 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- Статья: Узбекская арбитражная неделя 2026 (RU) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/ru-uzbek-arbitration-week-2026/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/ru-uzbek-arbitration-week-2026/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en-uzbek-arbitration-week-2026/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz-uzbek-arbitration-week-2026/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Статья: Узбекская арбитражная неделя 2026 (EN) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/en-uzbek-arbitration-week-2026/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/ru-uzbek-arbitration-week-2026/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en-uzbek-arbitration-week-2026/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz-uzbek-arbitration-week-2026/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Статья: Узбекская арбитражная неделя 2026 (UZ) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/uz-uzbek-arbitration-week-2026/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/ru-uzbek-arbitration-week-2026/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en-uzbek-arbitration-week-2026/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz-uzbek-arbitration-week-2026/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>
