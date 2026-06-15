@@ -115,7 +115,7 @@
         camera.lookAt(0, 0, 0);
 
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5)); // canvas spans the whole scene now — cap DPR for perf
         renderer.setSize(W, H);
         renderer.setClearColor(0x000000, 0);
         wrap.appendChild(renderer.domElement);
@@ -172,10 +172,10 @@
             rings.add(ring);
         });
 
-        // starfield
+        // Stars are now a single CSS layer (.uni-bg::before) spanning the WHOLE
+        // scene, so the star background is ONE consistent theme everywhere and
+        // the canvas only has to render the planet (much lighter / smoother).
         stars = new THREE.Group(); scene.add(stars);
-        stars.add(makeStars(900, 0x8A7B66, 0.04, 0.85, 6, 16));
-        stars.add(makeStars(500, 0xffffff, 0.028, 0.7, 7, 18));
 
         // project nodes
         var lineMat = new THREE.LineBasicMaterial({ color: 0x8A7B66, transparent: true, opacity: 0.22 });
@@ -362,6 +362,10 @@
 
     function animate() {
         requestAnimationFrame(animate);
+        // skip all 3D work when the canvas is scrolled out of view (big perf win
+        // while reading the document / reference list below the planet)
+        var vr = wrap.getBoundingClientRect();
+        if (vr.bottom < 0 || vr.top > (window.innerHeight || 0)) return;
         if (!isDown) {
             if (autorotate) universe.rotation.y += 0.0016;
             else { universe.rotation.y += velY; velY *= 0.94; }
@@ -395,6 +399,10 @@
         var z = zBase * (H / vp);
         camera.aspect = W / H;
         camera.position.z = z;
+        // keep fog constant at the planet's distance regardless of how tall the
+        // scene/canvas grows (otherwise a tall canvas pushes the camera far and
+        // FogExp2 would fog the planet out)
+        if (scene && scene.fog) scene.fog.density = 0.24 / z;
         camera.updateProjectionMatrix();
 
         var worldH = 2 * z * Math.tan(Math.PI * 45 / 360); // world units per canvas height
