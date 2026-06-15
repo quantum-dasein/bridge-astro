@@ -77,12 +77,17 @@
     var velY = 0, isDown = false, moved = false, sx = 0, sy = 0, lx = 0, ly = 0;
     var tmpV = new THREE.Vector3();
 
-    // 4 node directions spread around the sphere (front / back / up / down)
+    // 8 node directions evenly spread around the sphere (longitudes 45° apart,
+    // alternating latitudes) so ~4 stay front-facing & spread at any rotation
     var DIRS = [
-        new THREE.Vector3( 1.15,  1.35,  1.7),
-        new THREE.Vector3(-1.95,  0.45,  1.35),
-        new THREE.Vector3(-1.25, -1.3,  -1.7),
-        new THREE.Vector3( 1.75, -0.6,  -1.55)
+        new THREE.Vector3( 0.26,  0.64,  0.72),
+        new THREE.Vector3( 0.93, -0.26,  0.25),
+        new THREE.Vector3( 0.66,  0.50, -0.56),
+        new THREE.Vector3( 0.07, -0.64, -0.76),
+        new THREE.Vector3(-0.55,  0.26, -0.79),
+        new THREE.Vector3(-0.85, -0.50, -0.15),
+        new THREE.Vector3(-0.58,  0.71,  0.41),
+        new THREE.Vector3(-0.34, -0.17,  0.93)
     ];
     var PR = 1.75;          // planet radius
     var NODE_R = PR + 0.95; // node orbit radius
@@ -110,7 +115,7 @@
         camera.lookAt(0, 0, 0);
 
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5)); // canvas spans the whole scene now — cap DPR for perf
         renderer.setSize(W, H);
         renderer.setClearColor(0x000000, 0);
         wrap.appendChild(renderer.domElement);
@@ -167,10 +172,10 @@
             rings.add(ring);
         });
 
-        // starfield
+        // Stars are now a single CSS layer (.uni-bg::before) spanning the WHOLE
+        // scene, so the star background is ONE consistent theme everywhere and
+        // the canvas only has to render the planet (much lighter / smoother).
         stars = new THREE.Group(); scene.add(stars);
-        stars.add(makeStars(900, 0x8A7B66, 0.04, 0.85, 6, 16));
-        stars.add(makeStars(500, 0xffffff, 0.028, 0.7, 7, 18));
 
         // project nodes
         var lineMat = new THREE.LineBasicMaterial({ color: 0x8A7B66, transparent: true, opacity: 0.22 });
@@ -357,6 +362,10 @@
 
     function animate() {
         requestAnimationFrame(animate);
+        // skip all 3D work when the canvas is scrolled out of view (big perf win
+        // while reading the document / reference list below the planet)
+        var vr = wrap.getBoundingClientRect();
+        if (vr.bottom < 0 || vr.top > (window.innerHeight || 0)) return;
         if (!isDown) {
             if (autorotate) universe.rotation.y += 0.0016;
             else { universe.rotation.y += velY; velY *= 0.94; }
@@ -390,6 +399,10 @@
         var z = zBase * (H / vp);
         camera.aspect = W / H;
         camera.position.z = z;
+        // keep fog constant at the planet's distance regardless of how tall the
+        // scene/canvas grows (otherwise a tall canvas pushes the camera far and
+        // FogExp2 would fog the planet out)
+        if (scene && scene.fog) scene.fog.density = 0.24 / z;
         camera.updateProjectionMatrix();
 
         var worldH = 2 * z * Math.tan(Math.PI * 45 / 360); // world units per canvas height
