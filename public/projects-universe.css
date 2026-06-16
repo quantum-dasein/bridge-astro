@@ -388,25 +388,24 @@
 .uni-cta { padding-bottom: 2.5rem; }
 /* luminous line linking the document down into the reference list, ending in a
    soft feathered light-bloom (no hard dividing edge between the blocks) */
-.uni-link { position: relative; z-index: 1; height: 84px; pointer-events: none; }
-.uni-link::before {
-    content: ""; position: absolute; left: 50%; top: -2rem; transform: translateX(-50%);
-    width: 2px; height: calc(100% - 14px + 2rem);
-    background:
-        linear-gradient(180deg, transparent 38%, rgba(232,217,191,0.95) 50%, transparent 62%),   /* travelling pulse */
-        linear-gradient(180deg, rgba(205,183,150,0.5) 0%, rgba(138,123,102,0.25) 60%, rgba(205,183,150,0) 100%); /* static line */
-    background-size: 100% 220%, 100% 100%;
-    background-repeat: no-repeat;
-    animation: uni-link-flow 2.6s ease-in-out infinite;
+/* static line — drawn on the element itself (centred 2px), extends up toward the
+   chips. The travelling pulse + anchor dot match the sphere→document beam so both
+   connectors animate identically (light flowing DOWNWARD). */
+.uni-link {
+    position: relative; z-index: 1; height: 84px; margin-top: -2rem; pointer-events: none;
+    background: linear-gradient(180deg, rgba(205,183,150,0) 0%, rgba(205,183,150,0.5) 16%, rgba(138,123,102,0.25) 72%, rgba(205,183,150,0) 100%) center / 2px 100% no-repeat;
 }
-@keyframes uni-link-flow {
-    0%   { background-position: 0 -120%, 0 0; }
-    100% { background-position: 0 120%, 0 0; }
+.uni-link::before {   /* travelling pulse — same keyframes as .uni-beam */
+    content: ""; position: absolute; left: 50%; transform: translateX(-50%);
+    width: 5px; height: 14px; border-radius: 999px;
+    background: linear-gradient(180deg, rgba(232,217,191,0), #e8d9bf, rgba(232,217,191,0));
+    box-shadow: 0 0 12px 2px rgba(205,183,150,0.8);
+    animation: uni-beam-drop 2.6s ease-in-out infinite;
 }
-.uni-link::after {
-    content: ""; position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%);
+.uni-link::after {   /* glowing anchor where the line meets the reference list */
+    content: ""; position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%);
     width: 7px; height: 7px; border-radius: 50%; background: #e8d9bf;
-    box-shadow: 0 0 10px 3px rgba(232,217,191,0.7), 0 0 30px 12px rgba(138,123,102,0.32);
+    box-shadow: 0 0 10px 3px rgba(232,217,191,0.7), 0 0 28px 11px rgba(138,123,102,0.3);
 }
 
 #reference-list > .max-w-6xl { position: relative; z-index: 2; }
