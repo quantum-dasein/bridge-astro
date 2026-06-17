@@ -89,7 +89,7 @@
         <script>
             (function() {
                 var t = localStorage.getItem('bc-theme');
-                if (!t) { t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; localStorage.setItem('bc-theme', t); }
+                if (!t) { t = 'light'; localStorage.setItem('bc-theme', t); }
                 if (t === 'dark') document.documentElement.classList.add('dark-theme');
             })();
         </script>
@@ -479,12 +479,13 @@ document.documentElement.style.height = '';
                 <img src="bridge 2.svg" alt="Bridge Consult" class="site-logo h-9 md:h-11 object-contain relative z-[101]">
             </a>
             
-            <nav class="hidden lg:flex items-center space-x-6 lg:space-x-8">
+            <nav class="hidden 2xl:flex items-center gap-4 2xl:gap-6">
                 <a href="#about" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">О компании</a>
                 <a href="#services" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Услуги</a>
                 <a href="projects.html" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Проекты</a>
                 <a href="news/" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Новости</a>
                 <a href="#trainings" class="nav-link text-sm font-bold text-bridge-taupe hover:text-bridge-dark transition-colors whitespace-nowrap">Тренинги FIDIC</a>
+                <a href="#fidic-hub" class="nav-link text-sm font-bold text-bridge-taupe hover:text-bridge-dark transition-colors whitespace-nowrap">FIDIC.uz</a>
     
                 <div class="relative group">
                     <button type="button" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors flex items-center gap-1.5 cursor-pointer whitespace-nowrap py-4">
@@ -509,7 +510,7 @@ document.documentElement.style.height = '';
                 </div>
             </nav>
     
-            <div class="hidden lg:flex items-center space-x-4">
+            <div class="hidden 2xl:flex items-center space-x-4">
                 <div class="flex items-center space-x-2 pr-4 border-r border-gray-200">
                     <a href="https://www.linkedin.com/in/larissalk" target="_blank" class="w-9 h-9 rounded-full bg-bridge-light flex items-center justify-center text-bridge-taupe hover:bg-bridge-taupe hover:text-white transition-all duration-300 shadow-sm" title="LinkedIn">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
@@ -542,7 +543,7 @@ document.documentElement.style.height = '';
                 </div>
             </div>
     
-            <button id="mobile-menu-btn" class="lg:hidden flex flex-col justify-between w-7 h-5 text-bridge-dark focus:outline-none relative z-[101] cursor-pointer">
+            <button id="mobile-menu-btn" class="2xl:hidden flex flex-col justify-between w-7 h-5 text-bridge-dark focus:outline-none relative z-[101] cursor-pointer">
                 <span class="w-full h-[2px] bg-current transition-all duration-300 origin-left burger-line-1"></span>
                 <span class="w-full h-[2px] bg-current transition-all duration-300 burger-line-2"></span>
                 <span class="w-full h-[2px] bg-current transition-all duration-300 origin-left burger-line-3"></span>
@@ -550,7 +551,7 @@ document.documentElement.style.height = '';
         </div>
     
         <!-- МОБИЛЬНОЕ МЕНЮ -->
-        <div id="mobile-menu" class="fixed inset-0 w-full h-[100dvh] bg-white z-[100] flex flex-col p-8 transition-transform duration-500 translate-x-full lg:hidden pt-28 overflow-y-auto">
+        <div id="mobile-menu" class="fixed inset-0 w-full h-[100dvh] bg-white z-[100] flex flex-col p-8 transition-transform duration-500 translate-x-full 2xl:hidden pt-28 overflow-y-auto">
             <div class="flex items-center justify-center space-x-6 mb-10 pb-6 border-b border-gray-100 font-bold text-sm uppercase tracking-widest font-sans">
                 <a href="#" class="text-bridge-taupe border-b-2 border-bridge-taupe pb-1">RU</a>
                 <a href="EN/index.html" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-1">EN</a>
@@ -566,6 +567,7 @@ document.documentElement.style.height = '';
                 <a href="projects.html" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">Проекты</a>
                 <a href="news/" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">Новости</a>
                 <a href="#trainings" class="mobile-nav-link text-2xl font-bold text-bridge-taupe border-b border-gray-100 pb-3">Тренинги FIDIC</a>
+                <a href="#fidic-hub" class="mobile-nav-link text-2xl font-bold text-bridge-taupe border-b border-gray-100 pb-3">FIDIC.uz</a>
                 <div class="pt-4 pb-2">
                     <span class="text-gray-400 font-bold uppercase tracking-widest text-[10px] block mb-4">Экспертиза</span>
                     <div class="flex flex-col space-y-4 pl-4 border-l-2 border-gray-100">
@@ -1152,46 +1154,38 @@ document.documentElement.style.height = '';
 <!-- ======================================================== -->
 <!-- FIDIC ТРЕНИНГИ: РЕДИЗАЙН v2 — ПЛАВАЮЩИЕ КАРТОЧКИ + ТЕГИ  -->
 <!-- ======================================================== -->
-<section id="trainings" class="py-16 bg-bridge-dark relative overflow-hidden font-sans border-y border-white/5">
-
-    <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div class="absolute -top-[10%] -left-[10%] w-[50vw] h-[50vw] bg-bridge-taupe/20 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
-        <div class="absolute top-[20%] -right-[10%] w-[40vw] h-[40vw] bg-white/10 rounded-full mix-blend-screen filter blur-[120px] animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-[20%] left-[20%] w-[60vw] h-[60vw] bg-bridge-taupe/15 rounded-full mix-blend-screen filter blur-[130px] animate-blob animation-delay-4000"></div>
-        
-        <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%); -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);"></div>
+<section class="fidic-ecosystem">
+    <div class="ecosystem-bg">
+        <div class="ecosystem-planet">
+            <model-viewer
+                data-src="TrainingModel.glb"
+                auto-rotate auto-rotate-delay="0"
+                rotation-per-second="2deg"
+                camera-orbit="0deg 90deg 2.5m"
+                disable-zoom interaction-prompt="none"
+                exposure="1.5"
+                class="w-full h-full"
+                style="background: transparent;"
+            ></model-viewer>
+        </div>
     </div>
 
-    <div class="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-1/4 w-[600px] h-[600px] z-0 pointer-events-none opacity-30 mix-blend-screen" style="mask-image: radial-gradient(circle, black 30%, transparent 70%); -webkit-mask-image: radial-gradient(circle, black 40%, transparent 70%);">
-        <model-viewer
-            data-src="TrainingModel.glb"
-            auto-rotate auto-rotate-delay="0"
-            rotation-per-second="2deg"
-            camera-orbit="0deg 90deg 2.5m"
-            disable-zoom interaction-prompt="none"
-            exposure="1.5"
-            class="w-full h-full"
-            style="background: transparent;"
-        ></model-viewer>
-    </div>
+    <div class="ecosystem-shell">
+        <div id="trainings" class="ecosystem-row ecosystem-row--training scroll-mt-24">
 
-    <div class="max-w-7xl mx-auto px-6 relative z-10">
-
-        <div class="flex items-center gap-3 mb-10" data-aos="fade-right">
-            <div style="width: 1px; height: 2rem; background: linear-gradient(to bottom, transparent, #8A7B66);"></div>
-            <span class="text-bridge-taupe font-bold tracking-[0.2em] uppercase text-[9px]">Институциональное развитие</span>
+        <div class="bridge-section-kicker" data-aos="fade-right">
+            <div class="bridge-section-kicker-line"></div>
+            <span>Институциональное развитие</span>
         </div>
 
-        <div class="relative grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+        <div class="bridge-section-grid">
 
-            <div class="hidden lg:block absolute inset-y-0 pointer-events-none z-0" style="left: 50%; width: 1px; background: linear-gradient(to bottom, transparent, rgba(138,123,102,0.18) 25%, rgba(138,123,102,0.18) 75%, transparent);"></div>
+            <div class="bridge-section-copy" data-aos="fade-right" data-aos-delay="100">
 
-            <div data-aos="fade-right" data-aos-delay="100">
-
-                <h2 class="font-sans font-bold leading-[1.05] mb-5" style="letter-spacing: -0.02em;">
-                    <span class="block text-[2.5rem] md:text-[3.2rem] text-white">FIDIC</span>
-                    <span class="block text-[2.5rem] md:text-[3.2rem]" style="color: #c5bdb3;">сертифицированные</span>
-                    <span class="block text-[2.5rem] md:text-[3.2rem]" style="color: #8A7B66;">тренинги</span>
+                <h2 class="bridge-section-heading">
+                    <span class="bridge-heading-primary">FIDIC</span>
+                    <span class="bridge-heading-secondary">сертифицированные</span>
+                    <span class="bridge-heading-accent">тренинги</span>
                 </h2>
 
                 <div class="flex items-center gap-2 mb-6">
@@ -1199,35 +1193,35 @@ document.documentElement.style.height = '';
                     <div class="w-1.5 h-1.5 rounded-full bg-bridge-taupe opacity-50"></div>
                 </div>
 
-                <p class="text-gray-400 font-light text-base leading-relaxed mb-8 max-w-sm">
+                <p class="bridge-section-lead">
                     Эксперты Bridge Consult проводят профильные семинары по практическому применению проформ FIDIC, управлению рисками и администрированию контрактов для заказчиков и инженеров.
                 </p>
 
-                <div class="flex flex-col gap-4 mb-10 max-w-md">
-                    <div class="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm transition-colors hover:bg-white/10 hover:border-bridge-taupe/30">
-                        <div class="w-10 h-10 rounded-full bg-bridge-taupe/10 border border-bridge-taupe/20 flex items-center justify-center shrink-0 mt-0.5">
+                <div class="bridge-feature-grid">
+                    <div class="bridge-feature-card">
+                        <div class="bridge-icon-box">
                             <svg class="w-5 h-5 text-bridge-taupe" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                         </div>
                         <div>
-                            <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-1.5">Корпоративное обучение</h4>
-                            <p class="text-gray-400 text-[11px] leading-relaxed">Индивидуальные программы адаптации вашей проектной команды под международные стандарты и требования МФИ.</p>
+                            <h4 class="bridge-feature-title">Корпоративное обучение</h4>
+                            <p class="bridge-feature-desc">Индивидуальные программы адаптации вашей проектной команды под международные стандарты и требования МФИ.</p>
                         </div>
                     </div>
 
-                    <div class="flex items-start gap-4 p-5 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm transition-colors hover:bg-white/10 hover:border-bridge-taupe/30">
-                        <div class="w-10 h-10 rounded-full bg-bridge-taupe/10 border border-bridge-taupe/20 flex items-center justify-center shrink-0 mt-0.5">
+                    <div class="bridge-feature-card">
+                        <div class="bridge-icon-box">
                             <svg class="w-5 h-5 text-bridge-taupe" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                         </div>
                         <div>
-                            <h4 class="text-white text-xs font-bold uppercase tracking-widest mb-1.5">Аккредитованные эксперты</h4>
-                            <p class="text-gray-400 text-[11px] leading-relaxed">Семинары проводят сертифицированные инженеры-консультанты FIDIC с реальным опытом разрешения строительных споров.</p>
+                            <h4 class="bridge-feature-title">Аккредитованные эксперты</h4>
+                            <p class="bridge-feature-desc">Семинары проводят сертифицированные инженеры-консультанты FIDIC с реальным опытом разрешения строительных споров.</p>
                         </div>
                     </div>
                 </div>
 
-                <a href="#contact-form" class="trainings-cta group inline-flex items-center gap-3 font-bold uppercase text-xs" style="color: #8A7B66; letter-spacing: 0.15em; text-decoration: none;">
+                <a href="#contact-form" class="bridge-inline-cta trainings-cta group">
                     <span>Связаться с нами</span>
-                    <span class="trainings-cta-line inline-block h-px" style="width: 1.25rem; background: #8A7B66; transition: width 0.3s ease;"></span>
+                    <span class="bridge-inline-cta-line trainings-cta-line"></span>
                     <svg class="trainings-cta-arrow w-3.5 h-3.5" style="transition: transform 0.3s ease;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
                     </svg>
@@ -1235,12 +1229,12 @@ document.documentElement.style.height = '';
 
             </div>
 
-            <div class="relative flex justify-center lg:justify-end">
+            <div class="bridge-section-media">
 
-                <div class="relative w-full" style="max-width: 500px; padding: 22px 22px 0 0;">
+                <div class="bridge-media-wrap relative" style="padding: 22px 22px 0 0;">
 
                     <div data-aos="fade-down-left" data-aos-delay="400" class="absolute top-0 right-0 z-30 animate-float-smooth">
-                        <div style="background: rgba(26,24,22,0.92); border: 1px solid rgba(138,123,102,0.45); border-radius: 14px; padding: 10px 14px; backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,0.45);">
+                        <div class="bridge-floating-card" style="padding: 10px 14px;">
                             <div style="font-size: 8px; color: rgba(138,123,102,0.8); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 3px; font-family: Inter, sans-serif; font-weight: 700;">Формат</div>
                             <div style="font-size: 11px; color: #fff; font-weight: 700; font-family: Inter, sans-serif; white-space: nowrap;">Live · Онлайн · Офлайн</div>
                         </div>
@@ -1248,13 +1242,7 @@ document.documentElement.style.height = '';
 
                     <div class="relative" data-aos="zoom-in-up" data-aos-delay="200">
 
-                        <div style="position: absolute; top: -10px; left: -10px; width: 20px; height: 20px; border-top: 1.5px solid rgba(138,123,102,0.55); border-left: 1.5px solid rgba(138,123,102,0.55); z-index: 20; pointer-events: none;"></div>
-                        <div style="position: absolute; top: -10px; right: -10px; width: 20px; height: 20px; border-top: 1.5px solid rgba(138,123,102,0.55); border-right: 1.5px solid rgba(138,123,102,0.55); z-index: 20; pointer-events: none;"></div>
-                        <div style="position: absolute; bottom: -10px; left: -10px; width: 20px; height: 20px; border-bottom: 1.5px solid rgba(138,123,102,0.55); border-left: 1.5px solid rgba(138,123,102,0.55); z-index: 20; pointer-events: none;"></div>
-                        <div style="position: absolute; bottom: -10px; right: -10px; width: 20px; height: 20px; border-bottom: 1.5px solid rgba(138,123,102,0.55); border-right: 1.5px solid rgba(138,123,102,0.55); z-index: 20; pointer-events: none;"></div>
-
-                        <div style="position: relative; border-radius: 1rem; overflow: hidden; background: black; z-index: 10; border: 1px solid rgba(255,255,255,0.11); box-shadow: 0 20px 60px rgba(0,0,0,0.65);">
-                            <div style="position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, rgba(138,123,102,0.85), transparent); z-index: 20; pointer-events: none;"></div>
+                        <div class="bridge-media-frame" style="z-index: 10;">
                             <div class="aspect-video">
                                 <video controls playsinline preload="metadata" poster="poster-training.jpg" class="w-full h-full object-cover">
                                     <source src="fidic-training.mp4" type="video/mp4">
@@ -1267,7 +1255,7 @@ document.documentElement.style.height = '';
                         </div>
 
                         <div data-aos="fade-up-right" data-aos-delay="600" class="absolute bottom-[-18px] left-[-18px] z-30 animate-float-delayed">
-                            <div style="background: rgba(138,123,102,0.12); border: 1px solid rgba(138,123,102,0.42); border-radius: 14px; padding: 10px 14px; backdrop-filter: blur(16px); box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+                            <div class="bridge-floating-card" style="padding: 10px 14px;">
                                 <div style="font-size: 8px; color: rgba(138,123,102,0.8); text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 3px; font-family: Inter, sans-serif; font-weight: 700;">Сертификация</div>
                                 <div style="display: flex; align-items: center; gap: 5px;">
                                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#8A7B66" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
@@ -1279,10 +1267,10 @@ document.documentElement.style.height = '';
                     </div>
 
                     <div class="mt-8 flex flex-wrap gap-2 relative z-20">
-                        <span data-aos="zoom-in" data-aos-delay="700" style="font-size: 9px; color: rgba(138,123,102,0.9); background: rgba(138,123,102,0.09); border: 1px solid rgba(138,123,102,0.25); border-radius: 100px; padding: 4px 12px; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 700; font-family: Inter, sans-serif; transition: all 0.3s ease;" class="hover:bg-bridge-taupe/20 cursor-default">Red Book</span>
-                        <span data-aos="zoom-in" data-aos-delay="800" style="font-size: 9px; color: rgba(138,123,102,0.9); background: rgba(138,123,102,0.09); border: 1px solid rgba(138,123,102,0.25); border-radius: 100px; padding: 4px 12px; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 700; font-family: Inter, sans-serif; transition: all 0.3s ease;" class="hover:bg-bridge-taupe/20 cursor-default">Yellow Book</span>
-                        <span data-aos="zoom-in" data-aos-delay="900" style="font-size: 9px; color: rgba(138,123,102,0.9); background: rgba(138,123,102,0.09); border: 1px solid rgba(138,123,102,0.25); border-radius: 100px; padding: 4px 12px; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 700; font-family: Inter, sans-serif; transition: all 0.3s ease;" class="hover:bg-bridge-taupe/20 cursor-default">EPC / Silver</span>
-                        <span data-aos="zoom-in" data-aos-delay="1000" style="font-size: 9px; color: rgba(138,123,102,0.9); background: rgba(138,123,102,0.09); border: 1px solid rgba(138,123,102,0.25); border-radius: 100px; padding: 4px 12px; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 700; font-family: Inter, sans-serif; transition: all 0.3s ease;" class="hover:bg-bridge-taupe/20 cursor-default">DAAB</span>
+                        <span data-aos="zoom-in" data-aos-delay="700" class="bridge-badge cursor-default">Red Book</span>
+                        <span data-aos="zoom-in" data-aos-delay="800" class="bridge-badge cursor-default">Yellow Book</span>
+                        <span data-aos="zoom-in" data-aos-delay="900" class="bridge-badge cursor-default">EPC / Silver</span>
+                        <span data-aos="zoom-in" data-aos-delay="1000" class="bridge-badge cursor-default">DAAB</span>
                     </div>
 
                 </div>
@@ -1291,12 +1279,162 @@ document.documentElement.style.height = '';
         </div>
     </div>
 
-    <style>
-        /* CTA Кнопка */
-        .trainings-cta:hover .trainings-cta-line { width: 2.5rem !important; }
-        .trainings-cta:hover .trainings-cta-arrow { transform: translateX(4px); }
 
-        /* Анимация Живых Пятен (Blob Aurora) */
+    <style>
+
+        :root {
+            --section-bg: #25241f;
+            --section-bg-mid: #2a2924;
+            --section-bg-deep: #1f1f1b;
+            --text-primary: #ffffff;
+            --text-secondary: #eee5d8;
+            --text-muted: rgba(232,224,212,0.74);
+            --border-soft: rgba(255,255,255,0.10);
+            --card-bg: rgba(255,255,255,0.045);
+            --card-bg-hover: rgba(255,255,255,0.07);
+            --accent: #a9987d;
+            --radius-card: 20px;
+            --radius-media: 22px;
+            --section-padding-y: clamp(7.5rem, 9vw, 8.75rem);
+            --container-width: 1240px;
+        }
+        .fidic-ecosystem {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 18% 16%, rgba(169,152,125,.16), transparent 34rem),
+                radial-gradient(circle at 86% 48%, rgba(255,255,255,.055), transparent 32rem),
+                linear-gradient(135deg, var(--section-bg) 0%, var(--section-bg-mid) 48%, var(--section-bg-deep) 100%);
+            color: var(--text-primary);
+            font-family: Inter, system-ui, sans-serif;
+            padding: var(--section-padding-y) 0 clamp(8rem, 10vw, 9.5rem);
+            border: 0 !important;
+            box-shadow: none !important;
+        }
+        .ecosystem-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; }
+        .ecosystem-bg::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 30% 34%, rgba(169,152,125,.12), transparent 30rem),
+                radial-gradient(circle at 72% 75%, rgba(255,255,255,.045), transparent 34rem);
+            opacity: .82;
+        }
+        .ecosystem-bg::after {
+            content: "";
+            position: absolute;
+            inset: -20%;
+            opacity: .045;
+            background-image: linear-gradient(rgba(255,255,255,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.18) 1px, transparent 1px);
+            background-size: 52px 52px;
+            mask-image: radial-gradient(ellipse at center, black 14%, transparent 72%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 14%, transparent 72%);
+            animation: bridge-grid-drift 22s linear infinite;
+        }
+        .ecosystem-planet { position: absolute; top: 8%; right: -8%; width: min(44vw, 560px); height: min(44vw, 560px); opacity: .18; mix-blend-mode: screen; filter: saturate(.85); mask-image: radial-gradient(circle, black 28%, transparent 72%); -webkit-mask-image: radial-gradient(circle, black 28%, transparent 72%); }
+        .ecosystem-shell { width: min(100% - 3rem, var(--container-width)); margin-inline: auto; position: relative; z-index: 2; }
+        .ecosystem-row { position: relative; scroll-margin-top: 120px; }
+        .ecosystem-row + .ecosystem-row, .ecosystem-row--hub { margin-top: clamp(7.5rem, 11vw, 10rem); }
+        .bridge-dark-section { background: transparent !important; border: 0 !important; box-shadow: none !important; min-height: 0 !important; padding: 0 !important; }
+        .bridge-dark-section + .bridge-dark-section { margin-top: 0 !important; }
+        .bridge-section-bg { display: none !important; }
+        .bridge-section-kicker { display: flex; align-items: center; gap: .8rem; margin-bottom: 1.8rem; }
+        .bridge-section-kicker-line { width: 1px; height: 2.15rem; background: linear-gradient(to bottom, transparent, var(--accent), transparent); }
+        .bridge-section-kicker span { color: var(--accent); font-size: .68rem; font-weight: 800; letter-spacing: .24em; text-transform: uppercase; }
+        .bridge-section-grid { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: clamp(4.5rem, 7vw, 6rem); align-items: center; }
+        .bridge-section-grid > * { min-width: 0; }
+        .bridge-section-grid--reverse { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); }
+        .bridge-section-copy { max-width: 35.5rem; }
+        .ecosystem-row--hub .bridge-section-copy { margin-left: auto; }
+        .bridge-section-heading { margin: 0 0 1.35rem; font-weight: 700; line-height: 1; letter-spacing: 0; overflow-wrap: normal; }
+        .bridge-heading-primary, .bridge-heading-secondary, .bridge-heading-accent { display: block; font-size: clamp(2.75rem, 4.45vw, 4rem); }
+        .bridge-heading-primary { color: var(--text-primary); text-shadow: 0 0 34px rgba(255,255,255,.12); }
+        .bridge-heading-secondary { color: var(--text-secondary); }
+        .bridge-heading-accent { color: var(--accent); }
+        .bridge-section-lead { max-width: 34rem; margin: 0 0 2.2rem; color: var(--text-muted); font-size: clamp(1rem, 1.25vw, 1.125rem); line-height: 1.62; font-weight: 300; }
+        .bridge-feature-grid { display: grid; gap: 1rem; margin-bottom: 2.25rem; }
+        .bridge-feature-grid--compact { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .bridge-feature-card { position: relative; display: flex; align-items: flex-start; gap: 1.05rem; padding: clamp(1.25rem, 1.8vw, 1.5rem); border-radius: var(--radius-card); background: var(--card-bg); border: 1px solid var(--border-soft); backdrop-filter: blur(14px); transition: background .22s ease, border-color .22s ease, transform .22s ease, box-shadow .22s ease; }
+        .bridge-feature-card:hover, .bridge-feature-card.fh-active { background: var(--card-bg-hover); border-color: rgba(255,255,255,.18); transform: translateY(-2px); box-shadow: 0 24px 60px -42px rgba(0,0,0,.9); }
+        .bridge-icon-box { width: 3rem; height: 3rem; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); background: rgba(169,152,125,.13); border: 1px solid rgba(169,152,125,.28); }
+        .bridge-feature-title { display: block; margin-bottom: .45rem; color: var(--text-primary); font-size: .96rem; line-height: 1.25; font-weight: 800; letter-spacing: 0; }
+        .bridge-feature-desc { display: block; color: rgba(232,224,212,.67); font-size: .88rem; line-height: 1.48; font-weight: 300; }
+        .bridge-section-media { position: relative; display: flex; justify-content: center; align-items: center; min-width: 0; }
+        .bridge-media-wrap { width: 100%; max-width: 580px; margin-inline: auto; }
+        .bridge-media-frame { position: relative; width: 100%; border-radius: var(--radius-media); overflow: hidden; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.12); box-shadow: 0 30px 80px rgba(0,0,0,.28); backdrop-filter: blur(14px); }
+        .bridge-media-frame::before { content: none !important; }
+        #trainings .aspect-video { aspect-ratio: 16 / 9; }
+        #trainings .aspect-video > video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .bridge-media-frame--portal { max-width: 560px; margin-inline: auto; padding: clamp(.8rem, 1.2vw, 1rem); overflow: hidden; transform: none !important; }
+        .bridge-media-frame--portal > .grid { display: grid; grid-template-columns: minmax(0,.82fr) minmax(0,1.34fr); gap: .625rem; }
+        .fidic-ecosystem svg { width: 1em; height: 1em; flex-shrink: 0; }
+        .bridge-icon-box svg { width: 1.25rem; height: 1.25rem; }
+        .bridge-primary-cta svg, .bridge-inline-cta svg { width: 1rem; height: 1rem; }
+        .fidic-ecosystem model-viewer { width: 100%; height: 100%; }
+        @media (min-width: 1024px) {
+            .ecosystem-row--hub .bridge-section-copy { order: 2; }
+            .ecosystem-row--hub .bridge-section-media { order: 1; }
+        }
+        .bridge-feature-card { color: inherit; text-decoration: none; }
+        .bridge-media-frame--portal, .bridge-media-frame--portal * { box-sizing: border-box; }
+        .bridge-media-frame--portal a { color: inherit; text-decoration: none; }
+        .bridge-media-frame--portal button { font: inherit; color: inherit; }
+        .bridge-media-frame--portal > .flex { display: flex; align-items: center; gap: .5rem; padding: 0 .5rem .75rem; color: rgba(232,224,212,.8); font-size: .72rem; font-weight: 600; letter-spacing: .04em; }
+        .bridge-media-frame--portal > .flex > .ml-auto { margin-left: auto; color: rgba(232,224,212,.42); font-size: .64rem; text-transform: uppercase; letter-spacing: .18em; }
+        .bridge-media-frame--portal aside, .bridge-media-frame--portal main { border-radius: 16px; border: 1px solid rgba(255,255,255,.10); background: rgba(255,255,255,.04); min-width: 0; }
+        .bridge-media-frame--portal aside { padding: .85rem; }
+        .bridge-media-frame--portal main { padding: .9rem; }
+        .bridge-media-frame--portal aside > div:first-child, .bridge-media-frame--portal main [class*="uppercase"] { color: rgba(169,152,125,.72); font-size: .64rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
+        .bridge-media-frame--portal .fh-side-panel { display: flex; align-items: center; gap: .65rem; padding: .68rem; border-radius: 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.035); color: rgba(238,229,216,.78); font-size: .78rem; font-weight: 750; margin-top: .5rem; }
+        .bridge-media-frame--portal .fh-panel-active { border-color: rgba(169,152,125,.45) !important; background: rgba(169,152,125,.14) !important; color: #fff !important; }
+        .bridge-media-frame--portal main > .flex:first-child { display: flex; align-items: center; gap: .7rem; min-height: 3.2rem; padding: .8rem .9rem; margin-bottom: .85rem; border-radius: 14px; border: 1px solid rgba(255,255,255,.14); background: rgba(20,18,16,.72); color: rgba(255,255,255,.9); }
+        .bridge-media-frame--portal .fh-chip { display: inline-flex; width: auto; margin: 0 .35rem .45rem 0; padding: .42rem .7rem; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.055); color: rgba(255,255,255,.9); font-size: .7rem; font-weight: 800; }
+        .bridge-media-frame--portal .fh-main-panel { display: block; border-radius: 16px; border: 1px solid rgba(255,255,255,.12); background: rgba(20,18,16,.55); padding: .95rem; margin-bottom: .85rem; color: rgba(238,229,216,.9); }
+        .bridge-media-frame--portal .fh-main-panel ul { margin: .65rem 0 .8rem; padding: 0; list-style: none; }
+        .bridge-media-frame--portal .fh-main-panel li { display: flex; align-items: flex-start; gap: .55rem; color: rgba(238,229,216,.86); font-size: .78rem; line-height: 1.35; margin-top: .55rem; }
+        .bridge-media-frame--portal .fh-main-panel li span:first-child { width: .38rem; height: .38rem; margin-top: .38rem; border-radius: 999px; background: var(--accent); flex: 0 0 auto; }
+        .bridge-media-frame--portal .fh-main-panel [class*="rounded-full"] { display: inline-flex; align-items: center; gap: .3rem; margin: .15rem .25rem .15rem 0; }
+        .bridge-media-frame--portal [class*="group/r"] { display: flex; align-items: center; gap: .65rem; padding: .58rem 0; border-bottom: 1px solid rgba(255,255,255,.08); color: rgba(238,229,216,.78); font-size: .78rem; }
+        .bridge-media-frame--portal [class*="group/c"] { display: flex; align-items: center; justify-content: center; gap: .65rem; width: 100%; min-height: 3rem; border-radius: 14px; border: 1px solid rgba(169,152,125,.42); background: rgba(169,152,125,.12); color: var(--accent); font-size: .72rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+
+        .bridge-primary-cta { display: inline-flex; align-items: center; justify-content: center; gap: .78rem; min-height: 3.25rem; padding: 1rem 1.8rem; border-radius: 999px; background: var(--accent); color: #171512; font-size: .78rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 22px 48px -22px rgba(169,152,125,.72); transition: transform .22s ease, background .22s ease, color .22s ease; }
+        .bridge-primary-cta:hover { transform: translateY(-2px); background: #bead91; color: #111; }
+        .bridge-inline-cta { display: inline-flex; align-items: center; gap: .8rem; color: var(--accent); font-size: .78rem; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; }
+        .bridge-inline-cta-line { width: 1.35rem; height: 1px; background: var(--accent); transition: width .25s ease; }
+        .bridge-inline-cta:hover .bridge-inline-cta-line { width: 2.75rem; }
+        .bridge-badge { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); color: rgba(255,255,255,.9); padding: .48rem .86rem; font-size: .72rem; line-height: 1; font-weight: 800; letter-spacing: .035em; transition: background .22s ease, border-color .22s ease, color .22s ease; }
+        .bridge-badge:hover { background: rgba(169,152,125,.16); border-color: rgba(169,152,125,.55); color: #fff; }
+        .bridge-floating-card { border-radius: 18px !important; background: rgba(25,23,20,.86) !important; border: 1px solid rgba(255,255,255,.14) !important; backdrop-filter: blur(16px); box-shadow: 0 18px 44px -28px rgba(0,0,0,.82) !important; }
+        #fidic-hub .fh-module-index { width: 1.65rem !important; height: 1.65rem !important; left: -.6rem !important; top: 1.05rem !important; font-size: .68rem !important; }
+        #fidic-hub .fh-main-panel, #fidic-hub .fh-side-panel { border-color: rgba(255,255,255,.12); }
+        @keyframes bridge-grid-drift { 0% { transform: translate3d(0,0,0); } 100% { transform: translate3d(52px,52px,0); } }
+        @media (max-width: 1023px) {
+            .fidic-ecosystem { padding: clamp(5.5rem, 13vw, 7rem) 0 clamp(6rem, 14vw, 7.5rem); }
+            .ecosystem-row + .ecosystem-row, .ecosystem-row--hub { margin-top: clamp(5.5rem, 14vw, 7rem); }
+            .bridge-section-grid, .bridge-section-grid--reverse { grid-template-columns: minmax(0,1fr); gap: 2.75rem; }
+            .bridge-media-frame--portal > .grid { grid-template-columns: minmax(0,1fr); }
+            .ecosystem-row--hub .bridge-section-copy { margin-left: 0; }
+            .bridge-section-copy { max-width: 100%; }
+            .bridge-section-media { justify-content: flex-start; }
+            .bridge-media-wrap { max-width: 100%; }
+            .ecosystem-planet { width: 620px; height: 620px; right: -260px; top: 15%; opacity: .12; }
+        }
+        @media (max-width: 640px) {
+            .ecosystem-shell { width: min(100% - 2rem, var(--container-width)); }
+            .bridge-heading-primary, .bridge-heading-secondary, .bridge-heading-accent { font-size: clamp(2.7rem, 13vw, 3.35rem); }
+            .bridge-feature-grid--compact { grid-template-columns: 1fr; }
+            .bridge-feature-card { padding: 1.15rem; }
+            .bridge-media-frame--portal { padding: .75rem; }
+            #trainings .bridge-media-wrap { padding: 0 !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .ecosystem-bg::after, .animate-blob, .animate-float-smooth, .animate-float-delayed { animation: none !important; }
+            .bridge-feature-card, .bridge-primary-cta, .bridge-badge { transition: none !important; }
+        }
+
+        .trainings-cta:hover .trainings-cta-arrow { transform: translateX(4px); }
         @keyframes blob {
             0% { transform: translate(0px, 0px) scale(1); }
             33% { transform: translate(30px, -50px) scale(1.1); }
@@ -1306,16 +1444,294 @@ document.documentElement.style.height = '';
         .animate-blob { animation: blob 10s infinite alternate; }
         .animation-delay-2000 { animation-delay: 2s; }
         .animation-delay-4000 { animation-delay: 4s; }
-
-        /* Анимация Левитации плашек */
         @keyframes float-smooth {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
         .animate-float-smooth { animation: float-smooth 5s ease-in-out infinite; }
-        /* Задержка, чтобы они не летали синхронно */
         .animate-float-delayed { animation: float-smooth 6s ease-in-out 2s infinite; }
     </style>
+
+
+<!-- ============ FIDIC.UZ — KNOWLEDGE HUB ============ -->
+<div id="fidic-hub" class="ecosystem-row ecosystem-row--hub bridge-dark-section--hub scroll-mt-24">
+        <div class="bridge-section-kicker" data-aos="fade-right">
+            <div class="bridge-section-kicker-line"></div>
+            <span>Наша экосистема</span>
+        </div>
+
+        <div class="bridge-section-grid bridge-section-grid--reverse">
+            <div class="bridge-section-copy lg:order-2" data-aos="fade-left" data-aos-delay="100">
+                <h2 class="bridge-section-heading">
+                    <span class="bridge-heading-primary">FIDIC.uz</span>
+                    <span class="bridge-heading-secondary"> — единая точка входа в FIDIC, EPC, Claims и DAAB</span>
+                </h2>
+                <p class="bridge-section-lead">Профессиональный портал Bridge Consult: практические материалы, глоссарий, подготовка к сертификации, FIDIC AI и прямой маршрут к экспертной консультации.</p>
+
+                <div class="relative mb-8">
+                    <div class="hidden sm:block absolute left-[8px] top-5 bottom-5 w-px bg-gradient-to-b from-bridge-taupe/0 via-bridge-taupe/30 to-bridge-taupe/0 pointer-events-none"></div>
+                    <div class="bridge-feature-grid bridge-feature-grid--compact">
+                    <a href="https://fidic.uz/knowledge" target="_blank" rel="noopener" data-fh-target="knowledge" class="bridge-feature-card fh-module fh-active group/m relative flex items-start focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/70">
+                        <span class="fh-module-index absolute -left-2 top-3 w-5 h-5 rounded-full border border-bridge-taupe/35 bg-bridge-dark text-[9px] font-bold text-bridge-taupe flex items-center justify-center">1</span>
+                        <span class="bridge-icon-box"><svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></span>
+                        <span class="min-w-0">
+                            <span class="bridge-feature-title">База знаний</span>
+                            <span class="bridge-feature-desc">Статьи, кейсы и практические разборы</span>
+                        </span>
+                        <svg class="w-3.5 h-3.5 ml-auto mt-1 text-gray-600 group-hover/m:text-bridge-taupe group-hover/m:translate-x-0.5 transition-all shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="https://fidic.uz/glossary" target="_blank" rel="noopener" data-fh-target="glossary" class="bridge-feature-card fh-module group/m relative flex items-start focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/70">
+                        <span class="fh-module-index absolute -left-2 top-3 w-5 h-5 rounded-full border border-bridge-taupe/35 bg-bridge-dark text-[9px] font-bold text-bridge-taupe flex items-center justify-center">2</span>
+                        <span class="bridge-icon-box"><svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h10"/></svg></span>
+                        <span class="min-w-0">
+                            <span class="bridge-feature-title">Глоссарий</span>
+                            <span class="bridge-feature-desc">Термины FIDIC, EPC, Claims и DAAB</span>
+                        </span>
+                        <svg class="w-3.5 h-3.5 ml-auto mt-1 text-gray-600 group-hover/m:text-bridge-taupe group-hover/m:translate-x-0.5 transition-all shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="https://fidic.uz/certification" target="_blank" rel="noopener" data-fh-target="certification" class="bridge-feature-card fh-module group/m relative flex items-start focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/70">
+                        <span class="fh-module-index absolute -left-2 top-3 w-5 h-5 rounded-full border border-bridge-taupe/35 bg-bridge-dark text-[9px] font-bold text-bridge-taupe flex items-center justify-center">3</span>
+                        <span class="bridge-icon-box"><svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg></span>
+                        <span class="min-w-0">
+                            <span class="bridge-feature-title">Подготовка к сертификации</span>
+                            <span class="bridge-feature-desc">Тесты, темы и экзаменационные треки</span>
+                        </span>
+                        <svg class="w-3.5 h-3.5 ml-auto mt-1 text-gray-600 group-hover/m:text-bridge-taupe group-hover/m:translate-x-0.5 transition-all shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="https://fidic.uz/" target="_blank" rel="noopener" data-fh-target="ai" class="bridge-feature-card fh-module group/m relative flex items-start focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/70">
+                        <span class="fh-module-index absolute -left-2 top-3 w-5 h-5 rounded-full border border-bridge-taupe/35 bg-bridge-dark text-[9px] font-bold text-bridge-taupe flex items-center justify-center">4</span>
+                        <span class="bridge-icon-box"><svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></span>
+                        <span class="min-w-0">
+                            <span class="bridge-feature-title">FIDIC AI</span>
+                            <span class="bridge-feature-desc">Экспертный ответ с source links</span>
+                        </span>
+                        <svg class="w-3.5 h-3.5 ml-auto mt-1 text-gray-600 group-hover/m:text-bridge-taupe group-hover/m:translate-x-0.5 transition-all shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                    </div>
+                </div>
+
+                <a href="https://fidic.uz/" target="_blank" rel="noopener" class="bridge-primary-cta group focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/70">
+                    Открыть FIDIC.uz
+                    <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+            </div>
+
+            <div class="bridge-section-media lg:order-1" data-aos="fade-right" data-aos-delay="150">
+                <div class="bridge-media-frame bridge-media-frame--portal fh-product">
+                    <div class="absolute -inset-px rounded-2xl pointer-events-none" style="background:linear-gradient(135deg,rgba(138,123,102,0.45),rgba(255,255,255,0.04),rgba(138,123,102,0.16)); opacity:.42; mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); padding:1px; -webkit-mask-composite:xor; mask-composite:exclude;"></div>
+                    <div class="flex items-center gap-2 px-2 pb-3 text-[11px] text-gray-300 font-medium tracking-wide">
+                        <span class="w-2 h-2 rounded-full bg-bridge-taupe shadow-[0_0_16px_rgba(138,123,102,0.85)]"></span>
+                        <span>fidic.uz</span>
+                        <span class="ml-auto text-[10px] uppercase tracking-widest text-gray-500">Knowledge Hub</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-[0.82fr_1.34fr] gap-2.5">
+                        <aside class="order-2 md:order-none rounded-xl bg-white/[0.035] border border-white/8 p-3">
+                            <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-2.5">Входы в портал</div>
+                            <div class="space-y-2">
+                                <a href="https://fidic.uz/knowledge" target="_blank" rel="noopener" data-panel="knowledge" class="fh-side-panel fh-panel-active flex items-center gap-2.5 p-2.5 rounded-lg border border-bridge-taupe/30 bg-bridge-taupe/12 text-white transition-all duration-300">
+                                    <span class="text-bridge-taupe"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></span><span class="text-[12px] font-semibold">База знаний</span>
+                                </a>
+                                <a href="https://fidic.uz/glossary" target="_blank" rel="noopener" data-panel="glossary" class="fh-side-panel flex items-center gap-2.5 p-2.5 rounded-lg border border-white/8 bg-white/[0.03] text-gray-300 transition-all duration-300">
+                                    <span class="text-bridge-taupe"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h10"/></svg></span><span class="text-[12px] font-semibold">Глоссарий</span>
+                                </a>
+                                <a href="https://fidic.uz/certification" target="_blank" rel="noopener" data-panel="certification" class="fh-side-panel flex items-center gap-2.5 p-2.5 rounded-lg border border-white/8 bg-white/[0.03] text-gray-300 transition-all duration-300">
+                                    <span class="text-bridge-taupe"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg></span><span class="text-[12px] font-semibold">Подготовка к сертификации</span>
+                                </a>
+                                <a href="https://fidic.uz/" target="_blank" rel="noopener" data-panel="ai" class="fh-side-panel flex items-center gap-2.5 p-2.5 rounded-lg border border-white/8 bg-white/[0.03] text-gray-300 transition-all duration-300">
+                                    <span class="text-bridge-taupe"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></span><span class="text-[12px] font-semibold">FIDIC AI</span>
+                                </a>
+                            </div>
+                            <div class="mt-3 rounded-lg border border-white/8 bg-bridge-dark/50 p-2.5">
+                                <div class="text-[10px] font-bold uppercase tracking-[0.18em] text-bridge-taupe mb-2">Охват</div>
+                                <div class="grid grid-cols-2 gap-2 text-[11px] text-gray-300">
+                                    <span>FIDIC</span><span>EPC</span><span>Claims</span><span>DAAB</span>
+                                </div>
+                            </div>
+                        </aside>
+
+                        <main class="order-1 md:order-none rounded-xl bg-white/[0.045] border border-white/10 p-3">
+                            <div class="flex items-center gap-3 px-3.5 py-3 rounded-xl bg-bridge-dark/75 border border-white/14 mb-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+                                <svg class="w-4 h-4 text-bridge-taupe shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
+                                <span class="text-[13px] text-gray-100 font-light truncate"><span class="fh-type"></span><span class="fh-caret text-bridge-taupe">|</span></span>
+                            </div>
+
+                            <div class="flex flex-wrap gap-1.5 mb-3">
+                            <button type="button" class="bridge-badge fh-chip cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/60">Red Book</button>
+                            <button type="button" class="bridge-badge fh-chip cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/60">Yellow Book</button>
+                            <button type="button" class="bridge-badge fh-chip cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/60">Claims</button>
+                            <button type="button" class="bridge-badge fh-chip cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/60">DAAB</button>
+                            <button type="button" class="bridge-badge fh-chip cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/60">EPC</button>
+                            <button type="button" class="bridge-badge fh-chip cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/60">Procurement</button>
+                            </div>
+
+                            <a href="https://fidic.uz/" target="_blank" rel="noopener" data-panel="ai" class="fh-main-panel block rounded-xl bg-bridge-dark/58 border border-bridge-taupe/24 p-3.5 mb-3 transition-all duration-300 hover:border-bridge-taupe/55 hover:bg-bridge-taupe/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/70">
+                                <div class="flex items-center gap-2 mb-2.5">
+                                    <span class="inline-flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-[#16140f] bg-bridge-taupe px-2 py-1 rounded-md">FIDIC AI</span>
+                                    <span class="text-[12px] text-gray-100 font-medium truncate">Delay claim по Yellow Book</span>
+                                </div>
+                                <div class="text-[11px] font-bold uppercase tracking-[0.18em] text-gray-500 mb-2">AI-ответ с опорой на источники</div>
+                                <ul class="space-y-2 mb-3">
+                                <li class="flex items-start gap-2 text-[12.5px] text-gray-200 font-light leading-snug">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-bridge-taupe mt-1.5 shrink-0"></span>
+                                    <span>Проверить notice to the Engineer и срок 28 дней по Sub-Clause 20.1.</span>
+                                </li>
+                                <li class="flex items-start gap-2 text-[12.5px] text-gray-200 font-light leading-snug">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-bridge-taupe mt-1.5 shrink-0"></span>
+                                    <span>Связать событие задержки с критическим путём и обновлённой программой.</span>
+                                </li>
+                                <li class="flex items-start gap-2 text-[12.5px] text-gray-200 font-light leading-snug">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-bridge-taupe mt-1.5 shrink-0"></span>
+                                    <span>Подготовить доказательства EOT, costs и позицию для Engineer/DAAB.</span>
+                                </li>
+                                </ul>
+                                <div class="flex flex-wrap gap-1.5">
+                                <span class="inline-flex items-center gap-1.5 text-[10px] font-semibold text-bridge-taupe px-2.5 py-1 rounded-full bg-bridge-taupe/12 border border-bridge-taupe/25">
+                                    <svg style="width:11px;height:11px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Article
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 text-[10px] font-semibold text-bridge-taupe px-2.5 py-1 rounded-full bg-bridge-taupe/12 border border-bridge-taupe/25">
+                                    <svg style="width:11px;height:11px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M12 6.253v13"/></svg>Glossary
+                                </span>
+                                <span class="inline-flex items-center gap-1.5 text-[10px] font-semibold text-bridge-taupe px-2.5 py-1 rounded-full bg-bridge-taupe/12 border border-bridge-taupe/25">
+                                    <svg style="width:11px;height:11px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>Expert note
+                                </span>
+                                </div>
+                            </a>
+
+                            <div data-panel="knowledge" class="fh-main-panel rounded-xl border border-white/8 bg-white/[0.035] p-3 mb-3 transition-all duration-300">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <span class="w-6 h-6 rounded-lg bg-bridge-taupe/12 border border-bridge-taupe/25 flex items-center justify-center text-bridge-taupe"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></span>
+                                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">Popular insights</span>
+                                </div>
+                            <a href="https://fidic.uz/" target="_blank" rel="noopener" class="group/r flex items-center gap-2.5 py-2.5 border-b border-white/6 last:border-0 text-gray-300 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/60">
+                                <span class="w-6 h-6 rounded-lg bg-white/[0.05] border border-white/8 flex items-center justify-center text-bridge-taupe shrink-0">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </span>
+                                <span class="text-[12px] font-light leading-snug">Sub-Clause 20.1: процедура претензий</span>
+                                <svg class="w-3 h-3 ml-auto text-gray-600 group-hover/r:text-bridge-taupe transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </a>
+                            <a href="https://fidic.uz/" target="_blank" rel="noopener" class="group/r flex items-center gap-2.5 py-2.5 border-b border-white/6 last:border-0 text-gray-300 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/60">
+                                <span class="w-6 h-6 rounded-lg bg-white/[0.05] border border-white/8 flex items-center justify-center text-bridge-taupe shrink-0">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </span>
+                                <span class="text-[12px] font-light leading-snug">Concurrent delay: подходы и практика</span>
+                                <svg class="w-3 h-3 ml-auto text-gray-600 group-hover/r:text-bridge-taupe transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </a>
+                            <a href="https://fidic.uz/" target="_blank" rel="noopener" class="group/r flex items-center gap-2.5 py-2.5 border-b border-white/6 last:border-0 text-gray-300 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-bridge-taupe/60">
+                                <span class="w-6 h-6 rounded-lg bg-white/[0.05] border border-white/8 flex items-center justify-center text-bridge-taupe shrink-0">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                </span>
+                                <span class="text-[12px] font-light leading-snug">DAAB: когда подключать совет</span>
+                                <svg class="w-3 h-3 ml-auto text-gray-600 group-hover/r:text-bridge-taupe transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                            </a>
+                            </div>
+
+                            <a href="#contact-form" class="fh-consult group/c">
+                                Запросить экспертную консультацию
+                                <svg class="w-4 h-4 group-hover/c:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            </a>
+                        </main>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #fidic-hub .fh-grid {
+            background-image: linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(ellipse at center, black 14%, transparent 78%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 14%, transparent 78%);
+            animation: fh-grid-drift 18s linear infinite;
+        }
+        #fidic-hub .fh-active,
+        #fidic-hub .fh-module:hover {
+            background: rgba(138,123,102,0.13);
+            border-color: rgba(138,123,102,0.48);
+            box-shadow: 0 18px 42px -30px rgba(138,123,102,0.85);
+        }
+        #fidic-hub .fh-active .fh-module-index {
+            background: #8A7B66;
+            color: #fff;
+        }
+        #fidic-hub .fh-panel-active {
+            border-color: rgba(138,123,102,0.48) !important;
+            background: rgba(138,123,102,0.14) !important;
+            color: #fff !important;
+            box-shadow: 0 16px 34px -28px rgba(138,123,102,0.9);
+        }
+        #fidic-hub .fh-main-active {
+            border-color: rgba(138,123,102,0.52) !important;
+            background: rgba(138,123,102,0.11) !important;
+        }
+        #fidic-hub .fh-consult {
+            display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+            width: 100%; margin-top: 0.9rem; padding: 1rem 1.1rem;
+            border-radius: 0.85rem;
+            background: rgba(138,123,102,0.18);
+            border: 1px solid rgba(138,123,102,0.6);
+            color: #ece2cf;
+            font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+            text-align: center; line-height: 1.3;
+            transition: background .3s, color .3s, border-color .3s, transform .3s;
+        }
+        #fidic-hub .fh-consult:hover { background: #8A7B66; border-color: #8A7B66; color: #fff; transform: translateY(-1px); }
+        #fidic-hub .fh-consult svg { width: 16px; height: 16px; transition: transform .3s; }
+        #fidic-hub .fh-consult:hover svg { transform: translateX(4px); }
+        @keyframes fh-grid-drift {
+            0% { transform: translate3d(0,0,0); }
+            100% { transform: translate3d(50px,50px,0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #fidic-hub .fh-grid { animation: none; }
+            #fidic-hub * { scroll-behavior: auto; }
+        }
+        @media (max-width: 767px) {
+            #fidic-hub .fh-grid { animation: none; opacity: .12; }
+        }
+    </style>
+
+    <script>
+    (function(){
+        var root=document.getElementById('fidic-hub'); if(!root) return;
+        var typeEl=root.querySelector('.fh-type');
+        var queries=["Search FIDIC, EPC, Claims, DAAB...", "Delay claim по Yellow Book", "продление сроков (EOT)", "роль DAAB в споре"];
+        if(typeEl){
+            if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+                typeEl.textContent=queries[0];
+            } else {
+                var i=0,j=0,del=false;
+                function tick(){
+                    var word=queries[i];
+                    typeEl.textContent=del?word.slice(0,j--):word.slice(0,j++);
+                    var delay=del?38:78;
+                    if(!del&&j>word.length){del=true;delay=1450;}
+                    else if(del&&j<0){del=false;j=0;i=(i+1)%queries.length;delay=320;}
+                    setTimeout(tick,delay);
+                }
+                setTimeout(tick,500);
+            }
+        }
+        var modules=[].slice.call(root.querySelectorAll('.fh-module'));
+        var panels=[].slice.call(root.querySelectorAll('[data-panel]'));
+        function activate(key){
+            modules.forEach(function(item){ item.classList.toggle('fh-active', item.getAttribute('data-fh-target')===key); });
+            panels.forEach(function(item){
+                var match=item.getAttribute('data-panel')===key;
+                item.classList.toggle('fh-panel-active', match && item.classList.contains('fh-side-panel'));
+                item.classList.toggle('fh-main-active', match && item.classList.contains('fh-main-panel'));
+            });
+        }
+        modules.forEach(function(item){
+            item.addEventListener('mouseenter', function(){ activate(item.getAttribute('data-fh-target')); });
+            item.addEventListener('focus', function(){ activate(item.getAttribute('data-fh-target')); });
+        });
+        root.addEventListener('mouseleave', function(){ activate('knowledge'); });
+    })();
+    </script>
+</div>
+    </div>
 </section>
 <section id="media" class="py-32 bg-bridge-light relative overflow-hidden font-sans border-t border-gray-200">
     <div class="max-w-7xl mx-auto px-6 relative z-10">
@@ -2051,6 +2467,7 @@ document.documentElement.style.height = '';
                     <li><a href="#services" class="hover:text-bridge-taupe transition-colors">Услуги</a></li>
                     <li><a href="projects.html" class="hover:text-bridge-taupe transition-colors">Проекты</a></li>
                     <li><a href="#trainings" class="hover:text-bridge-taupe transition-colors">Тренинги FIDIC</a></li>
+                    <li><a href="#fidic-hub" class="hover:text-bridge-taupe transition-colors">FIDIC.uz</a></li>
                     <li><a href="#team" class="hover:text-bridge-taupe transition-colors">Лица компании</a></li>
                     <li><a href="#faq" class="hover:text-bridge-taupe transition-colors">База знаний (FAQ)</a></li>
                     <li><a href="#media" class="hover:text-bridge-taupe transition-colors">СМИ и Публикации</a></li>

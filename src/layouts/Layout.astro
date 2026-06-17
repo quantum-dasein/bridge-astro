@@ -43,7 +43,7 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 			(function() {
 				var t = localStorage.getItem('bc-theme');
 				if (!t) {
-					t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+					t = 'light';
 					localStorage.setItem('bc-theme', t);
 				}
 				if (t === 'dark') document.documentElement.classList.add('dark-theme');
