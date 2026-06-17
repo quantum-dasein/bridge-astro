@@ -395,15 +395,21 @@
     position: relative; z-index: 1; height: 84px; margin-top: -2rem; pointer-events: none;
     background: linear-gradient(180deg, rgba(205,183,150,0) 0%, rgba(205,183,150,0.5) 16%, rgba(138,123,102,0.25) 72%, rgba(205,183,150,0) 100%) center / 2px 100% no-repeat;
 }
-.uni-link::before {   /* travelling pulse — same keyframes as .uni-beam */
+.uni-link::before {   /* travelling pulse — flows DOWN (like the beam) and lands exactly on the anchor */
     content: ""; position: absolute; left: 50%; transform: translateX(-50%);
     width: 5px; height: 14px; border-radius: 999px;
     background: linear-gradient(180deg, rgba(232,217,191,0), #e8d9bf, rgba(232,217,191,0));
     box-shadow: 0 0 12px 2px rgba(205,183,150,0.8);
-    animation: uni-beam-drop 2.6s ease-in-out infinite;
+    animation: uni-link-drop 2.6s ease-in-out infinite;
+}
+@keyframes uni-link-drop {
+    0%   { top: -12px; opacity: 0; }
+    16%  { opacity: 1; }
+    86%  { opacity: 1; }
+    100% { top: calc(100% - 13px); opacity: 0; }  /* center lands on the anchor dot */
 }
 .uni-link::after {   /* glowing anchor where the line meets the reference list */
-    content: ""; position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%);
+    content: ""; position: absolute; left: 50%; bottom: 2px; transform: translateX(-50%);
     width: 7px; height: 7px; border-radius: 50%; background: #e8d9bf;
     box-shadow: 0 0 10px 3px rgba(232,217,191,0.7), 0 0 28px 11px rgba(138,123,102,0.3);
 }
