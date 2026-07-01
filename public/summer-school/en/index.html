@@ -1121,91 +1121,156 @@
 
         try {
             var THREE = window.THREE;
-            var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            var W = canvas.clientWidth, H = canvas.clientHeight;
+            var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+            renderer.setSize(W, H, false);
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.1;
 
             var scene = new THREE.Scene();
-            var camera = new THREE.PerspectiveCamera(30, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
-            camera.position.set(0, 0, 10.5);
+            var camera = new THREE.PerspectiveCamera(30, W / H, 0.1, 100);
+            camera.position.set(0, 0, 16.5);
+
+            // Studio environment — the key to realistic glass reflections
+            var ec = document.createElement("canvas"); ec.width = 1024; ec.height = 512;
+            var ex = ec.getContext("2d");
+            var lg = ex.createLinearGradient(0, 0, 0, 512);
+            lg.addColorStop(0, "#e2e8ee"); lg.addColorStop(0.45, "#7c858f"); lg.addColorStop(1, "#0d0f12");
+            ex.fillStyle = lg; ex.fillRect(0, 0, 1024, 512);
+            function glow(x, y, r, a) {
+                var rg = ex.createRadialGradient(x, y, 0, x, y, r);
+                rg.addColorStop(0, "rgba(255,255,255," + a + ")"); rg.addColorStop(1, "rgba(255,255,255,0)");
+                ex.fillStyle = rg; ex.fillRect(0, 0, 1024, 512);
+            }
+            glow(250, 150, 250, 0.95); glow(790, 120, 175, 0.6); glow(540, 400, 300, 0.2);
+            ex.fillStyle = "rgba(255,255,255,0.92)"; ex.fillRect(150, 24, 30, 440);
+            ex.fillStyle = "rgba(255,255,255,0.45)"; ex.fillRect(610, 60, 15, 300);
+            var envTex = new THREE.CanvasTexture(ec);
+            envTex.mapping = THREE.EquirectangularReflectionMapping; envTex.encoding = THREE.sRGBEncoding;
+            var pmrem = new THREE.PMREMGenerator(renderer);
+            var envRT = pmrem.fromEquirectangular(envTex);
+            scene.environment = envRT.texture;
+            envTex.dispose(); pmrem.dispose();
 
             var group = new THREE.Group();
-            group.position.y = -0.35;
             scene.add(group);
 
+            // "Borjomi" bottle silhouette — tall, long neck
             var pts = [], P = function (x, y) { pts.push(new THREE.Vector2(x, y)); };
-            P(0.001, -2.20); P(0.95, -2.20); P(1.03, -2.02);
-            P(1.11, -1.35); P(1.13, -0.65); P(1.07, 0.05);
-            P(0.93, 0.62); P(0.72, 1.05); P(0.50, 1.42);
-            P(0.37, 1.78); P(0.33, 2.42); P(0.34, 2.78);
-            P(0.41, 2.92); P(0.41, 3.06); P(0.35, 3.14);
+            P(0.001,-2.60); P(0.52,-2.60); P(0.75,-2.52); P(0.85,-2.30);
+            P(0.87,-1.55); P(0.875,-0.35); P(0.86,0.55); P(0.81,1.18);
+            P(0.69,1.78); P(0.51,2.28); P(0.37,2.64); P(0.29,3.02);
+            P(0.278,3.36); P(0.30,3.58); P(0.33,3.66); P(0.30,3.74);
             var glassMat = new THREE.MeshPhysicalMaterial({
-                color: 0x1f4a34, metalness: 0, roughness: 0.12,
-                transparent: true, opacity: 0.9, clearcoat: 0.7, clearcoatRoughness: 0.25,
-                side: THREE.DoubleSide
+                color: 0x0d5233, metalness: 0, roughness: 0.05,
+                clearcoat: 1.0, clearcoatRoughness: 0.03, envMapIntensity: 2.0,
+                transparent: true, opacity: 0.9, side: THREE.DoubleSide
             });
-            group.add(new THREE.Mesh(new THREE.LatheGeometry(pts, 72), glassMat));
+            group.add(new THREE.Mesh(new THREE.LatheGeometry(pts, 128), glassMat));
 
-            var cap = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.43, 0.4, 0.42, 48),
-                new THREE.MeshStandardMaterial({ color: 0xB89B72, metalness: 0.7, roughness: 0.34 })
-            );
-            cap.position.y = 3.3; group.add(cap);
+            // Liquid inside — rich green
+            var lp = [], LP = function (x, y) { lp.push(new THREE.Vector2(x, y)); };
+            LP(0.001,-2.45); LP(0.72,-2.42); LP(0.80,-2.2); LP(0.815,-1.5);
+            LP(0.815,-0.35); LP(0.80,0.55); LP(0.74,1.1); LP(0.6,1.65);
+            LP(0.42,2.05); LP(0.25,2.3); LP(0.001,2.33);
+            group.add(new THREE.Mesh(
+                new THREE.LatheGeometry(lp, 96),
+                new THREE.MeshPhysicalMaterial({ color: 0x0a6b3a, roughness: 0.3, metalness: 0, envMapIntensity: 0.5 })
+            ));
 
-            var lc = document.createElement("canvas"); lc.width = 512; lc.height = 256;
+            // Cap (metallic)
+            var capMat = new THREE.MeshStandardMaterial({ color: 0xCBA352, metalness: 0.95, roughness: 0.26, envMapIntensity: 1.2 });
+            var cap = new THREE.Mesh(new THREE.CylinderGeometry(0.335, 0.315, 0.52, 64), capMat);
+            cap.position.y = 3.86; group.add(cap);
+            var ring = new THREE.Mesh(new THREE.CylinderGeometry(0.345, 0.335, 0.16, 64), capMat);
+            ring.position.y = 3.56; group.add(ring);
+
+            // "Borjomi" label
+            var lc = document.createElement("canvas"); lc.width = 1024; lc.height = 512;
             var cx = lc.getContext("2d");
-            cx.fillStyle = "#F5F4F2"; cx.fillRect(0, 0, 512, 256);
-            cx.fillStyle = "#1f4a34"; cx.fillRect(0, 8, 512, 6); cx.fillRect(0, 242, 512, 6);
-            cx.fillStyle = "#8A7B66"; cx.textAlign = "center"; cx.textBaseline = "middle";
-            cx.font = "bold 74px Georgia"; cx.fillText("BORJOMI", 256, 116);
-            cx.fillStyle = "#1f4a34"; cx.font = "22px Georgia"; cx.fillText("MINERAL WATER · GEORGIA", 256, 176);
-            var labelTex = new THREE.CanvasTexture(lc);
+            cx.fillStyle = "#f7f5ef"; cx.fillRect(0, 0, 1024, 512);
+            cx.fillStyle = "#0d5233"; cx.fillRect(0, 0, 1024, 24); cx.fillRect(0, 488, 1024, 24);
+            cx.fillStyle = "#c8102e"; cx.fillRect(0, 40, 1024, 7); cx.fillRect(0, 465, 1024, 7);
+            cx.textAlign = "center"; cx.textBaseline = "middle";
+            cx.strokeStyle = "#0d5233"; cx.lineWidth = 7; cx.beginPath();
+            cx.moveTo(398, 152); cx.lineTo(462, 98); cx.lineTo(512, 140); cx.lineTo(566, 94); cx.lineTo(628, 152); cx.stroke();
+            cx.fillStyle = "#c8102e"; cx.font = "bold 150px Georgia"; cx.fillText("BORJOMI", 512, 278);
+            cx.fillStyle = "#0d5233"; cx.font = "26px Georgia"; cx.fillText("NATURAL MINERAL WATER", 512, 362);
+            cx.fillStyle = "#8a7b66"; cx.font = "italic 25px Georgia"; cx.fillText("GEORGIA · SINCE 1890", 512, 404);
+            var labelTex = new THREE.CanvasTexture(lc); labelTex.anisotropy = 8; labelTex.encoding = THREE.sRGBEncoding;
             var label = new THREE.Mesh(
-                new THREE.CylinderGeometry(1.14, 1.17, 0.95, 72, 1, true),
-                new THREE.MeshStandardMaterial({ map: labelTex, roughness: 0.5, metalness: 0 })
+                new THREE.CylinderGeometry(0.882, 0.888, 1.3, 128, 1, true),
+                new THREE.MeshStandardMaterial({ map: labelTex, roughness: 0.62, metalness: 0, envMapIntensity: 0.35 })
             );
-            label.position.y = -0.72; group.add(label);
+            label.position.y = -0.55;
 
-            scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-            var d1 = new THREE.DirectionalLight(0xffffff, 1.15); d1.position.set(3, 5, 4); scene.add(d1);
-            var p1 = new THREE.PointLight(0x8A7B66, 0.85, 60); p1.position.set(-4, 1, 3); scene.add(p1);
-            var p2 = new THREE.PointLight(0xbfe6cf, 0.6, 60); p2.position.set(2, -2, -4); scene.add(p2);
+            // Lights
+            scene.add(new THREE.AmbientLight(0xffffff, 0.22));
+            var key = new THREE.DirectionalLight(0xffffff, 2.1); key.position.set(4, 6, 7); scene.add(key);
+            var rim = new THREE.DirectionalLight(0xbfe6cf, 1.0); rim.position.set(-6, 2, -4); scene.add(rim);
+            var fill = new THREE.DirectionalLight(0xfff2d8, 0.5); fill.position.set(2, -4, 3); scene.add(fill);
 
-            var auto = true, dragging = false, lastX = 0, lastY = 0, velY = 0.005, idle;
-            group.rotation.x = 0.08;
+            // Rest pose (leaning right) + state
+            var restX = 0.13, restY = -0.4, restZ = -0.28, baseY = -0.76;
+            group.rotation.set(restX, restY, restZ);
+            group.position.y = baseY;
+            label.rotation.y = -restY; group.add(label);
+
+            var hovered = false, dragging = false, lastX = 0, lastY = 0;
+            var bobAmt = 1, bobPhase = Math.random() * 6.28, scaleCur = 1, last = performance.now();
+            var hint = stage.querySelector("[data-bottle-hint]");
+
+            canvas.addEventListener("pointerenter", function () { hovered = true; if (hint) hint.style.opacity = "1"; });
+            canvas.addEventListener("pointerleave", function () { hovered = false; });
             canvas.addEventListener("pointerdown", function (e) {
-                dragging = true; auto = false; lastX = e.clientX; lastY = e.clientY;
-                clearTimeout(idle); try { canvas.setPointerCapture(e.pointerId); } catch (x) {}
-                var h = stage.querySelector("[data-bottle-hint]"); if (h) h.style.opacity = "0";
+                dragging = true; lastX = e.clientX; lastY = e.clientY;
+                try { canvas.setPointerCapture(e.pointerId); } catch (x) {}
             });
             window.addEventListener("pointermove", function (e) {
                 if (!dragging) return;
                 var dx = e.clientX - lastX, dy = e.clientY - lastY; lastX = e.clientX; lastY = e.clientY;
-                group.rotation.y += dx * 0.01; velY = dx * 0.01;
-                group.rotation.x = Math.max(-0.5, Math.min(0.5, group.rotation.x + dy * 0.006));
+                group.rotation.y += dx * 0.011;
+                group.rotation.x = Math.max(-0.9, Math.min(0.9, group.rotation.x + dy * 0.008));
             });
             window.addEventListener("pointerup", function () {
                 if (!dragging) return; dragging = false;
-                idle = setTimeout(function () { auto = true; }, 2600);
+                var d = (group.rotation.y - restY) % (Math.PI * 2);
+                if (d > Math.PI) d -= Math.PI * 2; if (d < -Math.PI) d += Math.PI * 2;
+                group.rotation.y = restY + d;
             });
 
             var visible = true;
             if ("IntersectionObserver" in window) {
-                new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0.01 })
-                    .observe(stage);
+                new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0.01 }).observe(stage);
             }
             window.addEventListener("resize", function () {
                 var w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return;
                 renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
             });
 
-            (function loop() {
+            function loop(now) {
                 requestAnimationFrame(loop);
                 if (!visible) return;
-                if (auto) group.rotation.y += 0.005;
-                else if (!dragging) { group.rotation.y += velY; velY *= 0.94; }
+                var dt = Math.min((now - last) / 1000, 0.05); last = now;
+                var active = hovered || dragging;
+                var ts = active ? 1.12 : 1.0;
+                scaleCur += (ts - scaleCur) * Math.min(dt * 9, 1);
+                group.scale.setScalar(scaleCur);
+                var bob = active ? 0 : 1;
+                bobAmt += (bob - bobAmt) * Math.min(dt * 3.5, 1);
+                bobPhase += dt * 1.25;
+                group.position.y = baseY + Math.sin(bobPhase) * 0.2 * bobAmt;
+                if (!dragging) {
+                    var k = Math.min(dt * 3.5, 1);
+                    group.rotation.x += (restX - group.rotation.x) * k;
+                    group.rotation.y += (restY - group.rotation.y) * k;
+                    group.rotation.z += (restZ - group.rotation.z) * k;
+                }
                 renderer.render(scene, camera);
-            })();
+            }
+            requestAnimationFrame(loop);
         } catch (err) {
             stage.style.display = "none";
         }
