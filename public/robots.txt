@@ -3,5 +3,6 @@ Allow: /
 
 Disallow: /_astro/
 Disallow: /api/
+Disallow: /summer-school/
 
 Sitemap: https://www.bridgeconsult.uz/sitemap.xml
