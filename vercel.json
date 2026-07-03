@@ -1,0 +1,17 @@
+{
+  "redirects": [
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/EN/index.html", "destination": "/EN/", "permanent": true },
+    { "source": "/UZ/index.html", "destination": "/UZ/", "permanent": true },
+    { "source": "/news/en-fidic-daab-explained/", "destination": "/news/en/fidic-daab-explained/", "permanent": true },
+    { "source": "/news/en-fidic-eot-explained/", "destination": "/news/en/fidic-eot-explained/", "permanent": true },
+    { "source": "/news/en-fidic-osh-first-meeting/", "destination": "/news/en/fidic-osh-first-meeting/", "permanent": true },
+    { "source": "/news/en-fidic-red-vs-yellow-book/", "destination": "/news/en/fidic-red-vs-yellow-book/", "permanent": true },
+    { "source": "/news/en-uzbek-arbitration-week-2026/", "destination": "/news/en/uzbek-arbitration-week-2026/", "permanent": true },
+    { "source": "/news/uz-fidic-daab-explained/", "destination": "/news/uz/fidic-daab-explained/", "permanent": true },
+    { "source": "/news/uz-fidic-eot-explained/", "destination": "/news/uz/fidic-eot-explained/", "permanent": true },
+    { "source": "/news/uz-fidic-osh-first-meeting/", "destination": "/news/uz/fidic-osh-first-meeting/", "permanent": true },
+    { "source": "/news/uz-fidic-red-vs-yellow-book/", "destination": "/news/uz/fidic-red-vs-yellow-book/", "permanent": true },
+    { "source": "/news/uz-uzbek-arbitration-week-2026/", "destination": "/news/uz/uzbek-arbitration-week-2026/", "permanent": true }
+  ]
+}

@@ -1,10 +1,11 @@
----
+﻿---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
+import NewsPicture from '../../components/NewsPicture.astro';
 export const prerender = true;
 export async function getStaticPaths() {
-	const posts = await getCollection('news');
+	const posts = (await getCollection('news')).filter((post) => (post.data.lang ?? 'ru') === 'ru');
 
 	return posts.map((post) => ({
 		params: { slug: post.id.replace(/\.(md|mdx)$/i, '') },
@@ -60,7 +61,7 @@ const newsArticleJsonLd = {
 	author: {
 		'@type': 'Organization',
 		name: 'Bridge Consult',
-		url: new URL('/index.html', pageUrl).toString(),
+		url: new URL('/', pageUrl).toString(),
 	},
 	publisher: {
 		'@type': 'Organization',
@@ -89,7 +90,7 @@ const newsArticleJsonLd = {
 	<article class="bg-bridge-light font-sans">
 		<header class="relative overflow-hidden bg-bridge-dark pt-36 pb-16 md:pt-44 md:pb-24">
 			<div class="absolute inset-0 z-0">
-				<img src={coverImage} alt="" onerror={`this.onerror=null;this.src='${fallbackImage}'`} class="h-full w-full object-cover object-center opacity-35" />
+				<NewsPicture src={coverImage} alt="" onerror={`this.onerror=null;this.src='${fallbackImage}'`} imgClass="h-full w-full object-cover object-center opacity-35" loading="eager" fetchpriority="high" />
 				<div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/75 to-bridge-dark"></div>
 			</div>
 			<div class="absolute left-1/2 top-1/2 z-[1] -translate-x-1/2 -translate-y-1/2 pointer-events-none" style="width:700px;height:700px;border-radius:9999px;background:radial-gradient(circle,rgba(138,123,102,0.17) 0%,transparent 60%);"></div>
@@ -121,7 +122,7 @@ const newsArticleJsonLd = {
 
 			<div class="relative z-10 mx-auto max-w-3xl px-6">
 				<figure class="-mt-24 mb-10 overflow-hidden rounded-3xl bg-bridge-dark shadow-[0_30px_70px_-20px_rgba(26,24,22,0.45)] md:-mt-32" data-aos="fade-up">
-					<img src={coverImage} alt={title} onerror={`this.onerror=null;this.src='${fallbackImage}'`} class="aspect-[16/10] w-full object-cover object-center" />
+					<NewsPicture src={coverImage} alt={title} onerror={`this.onerror=null;this.src='${fallbackImage}'`} imgClass="aspect-[16/10] w-full object-cover object-center" loading="eager" />
 				</figure>
 
 				<p class="mb-10 border-l-2 border-bridge-taupe pl-6 text-lg font-light italic leading-relaxed text-bridge-dark md:text-xl" data-aos="fade-up">

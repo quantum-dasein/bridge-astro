@@ -110,6 +110,7 @@
     }
     .langs a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color .3s; }
     .langs a:hover { color: var(--taupe-light); }
+    .langs a.active { color: var(--taupe-light); }
 
     @media (prefers-reduced-motion: reduce) {
         .code, .bg::before { animation: none; }
@@ -145,6 +146,103 @@
 </nav>
 
 <script>
+var bridge404Texts = {
+    ru: {
+        docTitle: '404 — Bridge Consult | Страница не найдена',
+        title: 'Этот мост ещё не построен',
+        sub: 'Страница, которую вы ищете, не существует или была перемещена. Но мы знаем, как навести мосты — начните с главной.',
+        alt: "This bridge isn't built yet · Bu ko'prik hali qurilmagan",
+        home: 'На главную',
+        projects: 'Проекты',
+        news: 'Новости',
+        homeHref: '/',
+        projectsHref: '/projects.html',
+        newsHref: '/news/',
+        homeFile: 'index.html',
+        projectsFile: 'projects.html',
+        newsFile: 'news/index.html'
+    },
+    en: {
+        docTitle: '404 — Bridge Consult | Page Not Found',
+        title: "This bridge isn't built yet",
+        sub: "The page you are looking for does not exist or has moved. We still know how to build bridges — start from the home page.",
+        alt: 'Этот мост ещё не построен · Bu ko‘prik hali qurilmagan',
+        home: 'Home',
+        projects: 'Projects',
+        news: 'News',
+        homeHref: '/EN/',
+        projectsHref: '/EN/projects.html',
+        newsHref: '/news/en/',
+        homeFile: 'EN/index.html',
+        projectsFile: 'EN/projects.html',
+        newsFile: 'news/en/index.html'
+    },
+    uz: {
+        docTitle: '404 — Bridge Consult | Sahifa topilmadi',
+        title: 'Bu ko‘prik hali qurilmagan',
+        sub: 'Siz izlayotgan sahifa mavjud emas yoki ko‘chirilgan. Biz esa ko‘priklarni qanday qurishni bilamiz — bosh sahifadan boshlang.',
+        alt: "Этот мост ещё не построен · This bridge isn't built yet",
+        home: 'Bosh sahifa',
+        projects: 'Loyihalar',
+        news: 'Yangiliklar',
+        homeHref: '/UZ/',
+        projectsHref: '/UZ/projects.html',
+        newsHref: '/news/uz/',
+        homeFile: 'UZ/index.html',
+        projectsFile: 'UZ/projects.html',
+        newsFile: 'news/uz/index.html'
+    }
+};
+
+function bridge404SetActionLink(el, href, fileHref) {
+    if (!el) return;
+    el.setAttribute('href', href);
+    el.setAttribute('data-file-href', fileHref);
+    if (window.location.protocol === 'file:') el.setAttribute('href', fileHref);
+}
+
+function bridge404SetLang(lang) {
+    var t = bridge404Texts[lang] || bridge404Texts.ru;
+    var title = document.querySelector('.wrap h1');
+    var sub = document.querySelector('.sub');
+    var actions = document.querySelectorAll('.actions a');
+    document.documentElement.lang = lang;
+    document.title = t.docTitle;
+    if (title) title.textContent = t.title;
+    if (sub) sub.innerHTML = t.sub + '<span class="alt">' + t.alt + '</span>';
+    if (actions[0]) actions[0].textContent = t.home;
+    if (actions[1]) actions[1].textContent = t.projects;
+    if (actions[2]) actions[2].textContent = t.news;
+    bridge404SetActionLink(document.querySelector('.logo'), t.homeHref, t.homeFile);
+    bridge404SetActionLink(actions[0], t.homeHref, t.homeFile);
+    bridge404SetActionLink(actions[1], t.projectsHref, t.projectsFile);
+    bridge404SetActionLink(actions[2], t.newsHref, t.newsFile);
+    document.querySelectorAll('.langs a').forEach(function (link) {
+        var active = (link.textContent || '').trim().toLowerCase() === lang;
+        link.classList.toggle('active', active);
+        link.setAttribute('href', '#');
+        if (active) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+    });
+    try { localStorage.setItem('bc-404-lang', lang); } catch (e) {}
+}
+
+function bridge404InitialLang() {
+    var path = window.location.pathname.toLowerCase();
+    if (path.indexOf('/en/') !== -1 || path.endsWith('/en')) return 'en';
+    if (path.indexOf('/uz/') !== -1 || path.endsWith('/uz')) return 'uz';
+    try { return localStorage.getItem('bc-404-lang') || 'ru'; } catch (e) { return 'ru'; }
+}
+
+document.querySelectorAll('.langs a').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+        var lang = (link.textContent || '').trim().toLowerCase();
+        if (!bridge404Texts[lang]) return;
+        event.preventDefault();
+        bridge404SetLang(lang);
+    });
+});
+
 function bridge404SetFileLinks() {
     if (window.location.protocol !== 'file:') return;
     document.querySelectorAll('[data-file-href]').forEach(function (link) {
@@ -239,6 +337,7 @@ function bridge404StartScene() {
 }
 
 (function () {
+    bridge404SetLang(bridge404InitialLang());
     bridge404SetFileLinks();
 
     if (typeof THREE !== 'undefined') {

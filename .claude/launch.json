@@ -8,6 +8,12 @@
       "port": 4321
     },
     {
+      "name": "astro-preview-alt",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "preview", "--", "--port", "4399"],
+      "port": 4399
+    },
+    {
       "name": "static-public",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["http-server", "public", "-p", "8099", "--cors", "-c-1"],

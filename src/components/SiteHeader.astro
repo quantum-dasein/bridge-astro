@@ -6,7 +6,7 @@ interface Props {
 }
 const { lang = 'ru', langUrls, active = 'news' } = Astro.props;
 
-const home     = lang === 'uz' ? '/UZ/index.html' : lang === 'en' ? '/EN/index.html' : '/index.html';
+const home     = lang === 'uz' ? '/UZ/' : lang === 'en' ? '/EN/' : '/';
 const projects = lang === 'uz' ? '/UZ/projects.html' : lang === 'en' ? '/EN/projects.html' : '/projects.html';
 const newsBase = lang === 'uz' ? '/news/uz/' : lang === 'en' ? '/news/en/' : '/news/';
 

@@ -84,7 +84,7 @@ const absoluteLangUrls = {
 	uz: new URL(project.urls.uz, siteBase).toString(),
 };
 
-const homeUrl = lang === 'uz' ? '/UZ/index.html' : lang === 'en' ? '/EN/index.html' : '/index.html';
+const homeUrl = lang === 'uz' ? '/UZ/' : lang === 'en' ? '/EN/' : '/';
 const projectsIndexUrl = lang === 'uz' ? '/UZ/projects.html' : lang === 'en' ? '/EN/projects.html' : '/projects.html';
 const contactUrl = `${homeUrl}#contact-form`;
 const referenceUrl = `${projectsIndexUrl}#reference-list`;

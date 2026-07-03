@@ -10,7 +10,7 @@ export const projectCases = [
 		client: 'Министерство строительства и ЖКХ РУз',
 		institution: 'Государственный инфраструктурный проект',
 		image: '/poster-olympic.jpg',
-		video: '/olympic-city.mp4',
+		video: '/videos/olympic-city-optimized.mp4',
 		metaTitle: 'Олимпийский городок в Ташкенте | Кейс Bridge Consult',
 		metaDescription:
 			'Кейс Bridge Consult: Олимпийский городок в Ташкенте, EPC+F, спортивная инфраструктура для IV Летних Азиатских юношеских игр.',
@@ -73,7 +73,7 @@ export const projectCases = [
 		client: 'Азербайджанская компания',
 		institution: 'Азиатский Банк Развития (АБР)',
 		image: '/poster-drone.jpg',
-		video: '/drone-highway.mp4',
+		video: '/videos/drone-highway-optimized.mp4',
 		metaTitle: 'Реконструкция дорог SRRP | FIDIC Red Book и АБР',
 		metaDescription:
 			'Кейс Bridge Consult: реконструкция 107 км дорог 4R105 и 4R100 по FIDIC Red Book при финансировании АБР.',

@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import NewsPicture from './NewsPicture.astro';
 
 interface Props {
 	post: CollectionEntry<'news'>;
@@ -10,6 +11,12 @@ interface Props {
 const { post, index = 0, lang = 'ru' } = Astro.props;
 const { title, date, excerpt, coverImage, tags } = post.data;
 const slug = post.id.replace(/\.(md|mdx)$/i, '');
+const baseSlug = slug.replace(/^(ru|en|uz)-/, '');
+const href = lang === 'en'
+	? `/news/en/${baseSlug}/`
+	: lang === 'uz'
+		? `/news/uz/${baseSlug}/`
+		: `/news/${slug}/`;
 const locale = lang === 'uz' ? 'uz-UZ' : lang === 'en' ? 'en-US' : 'ru-RU';
 const formattedDate = new Intl.DateTimeFormat(locale, {
 	day: 'numeric',
@@ -25,13 +32,13 @@ const fallbackImage = '/larisa-belousova-uznews.png';
 	data-aos="fade-up"
 	data-aos-delay={index * 100}
 >
-	<a href={`/news/${slug}/`} class="flex h-full flex-col">
+	<a href={href} class="flex h-full flex-col">
 		<div class="relative aspect-[16/10] overflow-hidden bg-bridge-dark">
-			<img
+			<NewsPicture
 				src={coverImage}
 				alt={title}
 				onerror={`this.onerror=null;this.src='${fallbackImage}'`}
-				class="h-full w-full object-cover object-center grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
+				imgClass="h-full w-full object-cover object-center grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
 				loading="lazy"
 			/>
 			<div class="absolute inset-0 bg-gradient-to-t from-bridge-dark/70 via-bridge-dark/10 to-transparent"></div>

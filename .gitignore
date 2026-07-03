@@ -6,6 +6,8 @@ dist/
 
 # dependencies
 node_modules/
+.npm-cache/
+*.tgz
 
 # logs
 npm-debug.log*
@@ -22,3 +24,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local optimization tooling
+tmp/ffmpeg-tool/

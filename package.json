@@ -7,6 +7,9 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "sitemap": "node scripts/generate-sitemap.mjs",
+    "assets:images": "node scripts/optimize-news-images.mjs",
+    "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "build:tw": "npx -y tailwindcss@3.4.17 -c tailwind.marketing.config.cjs -i tailwind.marketing.css -o public/tw.css --minify",

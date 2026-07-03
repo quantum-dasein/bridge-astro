@@ -1,0 +1,45 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
+interface Props {
+	src: string;
+	alt?: string;
+	class?: string;
+	imgClass?: string;
+	loading?: 'eager' | 'lazy';
+	onerror?: string;
+	fetchpriority?: 'high' | 'low' | 'auto';
+}
+
+const {
+	src,
+	alt = '',
+	class: className = '',
+	imgClass = '',
+	loading = 'lazy',
+	onerror,
+	fetchpriority,
+} = Astro.props;
+
+const replaceExtension = (path: string, extension: string) => path.replace(/\.(png|jpe?g|webp)$/i, `.${extension}`);
+const localExists = (path: string) => path.startsWith('/') && existsSync(join(process.cwd(), 'public', path.slice(1)));
+const avif = replaceExtension(src, 'avif');
+const webp = replaceExtension(src, 'webp');
+const hasAvif = localExists(avif);
+const hasWebp = localExists(webp);
+---
+
+<picture class={className}>
+	{hasAvif && <source srcset={avif} type="image/avif" />}
+	{hasWebp && <source srcset={webp} type="image/webp" />}
+	<img
+		src={src}
+		alt={alt}
+		class={imgClass}
+		loading={loading}
+		decoding="async"
+		fetchpriority={fetchpriority}
+		onerror={onerror}
+	/>
+</picture>

@@ -9,6 +9,7 @@ const news = defineCollection({
 		excerpt: z.string(),
 		coverImage: z.string(),
 		videoUrl: z.string().optional(),
+		priority: z.number().optional(),
 		tags: z.array(z.string()),
 		lang: z.string().default('ru'),
 	}),
