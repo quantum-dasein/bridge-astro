@@ -1109,7 +1109,17 @@ document.body && (document.body.style.width = '100%');
         </div>
     </div>
 </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    (function () {
+        var localThree = window.location.protocol === 'file:' ? 'vendor/three.r128.min.js' : '/vendor/three.r128.min.js';
+        document.write('<script src="' + localThree + '"><\/script>');
+    })();
+</script>
+<script>
+    if (typeof THREE === 'undefined') {
+        document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+    }
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="projects-universe.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

@@ -120,7 +120,7 @@
 <div class="bg"></div>
 <canvas id="scene"></canvas>
 
-<a class="logo" href="/">Bridge<small>CONSULT</small></a>
+<a class="logo" href="/" data-file-href="index.html">Bridge<small>CONSULT</small></a>
 
 <div class="wrap">
     <div class="code">404</div>
@@ -132,27 +132,38 @@
         <span class="alt">This bridge isn't built yet · Bu ko'prik hali qurilmagan</span>
     </p>
     <div class="actions">
-        <a class="btn btn-primary" href="/">На главную</a>
-        <a class="btn btn-ghost" href="/projects.html">Проекты</a>
-        <a class="btn btn-ghost" href="/news/">Новости</a>
+        <a class="btn btn-primary" href="/" data-file-href="index.html">На главную</a>
+        <a class="btn btn-ghost" href="/projects.html" data-file-href="projects.html">Проекты</a>
+        <a class="btn btn-ghost" href="/news/" data-file-href="news/index.html">Новости</a>
     </div>
 </div>
 
 <nav class="langs">
-    <a href="/">RU</a>
-    <a href="/EN/">EN</a>
-    <a href="/UZ/">UZ</a>
+    <a href="/" data-file-href="index.html">RU</a>
+    <a href="/EN/" data-file-href="EN/index.html">EN</a>
+    <a href="/UZ/" data-file-href="UZ/index.html">UZ</a>
 </nav>
 
-<script src="/vendor/three.r128.min.js"></script>
 <script>
-if (typeof THREE === 'undefined') {
-    document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\\/script>');
+function bridge404SetFileLinks() {
+    if (window.location.protocol !== 'file:') return;
+    document.querySelectorAll('[data-file-href]').forEach(function (link) {
+        link.setAttribute('href', link.getAttribute('data-file-href'));
+    });
 }
-</script>
-<script>
-(function () {
+
+function bridge404LoadScript(src, onload, onerror) {
+    var script = document.createElement('script');
+    script.src = src;
+    script.onload = onload;
+    script.onerror = onerror;
+    document.head.appendChild(script);
+}
+
+function bridge404StartScene() {
+    if (window.bridge404SceneStarted) return;
     if (typeof THREE === 'undefined') return; // graceful CSS-only fallback
+    window.bridge404SceneStarted = true;
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     var canvas = document.getElementById('scene');
@@ -225,6 +236,29 @@ if (typeof THREE === 'undefined') {
         renderer.render(scene, camera);
     }
     tick();
+}
+
+(function () {
+    bridge404SetFileLinks();
+
+    if (typeof THREE !== 'undefined') {
+        bridge404StartScene();
+        return;
+    }
+
+    var localThree = window.location.protocol === 'file:'
+        ? 'vendor/three.r128.min.js'
+        : '/vendor/three.r128.min.js';
+
+    bridge404LoadScript(localThree, bridge404StartScene, function () {
+        bridge404LoadScript(
+            'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
+            bridge404StartScene,
+            function () {
+                document.documentElement.classList.add('three-fallback');
+            }
+        );
+    });
 })();
 </script>
 </body>

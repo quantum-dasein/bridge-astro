@@ -1,0 +1,21 @@
+---
+import ProjectCasePage from '../../../components/ProjectCasePage.astro';
+import { getProjectCases, type LocalizedProjectCase } from '../../../data/projectCaseLocales';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+	return getProjectCases('en').map((project) => ({
+		params: { slug: project.slug },
+		props: { project },
+	}));
+}
+
+interface Props {
+	project: LocalizedProjectCase;
+}
+
+const { project } = Astro.props;
+---
+
+<ProjectCasePage project={project} lang="en" />

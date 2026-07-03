@@ -650,6 +650,27 @@
     </div>
 </div>
 
+<!-- ============ INDEXABLE PROJECT CASES ============ -->
+<section class="uni-case-index" aria-labelledby="case-index-title">
+    <div class="uni-case-inner">
+        <div class="uni-case-head">
+            <div class="uni-case-eyebrow"><span></span>Loyiha keyslari</div>
+            <h2 id="case-index-title">Asosiy loyihalar uchun alohida sahifalar</h2>
+            <p>Har bir keys infratuzilma loyihasining konteksti, shartnoma modeli va Bridge Consult amaliy fokusini ochib beradi.</p>
+        </div>
+        <div class="uni-case-grid">
+            <a href="/UZ/projects/olympic-city/" class="uni-case-link"><span>01</span><strong>Olimpiya shaharchasi</strong><em>EPC+F · Sport infratuzilmasi</em></a>
+            <a href="/UZ/projects/tashkent-invest-company/" class="uni-case-link"><span>02</span><strong>Tashkent Invest Company</strong><em>EPC+F / White Book · Xaridlar</em></a>
+            <a href="/UZ/projects/srrp-road-reconstruction/" class="uni-case-link"><span>03</span><strong>SRRP yo‘llari rekonstruksiyasi</strong><em>FIDIC Red Book · OTB</em></a>
+            <a href="/UZ/projects/a373-kamchik-pass/" class="uni-case-link"><span>04</span><strong>A-373 Qamchiq dovoni</strong><em>FIDIC MDB · CAREC 2</em></a>
+            <a href="/UZ/projects/samarkand-water-supply/" class="uni-case-link"><span>05</span><strong>Samarqand suv ta’minoti</strong><em>FIDIC / ICB · OTB</em></a>
+            <a href="/UZ/projects/a380-carec-corridor/" class="uni-case-link"><span>06</span><strong>A-380 avtomobil yo‘li</strong><em>FIDIC MDB · Transport koridori</em></a>
+            <a href="/UZ/projects/smart-city-nurafshon/" class="uni-case-link"><span>07</span><strong>Smart City Nurafshon</strong><em>EPC · Raqamli infratuzilma</em></a>
+            <a href="/UZ/projects/energy-metering-adb/" class="uni-case-link"><span>08</span><strong>Energiya hisobi</strong><em>ADB · Energetika</em></a>
+        </div>
+    </div>
+</section>
+
 <!-- ============ PDF / COMPANY PROFILE CTA ============ -->
 <section class="uni-cta font-sans">
     <div class="uni-beam"></div>
@@ -935,7 +956,17 @@
     </div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+    (function () {
+        var localThree = window.location.protocol === 'file:' ? '../vendor/three.r128.min.js' : '/vendor/three.r128.min.js';
+        document.write('<script src="' + localThree + '"><\/script>');
+    })();
+</script>
+<script>
+    if (typeof THREE === 'undefined') {
+        document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+    }
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="../projects-universe.js"></script>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

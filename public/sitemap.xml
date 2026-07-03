@@ -245,44 +245,227 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- Отдельные страницы кейсов проектов -->
+  <!-- Отдельные страницы кейсов проектов: RU/EN/UZ -->
   <url>
     <loc>https://www.bridgeconsult.uz/projects/olympic-city/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/olympic-city/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/olympic-city/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/olympic-city/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/olympic-city/"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/EN/projects/olympic-city/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/olympic-city/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/olympic-city/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/olympic-city/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/olympic-city/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/UZ/projects/olympic-city/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/olympic-city/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/olympic-city/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/olympic-city/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/olympic-city/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <url>
     <loc>https://www.bridgeconsult.uz/projects/tashkent-invest-company/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/tashkent-invest-company/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/tashkent-invest-company/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/tashkent-invest-company/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/tashkent-invest-company/"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/EN/projects/tashkent-invest-company/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/tashkent-invest-company/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/tashkent-invest-company/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/tashkent-invest-company/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/tashkent-invest-company/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/UZ/projects/tashkent-invest-company/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/tashkent-invest-company/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/tashkent-invest-company/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/tashkent-invest-company/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/tashkent-invest-company/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <url>
     <loc>https://www.bridgeconsult.uz/projects/srrp-road-reconstruction/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/srrp-road-reconstruction/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/srrp-road-reconstruction/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/srrp-road-reconstruction/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/srrp-road-reconstruction/"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/EN/projects/srrp-road-reconstruction/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/srrp-road-reconstruction/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/srrp-road-reconstruction/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/srrp-road-reconstruction/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/srrp-road-reconstruction/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/UZ/projects/srrp-road-reconstruction/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/srrp-road-reconstruction/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/srrp-road-reconstruction/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/srrp-road-reconstruction/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/srrp-road-reconstruction/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <url>
     <loc>https://www.bridgeconsult.uz/projects/a373-kamchik-pass/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/a373-kamchik-pass/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/a373-kamchik-pass/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/a373-kamchik-pass/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/a373-kamchik-pass/"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/EN/projects/a373-kamchik-pass/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/a373-kamchik-pass/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/a373-kamchik-pass/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/a373-kamchik-pass/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/a373-kamchik-pass/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/UZ/projects/a373-kamchik-pass/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/a373-kamchik-pass/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/a373-kamchik-pass/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/a373-kamchik-pass/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/a373-kamchik-pass/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <url>
     <loc>https://www.bridgeconsult.uz/projects/samarkand-water-supply/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/samarkand-water-supply/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/samarkand-water-supply/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/samarkand-water-supply/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/samarkand-water-supply/"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/EN/projects/samarkand-water-supply/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/samarkand-water-supply/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/samarkand-water-supply/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/samarkand-water-supply/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/samarkand-water-supply/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/UZ/projects/samarkand-water-supply/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/samarkand-water-supply/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/samarkand-water-supply/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/samarkand-water-supply/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/samarkand-water-supply/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <url>
     <loc>https://www.bridgeconsult.uz/projects/a380-carec-corridor/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/a380-carec-corridor/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/a380-carec-corridor/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/a380-carec-corridor/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/a380-carec-corridor/"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/EN/projects/a380-carec-corridor/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/a380-carec-corridor/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/a380-carec-corridor/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/a380-carec-corridor/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/a380-carec-corridor/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/UZ/projects/a380-carec-corridor/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/a380-carec-corridor/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/a380-carec-corridor/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/a380-carec-corridor/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/a380-carec-corridor/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <url>
     <loc>https://www.bridgeconsult.uz/projects/smart-city-nurafshon/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/smart-city-nurafshon/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/smart-city-nurafshon/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/smart-city-nurafshon/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/smart-city-nurafshon/"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.bridgeconsult.uz/EN/projects/smart-city-nurafshon/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/smart-city-nurafshon/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/smart-city-nurafshon/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/smart-city-nurafshon/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/smart-city-nurafshon/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/UZ/projects/smart-city-nurafshon/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/smart-city-nurafshon/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/smart-city-nurafshon/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/smart-city-nurafshon/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/smart-city-nurafshon/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://www.bridgeconsult.uz/projects/energy-metering-adb/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/energy-metering-adb/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/energy-metering-adb/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/energy-metering-adb/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/energy-metering-adb/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/EN/projects/energy-metering-adb/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/energy-metering-adb/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/energy-metering-adb/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/energy-metering-adb/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/energy-metering-adb/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bridgeconsult.uz/UZ/projects/energy-metering-adb/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/projects/energy-metering-adb/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/EN/projects/energy-metering-adb/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/UZ/projects/energy-metering-adb/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.bridgeconsult.uz/projects/energy-metering-adb/"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
