@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Bridge Consult | Страница не найдена</title>
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/png" href="/favicon.png">
+<style>
+    :root {
+        --taupe: #8A7B66;
+        --taupe-light: #D4C3A3;
+        --ink: #1a1816;
+        --ink-deep: #12100e;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+        font-family: 'Inter', system-ui, sans-serif;
+        background: var(--ink);
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Galaxy background: warm core + drifting CSS stars + grain ── */
+    .bg {
+        position: fixed; inset: 0; z-index: 0; overflow: hidden;
+        background:
+            radial-gradient(ellipse 80% 60% at 50% 42%, rgba(138,123,102,0.16) 0%, transparent 60%),
+            radial-gradient(ellipse 50% 40% at 78% 78%, rgba(138,123,102,0.07) 0%, transparent 70%),
+            linear-gradient(180deg, var(--ink-deep) 0%, var(--ink) 45%, var(--ink-deep) 100%);
+    }
+    .bg::before {
+        content: ''; position: absolute; inset: -440px 0 -440px 0;
+        background-image:
+            radial-gradient(1.4px 1.4px at 37px 63px,  rgba(255,255,255,0.75), transparent 60%),
+            radial-gradient(1px   1px   at 143px 187px, rgba(255,255,255,0.45), transparent 60%),
+            radial-gradient(1.8px 1.8px at 231px 41px,  rgba(212,195,163,0.8),  transparent 60%),
+            radial-gradient(1px   1px   at 317px 265px, rgba(255,255,255,0.35), transparent 60%),
+            radial-gradient(1.3px 1.3px at 71px 331px,  rgba(255,255,255,0.6),  transparent 60%),
+            radial-gradient(1px   1px   at 401px 127px, rgba(212,195,163,0.5),  transparent 60%),
+            radial-gradient(1.6px 1.6px at 187px 409px, rgba(255,255,255,0.5),  transparent 60%),
+            radial-gradient(1px   1px   at 359px 373px, rgba(255,255,255,0.3),  transparent 60%);
+        background-size: 440px 440px;
+        animation: stardrift 90s linear infinite;
+    }
+    @keyframes stardrift { to { transform: translateY(-440px); } }
+    .bg::after {
+        content: ''; position: absolute; inset: 0; opacity: 0.5; pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    #scene { position: fixed; inset: 0; z-index: 1; }
+
+    /* ── Content ── */
+    .wrap {
+        position: relative; z-index: 2;
+        height: 100%;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        text-align: center; padding: 24px;
+    }
+    .logo {
+        position: fixed; top: 32px; left: 40px; z-index: 3;
+        font-weight: 800; font-size: 22px; letter-spacing: 0.02em; color: #fff;
+        text-decoration: none;
+    }
+    .logo small { display: block; font-size: 9px; letter-spacing: 0.55em; font-weight: 700; color: var(--taupe); }
+
+    .code {
+        font-size: clamp(120px, 26vw, 320px);
+        font-weight: 800; line-height: 0.9; letter-spacing: -0.04em;
+        background: linear-gradient(115deg, #fff 15%, var(--taupe-light) 45%, var(--taupe) 80%);
+        -webkit-background-clip: text; background-clip: text;
+        -webkit-text-fill-color: transparent; color: transparent;
+        text-shadow: 0 0 120px rgba(138,123,102,0.35);
+        animation: float 7s ease-in-out infinite;
+        user-select: none;
+    }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+
+    .line {
+        width: 64px; height: 1px; margin: 26px auto 22px;
+        background: linear-gradient(to right, transparent, var(--taupe), transparent);
+    }
+    h1 { font-size: clamp(20px, 3.4vw, 34px); font-weight: 700; }
+    .sub {
+        margin-top: 14px; max-width: 560px;
+        color: rgba(255,255,255,0.55); font-weight: 300;
+        font-size: clamp(14px, 1.6vw, 17px); line-height: 1.65;
+    }
+    .sub .alt { display: block; font-size: 12.5px; margin-top: 10px; color: rgba(255,255,255,0.35); }
+
+    .actions { margin-top: 38px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .btn {
+        display: inline-flex; align-items: center; gap: 10px;
+        padding: 15px 32px; border-radius: 999px;
+        font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+        text-decoration: none; transition: all .35s ease;
+    }
+    .btn-primary { background: var(--taupe); color: #fff; box-shadow: 0 8px 30px -8px rgba(138,123,102,0.6); }
+    .btn-primary:hover { background: #9c8d76; transform: translateY(-3px); box-shadow: 0 14px 40px -8px rgba(138,123,102,0.7); }
+    .btn-ghost { border: 1px solid rgba(255,255,255,0.2); color: #fff; }
+    .btn-ghost:hover { border-color: var(--taupe); background: rgba(255,255,255,0.06); transform: translateY(-3px); }
+
+    .langs {
+        position: fixed; bottom: 30px; left: 0; right: 0; z-index: 3;
+        display: flex; gap: 20px; justify-content: center;
+        font-size: 11px; font-weight: 700; letter-spacing: 0.25em;
+    }
+    .langs a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color .3s; }
+    .langs a:hover { color: var(--taupe-light); }
+
+    @media (prefers-reduced-motion: reduce) {
+        .code, .bg::before { animation: none; }
+    }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<canvas id="scene"></canvas>
+
+<a class="logo" href="/">Bridge<small>CONSULT</small></a>
+
+<div class="wrap">
+    <div class="code">404</div>
+    <div class="line"></div>
+    <h1>Этот мост ещё не построен</h1>
+    <p class="sub">
+        Страница, которую вы ищете, не существует или была перемещена.
+        Но мы знаем, как навести мосты — начните с главной.
+        <span class="alt">This bridge isn't built yet · Bu ko'prik hali qurilmagan</span>
+    </p>
+    <div class="actions">
+        <a class="btn btn-primary" href="/">На главную</a>
+        <a class="btn btn-ghost" href="/projects.html">Проекты</a>
+        <a class="btn btn-ghost" href="/news/">Новости</a>
+    </div>
+</div>
+
+<nav class="langs">
+    <a href="/">RU</a>
+    <a href="/EN/">EN</a>
+    <a href="/UZ/">UZ</a>
+</nav>
+
+<script src="/vendor/three.r128.min.js"></script>
+<script>
+if (typeof THREE === 'undefined') {
+    document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\\/script>');
+}
+</script>
+<script>
+(function () {
+    if (typeof THREE === 'undefined') return; // graceful CSS-only fallback
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var canvas = document.getElementById('scene');
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    canvas.dataset.engine = 'three';
+    document.documentElement.classList.add('three-ready');
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.z = 7;
+
+    var group = new THREE.Group();
+    scene.add(group);
+
+    // Wireframe planet — same DNA as the Projects Universe
+    var planet = new THREE.LineSegments(
+        new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(2.3, 2)),
+        new THREE.LineBasicMaterial({ color: 0x8A7B66, transparent: true, opacity: 0.28 })
+    );
+    group.add(planet);
+
+    var inner = new THREE.LineSegments(
+        new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(1.55, 1)),
+        new THREE.LineBasicMaterial({ color: 0xD4C3A3, transparent: true, opacity: 0.14 })
+    );
+    group.add(inner);
+
+    // A ring of small "unfinished bridge" pylon points orbiting the planet
+    var dots = new THREE.Group();
+    var dotGeo = new THREE.SphereGeometry(0.035, 8, 8);
+    var dotMat = new THREE.MeshBasicMaterial({ color: 0xD4C3A3, transparent: true, opacity: 0.9 });
+    for (var i = 0; i < 26; i++) {
+        // leave a visible gap in the ring — the "missing span" of the bridge
+        var a = (i / 30) * Math.PI * 2;
+        var d = new THREE.Mesh(dotGeo, dotMat);
+        d.position.set(Math.cos(a) * 3.4, Math.sin(a * 2) * 0.18, Math.sin(a) * 3.4);
+        dots.add(d);
+    }
+    dots.rotation.x = 0.42;
+    group.add(dots);
+
+    var mouseX = 0, mouseY = 0;
+    document.addEventListener('mousemove', function (e) {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+
+    function resize() {
+        var w = window.innerWidth, h = window.innerHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    var t = 0;
+    function tick() {
+        requestAnimationFrame(tick);
+        if (!reduced) {
+            t += 0.0035;
+            planet.rotation.y = t;
+            planet.rotation.x = t * 0.35;
+            inner.rotation.y = -t * 0.7;
+            dots.rotation.y = t * 0.5;
+            group.rotation.x += ((mouseY * 0.22) - group.rotation.x) * 0.04;
+            group.rotation.z += ((mouseX * 0.12) - group.rotation.z) * 0.04;
+        }
+        renderer.render(scene, camera);
+    }
+    tick();
+})();
+</script>
+</body>
+</html>

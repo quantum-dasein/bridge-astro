@@ -2,8 +2,9 @@
 interface Props {
   lang?: string;
   langUrls?: { ru: string; en: string; uz: string };
+  active?: 'projects' | 'news' | 'none';
 }
-const { lang = 'ru', langUrls } = Astro.props;
+const { lang = 'ru', langUrls, active = 'news' } = Astro.props;
 
 const home     = lang === 'uz' ? '/UZ/index.html' : lang === 'en' ? '/EN/index.html' : '/index.html';
 const projects = lang === 'uz' ? '/UZ/projects.html' : lang === 'en' ? '/EN/projects.html' : '/projects.html';
@@ -25,6 +26,16 @@ const t = {
 };
 const moonPath = 'M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z';
 const sunPath = 'M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z';
+
+const navClass = (key: 'projects' | 'news') =>
+	key === active
+		? 'nav-link text-sm font-bold text-bridge-taupe border-b-2 border-bridge-taupe pb-1 transition-colors'
+		: 'nav-link text-sm font-medium transition-colors hover:text-bridge-taupe';
+
+const mobileNavClass = (key: 'projects' | 'news') =>
+	key === active
+		? 'mobile-nav-link border-b border-gray-100 pb-3 text-2xl font-bold text-bridge-taupe'
+		: 'mobile-nav-link border-b border-gray-100 pb-3 text-2xl font-bold text-bridge-dark';
 ---
 <header class="fixed top-0 z-[100] w-full border-b border-gray-100 bg-white/95 backdrop-blur-md transition-all duration-300">
 	<div class="relative z-[101] mx-auto flex h-20 max-w-7xl flex-nowrap items-center justify-between px-6">
@@ -35,8 +46,8 @@ const sunPath = 'M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 
 		<nav class="hidden flex-nowrap items-center space-x-5 lg:flex">
 			<a href={`${home}#about`} class="nav-link text-sm font-medium transition-colors hover:text-bridge-taupe">{t.about}</a>
 			<a href={`${home}#services`} class="nav-link text-sm font-medium transition-colors hover:text-bridge-taupe">{t.services}</a>
-			<a href={projects} class="nav-link text-sm font-medium transition-colors hover:text-bridge-taupe">{t.projects}</a>
-			<a href={newsBase} class="nav-link text-sm font-bold text-bridge-taupe border-b-2 border-bridge-taupe pb-1 transition-colors">{t.news}</a>
+			<a href={projects} class={navClass('projects')}>{t.projects}</a>
+			<a href={newsBase} class={navClass('news')}>{t.news}</a>
 			<a href={`${home}#team`} class="nav-link text-sm font-medium transition-colors hover:text-bridge-taupe">{t.team}</a>
 		</nav>
 
@@ -89,8 +100,8 @@ const sunPath = 'M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 
 		<div class="flex flex-col space-y-5">
 			<a href={`${home}#about`} class="mobile-nav-link border-b border-gray-100 pb-3 text-2xl font-bold text-bridge-dark">{t.about}</a>
 			<a href={`${home}#services`} class="mobile-nav-link border-b border-gray-100 pb-3 text-2xl font-bold text-bridge-dark">{t.services}</a>
-			<a href={projects} class="mobile-nav-link border-b border-gray-100 pb-3 text-2xl font-bold text-bridge-dark">{t.projects}</a>
-			<a href={newsBase} class="mobile-nav-link border-b border-gray-100 pb-3 text-2xl font-bold text-bridge-taupe">{t.news}</a>
+			<a href={projects} class={mobileNavClass('projects')}>{t.projects}</a>
+			<a href={newsBase} class={mobileNavClass('news')}>{t.news}</a>
 			<a href={`${home}#team`} class="mobile-nav-link border-b border-gray-100 pb-3 text-2xl font-bold text-bridge-dark">{t.team}</a>
 			<a href={`${home}#contact-form`} class="mobile-nav-link border-b border-gray-100 pb-3 pt-2 text-2xl font-bold text-bridge-dark">{t.contact}</a>
 		</div>

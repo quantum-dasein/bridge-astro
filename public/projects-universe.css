@@ -267,6 +267,105 @@
 .dark-theme .uni-detail-panel { background: #211d19; }
 .dark-theme .uni-detail-close { background: #2e2a25; border-color: rgba(255,255,255,0.1); color: #fff; }
 
+/* ── Indexable project case links ───────────────────────── */
+.uni-case-index {
+    position: relative;
+    z-index: 2;
+    padding: 4rem 1.5rem 2rem;
+    background: transparent;
+    font-family: Inter, system-ui, sans-serif;
+}
+.uni-case-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+}
+.uni-case-head {
+    max-width: 680px;
+    margin-bottom: 2rem;
+}
+.uni-case-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    color: #8A7B66;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+}
+.uni-case-eyebrow span {
+    width: 2rem;
+    height: 1px;
+    background: #8A7B66;
+}
+.uni-case-head h2 {
+    margin: 0;
+    color: #fff;
+    font-size: clamp(1.8rem, 3.6vw, 3rem);
+    line-height: 1.08;
+    font-weight: 700;
+}
+.uni-case-head p {
+    margin: 1rem 0 0;
+    color: rgba(255,255,255,0.56);
+    font-weight: 300;
+    line-height: 1.75;
+}
+.uni-case-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 0.8rem;
+}
+.uni-case-link {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.45rem 1rem;
+    min-height: 6.25rem;
+    padding: 1.1rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.035);
+    color: #fff;
+    text-decoration: none;
+    transition: border-color 0.22s ease, background 0.22s ease, transform 0.22s ease;
+}
+.uni-case-link:hover {
+    transform: translateY(-2px);
+    border-color: rgba(138,123,102,0.7);
+    background: rgba(255,255,255,0.065);
+}
+.uni-case-link:focus-visible {
+    outline: 2px solid #cdb796;
+    outline-offset: 4px;
+}
+.uni-case-link span {
+    grid-row: span 2;
+    color: #8A7B66;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+}
+.uni-case-link strong {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: 1rem;
+    line-height: 1.25;
+}
+.uni-case-link em {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.78rem;
+    font-style: normal;
+    line-height: 1.45;
+}
+@media (min-width: 700px) {
+    .uni-case-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+    .uni-case-index { padding-top: 5.5rem; }
+    .uni-case-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
 /* ============================================================
    PDF / company-profile CTA — cosmic dark, flows from universe
    ============================================================ */
