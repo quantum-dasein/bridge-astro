@@ -4,6 +4,8 @@ import Layout from '../../../layouts/Layout.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import NewsPicture from '../../../components/NewsPicture.astro';
+import LeadMagnet from '../../../components/LeadMagnet.astro';
+import RelatedNews from '../../../components/RelatedNews.astro';
 
 export async function getStaticPaths() {
 	const posts = (await getCollection('news')).filter((p) => p.data.lang === 'uz');
@@ -136,6 +138,9 @@ const newsArticleJsonLd = {
 						</a>
 					</div>
 				</div>
+
+				<LeadMagnet lang="uz" page={Astro.url.pathname} />
+				<RelatedNews lang="uz" currentId={post.id} />
 			</div>
 		</section>
 	</article>

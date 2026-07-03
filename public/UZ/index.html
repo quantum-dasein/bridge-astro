@@ -1883,6 +1883,51 @@ document.documentElement.style.height = '';
         </div>
     </div>
 
+    <!-- Lead magnet: 28 kunlik chek-list -->
+    <div class="relative z-10" style="max-width:56rem;margin:44px auto 0;padding:0 24px;" data-aos="fade-up">
+        <div id="bc-lm-faq" style="position:relative;overflow:hidden;border-radius:24px;border:1px solid rgba(138,123,102,0.4);background:rgba(138,123,102,0.10);padding:36px 30px;">
+            <div style="position:absolute;top:-90px;left:50%;transform:translateX(-50%);width:420px;height:220px;border-radius:9999px;background:radial-gradient(ellipse,rgba(138,123,102,0.3),transparent 70%);pointer-events:none;"></div>
+            <div style="position:relative;z-index:1;">
+                <span class="text-bridge-taupe font-bold uppercase" style="letter-spacing:0.28em;font-size:10px;display:block;margin-bottom:10px;">Bepul chek-list · PDF</span>
+                <p class="text-white font-bold" style="font-size:22px;line-height:1.3;margin-bottom:8px;">28 kun: claim hodisasida pudratchi nima qilishi kerak</p>
+                <p class="text-gray-400 font-light" style="font-size:14px;line-height:1.6;max-width:560px;margin-bottom:22px;">FIDIC 2017 bo'yicha muddatli olti qadam va EOT hamda kompensatsiya huquqidan mahrum qiladigan xatolar (rus tilida). Emailingizni qoldiring — yuklab olish darhol boshlanadi.</p>
+                <form class="bc-lm-form" novalidate style="display:flex;flex-wrap:wrap;gap:12px;">
+                    <input type="email" name="email" required placeholder="Ish emailingiz" autocomplete="email" style="flex:1 1 240px;border-radius:9999px;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);padding:14px 24px;font-size:14px;color:#fff;outline:none;">
+                    <button type="submit" data-label="Chek-listni olish" data-sending="Yuborilmoqda…" class="bg-bridge-taupe text-white font-bold uppercase" style="border:none;cursor:pointer;border-radius:9999px;padding:14px 32px;font-size:11px;letter-spacing:0.16em;transition:all .3s;">Chek-listni olish</button>
+                </form>
+                <p class="bc-lm-success" style="display:none;margin-top:14px;font-size:14px;color:#8fd694;">Tayyor! Yuklab olish boshlandi. <a href="/files/claim-checklist-28-days-ru.pdf" download style="color:#D4C3A3;text-decoration:underline;text-underline-offset:4px;">Yana yuklab olish</a></p>
+                <p class="bc-lm-error" style="display:none;margin-top:14px;font-size:14px;color:#e8a0a0;">Yuborib bo'lmadi. Bizga yozing: info@bridgeconsult.uz</p>
+                <p class="text-gray-500 font-light" style="font-size:11px;margin-top:12px;">Spam yo'q — faqat chek-list va vaqti-vaqti bilan ekspert materiallari.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+    (function () {
+        var box = document.getElementById('bc-lm-faq');
+        if (!box) return;
+        var form = box.querySelector('.bc-lm-form');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var email = form.querySelector('input[name=email]');
+            var btn = form.querySelector('button');
+            var ok = box.querySelector('.bc-lm-success');
+            var err = box.querySelector('.bc-lm-error');
+            if (!email.value || !email.checkValidity()) { email.focus(); return; }
+            btn.disabled = true; btn.style.opacity = '0.6'; btn.textContent = btn.getAttribute('data-sending');
+            err.style.display = 'none';
+            var fd = new FormData();
+            fd.append('email', email.value);
+            fd.append('form', 'claim-checklist');
+            fd.append('lang', 'uz');
+            fd.append('page', location.pathname + '#faq');
+            fd.append('_subject', 'Lead magnet: 28 kun chek-list (' + email.value + ')');
+            fetch('https://formspree.io/f/meedwzjw', { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } })
+                .then(function (r) { if (!r.ok) throw new Error(r.status); form.style.display = 'none'; ok.style.display = 'block'; var a = document.createElement('a'); a.href = '/files/claim-checklist-28-days-ru.pdf'; a.download = ''; document.body.appendChild(a); a.click(); a.remove(); })
+                .catch(function () { err.style.display = 'block'; btn.disabled = false; btn.style.opacity = '1'; btn.textContent = btn.getAttribute('data-label'); });
+        });
+    })();
+    </script>
+
     <script>
         function togglePremiumFaq(btn) {
             const item = btn.closest('.faq-item');

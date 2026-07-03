@@ -1,0 +1,52 @@
+---
+// "Read next" block: two other articles in the same language.
+import { getCollection } from 'astro:content';
+import NewsPicture from './NewsPicture.astro';
+
+interface Props { lang?: string; currentId: string }
+const { lang = 'ru', currentId } = Astro.props;
+
+const all = await getCollection('news');
+const related = all
+	.filter((p) => (p.data.lang ?? 'ru') === lang && p.id !== currentId)
+	.sort((a, b) => {
+		const pa = (b.data as any).priority ?? 0;
+		const pb = (a.data as any).priority ?? 0;
+		if (pa !== pb) return pa - pb;
+		return b.data.date.valueOf() - a.data.date.valueOf();
+	})
+	.slice(0, 2);
+
+const heading = lang === 'uz' ? "Shuningdek o'qing" : lang === 'en' ? 'Read next' : 'Читайте также';
+const locale = lang === 'uz' ? 'uz-UZ' : lang === 'en' ? 'en-GB' : 'ru-RU';
+
+function urlFor(id: string): string {
+	const base = id.replace(/^(ru|en|uz)-/, '');
+	if (lang === 'en') return `/news/en/${base}/`;
+	if (lang === 'uz') return `/news/uz/${base}/`;
+	return `/news/${id}/`;
+}
+const fmt = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+{related.length > 0 && (
+	<section class="mt-14" data-aos="fade-up">
+		<h2 class="mb-6 flex items-center gap-3 text-xl font-bold text-bridge-dark">
+			<span class="inline-block h-[3px] w-8 rounded-full bg-bridge-taupe"></span>
+			{heading}
+		</h2>
+		<div class="grid gap-5 sm:grid-cols-2">
+			{related.map((p) => (
+				<a href={urlFor(p.id)} class="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_14px_35px_-18px_rgba(41,39,36,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-bridge-taupe/50 hover:shadow-[0_22px_45px_-18px_rgba(138,123,102,0.45)]">
+					<div class="relative aspect-[16/9] overflow-hidden bg-bridge-dark/10">
+						<NewsPicture src={p.data.coverImage} alt={p.data.title} onerror="this.onerror=null;this.src='/news-cover.jpg'" imgClass="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+					</div>
+					<div class="p-5">
+						<time class="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-bridge-taupe" datetime={p.data.date.toISOString()}>{fmt.format(p.data.date)}</time>
+						<h3 class="text-[15px] font-bold leading-snug text-bridge-dark transition-colors group-hover:text-bridge-taupe">{p.data.title}</h3>
+					</div>
+				</a>
+			))}
+		</div>
+	</section>
+)}
