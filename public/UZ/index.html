@@ -82,27 +82,9 @@
             })();
         </script>
     
-        <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         <link rel="stylesheet" href="../style.css">
         
-        <script>
-            tailwind.config = {
-                theme: {
-                    extend: {
-                        colors: {
-                            'bridge-taupe': '#8A7B66',
-                            'bridge-dark': '#292724',
-                            'bridge-light': '#F5F4F2',
-                        },
-                        fontFamily: {
-                            sans: ['Inter', 'system-ui', 'sans-serif'],
-                            serif: ['Playfair Display', 'Georgia', 'serif'],
-                        }
-                    }
-                }
-            }
-        </script>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
         <style>
             html, body {
@@ -161,6 +143,7 @@
       ]
     }
     </script>
+        <link rel="stylesheet" href="../tw.css">
 </head>
 <body class="font-sans text-bridge-dark antialiased bg-white selection:bg-bridge-taupe/20 overflow-x-hidden">
     <script>
@@ -717,7 +700,7 @@ document.documentElement.style.height = '';
     </div>
 </section>
 <section class="py-32 relative overflow-hidden bg-bridge-dark font-sans">
-    <video autoplay loop muted playsinline preload="none" poster="poster-elegant.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-70">
+    <video autoplay loop muted playsinline preload="none" poster="../poster-elegant.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-70">
         <source src="../elegant-video.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-gradient-to-t from-bridge-dark via-bridge-dark/60 to-bridge-dark/95 z-[1]"></div>
@@ -1076,7 +1059,7 @@ document.documentElement.style.height = '';
     <div class="ecosystem-bg">
         <div class="ecosystem-planet">
             <model-viewer
-                data-src="TrainingModel.glb"
+                data-src="../TrainingModel.glb"
                 auto-rotate auto-rotate-delay="0"
                 rotation-per-second="2deg"
                 camera-orbit="0deg 90deg 2.5m"

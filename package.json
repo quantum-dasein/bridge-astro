@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "build:tw": "npx -y tailwindcss@3.4.17 -c tailwind.marketing.config.cjs -i tailwind.marketing.css -o public/tw.css --minify",
     "astro": "astro"
   },
   "dependencies": {
