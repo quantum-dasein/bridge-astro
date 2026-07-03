@@ -155,4 +155,64 @@
     <priority>0.7</priority>
   </url>
 
+  <!-- Статья: Красная или Жёлтая книга FIDIC (RU) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/ru-fidic-red-vs-yellow-book/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/ru-fidic-red-vs-yellow-book/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en-fidic-red-vs-yellow-book/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz-fidic-red-vs-yellow-book/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Статья: Красная или Жёлтая книга FIDIC (EN) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/en-fidic-red-vs-yellow-book/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/ru-fidic-red-vs-yellow-book/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en-fidic-red-vs-yellow-book/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz-fidic-red-vs-yellow-book/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Статья: Красная или Жёлтая книга FIDIC (UZ) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/uz-fidic-red-vs-yellow-book/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/ru-fidic-red-vs-yellow-book/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en-fidic-red-vs-yellow-book/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz-fidic-red-vs-yellow-book/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Статья: Что такое DAAB в контрактах FIDIC (RU) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/ru-fidic-daab-explained/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/ru-fidic-daab-explained/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en-fidic-daab-explained/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz-fidic-daab-explained/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Статья: Что такое DAAB в контрактах FIDIC (EN) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/en-fidic-daab-explained/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/ru-fidic-daab-explained/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en-fidic-daab-explained/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz-fidic-daab-explained/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Статья: Что такое DAAB в контрактах FIDIC (UZ) -->
+  <url>
+    <loc>https://www.bridgeconsult.uz/news/uz-fidic-daab-explained/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://www.bridgeconsult.uz/news/ru-fidic-daab-explained/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.bridgeconsult.uz/news/en-fidic-daab-explained/"/>
+    <xhtml:link rel="alternate" hreflang="uz" href="https://www.bridgeconsult.uz/news/uz-fidic-daab-explained/"/>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

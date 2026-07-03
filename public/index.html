@@ -232,6 +232,22 @@
             "@type": "Answer",
             "text": "EPC — это контракт «под ключ» (Engineering, Procurement, Construction). Все риски и ответственность за инжиниринг, закупку оборудования и строительство ложатся исключительно на генподрядчика. Идеальный стандарт для крупных инфраструктурных и энергетических проектов."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "Когда в проект нужно привлекать инженера-консультанта FIDIC?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Чем раньше, тем дешевле. Оптимально — на стадии подготовки тендера и выбора проформы контракта: именно там закладываются распределение рисков, сроки и механизмы оплаты. Привлечение эксперта после подписания контракта тоже работает, но исправление ошибок стоит в разы дороже их предотвращения."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Что делать подрядчику при задержке платежей или изменении объёма работ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Действовать по контракту и не терять сроки: проформы FIDIC требуют направить уведомление о претензии в течение 28 дней с момента, когда подрядчик узнал о событии, — иначе право на компенсацию и продление сроков может быть утрачено. Ключевое — своевременные уведомления, ведение записей и корректная подготовка претензии (claim)."
+          }
         }
       ]
     }
@@ -1918,6 +1934,36 @@ document.documentElement.style.height = '';
                     </p>
                 </div>
             </div>
+
+            <div class="faq-item group bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 hover:border-bridge-taupe/50 hover:bg-white/10 hover:shadow-[0_0_30px_-10px_rgba(138,123,102,0.3)]" data-aos="fade-up" data-aos-delay="500">
+                <button class="w-full px-6 md:px-10 py-7 flex items-center justify-between text-left focus:outline-none cursor-pointer" onclick="togglePremiumFaq(this)">
+                    <h3 class="text-lg md:text-xl font-bold text-white pr-4 group-hover:text-bridge-taupe transition-colors">Когда в проект нужно привлекать инженера-консультанта FIDIC?</h3>
+                    <div class="relative w-12 h-12 rounded-full border border-white/20 flex items-center justify-center shrink-0 transition-all duration-500 group-hover:border-bridge-taupe group-hover:bg-bridge-taupe/20 icon-container">
+                        <span class="absolute w-4 h-[2px] bg-white transition-transform duration-500 horiz-line"></span>
+                        <span class="absolute w-[2px] h-4 bg-white transition-transform duration-500 vert-line"></span>
+                    </div>
+                </button>
+                <div class="max-h-0 overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] faq-content">
+                    <p class="px-6 md:px-10 pb-8 text-gray-400 font-light leading-relaxed text-base md:text-lg">
+                        Чем раньше, тем дешевле. Оптимально — на стадии подготовки тендера и выбора проформы контракта: именно там закладываются распределение рисков, сроки и механизмы оплаты. Привлечение эксперта после подписания контракта тоже работает, но исправление ошибок стоит в разы дороже их предотвращения.
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item group bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden transition-all duration-500 hover:border-bridge-taupe/50 hover:bg-white/10 hover:shadow-[0_0_30px_-10px_rgba(138,123,102,0.3)]" data-aos="fade-up" data-aos-delay="600">
+                <button class="w-full px-6 md:px-10 py-7 flex items-center justify-between text-left focus:outline-none cursor-pointer" onclick="togglePremiumFaq(this)">
+                    <h3 class="text-lg md:text-xl font-bold text-white pr-4 group-hover:text-bridge-taupe transition-colors">Что делать подрядчику при задержке платежей или изменении объёма работ?</h3>
+                    <div class="relative w-12 h-12 rounded-full border border-white/20 flex items-center justify-center shrink-0 transition-all duration-500 group-hover:border-bridge-taupe group-hover:bg-bridge-taupe/20 icon-container">
+                        <span class="absolute w-4 h-[2px] bg-white transition-transform duration-500 horiz-line"></span>
+                        <span class="absolute w-[2px] h-4 bg-white transition-transform duration-500 vert-line"></span>
+                    </div>
+                </button>
+                <div class="max-h-0 overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] faq-content">
+                    <p class="px-6 md:px-10 pb-8 text-gray-400 font-light leading-relaxed text-base md:text-lg">
+                        Действовать по контракту и не терять сроки: проформы FIDIC требуют направить уведомление о претензии в течение <strong class="text-white">28 дней</strong> с момента, когда подрядчик узнал о событии, — иначе право на компенсацию и продление сроков (EOT) может быть утрачено. Ключевое — своевременные уведомления, ведение записей и корректная подготовка претензии (claim).
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2002,19 +2048,19 @@ document.documentElement.style.height = '';
         <!-- Статичная сетка новостей -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <!-- Главная публикация -->
-            <a href="/news/ru-uzbek-arbitration-week-2026/" class="group relative md:col-span-2 rounded-3xl overflow-hidden flex flex-col bg-white/5 border border-white/10 hover:border-bridge-taupe/60 transition-all duration-500 hover:shadow-[0_0_50px_-10px_rgba(138,123,102,0.4)]" data-aos="fade-up" data-aos-delay="100">
+            <a href="/news/ru-fidic-daab-explained/" class="group relative md:col-span-2 rounded-3xl overflow-hidden flex flex-col bg-white/5 border border-white/10 hover:border-bridge-taupe/60 transition-all duration-500 hover:shadow-[0_0_50px_-10px_rgba(138,123,102,0.4)]" data-aos="fade-up" data-aos-delay="100">
                 <div class="relative aspect-[16/9] overflow-hidden bg-bridge-dark/60 shrink-0">
-                    <img src="uzbek-arbitration-week.jpg" alt="Узбекская арбитражная неделя 2026 — международная конференция в Ташкенте" onerror="this.onerror=null;this.src='news-cover.jpg'" class="w-full h-full object-cover object-center transition-all duration-700 group-hover:scale-105">
+                    <img src="news-cover.jpg" alt="Что такое DAAB в контрактах FIDIC — Совет по предотвращению и разрешению споров" onerror="this.onerror=null;this.src='news-cover.jpg'" class="w-full h-full object-cover object-center transition-all duration-700 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-t from-bridge-dark/90 via-bridge-dark/30 to-transparent"></div>
                     <div class="absolute top-5 left-5 flex gap-2">
-                        <span class="bg-bridge-taupe/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Арбитраж</span>
-                        <span class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Инвестиции</span>
+                        <span class="bg-bridge-taupe/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">FIDIC</span>
+                        <span class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">DAAB</span>
                     </div>
                 </div>
                 <div class="flex flex-col flex-grow p-7 md:p-8">
-                    <time class="text-bridge-taupe text-[10px] font-bold uppercase tracking-[0.22em] mb-3 block">18 июня 2026 г.</time>
-                    <h3 class="text-xl md:text-2xl font-bold text-white group-hover:text-bridge-taupe transition-colors leading-tight mb-3">Узбекская арбитражная неделя 2026: международная конференция в Ташкенте</h3>
-                    <p class="text-gray-400 font-light text-sm leading-relaxed mb-6 flex-grow">18 июня в MGIMO Tashkent пройдёт конференция «Формируя новый правовой ландшафт Центральной Азии: арбитраж, инвестиции и развитие рынков». Bridge Consult принимает участие.</p>
+                    <time class="text-bridge-taupe text-[10px] font-bold uppercase tracking-[0.22em] mb-3 block">3 июля 2026 г.</time>
+                    <h3 class="text-xl md:text-2xl font-bold text-white group-hover:text-bridge-taupe transition-colors leading-tight mb-3">Что такое DAAB в контрактах FIDIC и зачем он нужен вашему проекту</h3>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed mb-6 flex-grow">Совет по предотвращению и разрешению споров решает разногласия прямо на стройплощадке, не останавливая проект. Как он устроен в FIDIC 2017, сколько стоит и почему банки развития требуют его в крупных контрактах.</p>
                     <span class="inline-flex items-center text-[11px] font-bold uppercase tracking-widest text-bridge-taupe">
                         Читать публикацию
                         <span class="ml-3 h-px w-8 bg-bridge-taupe transition-all duration-300 group-hover:w-14"></span>
@@ -2036,18 +2082,18 @@ document.documentElement.style.height = '';
                     <span class="mt-6 inline-flex items-center gap-3 text-[11px] font-bold uppercase tracking-widest text-bridge-taupe">Подписаться<span class="h-px w-8 bg-bridge-taupe transition-all duration-300 group-hover:w-14"></span></span>
                 </a>
 
-                <!-- FIDIC OSH (предыдущая публикация) -->
-                <a href="/news/ru-fidic-osh-first-meeting/" class="group relative rounded-3xl overflow-hidden bg-white/5 border border-white/10 hover:bg-white/10 hover:border-bridge-taupe/60 transition-all duration-500 flex flex-col order-1" data-aos="fade-up" data-aos-delay="300">
+                <!-- Красная vs Жёлтая книга (предыдущая публикация) -->
+                <a href="/news/ru-fidic-red-vs-yellow-book/" class="group relative rounded-3xl overflow-hidden bg-white/5 border border-white/10 hover:bg-white/10 hover:border-bridge-taupe/60 transition-all duration-500 flex flex-col order-1" data-aos="fade-up" data-aos-delay="300">
                     <div class="relative aspect-[16/9] overflow-hidden bg-bridge-dark/60 shrink-0">
-                        <img src="fidic-osh-cover.jpg" alt="Первая встреча FIDIC OSH" onerror="this.onerror=null;this.src='larisa-belousova-uznews.png'" class="w-full h-full object-cover object-center grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0">
+                        <img src="highway-reconstruction.png" alt="Красная или Жёлтая книга FIDIC — выбор проформы контракта" onerror="this.onerror=null;this.src='news-cover.jpg'" class="w-full h-full object-cover object-center grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0">
                         <div class="absolute inset-0 bg-gradient-to-t from-bridge-dark/85 to-transparent"></div>
                         <div class="absolute top-4 left-4 flex gap-2">
                             <span class="bg-bridge-taupe/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">FIDIC</span>
                         </div>
                     </div>
                     <div class="p-6 flex flex-col flex-grow">
-                        <time class="text-bridge-taupe text-[10px] font-bold uppercase tracking-[0.22em] mb-2 block">10 июня 2026 г.</time>
-                        <h3 class="text-lg font-bold text-white group-hover:text-bridge-taupe transition-colors leading-tight mb-4">Первая встреча FIDIC OSH состоялась</h3>
+                        <time class="text-bridge-taupe text-[10px] font-bold uppercase tracking-[0.22em] mb-2 block">2 июля 2026 г.</time>
+                        <h3 class="text-lg font-bold text-white group-hover:text-bridge-taupe transition-colors leading-tight mb-4">Красная или Жёлтая книга FIDIC: как выбрать проформу контракта</h3>
                         <span class="mt-auto inline-flex items-center text-[11px] font-bold uppercase tracking-widest text-bridge-taupe">Читать<span class="ml-3 h-px w-8 bg-bridge-taupe transition-all duration-300 group-hover:w-14"></span></span>
                     </div>
                 </a>
