@@ -1,5 +1,7 @@
 ---
-// "Read next" block: two other articles in the same language.
+// "Read next" block: the two most RELEVANT same-language articles.
+// Relevance = number of shared tags with the current article (case-insensitive),
+// ties broken by freshness. Falls back to newest when nothing overlaps.
 import { getCollection } from 'astro:content';
 import NewsPicture from './NewsPicture.astro';
 
@@ -7,15 +9,21 @@ interface Props { lang?: string; currentId: string }
 const { lang = 'ru', currentId } = Astro.props;
 
 const all = await getCollection('news');
+const current = all.find((p) => p.id === currentId);
+const currentTags = new Set((current?.data.tags ?? []).map((t) => t.toLowerCase()));
+
 const related = all
 	.filter((p) => (p.data.lang ?? 'ru') === lang && p.id !== currentId)
+	.map((p) => ({
+		p,
+		shared: (p.data.tags ?? []).filter((t) => currentTags.has(t.toLowerCase())).length,
+	}))
 	.sort((a, b) => {
-		const pa = (b.data as any).priority ?? 0;
-		const pb = (a.data as any).priority ?? 0;
-		if (pa !== pb) return pa - pb;
-		return b.data.date.valueOf() - a.data.date.valueOf();
+		if (b.shared !== a.shared) return b.shared - a.shared;
+		return b.p.data.date.valueOf() - a.p.data.date.valueOf();
 	})
-	.slice(0, 2);
+	.slice(0, 2)
+	.map((x) => x.p);
 
 const heading = lang === 'uz' ? "Shuningdek o'qing" : lang === 'en' ? 'Read next' : 'Читайте также';
 const locale = lang === 'uz' ? 'uz-UZ' : lang === 'en' ? 'en-GB' : 'ru-RU';
@@ -40,6 +48,11 @@ const fmt = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', yea
 				<a href={urlFor(p.id)} class="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_14px_35px_-18px_rgba(41,39,36,0.25)] transition-all duration-300 hover:-translate-y-1 hover:border-bridge-taupe/50 hover:shadow-[0_22px_45px_-18px_rgba(138,123,102,0.45)]">
 					<div class="relative aspect-[16/9] overflow-hidden bg-bridge-dark/10">
 						<NewsPicture src={p.data.coverImage} alt={p.data.title} onerror="this.onerror=null;this.src='/news-cover.jpg'" imgClass="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+						<div class="absolute left-3 top-3 flex gap-1.5">
+							{(p.data.tags ?? []).slice(0, 2).map((tag) => (
+								<span class="rounded-full bg-bridge-dark/70 px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-white backdrop-blur-sm">{tag}</span>
+							))}
+						</div>
 					</div>
 					<div class="p-5">
 						<time class="mb-2 block text-[10px] font-bold uppercase tracking-[0.2em] text-bridge-taupe" datetime={p.data.date.toISOString()}>{fmt.format(p.data.date)}</time>
