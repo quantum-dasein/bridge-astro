@@ -271,63 +271,25 @@
 .uni-case-index {
     position: relative;
     z-index: 2;
-    padding: 4rem 1.5rem 2rem;
-    background:
-        linear-gradient(
-            180deg,
-            rgba(205,183,150,0) 0%,
-            rgba(205,183,150,0.58) 19%,
-            rgba(138,123,102,0.34) 67%,
-            rgba(205,183,150,0) 100%
-        ) center top / 2px 14.5rem no-repeat;
+    padding: 7rem 1.5rem 2.4rem;
+    background: transparent;
     font-family: Inter, system-ui, sans-serif;
 }
-.uni-case-index::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: -4.65rem;
-    width: 5px;
-    height: 14px;
-    border-radius: 999px;
-    transform: translateX(-50%);
-    pointer-events: none;
-    background: linear-gradient(180deg, rgba(232,217,191,0), #e8d9bf, rgba(232,217,191,0));
-    box-shadow: 0 0 12px 2px rgba(205,183,150,0.8);
-    animation: uni-case-beam-drop 2.6s ease-in-out infinite;
-}
-.uni-case-index::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 14.2rem;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    transform: translateX(-50%);
-    pointer-events: none;
-    background: #e8d9bf;
-    box-shadow:
-        0 0 12px 4px rgba(232,217,191,0.62),
-        0 0 34px 14px rgba(138,123,102,0.22);
-}
-@keyframes uni-case-beam-drop {
-    0%   { top: -4.65rem; opacity: 0; }
-    16%  { opacity: 1; }
-    86%  { opacity: 1; }
-    100% { top: 13.75rem; opacity: 0; }
-}
+.uni-case-index::before,
+.uni-case-index::after { display: none; }
 .uni-case-inner {
     max-width: 1120px;
     margin: 0 auto;
 }
 .uni-case-head {
-    max-width: 680px;
-    margin-bottom: 2rem;
+    max-width: 760px;
+    margin: 0 auto 2.35rem;
+    text-align: center;
 }
 .uni-case-eyebrow {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.75rem;
     margin-bottom: 1rem;
     color: #8A7B66;
@@ -353,6 +315,7 @@
     color: rgba(255,255,255,0.56);
     font-weight: 300;
     line-height: 1.75;
+    font-size: clamp(0.95rem, 1.5vw, 1.08rem);
 }
 .uni-case-grid {
     display: grid;
@@ -404,17 +367,7 @@
     .uni-case-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 1024px) {
-    .uni-case-index { padding-top: 5.5rem; }
-    .uni-case-index {
-        background-size: 2px 17rem;
-    }
-    .uni-case-index::after { top: 16.6rem; }
-    @keyframes uni-case-beam-drop {
-        0%   { top: -5.65rem; opacity: 0; }
-        16%  { opacity: 1; }
-        86%  { opacity: 1; }
-        100% { top: 16.1rem; opacity: 0; }
-    }
+    .uni-case-index { padding-top: 8.4rem; }
     .uni-case-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
