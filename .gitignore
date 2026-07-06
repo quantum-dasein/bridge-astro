@@ -27,3 +27,4 @@ pnpm-debug.log*
 
 # local optimization tooling
 tmp/ffmpeg-tool/
+tmp/adjudication-survey-extract/

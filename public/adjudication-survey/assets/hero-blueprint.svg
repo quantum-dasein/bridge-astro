@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Construction dispute resolution visual</title>
+  <desc id="desc">Architectural blueprint lines, contract pages, and a construction skyline motif.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#edf2f5"/>
+      <stop offset="0.55" stop-color="#f7f5ef"/>
+      <stop offset="1" stop-color="#dfe8e8"/>
+    </linearGradient>
+    <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
+      <path d="M56 0H0V56" fill="none" stroke="#1d3942" stroke-width="1" opacity=".11"/>
+      <path d="M14 0V56M28 0V56M42 0V56M0 14H56M0 28H56M0 42H56" fill="none" stroke="#1d3942" stroke-width=".6" opacity=".08"/>
+    </pattern>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="22" stdDeviation="22" flood-color="#12242c" flood-opacity=".18"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1000" fill="url(#sky)"/>
+  <rect width="1600" height="1000" fill="url(#grid)"/>
+
+  <g opacity=".18" fill="none" stroke="#17313b" stroke-width="4">
+    <path d="M104 794L286 598l126 86 178-210 130 132 134-160 252 288 150-96 250 174"/>
+    <path d="M110 834h1410"/>
+    <path d="M240 834V644m120 190V690m120 144V590m120 244V486m120 348V636m120 198V526m120 308V650m120 184V562m120 272V704m120 130V628"/>
+  </g>
+
+  <g transform="translate(892 144)" filter="url(#softShadow)">
+    <rect x="0" y="0" width="420" height="552" rx="22" fill="#ffffff"/>
+    <rect x="42" y="58" width="172" height="18" rx="9" fill="#b9803e"/>
+    <rect x="42" y="108" width="320" height="10" rx="5" fill="#18343f" opacity=".2"/>
+    <rect x="42" y="138" width="282" height="10" rx="5" fill="#18343f" opacity=".15"/>
+    <rect x="42" y="188" width="336" height="76" rx="10" fill="#f0f3f3"/>
+    <path d="M70 224h96m30 0h132M70 250h240" stroke="#18343f" stroke-width="8" stroke-linecap="round" opacity=".28"/>
+    <rect x="42" y="310" width="336" height="1" fill="#18343f" opacity=".14"/>
+    <path d="M56 350h92m44 0h172M56 390h130m44 0h134M56 430h96m44 0h168M56 470h132m44 0h132" stroke="#18343f" stroke-width="9" stroke-linecap="round" opacity=".2"/>
+  </g>
+
+  <g transform="translate(204 226)">
+    <path d="M0 0h558v392H0z" fill="#0f2a34" opacity=".92"/>
+    <path d="M34 334h490M34 292h104m44 0h146m52 0h144M34 250h72m34 0h196m44 0h110M34 208h128m48 0h146m42 0h92M34 166h92m44 0h102m42 0h168" stroke="#dbe7e8" stroke-width="8" stroke-linecap="round" opacity=".22"/>
+    <path d="M64 80h210m-210 36h146m82 0h166" stroke="#ffffff" stroke-width="14" stroke-linecap="round" opacity=".84"/>
+    <path d="M66 308l112-120 74 52 114-138 88 88 78-96" fill="none" stroke="#c88945" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g transform="translate(112 86)" fill="none" stroke="#17313b" stroke-width="5" opacity=".2">
+    <path d="M0 0h256v146H0z"/>
+    <path d="M0 48h256M70 0v146M168 0v146"/>
+  </g>
+
+  <g transform="translate(1360 124)" fill="none" stroke="#b9803e" stroke-width="6" opacity=".6">
+    <circle cx="64" cy="64" r="60"/>
+    <path d="M64 4v120M4 64h120"/>
+  </g>
+</svg>

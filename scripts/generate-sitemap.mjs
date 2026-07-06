@@ -97,6 +97,13 @@ entries.push(urlEntry({ loc: '/news/', alternates: newsIndexAlternates, changefr
 entries.push(urlEntry({ loc: '/news/en/', alternates: newsIndexAlternates, changefreq: 'weekly', priority: '0.7' }));
 entries.push(urlEntry({ loc: '/news/uz/', alternates: newsIndexAlternates, changefreq: 'weekly', priority: '0.7' }));
 
+entries.push(urlEntry({
+	loc: '/adjudication-survey/',
+	changefreq: 'monthly',
+	priority: '0.8',
+	lastmod: '2026-07-06',
+}));
+
 for (const [baseSlug, translations] of readNews()) {
 	const alternates = {
 		ru: `/news/ru-${baseSlug}/`,
