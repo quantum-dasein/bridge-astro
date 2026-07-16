@@ -36,8 +36,11 @@ function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function buildMessage(get) {
-  const lines = ['<b>🔔 Новая заявка — Summer School Georgia 2026</b>', ''];
+function buildMessage(get, trapped) {
+  const lines = trapped
+    ? ['<b>⚠️ Заявка, помеченная как возможный спам</b>',
+       `<i>Ловушка заполнена: ${esc(trapped.slice(0, 120))} — если это живой человек, виновато автозаполнение браузера.</i>`, '']
+    : ['<b>🔔 Новая заявка — Summer School Georgia 2026</b>', ''];
   for (const [field, label] of FIELDS) {
     const value = (get(field) || '').trim().slice(0, MAX_FIELD);
     if (value) lines.push(`<b>${label}:</b> ${esc(value)}`);
@@ -87,12 +90,11 @@ export default async function handler(req) {
     });
   }
 
-  // Ловушка для ботов: поле скрыто от людей, заполнить его может только скрипт.
-  if ((get('company_website') || '').trim()) {
-    return new Response(JSON.stringify({ ok: true }), {
-      status: 200, headers: { 'Content-Type': 'application/json' },
-    });
-  }
+  // Ловушка для ботов. НЕ выбрасываем заявку молча: 16.07.2026 так и терялись
+  // заявки живых людей — менеджеры паролей и автозаполнение заполняют скрытое
+  // поле не хуже бота, а человек видел "Заявка отправлена" и уходил. Поэтому
+  // помечаем и доставляем: разобрать спам глазами дешевле, чем потерять клиента.
+  const trapped = (get('hp_ref') || get('company_website') || '').trim();
 
   if (!(get('name') || '').trim() || !(get('contact') || '').trim()) {
     return new Response(JSON.stringify({ ok: false, error: 'missing_fields' }), {
@@ -111,7 +113,7 @@ export default async function handler(req) {
     });
   }
 
-  const text = buildMessage(get);
+  const text = buildMessage(get, trapped);
 
   // Заявка в логах Vercel — последний рубеж: даже если и Telegram, и Formspree
   // лягут, контакт можно достать оттуда.
