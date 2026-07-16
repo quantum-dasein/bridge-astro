@@ -411,6 +411,17 @@ ul { margin: 0; padding-left: 20px; }
 li + li { margin-top: 10px; }
 li::marker { color: var(--terracotta); }
 
+/* Ловушка для спам-ботов: человек этого поля не видит и не может заполнить,
+   скрипт — заполнит. display:none некоторые боты распознают, отсюда вынос. */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .partner-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 8px; }
 .partner-card {
   display: grid;
@@ -432,6 +443,10 @@ li::marker { color: var(--terracotta); }
   background: var(--forest-deep);
 }
 .partner-plaque img { max-height: 46px; width: auto; max-width: 100%; object-fit: contain; }
+/* Логотипы на белой подложке (не прозрачные) — светлая плашка, иначе белый квадрат
+   на тёмном. Круглая эмблема выше горизонтального леттеринга, отсюда max-height. */
+.partner-plaque.is-light { background: var(--white); border: 1px solid var(--line); }
+.partner-plaque.is-light img { max-height: 84px; }
 .partner-wordmark { display: none; }
 .partner-plaque.is-wordmark .partner-wordmark {
   display: block;
@@ -442,6 +457,8 @@ li::marker { color: var(--terracotta); }
   letter-spacing: .02em;
   text-align: center;
 }
+/* Фолбэк на светлой плашке: белым по белому его не было бы видно. */
+.partner-plaque.is-light .partner-wordmark { color: var(--heading); }
 .partner-country {
   margin-bottom: 0;
   color: var(--terracotta);
