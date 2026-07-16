@@ -432,6 +432,10 @@ li::marker { color: var(--terracotta); }
   background: var(--forest-deep);
 }
 .partner-plaque img { max-height: 46px; width: auto; max-width: 100%; object-fit: contain; }
+/* Логотипы на белой подложке (не прозрачные) — светлая плашка, иначе белый квадрат
+   на тёмном. Круглая эмблема выше горизонтального леттеринга, отсюда max-height. */
+.partner-plaque.is-light { background: var(--white); border: 1px solid var(--line); }
+.partner-plaque.is-light img { max-height: 84px; }
 .partner-wordmark { display: none; }
 .partner-plaque.is-wordmark .partner-wordmark {
   display: block;
@@ -442,6 +446,8 @@ li::marker { color: var(--terracotta); }
   letter-spacing: .02em;
   text-align: center;
 }
+/* Фолбэк на светлой плашке: белым по белому его не было бы видно. */
+.partner-plaque.is-light .partner-wordmark { color: var(--heading); }
 .partner-country {
   margin-bottom: 0;
   color: var(--terracotta);

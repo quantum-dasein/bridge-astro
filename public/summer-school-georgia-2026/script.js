@@ -5,7 +5,7 @@
 // НЕ подставлять чужой ID: до 16.07.2026 здесь стоял "mqevypwj" — существующая
 // форма, принадлежащая постороннему; все заявки уходили ему, а не нам.
 const FORMSPREE_ID = "";
-const LEAD_EMAIL = "mail@lkbelousova.ru";
+const LEAD_EMAIL = "info@bridgeconsult.uz";
 // ─────────────────────────────────────────────────────────────────────────────
 
 const form = document.querySelector("#applyForm");
