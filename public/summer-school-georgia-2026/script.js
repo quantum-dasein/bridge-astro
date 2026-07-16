@@ -1,10 +1,10 @@
 // ─── КУДА ПРИХОДЯТ ЗАЯВКИ ────────────────────────────────────────────────────
-// Впишите сюда ID формы Formspree, зарегистрированной на почту, которая должна
-// получать заявки (formspree.io → New form → ID из ссылки formspree.io/f/XXXXXXXX).
-// Пока пусто — заявка уходит письмом на LEAD_EMAIL через почтовый клиент.
-// НЕ подставлять чужой ID: до 16.07.2026 здесь стоял "mqevypwj" — существующая
-// форма, принадлежащая постороннему; все заявки уходили ему, а не нам.
-const FORMSPREE_ID = "";
+// Заявка уходит на свою функцию /api/apply (см. api/apply.js), а та рассылает
+// её в Telegram и, если задан FORMSPREE_ID в переменных окружения Vercel,
+// дублирует на почту. Ни токена бота, ни ID формы здесь быть не должно —
+// всё, что лежит в этом файле, видно любому посетителю.
+// Если функция недоступна, заявка не теряется: открывается письмо на LEAD_EMAIL.
+const APPLY_ENDPOINT = "/api/apply";
 const LEAD_EMAIL = "info@bridgeconsult.uz";
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -21,11 +21,6 @@ const FIELD_LABELS = {
   cases_to_discuss: "Кейсы для обсуждения",
   message: "Комментарий"
 };
-
-// Без JS форма не должна никуда уходить, поэтому action ставится здесь.
-if (form && FORMSPREE_ID) {
-  form.action = `https://formspree.io/f/${FORMSPREE_ID}`;
-}
 
 function buildMailto(data) {
   const lines = Object.entries(FIELD_LABELS)
@@ -94,26 +89,19 @@ if (form && submitButton && note) {
       programme: data.get("programme") || ""
     });
 
-    if (!FORMSPREE_ID) {
-      window.location.href = buildMailto(data);
-      trackEvent("lead_form_mailto", { form_id: "summer_school_georgia_2026" });
-      note.textContent = `Откроется письмо на ${LEAD_EMAIL} — отправьте его, и мы свяжемся с вами. Если письмо не открылось, напишите нам в Телеграм.`;
-      return;
-    }
-
     submitButton.disabled = true;
     submitButton.textContent = "Отправляем...";
-    note.textContent = "Отправляем заявку на email.";
+    note.textContent = "Отправляем заявку.";
 
     try {
-      const response = await fetch(form.action, {
+      const response = await fetch(APPLY_ENDPOINT, {
         method: "POST",
         body: data,
         headers: { Accept: "application/json" }
       });
 
       if (!response.ok) {
-        throw new Error("Formspree request failed");
+        throw new Error(`/api/apply вернул ${response.status}`);
       }
 
       form.reset();
@@ -123,10 +111,12 @@ if (form && submitButton && note) {
       note.textContent = "Спасибо! Заявка отправлена. Мы свяжемся с вами.";
       submitButton.textContent = "Заявка отправлена";
     } catch (error) {
+      // Функция недоступна — заявка не должна пропасть: отдаём её почтовому клиенту.
       trackEvent("lead_form_error", {
         form_id: "summer_school_georgia_2026"
       });
-      note.textContent = `Не удалось отправить заявку автоматически. Напишите нам в Telegram или на email: ${LEAD_EMAIL}.`;
+      window.location.href = buildMailto(data);
+      note.textContent = `Не удалось отправить автоматически — откроется письмо на ${LEAD_EMAIL}, отправьте его. Или напишите нам в Телеграм.`;
       submitButton.disabled = false;
       submitButton.textContent = "Отправить заявку";
     }

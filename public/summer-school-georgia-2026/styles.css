@@ -411,6 +411,17 @@ ul { margin: 0; padding-left: 20px; }
 li + li { margin-top: 10px; }
 li::marker { color: var(--terracotta); }
 
+/* Ловушка для спам-ботов: человек этого поля не видит и не может заполнить,
+   скрипт — заполнит. display:none некоторые боты распознают, отсюда вынос. */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .partner-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 8px; }
 .partner-card {
   display: grid;
