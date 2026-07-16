@@ -1,6 +1,42 @@
+// ─── КУДА ПРИХОДЯТ ЗАЯВКИ ────────────────────────────────────────────────────
+// Впишите сюда ID формы Formspree, зарегистрированной на почту, которая должна
+// получать заявки (formspree.io → New form → ID из ссылки formspree.io/f/XXXXXXXX).
+// Пока пусто — заявка уходит письмом на LEAD_EMAIL через почтовый клиент.
+// НЕ подставлять чужой ID: до 16.07.2026 здесь стоял "mqevypwj" — существующая
+// форма, принадлежащая постороннему; все заявки уходили ему, а не нам.
+const FORMSPREE_ID = "";
+const LEAD_EMAIL = "mail@lkbelousova.ru";
+// ─────────────────────────────────────────────────────────────────────────────
+
 const form = document.querySelector("#applyForm");
 const note = document.querySelector("#formNote");
 const submitButton = form ? form.querySelector("button[type='submit']") : null;
+
+const FIELD_LABELS = {
+  name: "Имя и фамилия",
+  role: "Должность / организация",
+  contact: "Контакт для ответа",
+  programme: "На что заявка",
+  participants: "Количество участников",
+  cases_to_discuss: "Кейсы для обсуждения",
+  message: "Комментарий"
+};
+
+// Без JS форма не должна никуда уходить, поэтому action ставится здесь.
+if (form && FORMSPREE_ID) {
+  form.action = `https://formspree.io/f/${FORMSPREE_ID}`;
+}
+
+function buildMailto(data) {
+  const lines = Object.entries(FIELD_LABELS)
+    .map(([field, label]) => [label, (data.get(field) || "").toString().trim()])
+    .filter(([, value]) => value)
+    .map(([label, value]) => `${label}: ${value}`);
+
+  const subject = "Заявка на Summer School Georgia 2026";
+  const body = `${lines.join("\n")}\n\nОтправлено со страницы ${window.location.href}`;
+  return `mailto:${LEAD_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
 
 function trackEvent(name, params = {}) {
   if (typeof window.gtag !== "function") return;
@@ -58,6 +94,13 @@ if (form && submitButton && note) {
       programme: data.get("programme") || ""
     });
 
+    if (!FORMSPREE_ID) {
+      window.location.href = buildMailto(data);
+      trackEvent("lead_form_mailto", { form_id: "summer_school_georgia_2026" });
+      note.textContent = `Откроется письмо на ${LEAD_EMAIL} — отправьте его, и мы свяжемся с вами. Если письмо не открылось, напишите нам в Телеграм.`;
+      return;
+    }
+
     submitButton.disabled = true;
     submitButton.textContent = "Отправляем...";
     note.textContent = "Отправляем заявку на email.";
@@ -83,7 +126,7 @@ if (form && submitButton && note) {
       trackEvent("lead_form_error", {
         form_id: "summer_school_georgia_2026"
       });
-      note.textContent = "Не удалось отправить заявку автоматически. Напишите нам в Telegram или на email: mail@lkbelousova.ru.";
+      note.textContent = `Не удалось отправить заявку автоматически. Напишите нам в Telegram или на email: ${LEAD_EMAIL}.`;
       submitButton.disabled = false;
       submitButton.textContent = "Отправить заявку";
     }
