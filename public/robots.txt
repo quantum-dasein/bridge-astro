@@ -3,6 +3,8 @@ Allow: /
 
 Disallow: /_astro/
 Disallow: /api/
-Disallow: /summer-school/
+# /summer-school/ намеренно скрыта через <meta name="robots" content="noindex">.
+# Disallow здесь не ставим: он бы запретил Google прочитать страницу,
+# и тот никогда не увидел бы noindex (и вечно слал бы алерт в Search Console).
 
 Sitemap: https://www.bridgeconsult.uz/sitemap.xml

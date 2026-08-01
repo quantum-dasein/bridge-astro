@@ -22,7 +22,8 @@ interface Props {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const { title, date, excerpt, coverImage, tags, lang } = post.data;
+const { title, date, excerpt, metaDescription, coverImage, tags, lang } = post.data;
+const seoDescription = metaDescription ?? excerpt;
 const video = post.data.videoUrl;
 const currentSlug = Astro.params.slug as string;
 const baseSlug = currentSlug.replace(/^(ru|en|uz)-/, '');
@@ -77,7 +78,7 @@ const newsArticleJsonLd = {
 };
 ---
 
-<Layout title={pageTitle} description={excerpt} image={coverImage} type="article" lang={lang}>
+<Layout title={pageTitle} description={seoDescription} image={coverImage} type="article" lang={lang}>
 	<Fragment slot="head">
 		<link rel="alternate" hreflang="ru" href={langUrls.ru} />
 		<link rel="alternate" hreflang="en" href={langUrls.en} />

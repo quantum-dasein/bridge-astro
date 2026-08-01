@@ -104,6 +104,15 @@ entries.push(urlEntry({
 	lastmod: '2026-07-06',
 }));
 
+// Лендинг Summer School Georgia 2026 (программа 12-20 августа 2026).
+// Страница живёт в public/ отдельно от Astro, поэтому её нужно перечислить руками.
+entries.push(urlEntry({
+	loc: '/summer-school-georgia-2026/',
+	changefreq: 'daily',
+	priority: '0.9',
+	lastmod: '2026-08-01',
+}));
+
 for (const [baseSlug, translations] of readNews()) {
 	const alternates = {
 		ru: `/news/ru-${baseSlug}/`,

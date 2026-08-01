@@ -4,12 +4,14 @@
                 <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
             <!-- Google Analytics faqat rozilik berilgandan so'ng yuklanadi (main.js ga qarang) -->
             
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <!-- и дальше пошли твои остальные теги, title и т.д. -->
         <meta charset="UTF-8">
+        <!-- Preconnect to the CDN origins this page already depends on: saves DNS+TLS setup -->
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+        <link rel="preconnect" href="https://ajax.googleapis.com" crossorigin>
+        <link rel="preconnect" href="https://unpkg.com" crossorigin>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
         <!-- Basic SEO -->
         <title>Bridge Consult | Infratuzilma shartnomalari va FIDIC nizolarni hal qilish</title>
         <meta name="title" content="Bridge Consult | Infratuzilma shartnomalari va FIDIC nizolarni hal qilish">
@@ -152,7 +154,28 @@
     }
     </script>
         <link rel="stylesheet" href="../tw.css">
-</head>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Bridge Consult",
+      "url": "https://www.bridgeconsult.uz/",
+      "logo": "https://www.bridgeconsult.uz/bridge%202.png",
+      "telephone": "+998330001530",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Ahmad Donish ko'chasi, 12-kvartal, 20A-uy",
+        "addressLocality": "Toshkent",
+        "addressCountry": "UZ"
+      },
+      "founder": {
+        "@type": "Person",
+        "name": "Larisa Belousova",
+        "jobTitle": "Bridge Consult asoschisi va direktori"
+      }
+    }
+    </script>
+    </head>
 <body class="font-sans text-bridge-dark antialiased bg-white selection:bg-bridge-taupe/20 overflow-x-hidden">
     <script>
         (function() {
@@ -402,6 +425,7 @@ document.documentElement.style.height = '';
                 <a href="/news/uz/" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Yangiliklar</a>
                 <a href="#trainings" class="nav-link text-sm font-bold text-bridge-taupe hover:text-bridge-dark transition-colors whitespace-nowrap">FIDIC Treninglari</a>
                 <a href="#fidic-hub" class="nav-link text-sm font-bold text-bridge-taupe hover:text-bridge-dark transition-colors whitespace-nowrap">FIDIC.uz</a>
+                <a href="/summer-school-georgia-2026/" class="nav-link text-sm font-bold text-bridge-taupe hover:text-bridge-dark transition-colors whitespace-nowrap">Summer School 2026</a>
     
                 <div class="relative group">
                     <button type="button" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors flex items-center gap-1.5 cursor-pointer whitespace-nowrap py-4">
@@ -483,6 +507,7 @@ document.documentElement.style.height = '';
                 <a href="/news/uz/" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">Yangiliklar</a>
                 <a href="#trainings" class="mobile-nav-link text-2xl font-bold text-bridge-dark border-b border-gray-100 pb-3">FIDIC Treninglari</a>
                 <a href="#fidic-hub" class="mobile-nav-link text-2xl font-bold text-bridge-taupe border-b border-gray-100 pb-3">FIDIC.uz</a>
+                <a href="/summer-school-georgia-2026/" class="mobile-nav-link text-2xl font-bold text-bridge-taupe border-b border-gray-100 pb-3">Summer School 2026</a>
                 <div class="pt-4 pb-2">
                     <span class="text-gray-400 font-bold uppercase tracking-widest text-[10px] block mb-4">Ekspertiza</span>
                     <div class="flex flex-col space-y-4 pl-4 border-l-2 border-gray-100">
@@ -1898,7 +1923,7 @@ document.documentElement.style.height = '';
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             if (document.getElementById("vanta-faq-bg-uz")) {
@@ -1950,19 +1975,19 @@ document.documentElement.style.height = '';
         <!-- Static news grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <!-- Main publication -->
-            <a href="/news/uz/fidic-eot-explained/" class="group relative md:col-span-2 rounded-3xl overflow-hidden flex flex-col bg-white/5 border border-white/10 hover:border-bridge-taupe/60 transition-all duration-500 hover:shadow-[0_0_50px_-10px_rgba(138,123,102,0.4)]" data-aos="fade-up" data-aos-delay="100">
+            <a href="/news/uz/summer-school-georgia-2026/" class="group relative md:col-span-2 rounded-3xl overflow-hidden flex flex-col bg-white/5 border border-white/10 hover:border-bridge-taupe/60 transition-all duration-500 hover:shadow-[0_0_50px_-10px_rgba(138,123,102,0.4)]" data-aos="fade-up" data-aos-delay="100">
                 <div class="relative aspect-[16/9] overflow-hidden bg-bridge-dark/60 shrink-0">
-                    <img src="../images/news/fidic-eot-cover.webp" alt="FIDIC bo'yicha EOT — pudratchi muddatni qonuniy uzaytirishi" onerror="this.onerror=null;this.src='../images/news/fidic-eot-cover.png'" class="w-full h-full object-cover object-center transition-all duration-700 group-hover:scale-105">
+                    <img src="../images/news/summer-school-georgia-cover.webp" alt="Summer School Georgia 2026 — Gruziyada FIDIC dasturi" onerror="this.onerror=null;this.src='../images/news/summer-school-georgia-cover.png'" class="w-full h-full object-cover object-center transition-all duration-700 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-t from-bridge-dark/90 via-bridge-dark/30 to-transparent"></div>
                     <div class="absolute top-5 left-5 flex gap-2">
-                        <span class="bg-bridge-taupe/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Claims</span>
-                        <span class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">EOT</span>
+                        <span class="bg-bridge-taupe/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Summer School</span>
+                        <span class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">FIDIC Academy</span>
                     </div>
                 </div>
                 <div class="flex flex-col flex-grow p-7 md:p-8">
-                    <time class="text-bridge-taupe text-[10px] font-bold uppercase tracking-[0.22em] mb-3 block">3-iyul, 2026-yil</time>
-                    <h3 class="text-xl md:text-2xl font-bold text-white group-hover:text-bridge-taupe transition-colors leading-tight mb-3">EOT: pudratchi muddatni qonuniy uzaytirib, neustoykadan qanday qutuladi</h3>
-                    <p class="text-gray-400 font-light text-sm leading-relaxed mb-6 flex-grow">Muddatni uzaytirish - pudratchining asosiy himoya vositasi. Qaysi hodisalar EOT huquqini beradi, da'vo nima uchun 28 kundan keyin yo'qoladi va natijani qaysi yozuvlar hal qiladi.</p>
+                    <time class="text-bridge-taupe text-[10px] font-bold uppercase tracking-[0.22em] mb-3 block">1-avgust, 2026-yil</time>
+                    <h3 class="text-xl md:text-2xl font-bold text-white group-hover:text-bridge-taupe transition-colors leading-tight mb-3">Summer School Georgia 2026: Gruziyada FIDIC intensivi</h3>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed mb-6 flex-grow">12-20-avgust, Batumi — Poti — Borjomi: FIDIC Academy'ning uchta sertifikatlangan treningi, jadval tuzish bo'yicha onlayn kurs va Poti porti loyihasiga texnik tashrif.</p>
                     <span class="inline-flex items-center text-[11px] font-bold uppercase tracking-widest text-bridge-taupe">
                         Nashrni o'qish
                         <span class="ml-3 h-px w-8 bg-bridge-taupe transition-all duration-300 group-hover:w-14"></span>
@@ -1985,17 +2010,17 @@ document.documentElement.style.height = '';
                 </a>
 
                 <!-- DAAB (oldingi nashr) -->
-                <a href="/news/uz/fidic-daab-explained/" class="group relative rounded-3xl overflow-hidden bg-white/5 border border-white/10 hover:bg-white/10 hover:border-bridge-taupe/60 transition-all duration-500 flex flex-col order-1" data-aos="fade-up" data-aos-delay="300">
+                <a href="/news/uz/fidic-eot-explained/" class="group relative rounded-3xl overflow-hidden bg-white/5 border border-white/10 hover:bg-white/10 hover:border-bridge-taupe/60 transition-all duration-500 flex flex-col order-1" data-aos="fade-up" data-aos-delay="300">
                     <div class="relative aspect-[16/9] overflow-hidden bg-bridge-dark/60 shrink-0">
-                        <img src="../news-cover.jpg" alt="FIDIC shartnomalarida DAAB nima" onerror="this.onerror=null;this.src='../news-cover.jpg'" class="w-full h-full object-cover object-center grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0">
+                        <img src="../images/news/fidic-eot-cover.webp" alt="FIDIC bo'yicha EOT — pudratchi muddatni qonuniy uzaytirishi" onerror="this.onerror=null;this.src='../images/news/fidic-eot-cover.png'" class="w-full h-full object-cover object-center grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0">
                         <div class="absolute inset-0 bg-gradient-to-t from-bridge-dark/85 to-transparent"></div>
                         <div class="absolute top-4 left-4 flex gap-2">
-                            <span class="bg-bridge-taupe/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">DAAB</span>
+                            <span class="bg-bridge-taupe/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">EOT</span>
                         </div>
                     </div>
                     <div class="p-6 flex flex-col flex-grow">
                         <time class="text-bridge-taupe text-[10px] font-bold uppercase tracking-[0.22em] mb-2 block">3-iyul, 2026-yil</time>
-                        <h3 class="text-lg font-bold text-white group-hover:text-bridge-taupe transition-colors leading-tight mb-4">FIDIC shartnomalarida DAAB nima va u loyihangizga nima uchun kerak</h3>
+                        <h3 class="text-lg font-bold text-white group-hover:text-bridge-taupe transition-colors leading-tight mb-4">EOT: pudratchi muddatni qonuniy uzaytirib, neustoykadan qanday qutuladi</h3>
                         <span class="mt-auto inline-flex items-center text-[11px] font-bold uppercase tracking-widest text-bridge-taupe">O'qish<span class="ml-3 h-px w-8 bg-bridge-taupe transition-all duration-300 group-hover:w-14"></span></span>
                     </div>
                 </a>
@@ -2377,6 +2402,7 @@ document.documentElement.style.height = '';
                     <li><a href="/news/uz/" class="hover:text-bridge-taupe transition-colors">Yangiliklar</a></li>
                     <li><a href="#trainings" class="hover:text-bridge-taupe transition-colors">FIDIC Treninglari</a></li>
                     <li><a href="#fidic-hub" class="hover:text-bridge-taupe transition-colors">FIDIC.uz</a></li>
+                <li><a href="/summer-school-georgia-2026/" class="hover:text-bridge-taupe transition-colors">Summer School 2026</a></li>
                     <li><a href="#team" class="hover:text-bridge-taupe transition-colors">Kompaniya yuzlari</a></li>
                     <li><a href="#faq" class="hover:text-bridge-taupe transition-colors">Bilimlar bazasi (FAQ)</a></li>
                     <li><a href="#media" class="hover:text-bridge-taupe transition-colors">OAV va Nashrlar</a></li>

@@ -18,7 +18,8 @@ export async function getStaticPaths() {
 interface Props { post: CollectionEntry<'news'>; }
 const { post } = Astro.props;
 const { Content } = await render(post);
-const { title, date, excerpt, coverImage, tags } = post.data;
+const { title, date, excerpt, metaDescription, coverImage, tags } = post.data;
+const seoDescription = metaDescription ?? excerpt;
 const video = post.data.videoUrl;
 const currentSlug = Astro.params.slug as string;
 const langUrls = {
@@ -60,7 +61,7 @@ const newsArticleJsonLd = {
 };
 ---
 
-<Layout title={pageTitle} description={excerpt} image={coverImage} type="article" lang="uz">
+<Layout title={pageTitle} description={seoDescription} image={coverImage} type="article" lang="uz">
 	<Fragment slot="head">
 		<link rel="alternate" hreflang="ru" href={langUrls.ru} />
 		<link rel="alternate" hreflang="en" href={langUrls.en} />
