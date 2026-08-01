@@ -12,6 +12,9 @@ const news = defineCollection({
 		// чтобы сниппет в выдаче не обрезался. Если не задан, используется excerpt.
 		metaDescription: z.string().optional(),
 		coverImage: z.string(),
+		// Отдельная картинка для превью в соцсетях (og:image), когда обложка
+		// статьи под них не годится: у них формат 1200x630, у обложки 16:9.
+		socialImage: z.string().optional(),
 		videoUrl: z.string().optional(),
 		priority: z.number().optional(),
 		tags: z.array(z.string()),
