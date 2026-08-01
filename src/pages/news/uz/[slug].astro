@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 interface Props { post: CollectionEntry<'news'>; }
 const { post } = Astro.props;
 const { Content } = await render(post);
-const { title, date, excerpt, metaDescription, coverImage, socialImage, tags } = post.data;
+const { title, date, excerpt, metaDescription, coverImage, socialImage, tags, videoDuration } = post.data;
 const seoDescription = metaDescription ?? excerpt;
 const video = post.data.videoUrl;
 const currentSlug = Astro.params.slug as string;
@@ -59,6 +59,27 @@ const newsArticleJsonLd = {
 		},
 	},
 };
+
+// Видео в статье — реальный контент с плеером, поэтому описываем его схемой.
+// Без VideoObject Google видит только тег <video> и не знает ни названия,
+// ни длительности, ни превью, поэтому такое видео не попадает в выдачу.
+const videoJsonLd = video
+	? {
+			'@context': 'https://schema.org',
+			'@type': 'VideoObject',
+			name: 'FIDIC OSH — Birinchi uchrashuv',
+			description: seoDescription,
+			thumbnailUrl: [absoluteImage],
+			uploadDate: date.toISOString(),
+			contentUrl: new URL(video, pageUrl).toString(),
+			embedUrl: pageUrl,
+			...(videoDuration ? { duration: videoDuration } : {}),
+			publisher: {
+				'@type': 'Organization',
+				name: 'Bridge Consult',
+			},
+		}
+	: null;
 ---
 
 <Layout title={pageTitle} description={seoDescription} image={socialImage ?? coverImage} type="article" lang="uz">
@@ -71,6 +92,7 @@ const newsArticleJsonLd = {
 		<meta property="article:modified_time" content={date.toISOString()} />
 		{tags.map((tag) => <meta property="article:tag" content={tag} />)}
 		<script type="application/ld+json" set:html={JSON.stringify(newsArticleJsonLd)}></script>
+		{videoJsonLd && <script type="application/ld+json" set:html={JSON.stringify(videoJsonLd)}></script>}
 	</Fragment>
 	<SiteHeader active="news" lang="uz" langUrls={langUrls} />
 
@@ -112,7 +134,7 @@ const newsArticleJsonLd = {
 					<div class="my-14 flex flex-col items-center" data-aos="fade-up">
 						<div class="w-full max-w-[320px] overflow-hidden rounded-3xl bg-bridge-dark shadow-[0_40px_90px_-15px_rgba(26,24,22,0.6)] ring-1 ring-white/10">
 							<div class="relative w-full" style="aspect-ratio:9/16">
-								<video controls playsinline preload="metadata" class="absolute inset-0 h-full w-full object-cover">
+								<video controls playsinline preload="metadata" poster={coverImage} class="absolute inset-0 h-full w-full object-cover">
 									<source src={video} type="video/mp4" />
 								</video>
 							</div>

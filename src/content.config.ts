@@ -16,6 +16,8 @@ const news = defineCollection({
 		// статьи под них не годится: у них формат 1200x630, у обложки 16:9.
 		socialImage: z.string().optional(),
 		videoUrl: z.string().optional(),
+		// Длительность видео в формате ISO 8601 (PT32S) для схемы VideoObject.
+		videoDuration: z.string().optional(),
 		priority: z.number().optional(),
 		tags: z.array(z.string()),
 		lang: z.string().default('ru'),
