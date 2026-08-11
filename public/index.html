@@ -2038,7 +2038,7 @@ document.documentElement.style.height = '';
         </div>
 
         <!-- Статичная сетка новостей -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div id="hp-news-grid" data-lang="ru" class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             <!-- Главная публикация -->
             <a href="/news/ru-summer-school-georgia-2026/" class="group relative md:col-span-2 rounded-3xl overflow-hidden flex flex-col bg-white/5 border border-white/10 hover:border-bridge-taupe/60 transition-all duration-500 hover:shadow-[0_0_50px_-10px_rgba(138,123,102,0.4)]" data-aos="fade-up" data-aos-delay="100">
                 <div class="relative aspect-[16/9] overflow-hidden bg-bridge-dark/60 shrink-0">
@@ -2899,5 +2899,75 @@ document.documentElement.style.height = '';
         <button class="cookie-btn cookie-btn-accept" onclick="cookieAccept()">Принять</button>
     </div>
 </div>
+<!-- Newsroom на главной: автоподстановка двух свежих публикаций из /api/news.json.
+     Если запрос не удался — остаётся статическая разметка ниже, ничего не ломается. -->
+<script>
+(function () {
+  var grid = document.getElementById('hp-news-grid');
+  if (!grid || !window.fetch) return;
+  var lang = grid.getAttribute('data-lang') || 'ru';
+  var locale = lang === 'uz' ? 'uz-UZ' : lang === 'en' ? 'en-US' : 'ru-RU';
+
+  fetch('/api/news.json', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (all) {
+      if (!all || !all.length) return;
+      var posts = all.filter(function (p) { return (p.slug || '').indexOf(lang + '-') === 0; });
+      if (posts.length < 2) return;
+
+      var cards = grid.querySelectorAll('a[href^="/news/"]');
+      if (cards.length < 2) return;
+
+      for (var i = 0; i < 2 && i < posts.length; i++) {
+        (function (card, post) {
+          card.setAttribute('href', post.url);
+
+          var img = card.querySelector('img');
+          if (img && post.coverImage) {
+            img.removeAttribute('onerror');
+            img.removeAttribute('srcset');
+            img.setAttribute('src', post.coverImage);
+            img.setAttribute('alt', post.title || '');
+          }
+
+          var time = card.querySelector('time');
+          if (time && post.date) {
+            var d = new Date(post.date);
+            if (!isNaN(d)) {
+              var s;
+              if (lang === 'uz') {
+                // uz-UZ в браузерах даёт «2026 M08 10» — собираем дату вручную
+                var UZ = ['yanvar','fevral','mart','aprel','may','iyun',
+                          'iyul','avgust','sentabr','oktabr','noyabr','dekabr'];
+                s = d.getDate() + '-' + UZ[d.getMonth()] + ' ' + d.getFullYear();
+              } else {
+                // ru-RU уже возвращает «10 августа 2026 г.» — ничего не дописываем
+                s = d.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
+              }
+              time.textContent = s;
+              time.setAttribute('datetime', post.date.slice(0, 10));
+            }
+          }
+
+          var h3 = card.querySelector('h3');
+          if (h3 && post.title) h3.textContent = post.title;
+
+          var p = card.querySelector('p');
+          if (p && post.excerpt) p.textContent = post.excerpt;
+
+          var chips = card.querySelectorAll('.absolute.top-5 span, .absolute.top-4 span');
+          if (chips.length && post.tags && post.tags.length) {
+            for (var k = 0; k < chips.length; k++) {
+              if (post.tags[k]) { chips[k].textContent = post.tags[k]; chips[k].style.display = ''; }
+              else { chips[k].style.display = 'none'; }
+            }
+          }
+        })(cards[i], posts[i]);
+      }
+    })
+    .catch(function () { /* оставляем статическую разметку */ });
+})();
+</script>
+
 </body>
 </html>
