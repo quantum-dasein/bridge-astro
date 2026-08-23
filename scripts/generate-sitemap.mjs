@@ -76,6 +76,13 @@ const projectIndexAlternates = {
 	'x-default': '/projects.html',
 };
 
+const academyAlternates = {
+	ru: '/academy/',
+	en: '/academy/en/',
+	uz: '/academy/uz/',
+	'x-default': '/academy/',
+};
+
 const newsIndexAlternates = {
 	ru: '/news/',
 	en: '/news/en/',
@@ -103,6 +110,12 @@ entries.push(urlEntry({
 	priority: '0.8',
 	lastmod: '2026-07-06',
 }));
+
+// Лендинг BRIDGE Consult Academy — онлайн-практикум по контрактам FIDIC.
+// Тоже статические страницы в public/, Astro о них не знает.
+entries.push(urlEntry({ loc: '/academy/', alternates: academyAlternates, changefreq: 'weekly', priority: '0.9' }));
+entries.push(urlEntry({ loc: '/academy/en/', alternates: academyAlternates, changefreq: 'weekly', priority: '0.8' }));
+entries.push(urlEntry({ loc: '/academy/uz/', alternates: academyAlternates, changefreq: 'weekly', priority: '0.8' }));
 
 // Лендинг Summer School Georgia 2026 (программа 12-20 августа 2026).
 // Страница живёт в public/ отдельно от Astro, поэтому её нужно перечислить руками.

@@ -2,6 +2,9 @@
   "redirects": [
     { "source": "/index.html", "destination": "/", "permanent": true },
     { "source": "/adjudication-survey", "destination": "/adjudication-survey/", "permanent": true },
+    { "source": "/academy", "destination": "/academy/", "permanent": true },
+    { "source": "/academy/en", "destination": "/academy/en/", "permanent": true },
+    { "source": "/academy/uz", "destination": "/academy/uz/", "permanent": true },
     { "source": "/EN/index.html", "destination": "/EN/", "permanent": true },
     { "source": "/UZ/index.html", "destination": "/UZ/", "permanent": true },
     { "source": "/news/en-fidic-daab-explained/", "destination": "/news/en/fidic-daab-explained/", "permanent": true },

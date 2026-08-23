@@ -1,4 +1,5 @@
-// Vercel Edge Function — приём заявок с /summer-school-georgia-2026/.
+// Vercel Edge Function — приём заявок с лендингов: /summer-school-georgia-2026/
+// и /academy/ (RU/EN/UZ).
 //
 // Заявка уходит в Telegram (по одному сообщению каждому получателю) и, если
 // задан FORMSPREE_ID, дублируется на почту через Formspree. Токен бота живёт
@@ -26,21 +27,28 @@ const FIELDS = [
   ['contact', 'Контакт'],
   ['programme', 'Программа'],
   ['participants', 'Участников'],
+  ['language', 'Язык обучения'],
   ['cases_to_discuss', 'Кейсы'],
   ['message', 'Комментарий'],
 ];
 
 const MAX_FIELD = 1500;
 
+// Заголовок сообщения: страница передаёт своё название в скрытом поле source.
+// Лендинг Summer School его не шлёт и не должен — для него остаётся прежний
+// заголовок, иначе старые заявки стали бы приходить без опознавательных знаков.
+const DEFAULT_SOURCE = 'Summer School Georgia 2026';
+
 function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function buildMessage(get, trapped) {
+function buildMessage(get, trapped, source) {
   const lines = trapped
     ? ['<b>⚠️ Заявка, помеченная как возможный спам</b>',
-       `<i>Ловушка заполнена: ${esc(trapped.slice(0, 120))} — если это живой человек, виновато автозаполнение браузера.</i>`, '']
-    : ['<b>🔔 Новая заявка — Summer School Georgia 2026</b>', ''];
+       `<i>Ловушка заполнена: ${esc(trapped.slice(0, 120))} — если это живой человек, виновато автозаполнение браузера.</i>`,
+       `<i>Источник: ${esc(source)}</i>`, '']
+    : [`<b>🔔 Новая заявка — ${esc(source)}</b>`, ''];
   for (const [field, label] of FIELDS) {
     const value = (get(field) || '').trim().slice(0, MAX_FIELD);
     if (value) lines.push(`<b>${label}:</b> ${esc(value)}`);
@@ -113,11 +121,12 @@ export default async function handler(req) {
     });
   }
 
-  const text = buildMessage(get, trapped);
+  const source = (get('source') || '').trim().slice(0, 120) || DEFAULT_SOURCE;
+  const text = buildMessage(get, trapped, source);
 
   // Заявка в логах Vercel — последний рубеж: даже если и Telegram, и Formspree
   // лягут, контакт можно достать оттуда.
-  console.log('apply:', JSON.stringify(Object.fromEntries(FIELDS.map(([f]) => [f, get(f)]))));
+  console.log('apply:', JSON.stringify({ source, ...Object.fromEntries(FIELDS.map(([f]) => [f, get(f)])) }));
 
   const results = await Promise.all(chatIds.map((id) => sendTelegram(token, id, text)));
   const delivered = results.filter(Boolean).length;
@@ -125,7 +134,7 @@ export default async function handler(req) {
   // Дубль на почту — только если ID формы задан явно.
   if (formspreeId) {
     try {
-      const payload = { _subject: 'Заявка на Summer School Georgia 2026' };
+      const payload = { _subject: `Заявка — ${source}` };
       for (const [field, label] of FIELDS) {
         const v = (get(field) || '').trim();
         if (v) payload[label] = v.slice(0, MAX_FIELD);
