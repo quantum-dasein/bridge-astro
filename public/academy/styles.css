@@ -245,7 +245,7 @@ h2 em {
   height: 100%;
   object-fit: cover;
   object-position: center 45%;
-  filter: saturate(.72) contrast(1.06) brightness(.62);
+  filter: saturate(.88) contrast(1.03) brightness(.92);
   transform: scale(1.06);
   animation: kenburns 26s ease-in-out infinite alternate;
 }
@@ -257,11 +257,13 @@ h2 em {
   content: "";
   position: absolute;
   inset: 0;
+  /* Снимок уже приходит с тёмной левой третью под текст, поэтому затемняем
+     заметно слабее, чем требовалось прежней светлой фотографии. */
   background:
-    linear-gradient(102deg, rgba(10, 9, 8, .96) 0%, rgba(10, 9, 8, .84) 34%, rgba(10, 9, 8, .46) 66%, rgba(10, 9, 8, .34) 100%),
-    linear-gradient(0deg, var(--ground) 2%, rgba(10, 9, 8, .55) 34%, transparent 62%),
-    linear-gradient(180deg, rgba(10, 9, 8, .78) 0%, transparent 22%),
-    radial-gradient(ellipse 50% 40% at 18% 52%, rgba(201, 169, 97, .13), transparent 70%);
+    linear-gradient(102deg, rgba(10, 9, 8, .74) 0%, rgba(10, 9, 8, .54) 36%, rgba(10, 9, 8, .22) 68%, rgba(10, 9, 8, .12) 100%),
+    linear-gradient(0deg, var(--ground) 1%, rgba(10, 9, 8, .58) 26%, transparent 58%),
+    linear-gradient(180deg, rgba(10, 9, 8, .58) 0%, transparent 20%),
+    radial-gradient(ellipse 46% 38% at 20% 54%, rgba(201, 169, 97, .10), transparent 72%);
 }
 .hero .container { position: relative; z-index: 1; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(36px, 5vw, 84px); align-items: end; }
@@ -338,6 +340,22 @@ h2 em {
   animation: cue 2.6s var(--ease) infinite;
 }
 @keyframes cue { 0%, 100% { transform: translateX(-50%) scaleY(.4); opacity: .25; } 50% { transform: translateX(-50%) scaleY(1); opacity: .7; } }
+
+/* ── Атмосферная подложка секции ──────────────────────────────────────── */
+.section-atmo { overflow: hidden; }
+.section-atmo .atmo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.section-atmo .atmo img { width: 100%; height: 100%; object-fit: cover; opacity: .30; }
+.section-atmo .atmo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--ground), rgba(16, 14, 12, .55) 26%, rgba(16, 14, 12, .55) 74%, var(--ground));
+}
 
 /* ── Полоса чисел ─────────────────────────────────────────────────────── */
 .stats { position: relative; padding: clamp(56px, 6vw, 86px) 0; }
@@ -453,7 +471,13 @@ h2 em {
 }
 .mod-group:first-of-type { border-top: 0; }
 .mod-group-head { display: flex; align-items: flex-start; gap: 20px; }
+/* Текстовая колонка тянется на всю ширину, иначе картинки групп получают
+   разную ширину — по длине самой длинной строки описания. */
+.mod-group-head > div { flex: 1; min-width: 0; }
 .mod-roman {
+  /* Фиксированная колонка: I, II, III и IV разной ширины, иначе текст и
+     картинки четырёх групп встают по разным левым границам. */
+  flex: 0 0 46px;
   font-family: var(--display);
   font-size: clamp(32px, 3.4vw, 46px);
   font-weight: 400;
@@ -466,7 +490,7 @@ h2 em {
 .mod-group-head h3 { margin: 0; font-size: 17px; font-weight: 500; letter-spacing: .005em; color: var(--ink); }
 .mod-group-head p { margin: 8px 0 0; font-size: 13.5px; line-height: 1.6; color: var(--muted); }
 .mod-figure { margin: 22px 0 0; border-radius: 4px; overflow: hidden; border: 1px solid var(--line-hair); }
-.mod-figure img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; opacity: .82; transition: opacity .6s var(--ease), transform .8s var(--ease); }
+.mod-figure img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; opacity: .82; transition: opacity .6s var(--ease), transform .8s var(--ease); }
 .mod-group:hover .mod-figure img { opacity: 1; transform: scale(1.03); }
 
 .mod-list { display: grid; align-content: start; }
@@ -571,7 +595,7 @@ h2 em {
   background: linear-gradient(180deg, transparent 55%, rgba(10, 9, 8, .5));
   pointer-events: none;
 }
-.trainer-photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; filter: saturate(.92) contrast(1.03); }
+.trainer-photo img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; filter: saturate(.92) contrast(1.03); }
 .trainer-badges { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 26px; }
 .trainer-badges img { height: 60px; width: auto; object-fit: contain; }
 .trainer-name { margin: 0 0 10px; font-family: var(--display); font-size: clamp(28px, 3vw, 40px); font-weight: 500; letter-spacing: -.018em; }
