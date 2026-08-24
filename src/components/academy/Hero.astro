@@ -1,0 +1,168 @@
+---
+/**
+ * Hero лендинга Academy.
+ *
+ * Точки для GSAP размечены атрибутом data-anim, а не классами: классы остаются
+ * чисто оформительскими, и анимацию можно переписать, не трогая вёрстку.
+ *
+ *   data-anim="hero-eyebrow"   — надзаголовок
+ *   data-anim="hero-line"      — строка заголовка, лежит в маске overflow-hidden,
+ *                                поэтому заводится классическим yPercent: 100 -> 0
+ *   data-anim="hero-lead"      — абзац
+ *   data-anim="hero-actions"   — блок кнопок
+ *   data-anim="hero-creds"     — строка с бейджами
+ *   data-anim="hero-card"      — плавающая карточка
+ *   data-anim="hero-card-row"  — строка внутри карточки (для stagger)
+ *   data-anim="hero-media"     — фотография (для параллакса или scale)
+ */
+
+interface Props {
+	eyebrow: string;
+	titleLines: string[];
+	/** Последняя строка заголовка — курсивом и золотом. */
+	titleAccent: string;
+	lead: string;
+	ctaPrimary: { label: string; href: string };
+	ctaSecondary: { label: string; href: string };
+	credsText: string;
+	card: { label: string; value: string }[];
+	imageAlt: string;
+}
+
+const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsText, card, imageAlt } =
+	Astro.props;
+---
+
+<!-- z-10 и НЕ overflow-hidden: карточка вылезает за нижнюю границу секции,
+     обрезка здесь съела бы её, а без z-index её перекрыл бы блок с цифрами. -->
+<section class="relative isolate z-10">
+	<!-- Фотография -->
+	<div class="absolute inset-0 -z-10 overflow-hidden" data-anim="hero-media">
+		<picture>
+			<source srcset="/academy-hero.avif" type="image/avif" />
+			<source srcset="/academy-hero.webp" type="image/webp" />
+			<img
+				src="/academy-hero.png"
+				alt={imageAlt}
+				width="1600"
+				height="900"
+				fetchpriority="high"
+				class="h-full w-full object-cover object-[center_45%]"
+			/>
+		</picture>
+		<!-- Затемнение: слева под текст, снизу — растворение в фон страницы -->
+		<div
+			class="absolute inset-0 bg-[linear-gradient(102deg,rgba(11,10,9,0.74)_0%,rgba(11,10,9,0.54)_36%,rgba(11,10,9,0.22)_68%,rgba(11,10,9,0.12)_100%)]"
+		>
+		</div>
+		<div
+			class="absolute inset-0 bg-[linear-gradient(0deg,#100E0C_1%,rgba(11,10,9,0.58)_26%,transparent_58%),linear-gradient(180deg,rgba(11,10,9,0.58)_0%,transparent_20%)]"
+		>
+		</div>
+	</div>
+
+	<div class="mx-auto w-full max-w-[1400px] px-6 lg:px-12">
+		<div
+			class="grid items-end gap-14 pt-36 pb-24 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20 lg:pt-52 lg:pb-32"
+		>
+			<!-- Левая колонка -->
+			<div>
+				<p
+					data-anim="hero-eyebrow"
+					class="mb-7 flex items-center gap-4 font-geo text-[11px] font-medium tracking-[0.28em] text-academy-gold uppercase"
+				>
+					<span class="h-px w-10 bg-gradient-to-r from-transparent to-academy-gold"></span>
+					{eyebrow}
+				</p>
+
+				<h1 class="mb-8 max-w-[15ch] font-serif text-[clamp(2.5rem,5.6vw,4.9rem)] leading-[1.02] font-medium tracking-[-0.025em] text-white">
+					{
+						titleLines.map((line) => (
+							<span class="block overflow-hidden">
+								<span data-anim="hero-line" class="block">{line}</span>
+							</span>
+						))
+					}
+					<span class="block overflow-hidden">
+						<span
+							data-anim="hero-line"
+							class="block bg-gradient-to-r from-academy-gold-soft via-academy-gold to-[#96793F] bg-clip-text pb-[0.08em] font-normal italic text-transparent"
+						>
+							{titleAccent}
+						</span>
+					</span>
+				</h1>
+
+				<p
+					data-anim="hero-lead"
+					class="mb-10 max-w-[52ch] text-[clamp(1rem,1.4vw,1.2rem)] leading-relaxed font-light text-gray-300"
+				>
+					{lead}
+				</p>
+
+				<div data-anim="hero-actions" class="flex flex-col gap-3 sm:flex-row sm:items-center">
+					<a
+						href={ctaPrimary.href}
+						class="inline-flex min-h-[3.25rem] items-center justify-center rounded-sm bg-gradient-to-r from-academy-gold-soft via-academy-gold to-[#96793F] px-9 text-[11px] font-semibold tracking-[0.18em] text-academy-ink uppercase shadow-[0_8px_30px_-10px_rgba(197,168,128,0.35)] transition-shadow duration-300 hover:shadow-[0_14px_44px_-10px_rgba(197,168,128,0.5)]"
+					>
+						{ctaPrimary.label}
+					</a>
+					<a
+						href={ctaSecondary.href}
+						class="inline-flex min-h-[3.25rem] items-center justify-center rounded-sm border border-white/15 px-9 text-[11px] font-semibold tracking-[0.18em] text-gray-200 uppercase transition-colors duration-300 hover:border-academy-gold hover:bg-white/5 hover:text-academy-gold-soft"
+					>
+						{ctaSecondary.label}
+					</a>
+				</div>
+
+				<div
+					data-anim="hero-creds"
+					class="mt-11 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-white/10 pt-7"
+				>
+					<img
+						src="/fidic-fcce-badge.png"
+						alt="FIDIC Certified Consulting Engineer"
+						width="78"
+						height="56"
+						class="h-14 w-auto object-contain"
+					/>
+					<img
+						src="/fidic-fccp-badge.png"
+						alt="FIDIC Certified Consulting Professional"
+						width="78"
+						height="56"
+						class="h-14 w-auto object-contain"
+					/>
+					<span class="max-w-[30ch] text-xs leading-relaxed font-light text-gray-400">
+						{credsText}
+					</span>
+				</div>
+			</div>
+
+			<!-- Плавающая карточка. Отрицательный нижний отступ уводит её за нижнюю
+			     границу секции — она наезжает на фотографию и на блок с цифрами. -->
+			<aside
+				data-anim="hero-card"
+				class="relative z-20 w-full rounded-sm border border-white/15 bg-white/5 p-7 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl backdrop-saturate-150 lg:mb-[-15rem] lg:w-[19rem]"
+			>
+				<dl class="grid">
+					{
+						card.map((row, i) => (
+							<div
+								data-anim="hero-card-row"
+								class={`flex items-baseline justify-between gap-5 border-b border-white/10 py-3.5 last:border-b-0 last:pb-0 ${i === 0 ? 'pt-0' : ''}`}
+							>
+								<dt class="text-[10px] font-medium tracking-[0.16em] text-gray-400 uppercase">
+									{row.label}
+								</dt>
+								<dd class="font-serif text-xl font-medium whitespace-nowrap text-academy-gold-soft">
+									{row.value}
+								</dd>
+							</div>
+						))
+					}
+				</dl>
+			</aside>
+		</div>
+	</div>
+</section>

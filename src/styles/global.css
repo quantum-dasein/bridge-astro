@@ -10,6 +10,22 @@
   --color-bridge-light: #F5F4F2;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-serif: "Playfair Display", Georgia, serif;
+
+  /* Bridge Consult Academy — премиальный лендинг.
+     Живёт на своих токенах, чтобы не задевать остальной сайт. */
+  --color-academy-gold: #C5A880;
+  --color-academy-gold-soft: #E0CBAA;
+  --color-academy-ink: #0B0A09;
+  --color-academy-ground: #100E0C;
+  --font-geo: "Jost", "Inter", system-ui, sans-serif;
+}
+
+/* Едва заметная чертёжная сетка — базовая деталь дизайн-системы лендинга.
+   Отдельной утилитой, чтобы не таскать длинный arbitrary value по разметке. */
+@utility bg-editorial-grid {
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 79px, rgb(255 255 255 / 0.028) 79px 80px),
+    repeating-linear-gradient(90deg, transparent 0 79px, rgb(255 255 255 / 0.028) 79px 80px);
 }
 
 html,

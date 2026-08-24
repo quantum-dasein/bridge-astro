@@ -1,0 +1,76 @@
+---
+/**
+ * Лейаут лендинга BRIDGE Consult Academy.
+ *
+ * Отдельный от Layout.astro намеренно: тот переключает светлую и тёмную темы
+ * по localStorage и по умолчанию светлый, а лендинг всегда тёмный. Тащить
+ * сюда переключатель значит получить вспышку белого фона при загрузке.
+ *
+ * Сетка и свечения живут здесь, на <body>, а не в секциях: фон должен быть
+ * сквозным, чтобы секции читались как одно полотно, а не как набор полос.
+ */
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description: string;
+	lang?: string;
+	image?: string;
+	canonical?: string;
+}
+
+const {
+	title,
+	description,
+	lang = 'ru',
+	image = '/academy-launch-social.png',
+	canonical,
+} = Astro.props;
+
+const pageUrl = canonical ?? new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
+const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toString();
+---
+
+<!doctype html>
+<html lang={lang} class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={pageUrl} />
+		<meta name="theme-color" content="#100E0C" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:url" content={pageUrl} />
+		<meta name="twitter:card" content="summary_large_image" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap"
+		/>
+	</head>
+
+	<body class="bg-academy-ground font-geo text-gray-300 antialiased">
+		<!-- Сквозной фон: чертёжная сетка и два тёплых свечения.
+		     fixed — контент плывёт по неподвижному фону при скролле. -->
+		<div
+			aria-hidden="true"
+			class="pointer-events-none fixed inset-0 z-0 bg-editorial-grid"
+		>
+			<div
+				class="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_12%_0%,rgba(197,168,128,0.10),transparent_60%),radial-gradient(ellipse_60%_60%_at_92%_62%,rgba(197,168,128,0.06),transparent_62%)]"
+			>
+			</div>
+		</div>
+
+		<div class="relative z-10">
+			<slot />
+		</div>
+	</body>
+</html>

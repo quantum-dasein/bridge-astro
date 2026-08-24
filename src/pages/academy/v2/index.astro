@@ -1,0 +1,92 @@
+---
+/**
+ * Превью нового лендинга Academy на Astro + Tailwind.
+ *
+ * Живёт на отдельном роуте: боевая страница /academy/ это статика в public/,
+ * и пока новая вёрстка не утверждена, трогать её нельзя. Когда утвердим —
+ * статику удаляем, эту страницу переносим на /academy/.
+ */
+import AcademyLayout from '../../../layouts/AcademyLayout.astro';
+import Hero from '../../../components/academy/Hero.astro';
+import Stats from '../../../components/academy/Stats.astro';
+
+const nav = [
+	{ label: 'Программа', href: '#programme' },
+	{ label: 'Метод', href: '#method' },
+	{ label: 'Модули', href: '#modules' },
+	{ label: 'Для кого', href: '#audience' },
+	{ label: 'Преподаватель', href: '#trainer' },
+];
+
+const stats = [
+	{ count: 18, value: '18', label: 'модулей — от администрирования контракта до арбитража' },
+	{ count: 40, value: '40', suffix: '+', label: 'практических кейсов, разобранных по единому формату' },
+	{ count: 15, value: '15', suffix: ' лет', label: 'специализированной работы преподавателя с контрактами FIDIC' },
+	{ value: 'RU', suffix: ' + UZ', label: 'занятия на русском, материалы и субтитры на узбекском' },
+];
+---
+
+<AcademyLayout
+	title="Онлайн-практикум по управлению контрактами FIDIC — BRIDGE Consult Academy"
+	description="18 модулей и более 40 практических кейсов по редакциям FIDIC 1999 и 2017. Живые занятия онлайн, запись остаётся у участника, узбекские субтитры."
+>
+	<header
+		class="fixed inset-x-0 top-0 z-50 flex h-[4.75rem] items-center justify-between gap-5 px-6 lg:px-12"
+	>
+		<a href="https://www.bridgeconsult.uz/" class="shrink-0">
+			<img
+				src="/bridge%202.svg"
+				alt="BRIDGE Consult"
+				width="120"
+				height="32"
+				class="h-8 w-auto object-contain brightness-0 invert opacity-95"
+			/>
+		</a>
+
+		<nav class="hidden gap-8 text-sm font-light text-gray-400 lg:flex">
+			{
+				nav.map((item) => (
+					<a href={item.href} class="transition-colors duration-300 hover:text-white">
+						{item.label}
+					</a>
+				))
+			}
+		</nav>
+
+		<div class="flex items-center gap-5">
+			<div class="flex gap-2.5 text-[11px] tracking-[0.08em] text-gray-500">
+				<span class="text-academy-gold">RU</span>
+				<a href="/academy/en/" class="transition-colors hover:text-gray-200">EN</a>
+				<a href="/academy/uz/" class="transition-colors hover:text-gray-200">UZ</a>
+			</div>
+			<a
+				href="#apply"
+				class="inline-flex min-h-[2.6rem] items-center rounded-sm border border-white/15 px-5 text-[10.5px] font-semibold tracking-[0.16em] whitespace-nowrap text-academy-gold-soft uppercase transition-colors duration-300 hover:border-academy-gold hover:bg-white/5"
+			>
+				Оставить заявку
+			</a>
+		</div>
+	</header>
+
+	<main>
+		<Hero
+			eyebrow="BRIDGE Consult Academy · Онлайн"
+			titleLines={['Управление', 'контрактами FIDIC']}
+			titleAccent="на практике"
+			lead="Не чтение условий контракта пункт за пунктом, а разбор ситуаций, которые на площадке превращаются в требования, задержки и споры. Редакции 1999 и 2017 — параллельно."
+			ctaPrimary={{ label: 'Оставить заявку', href: '#apply' }}
+			ctaSecondary={{ label: 'Смотреть 18 модулей', href: '#modules' }}
+			credsText="Программу ведёт Лариса Белоусова — FCCE, FCCP, член Комитета FIDIC по управлению добросовестностью"
+			card={[
+				{ label: 'Модулей', value: '18' },
+				{ label: 'Кейсов', value: '40+' },
+				{ label: 'Редакции', value: '1999 / 2017' },
+				{ label: 'Формат', value: 'Онлайн, живые' },
+				{ label: 'Язык', value: 'RU + UZ' },
+			]}
+			imageAlt="Автомагистраль в горах на закате — инфраструктурный проект"
+		/>
+
+		<Stats items={stats} />
+	</main>
+</AcademyLayout>
