@@ -56,6 +56,40 @@ if (reveals.length && motionOk && "IntersectionObserver" in window) {
   reveals.forEach((el) => el.classList.add("is-in"));
 }
 
+// ─── Счётчики в полосе чисел ────────────────────────────────────────────────
+// Цифра берётся из data-count, суффикс (+, лет, yrs) остаётся в разметке —
+// так число можно анимировать, не трогая подпись.
+const counters = document.querySelectorAll("[data-count]");
+if (counters.length && motionOk && "IntersectionObserver" in window) {
+  const run = (el) => {
+    const target = Number(el.dataset.count);
+    if (!Number.isFinite(target)) return;
+    const dur = 1100;
+    const start = performance.now();
+    const tick = (now) => {
+      const p = Math.min((now - start) / dur, 1);
+      // easeOutCubic — быстро стартует, мягко останавливается
+      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))).toString();
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  const co = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        run(entry.target);
+        co.unobserve(entry.target);
+      }
+    },
+    { threshold: 0.6 }
+  );
+  counters.forEach((el) => {
+    el.textContent = "0";
+    co.observe(el);
+  });
+}
+
 function trackEvent(name, params = {}) {
   if (typeof window.gtag !== "function") return;
   window.gtag("event", name, {
