@@ -22,6 +22,13 @@
   --color-academy-clay: #B99B8A;
   --color-academy-champagne: #E4D6BE;
   --font-geo: "Inter", system-ui, sans-serif;
+
+  /* Тёмная половина палитры: секции перестают быть одинаково бежевыми.
+     Латунь — акцент инженерной маркировки, не цвет текста. */
+  --color-academy-carbon: #111111;
+  --color-academy-graphite: #1A1A18;
+  --color-academy-paper: #E8E5DD;
+  --color-academy-brass: #A58A62;
 }
 
 /* ── Жидкое стекло ────────────────────────────────────────────────────────
@@ -98,6 +105,18 @@
   color: #5C4F3F;
   white-space: nowrap;
 }
+
+/* Инженерная маркировка: моноширинный капслок в разрядку. Используется
+   для номеров секций, ссылок на подпункты и подписей на снимках. */
+.academy-mark {
+  font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Волосяная линейка чертежа. */
+.academy-hair { background: currentColor; opacity: .28; }
 
 /* Появление при скролле — включает academy-motion.js. */
 .academy-reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s cubic-bezier(.22,.61,.36,1), transform .9s cubic-bezier(.22,.61,.36,1); }

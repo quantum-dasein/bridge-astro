@@ -1,0 +1,47 @@
+---
+/**
+ * Editorial statement на карбоне.
+ *
+ * Резкий контраст со светлой спецификацией выше: секции перестают быть
+ * одинаковыми полосами. Никаких карточек — только крупная типографика,
+ * маркировка секции и волосяные линейки.
+ */
+
+interface Props {
+	mark: string;
+	lead: string;
+	body: string;
+	note: string;
+}
+
+const { mark, lead, body, note } = Astro.props;
+---
+
+<section class="relative bg-academy-carbon px-6 py-24 text-academy-paper sm:px-10 lg:px-14 lg:py-36">
+	<div class="mx-auto grid w-full max-w-[1400px] grid-cols-12 gap-y-10">
+		<div class="col-span-12 lg:col-span-2">
+			<p class="academy-mark text-academy-brass">{mark}</p>
+		</div>
+
+		<div class="col-span-12 lg:col-span-9 lg:col-start-3">
+			<h2
+				class="academy-reveal font-serif text-[clamp(2.1rem,4.6vw,4rem)] leading-[1.04] font-normal tracking-[-0.03em] text-balance"
+			>
+				{lead}
+			</h2>
+			<p
+				class="academy-reveal mt-8 max-w-[34ch] font-serif text-[clamp(1.4rem,2.6vw,2.2rem)] leading-[1.18] font-normal text-academy-brass italic"
+			>
+				{body}
+			</p>
+		</div>
+
+		<div class="col-span-12 lg:col-span-4 lg:col-start-9">
+			<p
+				class="academy-reveal mt-6 max-w-[46ch] border-t border-academy-paper/20 pt-5 text-[0.92rem] leading-relaxed font-light text-academy-paper/60"
+			>
+				{note}
+			</p>
+		</div>
+	</div>
+</section>

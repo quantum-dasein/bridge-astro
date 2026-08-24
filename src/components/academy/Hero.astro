@@ -75,12 +75,13 @@ const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsT
 	<!-- Контент -->
 	<div class="relative z-20 px-6 pt-28 pb-36 sm:px-10 lg:px-14 lg:pt-28 lg:pb-36">
 		<div class="mx-auto w-full max-w-[1400px]">
-			<p
-				data-hero-fade
-				class="flex items-center gap-4 text-[0.7rem] font-medium tracking-[0.28em] text-academy-champagne uppercase"
-			>
-				<span class="h-px w-11 bg-[linear-gradient(90deg,transparent,#E4D6BE)]"></span>
-				{eyebrow}
+			<p data-hero-fade class="academy-mark flex flex-wrap items-center gap-x-4 gap-y-2 text-white/55">
+				<span class="h-px w-11 bg-[linear-gradient(90deg,transparent,#A58A62)]"></span>
+				<span class="text-academy-brass">Bridge Consult Academy</span>
+				<span class="text-white/25">/</span>
+				<span>Online programme</span>
+				<span class="text-white/25">/</span>
+				<span class="text-white/70">01</span>
 			</p>
 
 			<h1
@@ -115,13 +116,13 @@ const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsT
 			<div data-hero-fade class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
 				<a
 					href={ctaPrimary.href}
-					class="inline-flex min-h-[3.4rem] items-center justify-center rounded-sm bg-academy-champagne px-10 text-[0.78rem] font-semibold tracking-[0.16em] text-[#17130A] uppercase transition-colors duration-300 hover:bg-white"
+					class="inline-flex min-h-[3.4rem] items-center justify-center rounded-full bg-academy-champagne px-11 text-[0.78rem] font-semibold tracking-[0.16em] text-[#17130A] uppercase transition-colors duration-300 hover:bg-white"
 				>
 					{ctaPrimary.label}
 				</a>
 				<a
 					href={ctaSecondary.href}
-					class="inline-flex min-h-[3.4rem] items-center justify-center rounded-sm border border-white/30 bg-white/8 px-10 text-[0.78rem] font-semibold tracking-[0.16em] text-white uppercase backdrop-blur-md transition-colors duration-300 hover:border-white/60 hover:bg-white/15"
+					class="inline-flex min-h-[3.4rem] items-center justify-center rounded-full border border-white/30 bg-white/8 px-11 text-[0.78rem] font-semibold tracking-[0.16em] text-white uppercase backdrop-blur-md transition-colors duration-300 hover:border-white/60 hover:bg-white/15"
 				>
 					{ctaSecondary.label}
 				</a>
@@ -137,6 +138,26 @@ const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsT
 					<Fragment set:html={credsText} />
 				</span>
 			</div>
+		</div>
+	</div>
+
+	<!-- Технические выноски на снимке: маркировка чертежа, не декор -->
+	<div aria-hidden="true" class="pointer-events-none absolute inset-0 z-20 hidden xl:block">
+		<div class="absolute top-[22%] right-[7%] flex items-center gap-3 text-white/45">
+			<span class="academy-hair h-px w-16 text-white"></span>
+			<span class="academy-mark">FIDIC 1999</span>
+		</div>
+		<div class="absolute top-[32%] right-[7%] flex items-center gap-3 text-white/45">
+			<span class="academy-hair h-px w-10 text-white"></span>
+			<span class="academy-mark">FIDIC 2017</span>
+		</div>
+		<div class="absolute top-[56%] right-[13%] flex items-center gap-3 text-academy-brass">
+			<span class="academy-hair h-px w-24 text-academy-brass"></span>
+			<span class="academy-mark">Notice · Claim · DAAB</span>
+		</div>
+		<div class="absolute right-[7%] bottom-[26%] text-right text-white/35">
+			<span class="academy-mark block">Sheet 01 / 18</span>
+			<span class="academy-hair mt-2 ml-auto block h-px w-28 text-white"></span>
 		</div>
 	</div>
 

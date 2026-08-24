@@ -1,0 +1,104 @@
+---
+/**
+ * Контракт как система: EVENT → NOTICE → CLAIM → ... → ARBITRATION.
+ *
+ * Центральный визуальный аргумент страницы: FIDIC это не набор пунктов,
+ * а цепочка, в которой каждое звено зависит от предыдущего. Не карточки и
+ * не таймлайн — инженерная схема: волосяная магистраль, узлы на ней,
+ * номер и ссылка на подпункт у каждого шага.
+ *
+ * Активный шаг подсвечивается при появлении в вьюпорте (data-node) —
+ * скрипт внизу; без JS все узлы просто видимы.
+ *
+ * Ссылки на подпункты проставлены ТОЛЬКО там, где они уже опубликованы на
+ * сайте (уведомления и определения Инженера). Для DAAB и арбитража
+ * ссылок нет намеренно — их должна подтвердить Лариса, выдумывать нельзя.
+ */
+
+interface Props {
+	mark: string;
+	title: string;
+	lead: string;
+	steps: readonly { name: string; note: string; ref?: string }[];
+}
+
+const { mark, title, lead, steps } = Astro.props;
+---
+
+<section class="relative bg-academy-carbon px-6 pb-24 text-academy-paper sm:px-10 lg:px-14 lg:pb-36">
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class="grid grid-cols-12 gap-y-6 border-t border-academy-paper/20 pt-10">
+			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
+			<h2
+				class="col-span-12 font-serif text-[clamp(1.8rem,3.4vw,2.9rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+			>
+				{title}
+			</h2>
+			<p
+				class="col-span-12 max-w-[42ch] text-[0.95rem] leading-relaxed font-light text-academy-paper/60 lg:col-span-4 lg:col-start-9"
+			>
+				{lead}
+			</p>
+		</div>
+
+		<!-- Схема. На десктопе горизонтальная магистраль, на мобильном вертикальная. -->
+		<ol class="relative mt-16 grid gap-0 lg:mt-24 lg:grid-cols-7">
+			<!-- Магистраль -->
+			<span
+				aria-hidden="true"
+				class="absolute top-0 bottom-0 left-[0.4rem] w-px bg-academy-paper/20 lg:top-[0.4rem] lg:right-0 lg:bottom-auto lg:left-0 lg:h-px lg:w-auto"
+			></span>
+
+			{
+				steps.map((step, i) => (
+					<li
+						data-node
+						class="group relative pb-10 pl-8 transition-opacity duration-700 lg:pb-0 lg:pl-0 lg:pt-8 lg:pr-6"
+					>
+						<span
+							aria-hidden="true"
+							class="absolute top-0 left-0 h-[0.85rem] w-[0.85rem] rounded-full border border-academy-paper/35 bg-academy-carbon transition-colors duration-500 group-data-[on=true]:border-academy-brass group-data-[on=true]:bg-academy-brass lg:top-0 lg:-translate-y-1/2"
+						></span>
+
+						<span class="academy-mark block text-academy-paper/35 transition-colors duration-500 group-data-[on=true]:text-academy-brass">
+							{String(i + 1).padStart(2, '0')}
+						</span>
+
+						<h3 class="mt-3 font-serif text-[clamp(1.15rem,1.7vw,1.45rem)] leading-tight font-normal">
+							{step.name}
+						</h3>
+
+						<p class="mt-2 max-w-[24ch] text-[0.8rem] leading-relaxed font-light text-academy-paper/55">
+							{step.note}
+						</p>
+
+						{step.ref && (
+							<p class="academy-mark mt-3 text-[0.6rem] text-academy-brass/75">{step.ref}</p>
+						)}
+					</li>
+				))
+			}
+		</ol>
+	</div>
+</section>
+
+<script>
+	// Узел загорается, когда доходит до середины экрана. Без JS все узлы
+	// остаются видимыми — подсветка это украшение, а не условие читаемости.
+	const nodes = document.querySelectorAll<HTMLElement>('[data-node]');
+	const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	if (nodes.length && !reduced && 'IntersectionObserver' in window) {
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					(entry.target as HTMLElement).dataset.on = entry.isIntersecting ? 'true' : 'false';
+				}
+			},
+			{ rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+		);
+		nodes.forEach((n) => io.observe(n));
+	} else {
+		nodes.forEach((n) => (n.dataset.on = 'true'));
+	}
+</script>

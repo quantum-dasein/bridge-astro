@@ -2,12 +2,13 @@
 /**
  * Шапка: строгая, во всю ширину, без плавающего овала.
  *
- * Два состояния, потому что она висит и над тёмным героем, и над светлым
- * телом страницы:
- *   stuck=false — прозрачный фон, белый текст, тонкая нижняя линия white/20
- *   stuck=true  — размытие, молочная подложка, тёмный текст
+ * Два состояния:
+ *   stuck=false — прозрачный фон поверх героя, тонкая линия white/20
+ *   stuck=true  — карбон с размытием
  *
- * Логотип тёмный, поэтому над героем его выворачивает brightness-0 invert.
+ * Подложка карбоновая, а не молочная: страница чередует светлые и тёмные
+ * секции, и светлая полоса поверх карбона читалась как чужеродная. Карбон
+ * работает над обеими. Текст поэтому всегда светлый, логотип всегда вывернут.
  */
 
 interface Props {
@@ -28,7 +29,7 @@ const langs = [
 <header
 	id="academy-header"
 	data-stuck="false"
-	class="group fixed inset-x-0 top-0 z-50 border-b border-white/20 transition-[background-color,border-color,backdrop-filter] duration-500 data-[stuck=true]:border-academy-taupe/20 data-[stuck=true]:bg-[rgb(245_244_242/.82)] data-[stuck=true]:backdrop-blur-xl data-[stuck=true]:backdrop-saturate-150"
+	class="group fixed inset-x-0 top-0 z-50 border-b border-white/20 transition-[background-color,border-color,backdrop-filter] duration-500 data-[stuck=true]:border-academy-paper/12 data-[stuck=true]:bg-[rgb(17_17_17/.82)] data-[stuck=true]:backdrop-blur-xl data-[stuck=true]:backdrop-saturate-150"
 >
 	<div class="mx-auto flex h-[4.5rem] w-full max-w-[1400px] items-center justify-between gap-4 px-6 sm:px-10 lg:h-[5rem] lg:px-14">
 		<a href="https://www.bridgeconsult.uz/" class="shrink-0" aria-label="BRIDGE Consult">
@@ -37,7 +38,7 @@ const langs = [
 				alt="BRIDGE Consult"
 				width="120"
 				height="32"
-				class="h-7 w-auto object-contain brightness-0 invert transition-[filter] duration-500 group-data-[stuck=true]:brightness-100 group-data-[stuck=true]:invert-0 sm:h-8"
+				class="h-7 w-auto object-contain brightness-0 invert sm:h-8"
 			/>
 		</a>
 
@@ -46,7 +47,7 @@ const langs = [
 				nav.map((item) => (
 					<a
 						href={item.href}
-						class="relative py-1.5 text-[0.82rem] font-light tracking-[0.02em] text-white/75 transition-colors duration-300 group-data-[stuck=true]:text-[#5C5449] hover:text-white group-data-[stuck=true]:hover:text-academy-ink after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100"
+						class="relative py-1.5 text-[0.82rem] font-light tracking-[0.02em] text-white/70 transition-colors duration-300 hover:text-white after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100"
 					>
 						{item.label}
 					</a>
@@ -59,15 +60,15 @@ const langs = [
 				{
 					langs.map((l, i) => (
 						<>
-							{i > 0 && <span class="text-white/25 group-data-[stuck=true]:text-academy-taupe/35">/</span>}
+							{i > 0 && <span class="text-white/25">/</span>}
 							{l.code === current ? (
-								<span class="text-academy-champagne uppercase group-data-[stuck=true]:text-academy-taupe">
+								<span class="text-academy-brass uppercase">
 									{l.code}
 								</span>
 							) : (
 								<a
 									href={l.href}
-									class="text-white/50 uppercase transition-colors duration-300 group-data-[stuck=true]:text-[#8E867A] hover:text-white group-data-[stuck=true]:hover:text-academy-ink"
+									class="text-white/50 uppercase transition-colors duration-300 hover:text-white"
 								>
 									{l.code}
 								</a>
@@ -79,7 +80,7 @@ const langs = [
 
 			<a
 				href="#apply"
-				class="inline-flex min-h-[2.5rem] items-center rounded-sm border border-white/30 px-4 text-[0.64rem] font-semibold tracking-[0.16em] whitespace-nowrap text-white uppercase transition-colors duration-300 group-data-[stuck=true]:border-academy-taupe group-data-[stuck=true]:bg-academy-taupe group-data-[stuck=true]:text-white hover:border-academy-champagne hover:bg-academy-champagne hover:text-[#17130A] sm:min-h-[2.75rem] sm:px-6 sm:text-[0.7rem]"
+				class="inline-flex min-h-[2.5rem] items-center rounded-full border border-white/30 px-5 text-[0.64rem] font-semibold tracking-[0.16em] whitespace-nowrap text-white uppercase transition-colors duration-300 hover:border-academy-brass hover:bg-academy-brass hover:text-[#17130A] sm:min-h-[2.75rem] sm:px-7 sm:text-[0.7rem]"
 			>
 				{cta}
 			</a>

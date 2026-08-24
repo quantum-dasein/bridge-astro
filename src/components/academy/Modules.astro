@@ -1,13 +1,14 @@
 ---
 /**
- * 18 модулей четырьмя потоками.
+ * Индекс модулей в духе оглавления архитектурного журнала.
  *
- * Модуль — не плитка, а капля: полностью скруглённая стеклянная пилюля,
- * обтекающая строку. У каждого потока круглая линза с генерированным
- * снимком — тёмное окно в светлом листе.
+ * Не восемнадцать одинаковых плиток и не капсулы, а крупные строки на
+ * волосяных линейках. При наведении: номер уходит в латунь, строка
+ * сдвигается, справа проявляется снимок группы и короткое пояснение.
+ *
+ * Превью у каждой строки своё и лежит в самой строке — так эффект чисто
+ * CSS, без JS. Файлов всего четыре, браузер их кэширует.
  */
-import SectionLabel from './SectionLabel.astro';
-
 interface Props {
 	id?: string;
 	label: string;
@@ -25,61 +26,71 @@ interface Props {
 const { id = 'modules', label, title, groups } = Astro.props;
 
 let counter = 0;
-const numbered = groups.map((g) => ({
-	...g,
-	items: g.items.map((item) => ({ item, n: String(++counter).padStart(2, '0') })),
-}));
+const rows = groups.flatMap((g) =>
+	g.items.map((item) => ({
+		item,
+		n: String(++counter).padStart(2, '0'),
+		group: g.title,
+		note: g.note,
+		image: g.image,
+		imageAlt: g.imageAlt,
+	}))
+);
 ---
 
-<section id={id} class="relative px-4 pt-28 sm:px-6 lg:px-10 lg:pt-36">
+<section id={id} class="relative bg-academy-ground px-6 py-24 sm:px-10 lg:px-14 lg:py-36">
 	<div class="mx-auto w-full max-w-[1400px]">
-		<div class="academy-reveal mx-auto max-w-[48rem] text-center">
-			<SectionLabel text={label} center />
+		<div class="grid grid-cols-12 gap-y-6 border-t border-academy-ink/18 pt-10">
+			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{label}</p>
 			<h2
-				class="mx-auto mt-5 max-w-[20ch] font-serif text-[clamp(1.9rem,3.2vw,2.9rem)] leading-tight font-medium tracking-[-0.025em] text-balance"
+				class="academy-reveal col-span-12 max-w-[20ch] font-serif text-[clamp(1.9rem,3.6vw,3.1rem)] leading-[1.06] font-normal tracking-[-0.025em] text-balance lg:col-span-7 lg:col-start-3"
 				set:html={title}
 			/>
 		</div>
 
-		<div class="mt-12 flex flex-col gap-8 lg:mt-16 lg:gap-10">
+		<ol class="mt-14 lg:mt-20">
 			{
-				numbered.map((group) => (
-					<div class="academy-reveal flex flex-col items-center gap-6 text-center lg:flex-row lg:items-center lg:gap-7 lg:text-left">
-						<div class="academy-lens h-[6.5rem] w-[6.5rem] shrink-0 lg:h-[7.25rem] lg:w-[7.25rem]">
+				rows.map((row) => (
+					<li class="group relative border-t border-academy-ink/14 last:border-b last:border-academy-ink/14">
+						<a
+							href="#apply"
+							class="grid grid-cols-[3.2rem_minmax(0,1fr)] items-baseline gap-x-5 py-5 transition-[padding] duration-500 group-hover:pl-4 focus-visible:pl-4 lg:grid-cols-[4.5rem_minmax(0,1fr)_minmax(0,16rem)] lg:gap-x-8 lg:py-6"
+						>
+							<span class="academy-mark text-[#77746D] transition-colors duration-400 group-hover:text-academy-brass">
+								{row.n}
+							</span>
+
+							<span class="font-serif text-[clamp(1.15rem,2vw,1.75rem)] leading-tight font-normal text-academy-ink">
+								{row.item}
+							</span>
+
+							<span class="col-start-2 mt-2 text-[0.8rem] leading-relaxed font-light text-[#77746D] opacity-0 transition-opacity duration-500 group-hover:opacity-100 lg:col-start-3 lg:mt-0 lg:opacity-0">
+								{row.group}
+							</span>
+						</a>
+
+						{/* Превью группы: появляется у правого края при наведении */}
+						<span
+							aria-hidden="true"
+							class="pointer-events-none absolute top-1/2 right-0 hidden h-[8.5rem] w-[11.5rem] -translate-y-1/2 translate-x-6 overflow-hidden opacity-0 transition-[opacity,transform] duration-500 group-hover:translate-x-0 group-hover:opacity-100 xl:block"
+						>
 							<picture>
-								<source srcset={`/${group.image}.avif`} type="image/avif" />
-								<source srcset={`/${group.image}.webp`} type="image/webp" />
+								<source srcset={`/${row.image}.avif`} type="image/avif" />
+								<source srcset={`/${row.image}.webp`} type="image/webp" />
 								<img
-									src={`/${group.image}.png`}
-									alt={group.imageAlt}
+									src={`/${row.image}.png`}
+									alt=""
 									width="900"
 									height="675"
 									loading="lazy"
-									class="h-full w-full object-cover brightness-115 saturate-110"
+									class="h-full w-full object-cover"
 								/>
 							</picture>
-						</div>
-
-						<div class="w-full shrink-0 lg:w-[9rem]">
-							<div class="font-serif text-[1.9rem] leading-none font-normal text-academy-taupe">
-								{group.roman}
-							</div>
-							<div class="mt-1.5 text-[0.88rem] font-medium">{group.title}</div>
-						</div>
-
-						<ul class="flex flex-wrap justify-center gap-2.5 lg:justify-start">
-							{group.items.map(({ item, n }) => (
-								<li class="academy-pill inline-flex items-baseline gap-2.5 rounded-full px-5 py-3 text-[0.92rem] font-light text-[#3D372F] transition-shadow duration-400 hover:shadow-[inset_0_1px_0_rgb(255_255_255/.95),0_20px_36px_-16px_rgb(63_50_36/.4)]">
-									<b class="text-[0.7rem] font-medium tracking-[0.04em] text-academy-taupe tabular-nums">
-										{n}
-									</b>
-									<span>{item}</span>
-								</li>
-							))}
-						</ul>
-					</div>
+							<span class="absolute inset-0 border border-academy-brass/40"></span>
+						</span>
+					</li>
 				))
 			}
-		</div>
+		</ol>
 	</div>
 </section>

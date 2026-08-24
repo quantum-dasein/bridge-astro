@@ -13,6 +13,8 @@ import AcademyLayout from '../../../layouts/AcademyLayout.astro';
 import Header from '../../../components/academy/Header.astro';
 import Hero from '../../../components/academy/Hero.astro';
 import Stats from '../../../components/academy/Stats.astro';
+import Statement from '../../../components/academy/Statement.astro';
+import ContractSystem from '../../../components/academy/ContractSystem.astro';
 import Programme from '../../../components/academy/Programme.astro';
 import Method from '../../../components/academy/Method.astro';
 import Modules from '../../../components/academy/Modules.astro';
@@ -31,6 +33,8 @@ import { academyRu as c } from '../../../data/academy.ru';
 	<main>
 		<Hero {...c.hero} />
 		<Stats {...c.stats} />
+		<Statement {...c.statement} />
+		<ContractSystem {...c.contractSystem} />
 		<Programme {...c.programme} />
 		<Method {...c.method} />
 		<Modules {...c.modules} />

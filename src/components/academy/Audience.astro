@@ -1,51 +1,86 @@
 ---
-/** «Для кого» — четыре стеклянные капли со сквозной нумерацией. */
-import SectionLabel from './SectionLabel.astro';
+/**
+ * «Для кого» — четыре крупные строки на карбоне.
+ *
+ * Не карточки в сетке: при наведении под строкой проявляется снимок,
+ * текст уходит в белый, справа появляется стрелка. На тач-устройствах
+ * снимок показан приглушённо постоянно — hover там не существует.
+ */
 
 interface Props {
 	id?: string;
-	label: string;
+	mark: string;
 	title: string;
 	lead: string;
-	cards: readonly { title: string; text: string }[];
+	rows: readonly { title: string; text: string; image: string }[];
 }
 
-const { id = 'audience', label, title, lead, cards } = Astro.props;
+const { id = 'audience', mark, title, lead, rows } = Astro.props;
 ---
 
-<section id={id} class="relative px-4 pt-28 sm:px-6 lg:px-10 lg:pt-36">
+<section id={id} class="relative bg-academy-carbon px-6 py-24 text-academy-paper sm:px-10 lg:px-14 lg:py-36">
 	<div class="mx-auto w-full max-w-[1400px]">
-		<div class="academy-reveal mx-auto max-w-[54rem] text-center">
-			<SectionLabel text={label} center />
+		<div class="grid grid-cols-12 gap-y-6 border-t border-academy-paper/20 pt-10">
+			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
 			<h2
-				class="mx-auto mt-5 max-w-[24ch] font-serif text-[clamp(1.9rem,3.2vw,2.9rem)] leading-tight font-medium tracking-[-0.025em] text-balance"
+				class="academy-reveal col-span-12 max-w-[22ch] font-serif text-[clamp(1.9rem,3.6vw,3.1rem)] leading-[1.06] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
 			>
 				{title}
 			</h2>
-			<p class="mx-auto mt-5 max-w-[68ch] text-[clamp(0.98rem,1.15vw,1.1rem)] leading-relaxed font-light text-[#5C5449]">
+			<p
+				class="academy-reveal col-span-12 max-w-[44ch] text-[0.95rem] leading-relaxed font-light text-academy-paper/60 lg:col-span-4 lg:col-start-9"
+			>
 				{lead}
 			</p>
 		</div>
 
-		<div class="mt-12 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4">
+		<ul class="mt-14 lg:mt-20">
 			{
-				cards.map((card, i) => (
-					<article
-						class="academy-reveal academy-glass rounded-[2.4rem] px-7 py-8 transition-transform duration-500 hover:-translate-y-1"
-					>
-						<div class="relative">
-							<span class="font-serif text-[1.7rem] leading-none font-medium text-academy-taupe tabular-nums">
+				rows.map((row, i) => (
+					<li class="group relative overflow-hidden border-t border-academy-paper/16 last:border-b last:border-academy-paper/16">
+						{/* Снимок под строкой */}
+						<span aria-hidden="true" class="pointer-events-none absolute inset-0">
+							<picture>
+								<source srcset={`/${row.image}.avif`} type="image/avif" />
+								<source srcset={`/${row.image}.webp`} type="image/webp" />
+								<img
+									src={`/${row.image}.png`}
+									alt=""
+									width="900"
+									height="675"
+									loading="lazy"
+									class="h-full w-full scale-105 object-cover opacity-0 transition-[opacity,transform] duration-700 group-hover:scale-100 group-hover:opacity-45"
+								/>
+							</picture>
+							<span class="absolute inset-0 bg-academy-carbon/45 opacity-0 transition-opacity duration-700 group-hover:opacity-100"></span>
+						</span>
+
+						<div class="relative grid grid-cols-[3.2rem_minmax(0,1fr)_2rem] items-center gap-x-5 py-7 transition-[padding] duration-500 group-hover:pl-4 lg:grid-cols-[4.5rem_minmax(0,1fr)_minmax(0,22rem)_2.5rem] lg:gap-x-8 lg:py-9">
+							<span class="academy-mark text-academy-paper/35 transition-colors duration-400 group-hover:text-academy-brass">
 								{String(i + 1).padStart(2, '0')}
 							</span>
-							<h3 class="mt-4 mb-2.5 font-serif text-[1.3rem] font-medium">{card.title}</h3>
+
+							<h3 class="font-serif text-[clamp(1.5rem,3vw,2.4rem)] leading-tight font-normal tracking-[-0.02em] transition-colors duration-400 group-hover:text-white">
+								{row.title}
+							</h3>
+
 							<p
-								class="text-[0.88rem] leading-relaxed font-light text-[#5C5449]"
-								set:html={card.text}
+								class="col-span-2 col-start-2 mt-2 text-[0.82rem] leading-relaxed font-light text-academy-paper/50 transition-colors duration-400 group-hover:text-academy-paper/80 lg:col-span-1 lg:col-start-3 lg:mt-0"
+								set:html={row.text}
 							/>
+
+							<span
+								aria-hidden="true"
+								class="hidden justify-self-end text-academy-paper/30 transition-[color,transform] duration-400 group-hover:translate-x-1 group-hover:text-academy-brass lg:block"
+							>
+								<svg width="26" height="10" viewBox="0 0 26 10" fill="none" stroke="currentColor" stroke-width="1">
+									<path d="M0 5h24M20 1l4 4-4 4" />
+								</svg>
+							</span>
 						</div>
-					</article>
+					</li>
 				))
 			}
-		</div>
+		</ul>
 	</div>
 </section>
