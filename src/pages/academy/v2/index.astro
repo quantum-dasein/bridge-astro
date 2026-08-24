@@ -6,13 +6,12 @@
  * и пока новая вёрстка не утверждена, трогать её нельзя. Когда утвердим —
  * статику удаляем, эту страницу переносим на /academy/.
  *
- * Контент целиком лежит в src/data/academy.ru.ts: компоненты
- * презентационные, EN и UZ добавятся такими же файлами данных.
+ * Контент целиком в src/data/academy.ru.ts: компоненты презентационные,
+ * EN и UZ добавятся такими же файлами данных.
  */
 import AcademyLayout from '../../../layouts/AcademyLayout.astro';
 import Header from '../../../components/academy/Header.astro';
 import Hero from '../../../components/academy/Hero.astro';
-import Stats from '../../../components/academy/Stats.astro';
 import Programme from '../../../components/academy/Programme.astro';
 import Method from '../../../components/academy/Method.astro';
 import Modules from '../../../components/academy/Modules.astro';
@@ -30,7 +29,6 @@ import { academyRu as c } from '../../../data/academy.ru';
 
 	<main>
 		<Hero {...c.hero} />
-		<Stats items={c.stats} />
 		<Programme {...c.programme} />
 		<Method {...c.method} />
 		<Modules {...c.modules} />

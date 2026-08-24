@@ -1,16 +1,16 @@
 ---
-/** Надзаголовок секции: золотая линейка + разряженный капслок. */
+/** Надзаголовок секции: короткая линейка цвета taupe + разряженный капслок. */
 interface Props {
 	text: string;
 	class?: string;
+	center?: boolean;
 }
-const { text, class: className = '' } = Astro.props;
+const { text, class: className = '', center = false } = Astro.props;
 ---
 
 <p
-	data-anim="label"
-	class={`mb-5 flex items-center gap-4 text-[11px] font-medium tracking-[0.26em] text-academy-gold uppercase ${className}`}
+	class={`flex items-center gap-3.5 text-[0.68rem] font-medium tracking-[0.24em] text-academy-taupe uppercase ${center ? 'justify-center' : ''} ${className}`}
 >
-	<span class="h-px w-8 bg-gradient-to-r from-academy-gold to-transparent"></span>
+	<span class="h-px w-8 bg-[linear-gradient(90deg,#8A7B66,transparent)]"></span>
 	{text}
 </p>

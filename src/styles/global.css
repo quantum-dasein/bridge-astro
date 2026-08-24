@@ -11,35 +11,102 @@
   --font-sans: "Inter", system-ui, sans-serif;
   --font-serif: "Playfair Display", Georgia, serif;
 
-  /* Bridge Consult Academy — премиальный лендинг.
-     Живёт на своих токенах, чтобы не задевать остальной сайт. */
-  --color-academy-gold: #C5A880;
-  --color-academy-gold-soft: #E0CBAA;
-  --color-academy-ink: #0B0A09;
-  --color-academy-ground: #100E0C;
-  --font-geo: "Jost", "Inter", system-ui, sans-serif;
+  /* Bridge Consult Academy — лендинг на палитре основного сайта.
+     Ровно те же цвета, что в tailwind.marketing.config.cjs, плюс
+     коричневая семья для световых пятен за стеклом. */
+  --color-academy-ground: #F5F4F2;
+  --color-academy-ink: #292724;
+  --color-academy-taupe: #8A7B66;
+  --color-academy-taupe-deep: #5C4F3F;
+  --color-academy-sand: #C9B79C;
+  --color-academy-clay: #B99B8A;
+  --color-academy-champagne: #E4D6BE;
+  --font-geo: "Inter", system-ui, sans-serif;
 }
 
-/* Ссылка на подпункт FIDIC — моноширинный «тег», как в самом контракте.
-   Приходит из данных через set:html, поэтому это класс, а не утилиты. */
+/* ── Жидкое стекло ────────────────────────────────────────────────────────
+   Молочная полупрозрачная заливка + размытие фона + яркая грань сверху и
+   тёплая коричневая снизу. На светлом читается как матовое стекло, а не
+   как серый блок. Пятна за ним медленно плывут, поэтому стекло преломляет
+   движущийся свет. */
+
+@keyframes academy-drift-a { 0%, 100% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(5%, -4%, 0) scale(1.14); } }
+@keyframes academy-drift-b { 0%, 100% { transform: translate3d(0,0,0) scale(1.06); } 50% { transform: translate3d(-6%, 5%, 0) scale(.94); } }
+@keyframes academy-drift-c { 0%, 100% { transform: translate3d(0,0,0) scale(.96); } 50% { transform: translate3d(4%, 6%, 0) scale(1.1); } }
+@keyframes academy-sheen { 0% { transform: translateX(-130%) rotate(16deg); } 100% { transform: translateX(330%) rotate(16deg); } }
+
+.academy-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+
+.academy-glass,
+.academy-pill {
+  position: relative;
+  background: linear-gradient(148deg, rgb(255 255 255 / .78), rgb(255 255 255 / .42) 46%, rgb(255 255 255 / .60));
+  backdrop-filter: blur(30px) saturate(150%);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
+  border: 1px solid rgb(255 255 255 / .9);
+  box-shadow:
+    inset 0 1.5px 0 rgb(255 255 255 / .95),
+    inset 0 -1.5px 0 rgb(138 123 102 / .16),
+    0 34px 70px -28px rgb(63 50 36 / .28);
+}
+.academy-pill {
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .95), 0 14px 30px -14px rgb(63 50 36 / .26);
+}
+
+/* Блик, проходящий по стеклу. Только на крупных панелях. */
+.academy-glass { overflow: hidden; }
+.academy-glass::after {
+  content: "";
+  position: absolute;
+  inset-block: -60%;
+  left: 0;
+  width: 36%;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / .55), transparent);
+  animation: academy-sheen 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Стекло поверх фотографии. Обычной прозрачности там не хватает: снимок
+   просвечивает и съедает контраст подписей, поэтому молока заметно больше. */
+.academy-glass-solid {
+  background: linear-gradient(148deg, rgb(255 255 255 / .93), rgb(255 255 255 / .82) 46%, rgb(255 255 255 / .9));
+}
+
+/* Круглое фото-окно: тёмный снимок как линза в светлом листе. */
+.academy-lens {
+  position: relative;
+  overflow: hidden;
+  border-radius: 999px;
+  box-shadow: 0 24px 46px -18px rgb(63 50 36 / .5), inset 0 0 0 1px rgb(255 255 255 / .6);
+}
+
+/* Ссылка на подпункт FIDIC — приходит из данных через set:html. */
 .academy-clause {
   display: inline-block;
-  padding: 0.25rem 0.6rem;
-  border: 1px solid rgb(197 168 128 / 0.28);
-  border-radius: 0.125rem;
-  background: rgb(197 168 128 / 0.07);
-  font-family: ui-monospace, "SF Mono", Consolas, monospace;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid rgb(138 123 102 / .4);
+  border-radius: 999px;
+  background: rgb(138 123 102 / .1);
   font-size: 0.8em;
-  color: #E0CBAA;
+  color: #5C4F3F;
   white-space: nowrap;
 }
 
-/* Едва заметная чертёжная сетка — базовая деталь дизайн-системы лендинга.
-   Отдельной утилитой, чтобы не таскать длинный arbitrary value по разметке. */
-@utility bg-editorial-grid {
-  background-image:
-    repeating-linear-gradient(0deg, transparent 0 79px, rgb(255 255 255 / 0.028) 79px 80px),
-    repeating-linear-gradient(90deg, transparent 0 79px, rgb(255 255 255 / 0.028) 79px 80px);
+/* Появление при скролле — включает academy-motion.js. */
+.academy-reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s cubic-bezier(.22,.61,.36,1), transform .9s cubic-bezier(.22,.61,.36,1); }
+.academy-reveal.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .academy-blob { animation: none !important; }
+  .academy-glass::after { animation: none; opacity: 0; }
+  .academy-reveal { opacity: 1; transform: none; transition: none; }
 }
 
 html,

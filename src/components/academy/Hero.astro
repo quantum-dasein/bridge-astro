@@ -1,168 +1,135 @@
 ---
 /**
- * Hero лендинга Academy.
+ * Первый экран.
  *
- * Точки для GSAP размечены атрибутом data-anim, а не классами: классы остаются
- * чисто оформительскими, и анимацию можно переписать, не трогая вёрстку.
+ * Текст слева, тёмный снимок справа в высоком скруглённом вырезе. Плита
+ * с цифрами — стеклянная, наезжает на снимок снизу; таблетка преподавателя
+ * наезжает на плиту. Перекрытия и держат композицию: секция не выглядит
+ * набором отдельных блоков.
  *
- *   data-anim="hero-eyebrow"   — надзаголовок
- *   data-anim="hero-line"      — строка заголовка, лежит в маске overflow-hidden,
- *                                поэтому заводится классическим yPercent: 100 -> 0
- *   data-anim="hero-lead"      — абзац
- *   data-anim="hero-actions"   — блок кнопок
- *   data-anim="hero-creds"     — строка с бейджами
- *   data-anim="hero-card"      — плавающая карточка
- *   data-anim="hero-card-row"  — строка внутри карточки (для stagger)
- *   data-anim="hero-media"     — фотография (для параллакса или scale)
+ * height:auto на снимке обязателен — атрибуты width/height в разметке это
+ * презентационная подсказка CSS, и вместе с w-full они задают обе стороны,
+ * из-за чего заданная высота игнорируется.
  */
 
 interface Props {
 	eyebrow: string;
 	titleLines: string[];
-	/** Последняя строка заголовка — курсивом и золотом. */
 	titleAccent: string;
 	lead: string;
 	ctaPrimary: { label: string; href: string };
 	ctaSecondary: { label: string; href: string };
 	credsText: string;
-	card: { label: string; value: string }[];
 	imageAlt: string;
+	stats: readonly { count?: number; value: string; suffix?: string; label: string }[];
 }
 
-const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsText, card, imageAlt } =
+const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsText, imageAlt, stats } =
 	Astro.props;
 ---
 
-<!-- z-10 и НЕ overflow-hidden: карточка вылезает за нижнюю границу секции,
-     обрезка здесь съела бы её, а без z-index её перекрыл бы блок с цифрами. -->
-<section data-hero class="relative isolate z-10">
-	<!-- Фотография -->
-	<div class="absolute inset-0 -z-10 overflow-hidden" data-anim="hero-media">
-		<picture>
-			<source srcset="/academy-hero.avif" type="image/avif" />
-			<source srcset="/academy-hero.webp" type="image/webp" />
-			<img
-				src="/academy-hero.png"
-				alt={imageAlt}
-				width="1600"
-				height="900"
-				fetchpriority="high"
-				class="h-full w-full object-cover object-[center_45%]"
-			/>
-		</picture>
-		<!-- Затемнение: слева под текст, снизу — растворение в фон страницы -->
-		<div
-			class="absolute inset-0 bg-[linear-gradient(102deg,rgba(11,10,9,0.74)_0%,rgba(11,10,9,0.54)_36%,rgba(11,10,9,0.22)_68%,rgba(11,10,9,0.12)_100%)]"
-		>
-		</div>
-		<div
-			class="absolute inset-0 bg-[linear-gradient(0deg,#100E0C_1%,rgba(11,10,9,0.58)_26%,transparent_58%),linear-gradient(180deg,rgba(11,10,9,0.58)_0%,transparent_20%)]"
-		>
-		</div>
-	</div>
-
-	<div class="mx-auto w-full max-w-[1400px] px-6 lg:px-12">
-		<div
-			class="grid items-end gap-14 pt-36 pb-24 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-20 lg:pt-52 lg:pb-32"
-		>
-			<!-- Левая колонка -->
-			<div>
-				<p
-					data-anim="hero-eyebrow"
-					class="mb-7 flex items-center gap-4 font-geo text-[11px] font-medium tracking-[0.28em] text-academy-gold uppercase"
+<section data-hero class="relative z-10 px-4 pt-28 sm:px-6 sm:pt-32 lg:px-10 lg:pt-36">
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:items-end lg:gap-12">
+			<!-- Текст -->
+			<div class="academy-reveal lg:pb-24">
+				<span
+					class="academy-pill inline-block rounded-full px-5 py-2 text-[0.68rem] font-semibold tracking-[0.2em] text-academy-taupe-deep uppercase"
 				>
-					<span class="h-px w-10 bg-gradient-to-r from-transparent to-academy-gold"></span>
 					{eyebrow}
-				</p>
+				</span>
 
-				<h1 class="mb-8 max-w-[15ch] font-serif text-[clamp(2.5rem,5.6vw,4.9rem)] leading-[1.02] font-medium tracking-[-0.025em] text-white">
-					{
-						titleLines.map((line) => (
-							<span class="block overflow-hidden">
-								<span data-anim="hero-line" class="block">{line}</span>
-							</span>
-						))
-					}
-					<span class="block overflow-hidden">
-						<span
-							data-anim="hero-line"
-							class="block bg-gradient-to-r from-academy-gold-soft via-academy-gold to-[#96793F] bg-clip-text pb-[0.08em] font-normal italic text-transparent"
-						>
-							{titleAccent}
-						</span>
+				<h1
+					class="mt-6 max-w-[13ch] font-serif text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] font-medium tracking-[-0.03em] text-balance"
+				>
+					{titleLines.map((line) => <span class="block">{line}</span>)}
+					<span
+						class="block bg-[linear-gradient(104deg,#A8927A_6%,#8A7B66_46%,#5C4F3F)] bg-clip-text pb-[0.08em] italic text-transparent"
+					>
+						{titleAccent}
 					</span>
 				</h1>
 
-				<p
-					data-anim="hero-lead"
-					class="mb-10 max-w-[52ch] text-[clamp(1rem,1.4vw,1.2rem)] leading-relaxed font-light text-gray-300"
-				>
+				<p class="mt-6 max-w-[46ch] text-[clamp(1rem,1.3vw,1.1rem)] leading-relaxed font-light text-[#5C5449]">
 					{lead}
 				</p>
 
-				<div data-anim="hero-actions" class="flex flex-col gap-3 sm:flex-row sm:items-center">
+				<div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
 					<a
 						href={ctaPrimary.href}
-						class="inline-flex min-h-[3.25rem] items-center justify-center rounded-sm bg-gradient-to-r from-academy-gold-soft via-academy-gold to-[#96793F] px-9 text-[11px] font-semibold tracking-[0.18em] text-academy-ink uppercase shadow-[0_8px_30px_-10px_rgba(197,168,128,0.35)] transition-shadow duration-300 hover:shadow-[0_14px_44px_-10px_rgba(197,168,128,0.5)]"
+						data-magnetic
+						class="inline-flex min-h-[3.25rem] items-center justify-center rounded-full bg-[linear-gradient(140deg,#A8927A,#8A7B66_52%,#5F5240)] px-9 text-[0.8rem] font-medium tracking-[0.03em] text-white shadow-[0_22px_46px_-18px_rgb(138_123_102/.8),inset_0_1.5px_0_rgb(255_255_255/.35)]"
 					>
 						{ctaPrimary.label}
 					</a>
 					<a
 						href={ctaSecondary.href}
-						class="inline-flex min-h-[3.25rem] items-center justify-center rounded-sm border border-white/15 px-9 text-[11px] font-semibold tracking-[0.18em] text-gray-200 uppercase transition-colors duration-300 hover:border-academy-gold hover:bg-white/5 hover:text-academy-gold-soft"
+						class="academy-pill inline-flex min-h-[3.25rem] items-center justify-center rounded-full px-8 text-[0.8rem] font-medium text-academy-ink transition-colors duration-300 hover:text-academy-taupe-deep"
 					>
 						{ctaSecondary.label}
 					</a>
 				</div>
-
-				<div
-					data-anim="hero-creds"
-					class="mt-11 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-white/10 pt-7"
-				>
-					<img
-						src="/fidic-fcce-badge.png"
-						alt="FIDIC Certified Consulting Engineer"
-						width="78"
-						height="56"
-						class="h-14 w-auto object-contain"
-					/>
-					<img
-						src="/fidic-fccp-badge.png"
-						alt="FIDIC Certified Consulting Professional"
-						width="78"
-						height="56"
-						class="h-14 w-auto object-contain"
-					/>
-					<span class="max-w-[30ch] text-xs leading-relaxed font-light text-gray-300">
-						{credsText}
-					</span>
-				</div>
 			</div>
 
-			<!-- Плавающая карточка. Отрицательный нижний отступ уводит её за нижнюю
-			     границу секции — она наезжает на фотографию и на блок с цифрами. -->
-			<aside
-				data-anim="hero-card"
-				class="relative z-20 w-full rounded-sm border border-white/15 bg-white/5 p-7 shadow-[0_30px_70px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl backdrop-saturate-150 lg:mb-[-15rem] lg:w-[19rem]"
+			<!-- Снимок в высоком вырезе -->
+			<div
+				class="academy-reveal relative overflow-hidden rounded-[13rem] shadow-[0_44px_90px_-30px_rgb(63_50_36/.45),inset_0_0_0_1px_rgb(255_255_255/.55)]"
 			>
-				<dl class="grid">
+				<picture>
+					<source srcset="/academy-hero.avif" type="image/avif" />
+					<source srcset="/academy-hero.webp" type="image/webp" />
+					<img
+						src="/academy-hero.png"
+						alt={imageAlt}
+						width="1600"
+						height="900"
+						fetchpriority="high"
+						class="h-[clamp(20rem,42vw,32rem)] w-full object-cover object-[center_45%]"
+					/>
+				</picture>
+				<div
+					aria-hidden="true"
+					class="absolute inset-0 bg-[linear-gradient(180deg,rgb(41_39_36/.1),rgb(41_39_36/.42))]"
+				>
+				</div>
+			</div>
+		</div>
+
+		<!-- Плита с цифрами наезжает на снимок -->
+		<div class="academy-reveal relative z-20 -mt-10 lg:-mt-14">
+			<div class="academy-glass rounded-[2.6rem] px-6 py-7 sm:px-10 sm:py-8">
+				<dl class="relative grid grid-cols-2 gap-y-6 lg:grid-cols-4 lg:gap-y-0">
 					{
-						card.map((row, i) => (
+						stats.map((item, i) => (
 							<div
-								data-anim="hero-card-row"
-								class={`flex items-baseline justify-between gap-5 border-b border-white/10 py-3.5 last:border-b-0 last:pb-0 ${i === 0 ? 'pt-0' : ''}`}
+								class={`px-2 text-center ${i > 0 ? 'lg:border-l lg:border-academy-taupe/22' : ''} ${i % 2 === 1 ? 'border-l border-academy-taupe/22 lg:border-l' : ''}`}
 							>
-								<dt class="text-[10px] font-medium tracking-[0.16em] text-gray-400 uppercase">
-									{row.label}
-								</dt>
-								<dd class="font-serif text-xl font-medium whitespace-nowrap text-academy-gold-soft">
-									{row.value}
+								<dd class="font-serif text-[clamp(2rem,3.4vw,3rem)] leading-none font-medium tracking-[-0.02em] whitespace-nowrap text-academy-taupe-deep tabular-nums">
+									<span data-count={item.count}>{item.value}</span>
+									{item.suffix && <small class="text-[0.5em]">{item.suffix}</small>}
 								</dd>
+								<dt class="mx-auto mt-2 max-w-[16ch] text-[0.78rem] leading-snug font-light text-[#6E665B]">
+									{item.label}
+								</dt>
 							</div>
 						))
 					}
 				</dl>
-			</aside>
+			</div>
+		</div>
+
+		<!-- Преподаватель наезжает на плиту -->
+		<div class="academy-reveal relative z-30 -mt-6 flex justify-center">
+			<div class="academy-pill flex items-center gap-4 rounded-full py-2.5 pr-7 pl-2.5">
+				<span
+					aria-hidden="true"
+					class="h-11 w-11 shrink-0 rounded-full bg-[linear-gradient(150deg,#E4D6BE,#A8927A)] shadow-[inset_0_1px_0_rgb(255_255_255/.7)]"
+				>
+				</span>
+				<span class="max-w-[52ch] text-[0.82rem] leading-snug font-light text-[#4A443B]">
+					<Fragment set:html={credsText} />
+				</span>
+			</div>
 		</div>
 	</div>
 </section>

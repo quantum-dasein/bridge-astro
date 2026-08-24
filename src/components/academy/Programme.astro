@@ -1,9 +1,7 @@
 ---
 /**
- * «Чем эта программа отличается» — редакционная двухколонка с липким
- * заголовком слева и цитатой в конце текста.
- *
- * data-anim: label · title · para · pullquote
+ * «Чем эта программа отличается» — текст в стеклянной плите, цитата вынесена
+ * в отдельную каплю, наезжающую на плиту снизу.
  */
 import SectionLabel from './SectionLabel.astro';
 
@@ -18,36 +16,38 @@ interface Props {
 const { id = 'programme', label, title, paragraphs, pullquote } = Astro.props;
 ---
 
-<section id={id} class="relative py-24 lg:py-32">
-	<div class="mx-auto w-full max-w-[1400px] px-6 lg:px-12">
-		<div class="grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-24">
-			<div class="lg:sticky lg:top-32 lg:self-start">
-				<SectionLabel text={label} />
-				<h2
-					data-anim="title"
-					class="max-w-[14ch] font-serif text-[clamp(1.7rem,2.5vw,2.3rem)] leading-tight font-medium tracking-[-0.02em] text-white text-balance"
-				>
-					{title}
-				</h2>
-			</div>
+<section id={id} class="relative px-4 pt-28 sm:px-6 lg:px-10 lg:pt-36">
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class="academy-reveal academy-glass rounded-[3rem] px-6 py-10 sm:px-12 sm:py-14 lg:px-16">
+			<div class="relative grid gap-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
+				<div>
+					<SectionLabel text={label} />
+					<h2
+						class="mt-5 max-w-[14ch] font-serif text-[clamp(1.7rem,2.6vw,2.4rem)] leading-tight font-medium tracking-[-0.02em] text-balance"
+					>
+						{title}
+					</h2>
+				</div>
 
-			<div>
-				{
-					paragraphs.map((p) => (
-						<p
-							data-anim="para"
-							class="mb-5 max-w-[64ch] text-[clamp(1rem,1.15vw,1.15rem)] leading-relaxed font-light text-gray-300 last:mb-0 [&_b]:font-medium [&_b]:text-white"
-							set:html={p}
-						/>
-					))
-				}
-				<p
-					data-anim="pullquote"
-					class="mt-11 max-w-[38ch] border-t border-white/10 pt-8 font-serif text-[clamp(1.25rem,1.9vw,1.75rem)] leading-snug font-normal text-academy-gold-soft italic text-balance"
-				>
-					{pullquote}
-				</p>
+				<div>
+					{
+						paragraphs.map((p) => (
+							<p
+								class="mb-5 max-w-[62ch] text-[clamp(0.98rem,1.15vw,1.1rem)] leading-relaxed font-light text-[#5C5449] last:mb-0 [&_b]:font-medium [&_b]:text-academy-ink"
+								set:html={p}
+							/>
+						))
+					}
+				</div>
 			</div>
+		</div>
+
+		<div class="academy-reveal relative z-20 -mt-8 flex justify-center px-4">
+			<p
+				class="academy-pill max-w-[46ch] rounded-[2.2rem] px-8 py-6 text-center font-serif text-[clamp(1.1rem,1.7vw,1.5rem)] leading-snug font-normal text-academy-taupe-deep italic text-balance"
+			>
+				{pullquote}
+			</p>
 		</div>
 	</div>
 </section>

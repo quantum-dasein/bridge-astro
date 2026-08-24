@@ -1,14 +1,10 @@
 ---
 /**
- * 18 модулей, разбитые на четыре смысловые группы.
+ * 18 модулей четырьмя потоками.
  *
- * Список, а не сетка одинаковых плиток: восемнадцать одинаковых прямоугольников
- * читаются как стена и ничего не сообщают о структуре программы.
- *
- * Колонка римской цифры фиксированной ширины — I, II, III и IV разной ширины,
- * иначе текст и картинки четырёх групп встают по разным левым границам.
- *
- * data-anim: label · title · group · group-figure · module-item
+ * Модуль — не плитка, а капля: полностью скруглённая стеклянная пилюля,
+ * обтекающая строку. У каждого потока круглая линза с генерированным
+ * снимком — тёмное окно в светлом листе.
  */
 import SectionLabel from './SectionLabel.astro';
 
@@ -28,7 +24,6 @@ interface Props {
 
 const { id = 'modules', label, title, groups } = Astro.props;
 
-// Сквозная нумерация модулей 01..18 поверх групп
 let counter = 0;
 const numbered = groups.map((g) => ({
 	...g,
@@ -36,58 +31,48 @@ const numbered = groups.map((g) => ({
 }));
 ---
 
-<section id={id} class="relative border-t border-white/10 py-24 lg:py-32">
-	<div class="mx-auto w-full max-w-[1400px] px-6 lg:px-12">
-		<SectionLabel text={label} />
-		<h2
-			data-anim="title"
-			class="mb-14 max-w-[26ch] font-serif text-[clamp(1.9rem,3.4vw,3rem)] leading-tight font-medium tracking-[-0.02em] text-white text-balance lg:mb-16"
-		>
-			{title}
-		</h2>
+<section id={id} class="relative px-4 pt-28 sm:px-6 lg:px-10 lg:pt-36">
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class="academy-reveal mx-auto max-w-[48rem] text-center">
+			<SectionLabel text={label} center />
+			<h2
+				class="mx-auto mt-5 max-w-[20ch] font-serif text-[clamp(1.9rem,3.2vw,2.9rem)] leading-tight font-medium tracking-[-0.025em] text-balance"
+				set:html={title}
+			/>
+		</div>
 
-		<div>
+		<div class="mt-12 flex flex-col gap-8 lg:mt-16 lg:gap-10">
 			{
 				numbered.map((group) => (
-					<div
-						data-anim="group"
-						class="grid gap-6 border-t border-white/[0.07] py-9 first:border-t-0 lg:grid-cols-[minmax(0,20.5rem)_minmax(0,1fr)] lg:gap-16 lg:py-12"
-					>
-						<div class="flex items-start gap-5">
-							<span class="w-11 shrink-0 bg-gradient-to-br from-academy-gold-soft to-[#96793F] bg-clip-text font-serif text-[clamp(1.9rem,2.6vw,2.6rem)] leading-none font-normal text-transparent">
-								{group.roman}
-							</span>
-							<div class="min-w-0 flex-1">
-								<h3 class="text-[1.05rem] font-medium text-white">{group.title}</h3>
-								<p class="mt-2 text-[0.85rem] leading-relaxed font-light text-gray-300">{group.note}</p>
-								<figure data-anim="group-figure" class="mt-5 overflow-hidden rounded-sm border border-white/[0.07]">
-									<picture>
-										<source srcset={`/${group.image}.avif`} type="image/avif" />
-										<source srcset={`/${group.image}.webp`} type="image/webp" />
-										<img
-											src={`/${group.image}.png`}
-											alt={group.imageAlt}
-											width="900"
-											height="675"
-											loading="lazy"
-											class="aspect-[4/3] h-auto w-full object-cover opacity-80 transition-all duration-700 hover:scale-[1.03] hover:opacity-100"
-										/>
-									</picture>
-								</figure>
-							</div>
+					<div class="academy-reveal flex flex-col items-center gap-6 text-center lg:flex-row lg:items-center lg:gap-7 lg:text-left">
+						<div class="academy-lens h-[6.5rem] w-[6.5rem] shrink-0 lg:h-[7.25rem] lg:w-[7.25rem]">
+							<picture>
+								<source srcset={`/${group.image}.avif`} type="image/avif" />
+								<source srcset={`/${group.image}.webp`} type="image/webp" />
+								<img
+									src={`/${group.image}.png`}
+									alt={group.imageAlt}
+									width="900"
+									height="675"
+									loading="lazy"
+									class="h-full w-full object-cover brightness-115 saturate-110"
+								/>
+							</picture>
 						</div>
 
-						<ul class="self-start">
+						<div class="w-full shrink-0 lg:w-[9rem]">
+							<div class="font-serif text-[1.9rem] leading-none font-normal text-academy-taupe">
+								{group.roman}
+							</div>
+							<div class="mt-1.5 text-[0.88rem] font-medium">{group.title}</div>
+						</div>
+
+						<ul class="flex flex-wrap justify-center gap-2.5 lg:justify-start">
 							{group.items.map(({ item, n }) => (
-								<li
-									data-anim="module-item"
-									class="group relative grid grid-cols-[3rem_minmax(0,1fr)] items-baseline gap-4 border-b border-white/[0.06] py-4 text-[1.02rem] font-light text-gray-300 transition-all duration-300 last:border-b-0 hover:pl-4 hover:text-white"
-								>
-									<span
-										aria-hidden="true"
-										class="absolute inset-y-0 left-0 w-px origin-center scale-y-0 bg-gradient-to-b from-transparent via-academy-gold to-transparent transition-transform duration-500 group-hover:scale-y-100"
-									/>
-									<span class="text-[0.78rem] tabular-nums text-academy-gold">{n}</span>
+								<li class="academy-pill inline-flex items-baseline gap-2.5 rounded-full px-5 py-3 text-[0.92rem] font-light text-[#3D372F] transition-shadow duration-400 hover:shadow-[inset_0_1px_0_rgb(255_255_255/.95),0_20px_36px_-16px_rgb(63_50_36/.4)]">
+									<b class="text-[0.7rem] font-medium tracking-[0.04em] text-academy-taupe tabular-nums">
+										{n}
+									</b>
 									<span>{item}</span>
 								</li>
 							))}

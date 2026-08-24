@@ -3,11 +3,11 @@
  * Лейаут лендинга BRIDGE Consult Academy.
  *
  * Отдельный от Layout.astro намеренно: тот переключает светлую и тёмную темы
- * по localStorage и по умолчанию светлый, а лендинг всегда тёмный. Тащить
- * сюда переключатель значит получить вспышку белого фона при загрузке.
+ * по localStorage, а лендинг всегда светлый и живёт на своей палитре.
  *
- * Сетка и свечения живут здесь, на <body>, а не в секциях: фон должен быть
- * сквозным, чтобы секции читались как одно полотно, а не как набор полос.
+ * Световое поле — четыре размытых пятна коричневой семьи — лежит здесь, на
+ * уровне документа, а не в секциях: стекло по всей странице должно преломлять
+ * один и тот же свет, иначе секции распадаются на отдельные полосы.
  */
 import '../styles/global.css';
 
@@ -40,7 +40,7 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={pageUrl} />
-		<meta name="theme-color" content="#100E0C" />
+		<meta name="theme-color" content="#F5F4F2" />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
@@ -52,19 +52,37 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@200;300;400;500;600&display=swap"
 		/>
 	</head>
 
-	<body class="bg-academy-ground font-geo text-gray-300 antialiased">
-		<!-- Сквозной фон: чертёжная сетка и два тёплых свечения.
-		     fixed — контент плывёт по неподвижному фону при скролле. -->
+	<body class="bg-academy-ground font-sans text-academy-ink antialiased">
+		<!-- Световое поле. Пятна плывут по своим траекториям с разной скоростью,
+		     плюс мягко смещаются за курсором — скрипт правит --academy-mx/my. -->
 		<div
+			id="academy-light"
 			aria-hidden="true"
-			class="pointer-events-none fixed inset-0 z-0 bg-editorial-grid"
+			class="pointer-events-none fixed inset-[-14%] z-0 overflow-hidden"
+			style="--academy-mx: 0px; --academy-my: 0px;"
 		>
 			<div
-				class="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_12%_0%,rgba(197,168,128,0.10),transparent_60%),radial-gradient(ellipse_60%_60%_at_92%_62%,rgba(197,168,128,0.06),transparent_62%)]"
+				class="academy-blob"
+				style="width: 44rem; height: 44rem; left: -10%; top: -8%; background: #C9B79C; opacity: .85; animation: academy-drift-a 21s ease-in-out infinite; translate: calc(var(--academy-mx) * 1.1) calc(var(--academy-my) * 1.1);"
+			>
+			</div>
+			<div
+				class="academy-blob"
+				style="width: 38rem; height: 38rem; right: -8%; top: 6%; background: #B99B8A; opacity: .6; animation: academy-drift-b 25s ease-in-out infinite; translate: calc(var(--academy-mx) * -.8) calc(var(--academy-my) * -.8);"
+			>
+			</div>
+			<div
+				class="academy-blob"
+				style="width: 42rem; height: 42rem; left: 28%; top: 46%; background: #8A7B66; opacity: .38; animation: academy-drift-c 29s ease-in-out infinite; translate: calc(var(--academy-mx) * .6) calc(var(--academy-my) * .6);"
+			>
+			</div>
+			<div
+				class="academy-blob"
+				style="width: 28rem; height: 28rem; right: 22%; bottom: 4%; background: #E4D6BE; opacity: .9; animation: academy-drift-a 23s ease-in-out infinite reverse; translate: calc(var(--academy-mx) * -1.3) calc(var(--academy-my) * -1.3);"
 			>
 			</div>
 		</div>
@@ -72,5 +90,70 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 		<div class="relative z-10">
 			<slot />
 		</div>
+
+		<script>
+			// Движение лендинга. Собирается Astro, а не лежит в public/ —
+			// public/academy/ занят старой статической версией страницы.
+			const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+			// 1. Появление блоков при скролле.
+			const reveals = document.querySelectorAll('.academy-reveal');
+			if (reduced || !('IntersectionObserver' in window)) {
+				reveals.forEach((el) => el.classList.add('is-in'));
+			} else {
+				const io = new IntersectionObserver(
+					(entries) => {
+						for (const entry of entries) {
+							if (!entry.isIntersecting) continue;
+							entry.target.classList.add('is-in');
+							io.unobserve(entry.target);
+						}
+					},
+					{ rootMargin: '0px 0px -12% 0px', threshold: 0.08 }
+				);
+				reveals.forEach((el, i) => {
+					(el as HTMLElement).style.transitionDelay = `${Math.min(i % 6, 5) * 70}ms`;
+					io.observe(el);
+				});
+			}
+
+			// 2. Пятна за стеклом мягко идут за курсором.
+			const light = document.getElementById('academy-light');
+			if (light && !reduced && matchMedia('(pointer: fine)').matches) {
+				let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+				const loop = () => {
+					cx += (tx - cx) * 0.06;
+					cy += (ty - cy) * 0.06;
+					light.style.setProperty('--academy-mx', cx.toFixed(2) + 'px');
+					light.style.setProperty('--academy-my', cy.toFixed(2) + 'px');
+					raf = Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1 ? requestAnimationFrame(loop) : 0;
+				};
+				addEventListener(
+					'pointermove',
+					(e) => {
+						tx = (e.clientX / innerWidth - 0.5) * 46;
+						ty = (e.clientY / innerHeight - 0.5) * 46;
+						if (!raf) raf = requestAnimationFrame(loop);
+					},
+					{ passive: true }
+				);
+			}
+
+			// 3. Магнитные кнопки: притягиваются к курсору в пределах своей зоны.
+			if (!reduced && matchMedia('(pointer: fine)').matches) {
+				document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach((el) => {
+					el.style.transition = 'translate .35s cubic-bezier(.22,.61,.36,1)';
+					el.addEventListener('pointermove', (e) => {
+						const r = el.getBoundingClientRect();
+						el.style.transition = 'translate .12s linear';
+						el.style.translate = `${(e.clientX - r.left - r.width / 2) * 0.28}px ${(e.clientY - r.top - r.height / 2) * 0.4}px`;
+					});
+					el.addEventListener('pointerleave', () => {
+						el.style.transition = 'translate .5s cubic-bezier(.22,.61,.36,1)';
+						el.style.translate = '0px 0px';
+					});
+				});
+			}
+		</script>
 	</body>
 </html>

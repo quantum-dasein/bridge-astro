@@ -1,10 +1,5 @@
 ---
-/**
- * «Для кого» — четыре карточки со сквозной нумерацией и золотым свечением
- * сверху при наведении.
- *
- * data-anim: label · title · lead · aud-card
- */
+/** «Для кого» — четыре стеклянные капли со сквозной нумерацией. */
 import SectionLabel from './SectionLabel.astro';
 
 interface Props {
@@ -18,37 +13,33 @@ interface Props {
 const { id = 'audience', label, title, lead, cards } = Astro.props;
 ---
 
-<section id={id} class="relative border-t border-white/10 py-24 lg:py-32">
-	<div class="mx-auto w-full max-w-[1400px] px-6 lg:px-12">
-		<SectionLabel text={label} />
-		<h2
-			data-anim="title"
-			class="mb-6 max-w-[28ch] font-serif text-[clamp(1.9rem,3.4vw,3rem)] leading-tight font-medium tracking-[-0.02em] text-white text-balance"
-		>
-			{title}
-		</h2>
-		<p data-anim="lead" class="max-w-[70ch] text-[1rem] leading-relaxed font-light text-gray-300">
-			{lead}
-		</p>
+<section id={id} class="relative px-4 pt-28 sm:px-6 lg:px-10 lg:pt-36">
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class="academy-reveal mx-auto max-w-[54rem] text-center">
+			<SectionLabel text={label} center />
+			<h2
+				class="mx-auto mt-5 max-w-[24ch] font-serif text-[clamp(1.9rem,3.2vw,2.9rem)] leading-tight font-medium tracking-[-0.025em] text-balance"
+			>
+				{title}
+			</h2>
+			<p class="mx-auto mt-5 max-w-[68ch] text-[clamp(0.98rem,1.15vw,1.1rem)] leading-relaxed font-light text-[#5C5449]">
+				{lead}
+			</p>
+		</div>
 
-		<div class="mt-14 grid gap-5 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
+		<div class="mt-12 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4">
 			{
 				cards.map((card, i) => (
 					<article
-						data-anim="aud-card"
-						class="group relative overflow-hidden rounded-sm border border-white/[0.07] bg-white/[0.025] p-7 transition-all duration-500 hover:-translate-y-1 hover:border-white/15 hover:shadow-[0_26px_60px_-30px_rgba(0,0,0,0.9)] lg:p-8"
+						class="academy-reveal academy-glass rounded-[2.4rem] px-7 py-8 transition-transform duration-500 hover:-translate-y-1"
 					>
-						<span
-							aria-hidden="true"
-							class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_0%,rgba(197,168,128,0.16),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-						/>
 						<div class="relative">
-							<span class="text-[0.78rem] tabular-nums text-academy-gold">
+							<span class="font-serif text-[1.7rem] leading-none font-medium text-academy-taupe tabular-nums">
 								{String(i + 1).padStart(2, '0')}
 							</span>
-							<h3 class="mt-4 mb-3 font-serif text-[1.35rem] font-medium text-white">{card.title}</h3>
+							<h3 class="mt-4 mb-2.5 font-serif text-[1.3rem] font-medium">{card.title}</h3>
 							<p
-								class="text-[0.92rem] leading-relaxed font-light text-gray-300"
+								class="text-[0.88rem] leading-relaxed font-light text-[#5C5449]"
 								set:html={card.text}
 							/>
 						</div>

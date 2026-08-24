@@ -1,9 +1,10 @@
 ---
 /**
- * Разбор одного кейса как документ дела: шапка с номером и золотыми
- * тегами подпунктов, блоки через линейки, вывод подсвечен.
+ * Разбор кейса.
  *
- * data-anim: label · title · lead · doc · doc-block
+ * Атмосферный снимок лежит подложкой во всю ширину, стекло — прямо на нём.
+ * Контраст тёмного кадра и молочного стекла и даёт глубину; на плоском фоне
+ * этот блок выглядел бы очередной карточкой.
  */
 import SectionLabel from './SectionLabel.astro';
 
@@ -19,56 +20,71 @@ interface Props {
 const { label, title, lead, docTitle, clauses, blocks } = Astro.props;
 ---
 
-<section class="relative border-t border-white/10 py-24 lg:py-32">
-	<div class="mx-auto w-full max-w-[1400px] px-6 lg:px-12">
-		<div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.22fr)] lg:gap-20">
-			<div>
-				<SectionLabel text={label} />
-				<h2
-					data-anim="title"
-					class="mb-6 max-w-[18ch] font-serif text-[clamp(1.9rem,3.2vw,2.9rem)] leading-tight font-medium tracking-[-0.02em] text-white text-balance"
-				>
-					{title}
-				</h2>
-				<p data-anim="lead" class="max-w-[46ch] text-[1rem] leading-relaxed font-light text-gray-300">
-					{lead}
-				</p>
+<section class="relative px-4 pt-28 sm:px-6 lg:px-10 lg:pt-36">
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div
+			class="academy-reveal relative overflow-hidden rounded-[3rem] shadow-[0_44px_90px_-32px_rgb(63_50_36/.48)]"
+		>
+			<picture>
+				<source srcset="/academy-atmosphere.avif" type="image/avif" />
+				<source srcset="/academy-atmosphere.webp" type="image/webp" />
+				<img
+					src="/academy-atmosphere.png"
+					alt=""
+					width="1920"
+					height="823"
+					loading="lazy"
+					class="h-full min-h-[30rem] w-full object-cover"
+				/>
+			</picture>
+			<div
+				aria-hidden="true"
+				class="absolute inset-0 bg-[linear-gradient(120deg,rgb(41_39_36/.82),rgb(41_39_36/.6))]"
+			>
 			</div>
 
-			<div
-				data-anim="doc"
-				class="overflow-hidden rounded-sm border border-white/10 bg-white/[0.035] shadow-[0_40px_90px_-40px_rgba(0,0,0,0.95)] backdrop-blur-md"
-			>
-				<div
-					class="flex flex-wrap items-center gap-x-4 gap-y-2.5 border-b border-academy-gold/20 bg-gradient-to-r from-academy-gold/12 to-transparent px-6 py-4 lg:px-7"
-				>
-					<strong class="text-[11px] font-medium tracking-[0.2em] text-academy-gold-soft uppercase">
-						{docTitle}
-					</strong>
-					{
-						clauses.map((c) => (
-							<span class="academy-clause">{c}</span>
-						))
-					}
-				</div>
-
-				{
-					blocks.map((b) => (
-						<div
-							data-anim="doc-block"
-							class={`border-t border-white/[0.06] px-6 py-6 first:border-t-0 lg:px-7 ${
-								b.key ? 'bg-gradient-to-r from-academy-gold/10 to-transparent' : ''
-							}`}
-						>
-							<h4 class="mb-2.5 text-[10.5px] font-medium tracking-[0.2em] text-academy-gold uppercase">
-								{b.heading}
-							</h4>
-							<p class={`text-[0.98rem] leading-relaxed font-light ${b.key ? 'text-gray-100' : 'text-gray-300'}`}>
-								{b.text}
-							</p>
+			<div class="absolute inset-3 sm:inset-6 lg:inset-8">
+				<div class="academy-glass academy-glass-solid h-full rounded-[2.4rem] px-6 py-7 sm:px-10 sm:py-9">
+					<div class="relative flex h-full flex-col">
+						<div class="flex flex-wrap items-center gap-2.5">
+							<SectionLabel text={label} class="mr-2" />
+							{clauses.map((c) => <span class="academy-clause">{c}</span>)}
 						</div>
-					))
-				}
+
+						<h2
+							class="mt-5 max-w-[24ch] font-serif text-[clamp(1.5rem,2.6vw,2.2rem)] leading-tight font-medium tracking-[-0.02em] text-balance"
+						>
+							{title}
+						</h2>
+
+						<p class="mt-3 max-w-[62ch] text-[0.92rem] leading-relaxed font-light text-[#5C5449]">
+							{lead}
+						</p>
+
+						<div class="mt-6 grid gap-6 sm:grid-cols-3 sm:gap-7">
+							{
+								blocks.map((b) => (
+									<div>
+										<div
+											class={`mb-2 text-[0.65rem] font-medium tracking-[0.18em] uppercase ${b.key ? 'text-academy-taupe' : 'text-[#6E665B]'}`}
+										>
+											{b.heading}
+										</div>
+										<p
+											class={`text-[0.88rem] leading-relaxed ${b.key ? 'font-normal text-academy-ink' : 'font-light text-[#4A443B]'}`}
+										>
+											{b.text}
+										</p>
+									</div>
+								))
+							}
+						</div>
+
+						<div class="mt-auto pt-5 text-[0.7rem] font-medium tracking-[0.16em] text-[#6E665B] uppercase">
+							{docTitle}
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

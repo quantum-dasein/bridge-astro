@@ -1,10 +1,5 @@
 ---
-/**
- * «Формат» — единственная секция с фотоподложкой: атмосферный кадр на
- * низкой прозрачности, края растворены в фон страницы.
- *
- * data-anim: label · title · lead · format-item
- */
+/** «Формат» — одна широкая стеклянная плита, четыре пункта внутри. */
 import SectionLabel from './SectionLabel.astro';
 
 interface Props {
@@ -18,51 +13,35 @@ interface Props {
 const { id = 'format', label, title, lead, items } = Astro.props;
 ---
 
-<section id={id} class="relative overflow-hidden border-t border-white/10 py-24 lg:py-32">
-	<div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
-		<picture>
-			<source srcset="/academy-atmosphere.avif" type="image/avif" />
-			<source srcset="/academy-atmosphere.webp" type="image/webp" />
-			<img
-				src="/academy-atmosphere.png"
-				alt=""
-				width="1920"
-				height="823"
-				loading="lazy"
-				class="h-full w-full object-cover opacity-30"
-			/>
-		</picture>
-		<div
-			class="absolute inset-0 bg-[linear-gradient(180deg,#100E0C,rgba(16,14,12,0.55)_26%,rgba(16,14,12,0.55)_74%,#100E0C)]"
-		>
-		</div>
-	</div>
-
-	<div class="mx-auto w-full max-w-[1400px] px-6 lg:px-12">
-		<div class="grid gap-10 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-24">
-			<div>
-				<SectionLabel text={label} />
-				<h2
-					data-anim="title"
-					class="max-w-[16ch] font-serif text-[clamp(1.8rem,2.7vw,2.5rem)] leading-tight font-medium tracking-[-0.02em] text-white text-balance"
-				>
-					{title}
-				</h2>
-			</div>
-			<p data-anim="lead" class="max-w-[64ch] text-[clamp(1rem,1.15vw,1.15rem)] leading-relaxed font-light text-gray-300">
-				{lead}
-			</p>
-		</div>
-
-		<div class="mt-14 grid gap-8 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-10">
-			{
-				items.map((item) => (
-					<div data-anim="format-item" class="border-t border-academy-gold/25 pt-6">
-						<h3 class="mb-2.5 text-[1.02rem] font-medium text-white">{item.title}</h3>
-						<p class="text-[0.9rem] leading-relaxed font-light text-gray-300">{item.text}</p>
+<section id={id} class="relative px-4 pt-28 sm:px-6 lg:px-10 lg:pt-36">
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class="academy-reveal academy-glass rounded-[3rem] px-6 py-10 sm:px-12 sm:py-14 lg:px-16">
+			<div class="relative">
+				<div class="grid gap-8 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
+					<div>
+						<SectionLabel text={label} />
+						<h2
+							class="mt-5 max-w-[16ch] font-serif text-[clamp(1.7rem,2.6vw,2.4rem)] leading-tight font-medium tracking-[-0.02em] text-balance"
+						>
+							{title}
+						</h2>
 					</div>
-				))
-			}
+					<p class="max-w-[62ch] text-[clamp(0.98rem,1.15vw,1.1rem)] leading-relaxed font-light text-[#5C5449]">
+						{lead}
+					</p>
+				</div>
+
+				<div class="mt-10 grid gap-7 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-9">
+					{
+						items.map((item) => (
+							<div class="border-t border-academy-taupe/30 pt-5">
+								<h3 class="mb-2 text-[0.96rem] font-medium">{item.title}</h3>
+								<p class="text-[0.85rem] leading-relaxed font-light text-[#6E665B]">{item.text}</p>
+							</div>
+						))
+					}
+				</div>
+			</div>
 		</div>
 	</div>
 </section>

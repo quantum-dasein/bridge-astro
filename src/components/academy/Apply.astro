@@ -4,13 +4,11 @@
  *
  * Отправляется на собственную функцию /api/apply (см. api/apply.js): она
  * рассылает заявку в Telegram и, если задан FORMSPREE_ID, дублирует на почту.
- * Скрытое поле source задаёт заголовок сообщения в Telegram — без него заявка
- * пришла бы подписанной как летняя школа.
+ * Скрытое поле source задаёт заголовок сообщения — без него заявка пришла бы
+ * подписанной как летняя школа.
  *
  * Тексты состояний лежат в data-атрибутах формы: один скрипт обслуживает все
  * языковые версии.
- *
- * data-anim: label · title · lead · apply-item · apply-form
  */
 import SectionLabel from './SectionLabel.astro';
 
@@ -39,50 +37,47 @@ const { id = 'apply', label, title, lead, list, mailNote, source, submit, states
 	Astro.props;
 
 const inputClass =
-	'w-full min-w-0 rounded-sm border border-white/[0.08] bg-black/35 px-4 py-3.5 text-[0.95rem] font-light tracking-normal text-gray-100 normal-case transition-all duration-300 outline-none placeholder:text-gray-600 focus:border-academy-gold focus:bg-black/50 focus:ring-2 focus:ring-academy-gold/15';
+	'w-full min-w-0 rounded-full border border-white/80 bg-white/55 px-5 py-3.5 text-[0.93rem] font-light tracking-normal text-academy-ink normal-case shadow-[inset_0_1px_0_rgb(255_255_255/.9)] transition-all duration-300 outline-none placeholder:text-[#9C9488] focus:border-academy-taupe/60 focus:bg-white/80 focus:ring-4 focus:ring-academy-taupe/12';
+const areaClass = inputClass.replace('rounded-full', 'rounded-[1.6rem]') + ' resize-y';
 const labelClass =
-	'grid min-w-0 gap-2 text-[10.5px] font-medium tracking-[0.16em] text-gray-400 uppercase';
+	'grid min-w-0 gap-2 text-[0.66rem] font-medium tracking-[0.16em] text-[#8E867A] uppercase';
 ---
 
-<section id={id} class="relative border-t border-white/10 py-24 lg:py-32">
-	<div class="mx-auto w-full max-w-[1400px] px-6 lg:px-12">
-		<div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.08fr)] lg:gap-20">
-			<div>
+<section id={id} class="relative px-4 pt-28 pb-28 sm:px-6 lg:px-10 lg:pt-36 lg:pb-36">
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-16">
+			<div class="academy-reveal">
 				<SectionLabel text={label} />
 				<h2
-					data-anim="title"
-					class="mb-6 max-w-[18ch] font-serif text-[clamp(1.9rem,3.2vw,2.9rem)] leading-tight font-medium tracking-[-0.02em] text-white text-balance"
+					class="mt-5 max-w-[18ch] font-serif text-[clamp(1.9rem,3.2vw,2.9rem)] leading-tight font-medium tracking-[-0.025em] text-balance"
 				>
 					{title}
 				</h2>
-				<p data-anim="lead" class="max-w-[46ch] text-[1rem] leading-relaxed font-light text-gray-300">
+				<p class="mt-5 max-w-[46ch] text-[clamp(0.98rem,1.15vw,1.1rem)] leading-relaxed font-light text-[#5C5449]">
 					{lead}
 				</p>
 
-				<ul class="mt-9">
+				<ul class="mt-8 flex flex-wrap gap-2.5">
 					{
 						list.map((item) => (
-							<li
-								data-anim="apply-item"
-								class="relative border-t border-white/[0.06] py-4 pl-7 text-[0.95rem] font-light text-gray-300 before:absolute before:top-[1.6rem] before:left-0 before:h-px before:w-3.5 before:bg-academy-gold"
-							>
+							<li class="academy-pill rounded-full px-5 py-3 text-[0.86rem] font-light text-[#3D372F]">
 								{item}
 							</li>
 						))
 					}
 				</ul>
 
-				<p class="mt-7 text-[0.95rem] font-light text-gray-300">
+				<p class="mt-7 text-[0.9rem] font-light text-[#5C5449]">
 					{mailNote}{' '}
 					<a
 						href="mailto:info@bridgeconsult.uz"
-						class="text-academy-gold-soft transition-colors hover:text-academy-gold">info@bridgeconsult.uz</a
+						class="text-academy-taupe-deep underline-offset-4 transition-colors hover:text-academy-ink hover:underline"
+						>info@bridgeconsult.uz</a
 					>
 				</p>
 			</div>
 
 			<form
-				data-anim="apply-form"
 				id="academyApplyForm"
 				method="POST"
 				data-subject={states.subject}
@@ -92,7 +87,7 @@ const labelClass =
 				data-sent={states.sent}
 				data-success-note={states.successNote}
 				data-error-note={states.errorNote}
-				class="grid gap-4 rounded-sm border border-white/10 bg-white/[0.035] p-7 shadow-[0_44px_100px_-44px_rgba(0,0,0,0.95)] backdrop-blur-md lg:p-10"
+				class="academy-reveal academy-glass grid gap-4 rounded-[2.6rem] px-6 py-8 sm:px-10 sm:py-10"
 			>
 				<input type="hidden" name="source" value={source} />
 
@@ -114,34 +109,32 @@ const labelClass =
 				<label class={labelClass}>
 					{fields.programme.label}
 					<select name="programme" class={inputClass}>
-						{fields.programme.options.map((o: string) => <option class="bg-[#f3eee4] text-[#17130c]">{o}</option>)}
+						{fields.programme.options.map((o: string) => <option>{o}</option>)}
 					</select>
 				</label>
 
 				<label class={labelClass}>
 					{fields.participants.label}
 					<select name="participants" class={inputClass}>
-						{fields.participants.options.map((o: string) => <option class="bg-[#f3eee4] text-[#17130c]">{o}</option>)}
+						{fields.participants.options.map((o: string) => <option>{o}</option>)}
 					</select>
 				</label>
 
 				<label class={labelClass}>
 					{fields.language.label}
 					<select name="language" class={inputClass}>
-						{fields.language.options.map((o: string) => <option class="bg-[#f3eee4] text-[#17130c]">{o}</option>)}
+						{fields.language.options.map((o: string) => <option>{o}</option>)}
 					</select>
 				</label>
 
 				<label class={labelClass}>
 					{fields.cases.label}
-					<textarea name="cases_to_discuss" rows="4" placeholder={fields.cases.placeholder} class={`${inputClass} resize-y`}
-					></textarea>
+					<textarea name="cases_to_discuss" rows="4" placeholder={fields.cases.placeholder} class={areaClass}></textarea>
 				</label>
 
 				<label class={labelClass}>
 					{fields.message.label}
-					<textarea name="message" rows="3" placeholder={fields.message.placeholder} class={`${inputClass} resize-y`}
-					></textarea>
+					<textarea name="message" rows="3" placeholder={fields.message.placeholder} class={areaClass}></textarea>
 				</label>
 
 				<!-- Ловушка для ботов: не display:none — часть ботов такие поля пропускает.
@@ -157,69 +150,74 @@ const labelClass =
 
 				<button
 					type="submit"
-					class="mt-2 inline-flex min-h-[3.25rem] w-full cursor-pointer items-center justify-center rounded-sm bg-gradient-to-r from-academy-gold-soft via-academy-gold to-[#96793F] px-8 text-[11px] font-semibold tracking-[0.18em] text-academy-ink uppercase shadow-[0_8px_30px_-10px_rgba(197,168,128,0.35)] transition-shadow duration-300 hover:shadow-[0_14px_44px_-10px_rgba(197,168,128,0.5)] disabled:cursor-default disabled:opacity-50"
+					data-magnetic
+					class="mt-2 inline-flex min-h-[3.25rem] w-full cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(140deg,#A8927A,#8A7B66_52%,#5F5240)] px-8 text-[0.8rem] font-medium tracking-[0.03em] text-white shadow-[0_22px_46px_-18px_rgb(138_123_102/.85),inset_0_1.5px_0_rgb(255_255_255/.35)] transition-shadow duration-300 hover:shadow-[0_28px_56px_-18px_rgb(138_123_102/.95),inset_0_1.5px_0_rgb(255_255_255/.4)] disabled:cursor-default disabled:opacity-55"
 				>
 					{submit}
 				</button>
 
-				<p class="min-h-[1.5em] text-[0.82rem] leading-relaxed font-light text-gray-400" id="academyFormNote" role="status" aria-live="polite"></p>
+				<p
+					id="academyFormNote"
+					role="status"
+					aria-live="polite"
+					class="min-h-[1.5em] text-center text-[0.8rem] leading-relaxed font-light text-[#5C5449]"
+				>
+				</p>
 			</form>
 		</div>
 	</div>
 </section>
 
-<script is:inline>
-	(function () {
-		var LEAD_EMAIL = 'info@bridgeconsult.uz';
-		var form = document.getElementById('academyApplyForm');
-		var note = document.getElementById('academyFormNote');
-		if (!form || !note) return;
-		var button = form.querySelector('button[type="submit"]');
-		var idle = button.textContent;
+<script>
+	const LEAD_EMAIL = 'info@bridgeconsult.uz';
+	const form = document.getElementById('academyApplyForm') as HTMLFormElement | null;
+	const note = document.getElementById('academyFormNote');
+
+	if (form && note) {
+		const button = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+		const idle = button.textContent ?? '';
 
 		// Запасной вариант: подписи берём у самих <label>, поэтому письмо
 		// автоматически выходит на языке страницы.
-		function buildMailto(data) {
-			var lines = [];
-			form.querySelectorAll('input[name], select[name], textarea[name]').forEach(function (field) {
-				var name = field.getAttribute('name');
+		const buildMailto = (data: FormData) => {
+			const lines: string[] = [];
+			form.querySelectorAll<HTMLInputElement>('input[name], select[name], textarea[name]').forEach((field) => {
+				const name = field.getAttribute('name');
 				if (!name || name === 'hp_ref') return;
-				var value = (data.get(name) || '').toString().trim();
+				const value = (data.get(name) ?? '').toString().trim();
 				if (!value) return;
-				var label = field.closest('label');
-				var caption = label ? label.childNodes[0].textContent.trim() : name;
-				lines.push(caption + ': ' + value);
+				const label = field.closest('label');
+				const caption = label?.childNodes[0]?.textContent?.trim() ?? name;
+				lines.push(`${caption}: ${value}`);
 			});
-			var body = lines.join('\n') + '\n\n' + form.dataset.sentFrom + ' ' + location.href;
-			return (
-				'mailto:' + LEAD_EMAIL + '?subject=' + encodeURIComponent(form.dataset.subject) + '&body=' + encodeURIComponent(body)
-			);
-		}
+			const body = `${lines.join('\n')}\n\n${form.dataset.sentFrom} ${location.href}`;
+			return `mailto:${LEAD_EMAIL}?subject=${encodeURIComponent(form.dataset.subject ?? '')}&body=${encodeURIComponent(body)}`;
+		};
 
-		form.addEventListener('submit', async function (event) {
+		form.addEventListener('submit', async (event) => {
 			event.preventDefault();
-			var data = new FormData(form);
+			const data = new FormData(form);
 			button.disabled = true;
-			button.textContent = form.dataset.sending;
-			note.textContent = form.dataset.sendingNote;
+			button.textContent = form.dataset.sending ?? '';
+			note.textContent = form.dataset.sendingNote ?? '';
 
 			try {
-				var response = await fetch('/api/apply', {
+				const response = await fetch('/api/apply', {
 					method: 'POST',
 					body: data,
 					headers: { Accept: 'application/json' },
 				});
-				if (!response.ok) throw new Error('/api/apply вернул ' + response.status);
+				if (!response.ok) throw new Error(`/api/apply вернул ${response.status}`);
 				form.reset();
-				note.textContent = form.dataset.successNote;
-				button.textContent = form.dataset.sent;
-			} catch (e) {
+				note.textContent = form.dataset.successNote ?? '';
+				button.textContent = form.dataset.sent ?? idle;
+			} catch {
 				// Функция недоступна — заявка не должна пропасть.
 				location.href = buildMailto(data);
-				note.textContent = (form.dataset.errorNote || '').replace('{email}', LEAD_EMAIL);
+				note.textContent = (form.dataset.errorNote ?? '').replace('{email}', LEAD_EMAIL);
 				button.disabled = false;
 				button.textContent = idle;
 			}
 		});
-	})();
+	}
 </script>
