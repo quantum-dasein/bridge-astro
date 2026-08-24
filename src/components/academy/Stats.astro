@@ -1,0 +1,54 @@
+---
+/**
+ * Плита с цифрами. Отрицательный верхний отступ поднимает её на нижнюю
+ * кромку героя: стеклянная панель как будто всплывает из кадра в светлую
+ * часть страницы и связывает тёмный экран с телом.
+ *
+ * data-anim="stat-value" — в data-count лежит цель для счётчика; суффикс
+ * вынесен в отдельный <small>, чтобы его не затирало при анимации.
+ */
+
+interface Props {
+	items: readonly { count?: number; value: string; suffix?: string; label: string }[];
+	trainerNote: string;
+}
+
+const { items, trainerNote } = Astro.props;
+---
+
+<section class="relative z-20 -mt-20 px-4 sm:px-6 lg:-mt-24 lg:px-10">
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class="academy-reveal academy-glass rounded-[2.6rem] px-6 py-8 sm:px-10 sm:py-9">
+			<dl class="relative grid grid-cols-2 gap-y-7 lg:grid-cols-4 lg:gap-y-0">
+				{
+					items.map((item, i) => (
+						<div
+							class={`px-2 text-center ${i % 2 === 1 ? 'border-l border-academy-taupe/20' : ''} ${i > 0 ? 'lg:border-l lg:border-academy-taupe/20' : 'lg:border-l-0'}`}
+						>
+							<dd class="font-serif text-[clamp(2.1rem,3.6vw,3.1rem)] leading-none font-medium tracking-[-0.02em] whitespace-nowrap text-academy-taupe-deep tabular-nums">
+								<span data-anim="stat-value" data-count={item.count}>{item.value}</span>
+								{item.suffix && <small class="text-[0.5em]">{item.suffix}</small>}
+							</dd>
+							<dt class="mx-auto mt-2.5 max-w-[17ch] text-[0.8rem] leading-snug font-light text-[#6E665B]">
+								{item.label}
+							</dt>
+						</div>
+					))
+				}
+			</dl>
+		</div>
+
+		<div class="academy-reveal relative z-30 -mt-6 flex justify-center">
+			<div class="academy-pill flex items-center gap-4 rounded-full py-2.5 pr-7 pl-2.5">
+				<span
+					aria-hidden="true"
+					class="h-11 w-11 shrink-0 rounded-full bg-[linear-gradient(150deg,#E4D6BE,#A8927A)] shadow-[inset_0_1px_0_rgb(255_255_255/.7)]"
+				>
+				</span>
+				<span class="max-w-[52ch] text-[0.82rem] leading-snug font-light text-[#4A443B]">
+					<Fragment set:html={trainerNote} />
+				</span>
+			</div>
+		</div>
+	</div>
+</section>

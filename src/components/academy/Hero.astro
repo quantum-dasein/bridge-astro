@@ -1,15 +1,22 @@
 ---
 /**
- * Первый экран.
+ * Кинематографичный первый экран во весь вьюпорт.
  *
- * Текст слева, тёмный снимок справа в высоком скруглённом вырезе. Плита
- * с цифрами — стеклянная, наезжает на снимок снизу; таблетка преподавателя
- * наезжает на плиту. Перекрытия и держат композицию: секция не выглядит
- * набором отдельных блоков.
+ * Слои:
+ *   z-0   [data-hero-media] — обёртка overflow-hidden, внутри [data-hero-image]
+ *   z-10  градиентный оверлей: плотный слева и снизу, прозрачный вправо-вверх
+ *   z-20  контент
  *
- * height:auto на снимке обязателен — атрибуты width/height в разметке это
- * презентационная подсказка CSS, и вместе с w-full они задают обе стороны,
- * из-за чего заданная высота игнорируется.
+ * Крючки под GSAP:
+ *   data-hero-image   — Ken Burns / параллакс по скроллу. По умолчанию работает
+ *                       CSS-анимация .hero-kenburns; если вешаешь GSAP, сними
+ *                       этот класс, иначе трансформации будут спорить.
+ *   data-hero-line    — строка заголовка, лежит в маске overflow-hidden,
+ *                       заводится классическим yPercent: 100 -> 0
+ *   data-hero-fade    — надзаголовок, абзац, кнопки, бейджи (stagger)
+ *   data-scroll-cue   — индикатор прокрутки
+ *
+ * height:auto на снимке не нужен: обе стороны заданы намеренно (h-full w-full).
  */
 
 interface Props {
@@ -21,115 +28,162 @@ interface Props {
 	ctaSecondary: { label: string; href: string };
 	credsText: string;
 	imageAlt: string;
-	stats: readonly { count?: number; value: string; suffix?: string; label: string }[];
+	scrollCue: string;
 }
 
-const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsText, imageAlt, stats } =
+const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsText, imageAlt, scrollCue } =
 	Astro.props;
 ---
 
-<section data-hero class="relative z-10 px-4 pt-28 sm:px-6 sm:pt-32 lg:px-10 lg:pt-36">
-	<div class="mx-auto w-full max-w-[1400px]">
-		<div class="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:items-end lg:gap-12">
-			<!-- Текст -->
-			<div class="academy-reveal lg:pb-24">
-				<span
-					class="academy-pill inline-block rounded-full px-5 py-2 text-[0.68rem] font-semibold tracking-[0.2em] text-academy-taupe-deep uppercase"
-				>
-					{eyebrow}
-				</span>
+<section data-hero class="relative isolate flex min-h-screen flex-col justify-end overflow-hidden">
+	<!-- Фон во весь экран -->
+	<div data-hero-media class="absolute inset-0 z-0 overflow-hidden">
+		<picture>
+			<source srcset="/academy-hero.avif" type="image/avif" />
+			<source srcset="/academy-hero.webp" type="image/webp" />
+			<img
+				data-hero-image
+				src="/academy-hero.png"
+				alt={imageAlt}
+				width="1600"
+				height="900"
+				fetchpriority="high"
+				class="hero-kenburns h-full w-full object-cover object-[center_45%]"
+			/>
+		</picture>
+	</div>
 
-				<h1
-					class="mt-6 max-w-[13ch] font-serif text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] font-medium tracking-[-0.03em] text-balance"
-				>
-					{titleLines.map((line) => <span class="block">{line}</span>)}
+	<!-- Оверлей: плотно слева и снизу, прозрачно вправо-вверх -->
+	<div
+		aria-hidden="true"
+		class="absolute inset-0 z-10 bg-[linear-gradient(100deg,rgb(14_12_10/.92)_0%,rgb(14_12_10/.72)_32%,rgb(14_12_10/.28)_62%,transparent_88%),linear-gradient(0deg,rgb(14_12_10/.88)_0%,rgb(14_12_10/.35)_28%,transparent_58%)]"
+	>
+	</div>
+	<!-- Тёплый отсвет, чтобы кадр не уходил в серость -->
+	<div
+		aria-hidden="true"
+		class="absolute inset-0 z-10 bg-[radial-gradient(ellipse_50%_44%_at_16%_58%,rgb(201_183_156/.16),transparent_72%)]"
+	>
+	</div>
+	<!-- Растворение в светлый фон страницы -->
+	<div
+		aria-hidden="true"
+		class="absolute inset-x-0 bottom-0 z-10 h-40 bg-[linear-gradient(180deg,transparent,rgb(245_244_242/.85)_82%,#F5F4F2)]"
+	>
+	</div>
+
+	<!-- Контент -->
+	<div class="relative z-20 px-6 pt-28 pb-36 sm:px-10 lg:px-14 lg:pt-28 lg:pb-36">
+		<div class="mx-auto w-full max-w-[1400px]">
+			<p
+				data-hero-fade
+				class="flex items-center gap-4 text-[0.7rem] font-medium tracking-[0.28em] text-academy-champagne uppercase"
+			>
+				<span class="h-px w-11 bg-[linear-gradient(90deg,transparent,#E4D6BE)]"></span>
+				{eyebrow}
+			</p>
+
+			<h1
+				class="mt-7 max-w-[16ch] font-serif text-[clamp(2.6rem,6.4vw,5.6rem)] leading-[0.96] font-medium tracking-[-0.035em] text-white"
+			>
+				{
+					titleLines.map((line) => (
+						<span class="block overflow-hidden pb-[0.04em]">
+							<span data-hero-line class="block">
+								{line}
+							</span>
+						</span>
+					))
+				}
+				<span class="block overflow-hidden pb-[0.1em]">
 					<span
-						class="block bg-[linear-gradient(104deg,#A8927A_6%,#8A7B66_46%,#5C4F3F)] bg-clip-text pb-[0.08em] italic text-transparent"
+						data-hero-line
+						class="block bg-[linear-gradient(102deg,#FBF3E4_4%,#E4D6BE_38%,#B49B74)] bg-clip-text italic text-transparent"
 					>
 						{titleAccent}
 					</span>
-				</h1>
-
-				<p class="mt-6 max-w-[46ch] text-[clamp(1rem,1.3vw,1.1rem)] leading-relaxed font-light text-[#5C5449]">
-					{lead}
-				</p>
-
-				<div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-					<a
-						href={ctaPrimary.href}
-						data-magnetic
-						class="inline-flex min-h-[3.25rem] items-center justify-center rounded-full bg-[linear-gradient(140deg,#A8927A,#8A7B66_52%,#5F5240)] px-9 text-[0.8rem] font-medium tracking-[0.03em] text-white shadow-[0_22px_46px_-18px_rgb(138_123_102/.8),inset_0_1.5px_0_rgb(255_255_255/.35)]"
-					>
-						{ctaPrimary.label}
-					</a>
-					<a
-						href={ctaSecondary.href}
-						class="academy-pill inline-flex min-h-[3.25rem] items-center justify-center rounded-full px-8 text-[0.8rem] font-medium text-academy-ink transition-colors duration-300 hover:text-academy-taupe-deep"
-					>
-						{ctaSecondary.label}
-					</a>
-				</div>
-			</div>
-
-			<!-- Снимок в высоком вырезе -->
-			<div
-				class="academy-reveal relative overflow-hidden rounded-[13rem] shadow-[0_44px_90px_-30px_rgb(63_50_36/.45),inset_0_0_0_1px_rgb(255_255_255/.55)]"
-			>
-				<picture>
-					<source srcset="/academy-hero.avif" type="image/avif" />
-					<source srcset="/academy-hero.webp" type="image/webp" />
-					<img
-						src="/academy-hero.png"
-						alt={imageAlt}
-						width="1600"
-						height="900"
-						fetchpriority="high"
-						class="h-[clamp(20rem,42vw,32rem)] w-full object-cover object-[center_45%]"
-					/>
-				</picture>
-				<div
-					aria-hidden="true"
-					class="absolute inset-0 bg-[linear-gradient(180deg,rgb(41_39_36/.1),rgb(41_39_36/.42))]"
-				>
-				</div>
-			</div>
-		</div>
-
-		<!-- Плита с цифрами наезжает на снимок -->
-		<div class="academy-reveal relative z-20 -mt-10 lg:-mt-14">
-			<div class="academy-glass rounded-[2.6rem] px-6 py-7 sm:px-10 sm:py-8">
-				<dl class="relative grid grid-cols-2 gap-y-6 lg:grid-cols-4 lg:gap-y-0">
-					{
-						stats.map((item, i) => (
-							<div
-								class={`px-2 text-center ${i > 0 ? 'lg:border-l lg:border-academy-taupe/22' : ''} ${i % 2 === 1 ? 'border-l border-academy-taupe/22 lg:border-l' : ''}`}
-							>
-								<dd class="font-serif text-[clamp(2rem,3.4vw,3rem)] leading-none font-medium tracking-[-0.02em] whitespace-nowrap text-academy-taupe-deep tabular-nums">
-									<span data-count={item.count}>{item.value}</span>
-									{item.suffix && <small class="text-[0.5em]">{item.suffix}</small>}
-								</dd>
-								<dt class="mx-auto mt-2 max-w-[16ch] text-[0.78rem] leading-snug font-light text-[#6E665B]">
-									{item.label}
-								</dt>
-							</div>
-						))
-					}
-				</dl>
-			</div>
-		</div>
-
-		<!-- Преподаватель наезжает на плиту -->
-		<div class="academy-reveal relative z-30 -mt-6 flex justify-center">
-			<div class="academy-pill flex items-center gap-4 rounded-full py-2.5 pr-7 pl-2.5">
-				<span
-					aria-hidden="true"
-					class="h-11 w-11 shrink-0 rounded-full bg-[linear-gradient(150deg,#E4D6BE,#A8927A)] shadow-[inset_0_1px_0_rgb(255_255_255/.7)]"
-				>
 				</span>
-				<span class="max-w-[52ch] text-[0.82rem] leading-snug font-light text-[#4A443B]">
+			</h1>
+
+			<p
+				data-hero-fade
+				class="mt-7 max-w-[48ch] text-[clamp(1rem,1.45vw,1.2rem)] leading-relaxed font-light text-white/72"
+			>
+				{lead}
+			</p>
+
+			<div data-hero-fade class="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+				<a
+					href={ctaPrimary.href}
+					class="inline-flex min-h-[3.4rem] items-center justify-center rounded-sm bg-academy-champagne px-10 text-[0.78rem] font-semibold tracking-[0.16em] text-[#17130A] uppercase transition-colors duration-300 hover:bg-white"
+				>
+					{ctaPrimary.label}
+				</a>
+				<a
+					href={ctaSecondary.href}
+					class="inline-flex min-h-[3.4rem] items-center justify-center rounded-sm border border-white/30 bg-white/8 px-10 text-[0.78rem] font-semibold tracking-[0.16em] text-white uppercase backdrop-blur-md transition-colors duration-300 hover:border-white/60 hover:bg-white/15"
+				>
+					{ctaSecondary.label}
+				</a>
+			</div>
+
+			<div
+				data-hero-fade
+				class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-white/15 pt-6"
+			>
+				<img src="/fidic-fcce-badge.png" alt="FIDIC Certified Consulting Engineer" width="78" height="56" class="h-14 w-auto max-w-[5rem] object-contain" />
+				<img src="/fidic-fccp-badge.png" alt="FIDIC Certified Consulting Professional" width="78" height="56" class="h-14 w-auto max-w-[5rem] object-contain" />
+				<span class="max-w-[34ch] text-[0.8rem] leading-relaxed font-light text-white/60">
 					<Fragment set:html={credsText} />
 				</span>
 			</div>
 		</div>
 	</div>
+
+	<!-- Индикатор прокрутки -->
+	<div
+		data-scroll-cue
+		class="absolute inset-x-0 bottom-24 z-20 hidden flex-col items-center gap-2.5 lg:flex"
+	>
+		<span class="text-[0.62rem] font-medium tracking-[0.3em] text-white/45 uppercase">{scrollCue}</span>
+		<span aria-hidden="true" class="hero-cue-line block h-10 w-px origin-top bg-[linear-gradient(180deg,rgb(255_255_255/.7),transparent)]"></span>
+	</div>
 </section>
+
+<style>
+	/* Ken Burns по умолчанию — очень медленный зум со сдвигом.
+	   Если вешаешь GSAP на [data-hero-image], сними класс hero-kenburns:
+	   иначе CSS-трансформация и GSAP будут спорить за один и тот же transform. */
+	@keyframes hero-kenburns {
+		from { transform: scale(1.04) translate3d(0, 0, 0); }
+		to { transform: scale(1.16) translate3d(-1.6%, -1.4%, 0); }
+	}
+	.hero-kenburns {
+		transform: scale(1.04);
+		animation: hero-kenburns 26s ease-in-out infinite alternate;
+		will-change: transform;
+	}
+
+	@keyframes hero-cue {
+		0%, 100% { transform: scaleY(.35); opacity: .35; }
+		50% { transform: scaleY(1); opacity: .9; }
+	}
+	.hero-cue-line { animation: hero-cue 2.6s cubic-bezier(.22,.61,.36,1) infinite; }
+
+	/* Появление при загрузке — работает и без GSAP. */
+	[data-hero-line] { animation: hero-line-in .95s cubic-bezier(.22,.61,.36,1) both; }
+	@keyframes hero-line-in { from { transform: translateY(100%); } to { transform: translateY(0); } }
+	h1 span:nth-child(1) [data-hero-line] { animation-delay: .15s; }
+	h1 span:nth-child(2) [data-hero-line] { animation-delay: .27s; }
+	h1 span:nth-child(3) [data-hero-line] { animation-delay: .39s; }
+
+	[data-hero-fade] { animation: hero-fade-in .9s cubic-bezier(.22,.61,.36,1) both; }
+	@keyframes hero-fade-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+	[data-hero-fade]:nth-of-type(1) { animation-delay: .1s; }
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero-kenburns { animation: none; transform: scale(1.02); }
+		.hero-cue-line { animation: none; }
+		[data-hero-line], [data-hero-fade] { animation: none; }
+	}
+</style>
