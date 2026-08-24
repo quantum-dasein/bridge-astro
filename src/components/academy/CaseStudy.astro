@@ -1,0 +1,75 @@
+---
+/**
+ * Разбор одного кейса как документ дела: шапка с номером и золотыми
+ * тегами подпунктов, блоки через линейки, вывод подсвечен.
+ *
+ * data-anim: label · title · lead · doc · doc-block
+ */
+import SectionLabel from './SectionLabel.astro';
+
+interface Props {
+	label: string;
+	title: string;
+	lead: string;
+	docTitle: string;
+	clauses: readonly string[];
+	blocks: readonly { heading: string; text: string; key?: boolean }[];
+}
+
+const { label, title, lead, docTitle, clauses, blocks } = Astro.props;
+---
+
+<section class="relative border-t border-white/10 py-24 lg:py-32">
+	<div class="mx-auto w-full max-w-[1400px] px-6 lg:px-12">
+		<div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.22fr)] lg:gap-20">
+			<div>
+				<SectionLabel text={label} />
+				<h2
+					data-anim="title"
+					class="mb-6 max-w-[18ch] font-serif text-[clamp(1.9rem,3.2vw,2.9rem)] leading-tight font-medium tracking-[-0.02em] text-white text-balance"
+				>
+					{title}
+				</h2>
+				<p data-anim="lead" class="max-w-[46ch] text-[1rem] leading-relaxed font-light text-gray-300">
+					{lead}
+				</p>
+			</div>
+
+			<div
+				data-anim="doc"
+				class="overflow-hidden rounded-sm border border-white/10 bg-white/[0.035] shadow-[0_40px_90px_-40px_rgba(0,0,0,0.95)] backdrop-blur-md"
+			>
+				<div
+					class="flex flex-wrap items-center gap-x-4 gap-y-2.5 border-b border-academy-gold/20 bg-gradient-to-r from-academy-gold/12 to-transparent px-6 py-4 lg:px-7"
+				>
+					<strong class="text-[11px] font-medium tracking-[0.2em] text-academy-gold-soft uppercase">
+						{docTitle}
+					</strong>
+					{
+						clauses.map((c) => (
+							<span class="academy-clause">{c}</span>
+						))
+					}
+				</div>
+
+				{
+					blocks.map((b) => (
+						<div
+							data-anim="doc-block"
+							class={`border-t border-white/[0.06] px-6 py-6 first:border-t-0 lg:px-7 ${
+								b.key ? 'bg-gradient-to-r from-academy-gold/10 to-transparent' : ''
+							}`}
+						>
+							<h4 class="mb-2.5 text-[10.5px] font-medium tracking-[0.2em] text-academy-gold uppercase">
+								{b.heading}
+							</h4>
+							<p class={`text-[0.98rem] leading-relaxed font-light ${b.key ? 'text-gray-100' : 'text-gray-300'}`}>
+								{b.text}
+							</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,142 @@
+---
+/**
+ * Шапка лендинга.
+ *
+ * Над фотографией героя текст сливался с изображением, поэтому под шапкой
+ * всегда лежит градиентная подложка, а не только состояние «после скролла».
+ * После ухода героя из вида шапка становится плотной: тёмный фон, блюр и
+ * нижняя линейка.
+ *
+ * Состояние переключает крошечный инлайновый скрипт, а не GSAP: это
+ * поведение интерфейса, оно должно работать и до инициализации анимаций.
+ *
+ * data-anim="header" — если понадобится завести шапку отдельной таймлайной.
+ */
+
+interface Props {
+	nav: readonly { label: string; href: string }[];
+	cta: string;
+	current: 'ru' | 'en' | 'uz';
+	langLinks: { ru: string; en: string; uz: string };
+}
+
+const { nav, cta, current, langLinks } = Astro.props;
+const langs = [
+	{ code: 'ru', href: langLinks.ru },
+	{ code: 'en', href: langLinks.en },
+	{ code: 'uz', href: langLinks.uz },
+] as const;
+---
+
+<header
+	id="academy-header"
+	data-anim="header"
+	class="group fixed inset-x-0 top-0 z-50 transition-colors duration-500"
+>
+	<!-- Подложка: всегда есть градиент, после скролла — плотный фон. -->
+	<div
+		aria-hidden="true"
+		class="absolute inset-0 -z-10 bg-gradient-to-b from-black/80 via-black/45 to-transparent transition-opacity duration-500 group-data-[stuck=true]:opacity-0"
+	>
+	</div>
+	<div
+		aria-hidden="true"
+		class="absolute inset-0 -z-10 border-b border-white/10 bg-academy-ink/92 opacity-0 backdrop-blur-xl backdrop-saturate-150 transition-opacity duration-500 group-data-[stuck=true]:opacity-100"
+	>
+	</div>
+
+	<div class="flex h-[4.75rem] items-center justify-between gap-2 px-4 sm:gap-5 sm:px-6 lg:px-12">
+		<a href="https://www.bridgeconsult.uz/" class="shrink-0" aria-label="BRIDGE Consult">
+			<img
+				src="/bridge%202.svg"
+				alt="BRIDGE Consult"
+				width="120"
+				height="32"
+				class="h-7 w-auto object-contain brightness-0 invert sm:h-8"
+			/>
+		</a>
+
+		<nav class="hidden items-center gap-9 lg:flex">
+			{
+				nav.map((item) => (
+					<a
+						href={item.href}
+						class="relative py-1.5 text-[0.9rem] font-normal text-gray-200 transition-colors duration-300 hover:text-white after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-gradient-to-r after:from-academy-gold after:to-transparent after:transition-transform after:duration-300 hover:after:scale-x-100"
+					>
+						{item.label}
+					</a>
+				))
+			}
+		</nav>
+
+		<div class="flex items-center gap-2.5 sm:gap-6">
+			<div class="flex items-center gap-0.5 text-[10px] font-medium tracking-[0.06em] sm:gap-1 sm:text-[11px]">
+				{
+					langs.map((l, i) => (
+						<>
+							{i > 0 && <span class="text-white/20">/</span>}
+							{l.code === current ? (
+								<span class="px-1 text-academy-gold uppercase">{l.code}</span>
+							) : (
+								<a
+									href={l.href}
+									class="px-1 text-gray-400 uppercase transition-colors duration-300 hover:text-white"
+								>
+									{l.code}
+								</a>
+							)}
+						</>
+					))
+				}
+			</div>
+
+			<a
+				href="#apply"
+				class="inline-flex min-h-[2.5rem] items-center rounded-sm border border-academy-gold/60 bg-academy-gold/10 px-3 text-[9.5px] sm:min-h-[2.7rem] sm:px-5 sm:text-[10.5px] font-semibold tracking-[0.1em] whitespace-nowrap text-academy-gold-soft uppercase sm:tracking-[0.16em] transition-colors duration-300 hover:border-academy-gold hover:bg-academy-gold hover:text-academy-ink"
+			>
+				{cta}
+			</a>
+		</div>
+	</div>
+</header>
+
+<script is:inline>
+	(function () {
+		// Инициализация обязательно после разбора DOM: шапка рендерится раньше
+		// героя, и на момент выполнения этого скрипта [data-hero] ещё не
+		// существует — прямой querySelector здесь вернул бы null.
+		function init() {
+			var header = document.getElementById('academy-header');
+			var hero = document.querySelector('[data-hero]');
+			if (!header) return;
+			if (!hero || !('IntersectionObserver' in window)) {
+				header.dataset.stuck = 'true';
+				return;
+			}
+
+			// IntersectionObserver, а не слушатель scroll: браузер сам считает
+			// пересечение вне главного потока, обработчик не дёргается на
+			// каждый кадр прокрутки и не требует троттлинга.
+			var io;
+			function observe() {
+				if (io) io.disconnect();
+				io = new IntersectionObserver(
+					function (entries) {
+						header.dataset.stuck = entries[0].isIntersecting ? 'false' : 'true';
+					},
+					{ rootMargin: '-' + header.offsetHeight + 'px 0px 0px 0px', threshold: 0 }
+				);
+				io.observe(hero);
+			}
+			observe();
+			// Высота шапки участвует в rootMargin — на ресайзе пересобираем.
+			addEventListener('resize', observe);
+		}
+
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', init);
+		} else {
+			init();
+		}
+	})();
+</script>

@@ -20,6 +20,20 @@
   --font-geo: "Jost", "Inter", system-ui, sans-serif;
 }
 
+/* Ссылка на подпункт FIDIC — моноширинный «тег», как в самом контракте.
+   Приходит из данных через set:html, поэтому это класс, а не утилиты. */
+.academy-clause {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid rgb(197 168 128 / 0.28);
+  border-radius: 0.125rem;
+  background: rgb(197 168 128 / 0.07);
+  font-family: ui-monospace, "SF Mono", Consolas, monospace;
+  font-size: 0.8em;
+  color: #E0CBAA;
+  white-space: nowrap;
+}
+
 /* Едва заметная чертёжная сетка — базовая деталь дизайн-системы лендинга.
    Отдельной утилитой, чтобы не таскать длинный arbitrary value по разметке. */
 @utility bg-editorial-grid {

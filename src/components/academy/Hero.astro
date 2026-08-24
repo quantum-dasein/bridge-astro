@@ -35,7 +35,7 @@ const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsT
 
 <!-- z-10 и НЕ overflow-hidden: карточка вылезает за нижнюю границу секции,
      обрезка здесь съела бы её, а без z-index её перекрыл бы блок с цифрами. -->
-<section class="relative isolate z-10">
+<section data-hero class="relative isolate z-10">
 	<!-- Фотография -->
 	<div class="absolute inset-0 -z-10 overflow-hidden" data-anim="hero-media">
 		<picture>
@@ -133,7 +133,7 @@ const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsT
 						height="56"
 						class="h-14 w-auto object-contain"
 					/>
-					<span class="max-w-[30ch] text-xs leading-relaxed font-light text-gray-400">
+					<span class="max-w-[30ch] text-xs leading-relaxed font-light text-gray-300">
 						{credsText}
 					</span>
 				</div>

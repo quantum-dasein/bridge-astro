@@ -1,0 +1,117 @@
+---
+/**
+ * Преподаватель.
+ *
+ * Биография и список аккредитаций воспроизводятся дословно из источника
+ * (см. src/data/academy.*.ts) — их сверяют, сокращать нельзя.
+ *
+ * height:auto на фотографии обязателен: атрибуты width/height в разметке —
+ * презентационная подсказка CSS, и вместе с w-full они задают обе стороны,
+ * из-за чего aspect-ratio молча игнорируется.
+ *
+ * data-anim: label · trainer-photo · trainer-name · trainer-bio · cred
+ */
+import SectionLabel from './SectionLabel.astro';
+
+interface Props {
+	id?: string;
+	label: string;
+	name: string;
+	role: string;
+	photoAlt: string;
+	bio: readonly string[];
+	credsTitle: string;
+	creds: readonly string[];
+	cvLabel: string;
+}
+
+const { id = 'trainer', label, name, role, photoAlt, bio, credsTitle, creds, cvLabel } = Astro.props;
+---
+
+<section id={id} class="relative border-t border-white/10 py-24 lg:py-32">
+	<div class="mx-auto w-full max-w-[1400px] px-6 lg:px-12">
+		<SectionLabel text={label} />
+
+		<div class="mt-10 grid gap-12 lg:grid-cols-[minmax(0,21rem)_minmax(0,1fr)] lg:gap-20">
+			<div>
+				<div
+					data-anim="trainer-photo"
+					class="relative overflow-hidden rounded-sm shadow-[0_50px_100px_-40px_rgba(0,0,0,0.95)]"
+				>
+					<img
+						src="/larisa-belousova.jpg"
+						alt={photoAlt}
+						width="854"
+						height="1280"
+						loading="lazy"
+						class="aspect-[4/5] h-auto w-full object-cover object-top saturate-[0.92]"
+					/>
+					<div
+						aria-hidden="true"
+						class="pointer-events-none absolute inset-0 bg-gradient-to-t from-academy-ground/50 to-transparent to-55%"
+					>
+					</div>
+				</div>
+
+				<div class="mt-6 flex flex-wrap items-center gap-4">
+					<img src="/fidic-fcce-badge.png" alt="FIDIC Certified Consulting Engineer" width="80" height="60" loading="lazy" class="h-13 w-auto max-w-[5.5rem] object-contain" />
+					<img src="/fidic-fccp-badge.png" alt="FIDIC Certified Consulting Professional" width="80" height="60" loading="lazy" class="h-13 w-auto max-w-[5.5rem] object-contain" />
+					<img src="/ciarb-logo.png" alt="CIArb — Chartered Institute of Arbitrators" width="80" height="60" loading="lazy" class="h-13 w-auto max-w-[5.5rem] object-contain" />
+					<img src="/drbf-logo.png" alt="DRBF — Dispute Resolution Board Foundation" width="80" height="60" loading="lazy" class="h-13 w-auto max-w-[5.5rem] object-contain" />
+				</div>
+			</div>
+
+			<div>
+				<h2
+					data-anim="trainer-name"
+					class="mb-3 font-serif text-[clamp(1.8rem,2.9vw,2.5rem)] leading-tight font-medium tracking-[-0.018em] text-white"
+				>
+					{name}
+				</h2>
+				<p class="mb-8 border-b border-white/10 pb-6 text-[0.86rem] leading-relaxed text-academy-gold">
+					{role}
+				</p>
+
+				<div data-anim="trainer-bio">
+					{
+						bio.map((p, i) => (
+							<p
+								class={`mb-4 leading-relaxed font-light last:mb-0 ${
+									i === 0 ? 'text-[1.08rem] text-gray-200' : 'text-[0.97rem] text-gray-300'
+								}`}
+							>
+								{p}
+							</p>
+						))
+					}
+				</div>
+
+				<p class="mt-10 mb-4 text-[10.5px] font-medium tracking-[0.22em] text-academy-gold uppercase">
+					{credsTitle}
+				</p>
+				<ul class="grid gap-x-10 sm:grid-cols-2">
+					{
+						creds.map((c) => (
+							<li
+								data-anim="cred"
+								class="relative border-b border-white/[0.06] py-2.5 pl-5 text-[0.86rem] leading-relaxed font-light text-gray-300 before:absolute before:top-[1.15rem] before:left-0 before:h-px before:w-2.5 before:bg-academy-gold [&_a]:text-academy-gold-soft [&_a:hover]:underline"
+								set:html={c}
+							/>
+						))
+					}
+				</ul>
+
+				<p class="mt-9">
+					<a
+						href="/larisa-belousova-cv.pdf"
+						target="_blank"
+						rel="noopener"
+						class="inline-flex min-h-[3rem] items-center rounded-sm border border-white/15 px-8 text-[11px] font-semibold tracking-[0.16em] text-gray-200 uppercase transition-colors duration-300 hover:border-academy-gold hover:bg-white/5 hover:text-academy-gold-soft"
+					>
+						{cvLabel}
+					</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,60 @@
+---
+/**
+ * «Для кого» — четыре карточки со сквозной нумерацией и золотым свечением
+ * сверху при наведении.
+ *
+ * data-anim: label · title · lead · aud-card
+ */
+import SectionLabel from './SectionLabel.astro';
+
+interface Props {
+	id?: string;
+	label: string;
+	title: string;
+	lead: string;
+	cards: readonly { title: string; text: string }[];
+}
+
+const { id = 'audience', label, title, lead, cards } = Astro.props;
+---
+
+<section id={id} class="relative border-t border-white/10 py-24 lg:py-32">
+	<div class="mx-auto w-full max-w-[1400px] px-6 lg:px-12">
+		<SectionLabel text={label} />
+		<h2
+			data-anim="title"
+			class="mb-6 max-w-[28ch] font-serif text-[clamp(1.9rem,3.4vw,3rem)] leading-tight font-medium tracking-[-0.02em] text-white text-balance"
+		>
+			{title}
+		</h2>
+		<p data-anim="lead" class="max-w-[70ch] text-[1rem] leading-relaxed font-light text-gray-300">
+			{lead}
+		</p>
+
+		<div class="mt-14 grid gap-5 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
+			{
+				cards.map((card, i) => (
+					<article
+						data-anim="aud-card"
+						class="group relative overflow-hidden rounded-sm border border-white/[0.07] bg-white/[0.025] p-7 transition-all duration-500 hover:-translate-y-1 hover:border-white/15 hover:shadow-[0_26px_60px_-30px_rgba(0,0,0,0.9)] lg:p-8"
+					>
+						<span
+							aria-hidden="true"
+							class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_0%,rgba(197,168,128,0.16),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+						/>
+						<div class="relative">
+							<span class="text-[0.78rem] tabular-nums text-academy-gold">
+								{String(i + 1).padStart(2, '0')}
+							</span>
+							<h3 class="mt-4 mb-3 font-serif text-[1.35rem] font-medium text-white">{card.title}</h3>
+							<p
+								class="text-[0.92rem] leading-relaxed font-light text-gray-300"
+								set:html={card.text}
+							/>
+						</div>
+					</article>
+				))
+			}
+		</div>
+	</div>
+</section>

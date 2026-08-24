@@ -1,0 +1,16 @@
+---
+/** Надзаголовок секции: золотая линейка + разряженный капслок. */
+interface Props {
+	text: string;
+	class?: string;
+}
+const { text, class: className = '' } = Astro.props;
+---
+
+<p
+	data-anim="label"
+	class={`mb-5 flex items-center gap-4 text-[11px] font-medium tracking-[0.26em] text-academy-gold uppercase ${className}`}
+>
+	<span class="h-px w-8 bg-gradient-to-r from-academy-gold to-transparent"></span>
+	{text}
+</p>
