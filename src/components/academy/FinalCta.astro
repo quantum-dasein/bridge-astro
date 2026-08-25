@@ -1,0 +1,60 @@
+---
+/**
+ * Финальный экран. Весь вьюпорт работает как призыв: карбон, снимок
+ * приглушённой подложкой, крупное утверждение и одна круглая кнопка.
+ */
+
+interface Props {
+	mark: string;
+	lineOne: string;
+	lineTwo: string;
+	cta: string;
+	href: string;
+	note: string;
+}
+
+const { mark, lineOne, lineTwo, cta, href, note } = Astro.props;
+---
+
+<section
+	class="relative isolate flex min-h-[80vh] items-center overflow-hidden bg-academy-carbon px-6 py-24 text-academy-paper sm:px-10 lg:px-14"
+>
+	<div aria-hidden="true" class="absolute inset-0 -z-10">
+		<picture>
+			<source srcset="/academy-hero.avif" type="image/avif" />
+			<source srcset="/academy-hero.webp" type="image/webp" />
+			<img
+				src="/academy-hero.png"
+				alt=""
+				width="1600"
+				height="900"
+				loading="lazy"
+				class="h-full w-full object-cover object-[center_40%] opacity-30"
+			/>
+		</picture>
+		<div class="absolute inset-0 bg-[linear-gradient(100deg,rgb(17_17_17/.94),rgb(17_17_17/.78)_55%,rgb(17_17_17/.9))]"></div>
+	</div>
+
+	<div class="mx-auto grid w-full max-w-[1400px] grid-cols-12 gap-y-10">
+		<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
+
+		<div class="col-span-12 lg:col-span-9 lg:col-start-3">
+			<h2
+				class="academy-reveal font-serif text-[clamp(2.2rem,5vw,4.4rem)] leading-[1.02] font-normal tracking-[-0.035em] text-balance"
+			>
+				{lineOne}
+				<span class="mt-2 block text-academy-brass italic">{lineTwo}</span>
+			</h2>
+
+			<div class="academy-reveal mt-12 flex flex-wrap items-center gap-x-8 gap-y-5">
+				<a
+					href={href}
+					class="inline-flex min-h-[3.6rem] items-center justify-center rounded-full bg-academy-champagne px-12 text-[0.78rem] font-semibold tracking-[0.16em] text-[#17130A] uppercase transition-colors duration-300 hover:bg-white"
+				>
+					{cta}
+				</a>
+				<p class="max-w-[34ch] text-[0.86rem] leading-relaxed font-light text-academy-paper/55">{note}</p>
+			</div>
+		</div>
+	</div>
+</section>

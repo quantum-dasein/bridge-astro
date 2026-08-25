@@ -1,0 +1,62 @@
+---
+/**
+ * Стена кейсов.
+ *
+ * Не карточки: огромное число слева, справа — рассыпанные названия тем,
+ * как корешки папок в архиве проекта. Темы берутся из реальных названий
+ * модулей программы, ничего не придумано.
+ *
+ * Размер и приглушённость чередуются по индексу — это даёт стене ритм,
+ * не требуя произвольных данных на каждый элемент.
+ */
+
+interface Props {
+	mark: string;
+	value: string;
+	suffix?: string;
+	title: string;
+	lead: string;
+	topics: readonly string[];
+}
+
+const { mark, value, suffix, title, lead, topics } = Astro.props;
+
+// Три ступени заметности по кругу — ритм без ручной разметки каждой темы.
+const tiers = ['text-academy-ink', 'text-[#77746D]', 'text-[#A8A49B]'];
+const sizes = ['text-[clamp(1.1rem,2vw,1.7rem)]', 'text-[clamp(0.95rem,1.5vw,1.25rem)]', 'text-[clamp(0.85rem,1.2vw,1rem)]'];
+---
+
+<section class="relative bg-academy-ground px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class="grid grid-cols-12 gap-y-10 border-t border-academy-ink/20 pt-8 lg:gap-x-8">
+			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
+
+			<div class="col-span-12 lg:col-span-4 lg:col-start-3">
+				<p
+					class="academy-reveal font-serif text-[clamp(4.5rem,11vw,9rem)] leading-[0.82] font-normal tracking-[-0.05em] text-academy-ink tabular-nums"
+				>
+					{value}{suffix && <span class="text-[0.4em] align-super text-academy-brass">{suffix}</span>}
+				</p>
+				<h2 class="mt-5 max-w-[18ch] font-serif text-[clamp(1.3rem,2.2vw,1.9rem)] leading-tight font-normal">
+					{title}
+				</h2>
+				<p class="mt-4 max-w-[38ch] text-[0.92rem] leading-relaxed font-light text-[#77746D]">
+					{lead}
+				</p>
+			</div>
+
+			<!-- Архив тем -->
+			<ul class="academy-reveal col-span-12 flex flex-wrap items-baseline gap-x-7 gap-y-4 lg:col-span-6 lg:col-start-7 lg:self-center">
+				{
+					topics.map((topic, i) => (
+						<li
+							class={`font-serif leading-tight font-normal transition-colors duration-300 hover:text-academy-brass ${sizes[i % 3]} ${tiers[i % 3]}`}
+						>
+							{topic}
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</div>
+</section>

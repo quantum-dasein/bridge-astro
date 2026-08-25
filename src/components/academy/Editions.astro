@@ -1,0 +1,85 @@
+---
+/**
+ * Сравнение редакций 1999 и 2017.
+ *
+ * Не две карточки, а сопоставление двух технических редакций одного
+ * стандарта: сплошная вертикальная линейка посередине, слева 1999,
+ * справа 2017, между ними в разрыве — предмет сравнения.
+ *
+ * Содержание раздела должна подтвердить Лариса: здесь только те отличия,
+ * в которых нет догадок, и ссылки на подпункты, уже опубликованные на
+ * сайте. Дополнять список — по её тексту, не по моему предположению.
+ */
+
+interface Props {
+	id?: string;
+	mark: string;
+	title: string;
+	lead: string;
+	rows: readonly { topic: string; old: string; now: string }[];
+}
+
+const { id = 'editions', mark, title, lead, rows } = Astro.props;
+---
+
+<section id={id} class="relative bg-academy-ground px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class="grid grid-cols-12 gap-y-5 border-t border-academy-ink/20 pt-8">
+			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
+			<h2
+				class="academy-reveal col-span-12 max-w-[18ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+			>
+				{title}
+			</h2>
+			<p
+				class="academy-reveal col-span-12 max-w-[44ch] text-[0.92rem] leading-relaxed font-light text-[#77746D] lg:col-span-4 lg:col-start-9"
+			>
+				{lead}
+			</p>
+		</div>
+
+		<!-- Шапка колонок -->
+		<div class="mt-12 hidden grid-cols-[minmax(0,1fr)_9rem_minmax(0,1fr)] items-end gap-x-8 lg:grid">
+			<p class="text-right font-serif text-[clamp(1.6rem,2.6vw,2.3rem)] leading-none font-normal text-[#8B887F]">
+				FIDIC 1999
+			</p>
+			<span></span>
+			<p class="font-serif text-[clamp(1.6rem,2.6vw,2.3rem)] leading-none font-normal text-academy-ink">
+				FIDIC 2017
+			</p>
+		</div>
+
+		<!-- Сопоставление. Линейка посередине сплошная, разрывается только
+		     под подписью предмета сравнения. -->
+		<div class="relative mt-6 lg:mt-8">
+			<span
+				aria-hidden="true"
+				class="absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-academy-ink/25 lg:block"
+			></span>
+
+			{
+				rows.map((row) => (
+					<div class="group grid gap-y-2 border-t border-academy-ink/12 py-6 lg:grid-cols-[minmax(0,1fr)_9rem_minmax(0,1fr)] lg:items-center lg:gap-x-8">
+						<p class="academy-mark text-academy-brass lg:hidden">{row.topic}</p>
+
+						<p class="max-w-[42ch] text-[0.92rem] leading-relaxed font-light text-[#77746D] lg:justify-self-end lg:text-right">
+							{/* На мобильном шапка колонок скрыта, поэтому редакцию
+							    называем прямо в строке — иначе не понять, что где. */}
+							<span class="academy-mark mr-2 text-[#A8A49B] lg:hidden">1999</span>
+							{row.old}
+						</p>
+
+						<p class="academy-mark hidden justify-self-center bg-academy-ground px-3 text-center text-academy-brass lg:block">
+							{row.topic}
+						</p>
+
+						<p class="max-w-[42ch] text-[0.92rem] leading-relaxed font-light text-academy-ink">
+							<span class="academy-mark mr-2 text-academy-brass lg:hidden">2017</span>
+							{row.now}
+						</p>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</section>
