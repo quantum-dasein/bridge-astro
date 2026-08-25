@@ -1,16 +1,14 @@
 ---
 /**
- * Преподаватель.
+ * Преподаватель — редакционный портретный разворот, без стеклянной плиты.
  *
- * Портрет — такое же тёмное окно в светлом листе, что и остальные снимки,
- * только вытянутое. Биография и список аккредитаций воспроизводятся дословно
- * из источника (src/data/academy.*.ts) — их сверяют, сокращать нельзя.
+ * Биография и список аккредитаций воспроизводятся дословно из источника
+ * (src/data/academy.*.ts) — их сверяют, сокращать нельзя.
  *
  * height:auto на портрете обязателен: атрибуты width/height в разметке это
  * презентационная подсказка CSS, и вместе с w-full они задают обе стороны,
  * из-за чего aspect-ratio молча игнорируется.
  */
-import SectionLabel from './SectionLabel.astro';
 
 interface Props {
 	id?: string;
@@ -27,82 +25,70 @@ interface Props {
 const { id = 'trainer', label, name, role, photoAlt, bio, credsTitle, creds, cvLabel } = Astro.props;
 ---
 
-<section id={id} class="relative px-4 pt-28 sm:px-6 lg:px-10 lg:pt-36">
+<section id={id} class="relative bg-academy-ground px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
 	<div class="mx-auto w-full max-w-[1400px]">
-		<div class="academy-reveal academy-glass rounded-[3rem] px-6 py-10 sm:px-12 sm:py-14 lg:px-16">
-			<div class="relative">
-				<SectionLabel text={label} />
+		<div class="grid grid-cols-12 gap-y-10 border-t border-academy-ink/20 pt-8 lg:gap-x-8">
+			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{label}</p>
 
-				<div class="mt-8 grid gap-10 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)] lg:gap-14">
-					<div>
-						<div
-							class="overflow-hidden rounded-[9rem] shadow-[0_40px_80px_-30px_rgb(63_50_36/.5),inset_0_0_0_1px_rgb(255_255_255/.55)]"
-						>
-							<img
-								src="/larisa-belousova.jpg"
-								alt={photoAlt}
-								width="854"
-								height="1280"
-								loading="lazy"
-								class="aspect-[4/5] h-auto w-full object-cover object-top"
-							/>
-						</div>
-
-						<div class="mt-6 flex flex-wrap items-center justify-center gap-3.5 lg:justify-start">
-							<img src="/fidic-fcce-badge.png" alt="FIDIC Certified Consulting Engineer" width="80" height="60" loading="lazy" class="h-12 w-auto max-w-[4.75rem] object-contain" />
-							<img src="/fidic-fccp-badge.png" alt="FIDIC Certified Consulting Professional" width="80" height="60" loading="lazy" class="h-12 w-auto max-w-[4.75rem] object-contain" />
-							<img src="/ciarb-logo.png" alt="CIArb — Chartered Institute of Arbitrators" width="80" height="60" loading="lazy" class="h-12 w-auto max-w-[4.75rem] object-contain" />
-							<img src="/drbf-logo.png" alt="DRBF — Dispute Resolution Board Foundation" width="80" height="60" loading="lazy" class="h-12 w-auto max-w-[4.75rem] object-contain" />
-						</div>
-					</div>
-
-					<div>
-						<h2
-							class="mb-3 font-serif text-[clamp(1.7rem,2.8vw,2.4rem)] leading-tight font-medium tracking-[-0.018em]"
-						>
-							{name}
-						</h2>
-						<p class="mb-7 border-b border-academy-taupe/25 pb-6 text-[0.82rem] leading-relaxed text-academy-taupe">
-							{role}
-						</p>
-
-						{
-							bio.map((p, i) => (
-								<p
-									class={`mb-4 leading-relaxed font-light last:mb-0 ${i === 0 ? 'text-[1.02rem] text-[#3D372F]' : 'text-[0.93rem] text-[#5C5449]'}`}
-								>
-									{p}
-								</p>
-							))
-						}
-
-						<p class="mt-9 mb-4 text-[0.66rem] font-medium tracking-[0.22em] text-academy-taupe uppercase">
-							{credsTitle}
-						</p>
-						<ul class="flex flex-wrap gap-2">
-							{
-								creds.map((c) => (
-									<li
-										class="academy-pill rounded-full px-4 py-2 text-[0.78rem] leading-snug font-light text-[#5C5449] [&_a:hover]:underline [&_a]:text-academy-taupe-deep"
-										set:html={c}
-									/>
-								))
-							}
-						</ul>
-
-						<p class="mt-8">
-							<a
-								href="/larisa-belousova-cv.pdf"
-								target="_blank"
-								rel="noopener"
-								data-magnetic
-								class="academy-pill inline-flex min-h-[3rem] items-center rounded-full px-8 text-[0.78rem] font-medium tracking-[0.03em] text-[#3D372F] transition-colors duration-300 hover:text-academy-ink"
-							>
-								{cvLabel}
-							</a>
-						</p>
-					</div>
+			<div class="col-span-12 sm:col-span-6 lg:col-span-3 lg:col-start-3">
+				<img
+					src="/larisa-belousova.jpg"
+					alt={photoAlt}
+					width="854"
+					height="1280"
+					loading="lazy"
+					class="aspect-[4/5] h-auto w-full object-cover object-top"
+				/>
+				<div class="mt-5 flex flex-wrap items-center gap-3">
+					<img src="/fidic-fcce-badge.png" alt="FIDIC Certified Consulting Engineer" width="80" height="60" loading="lazy" class="h-11 w-auto max-w-[4.25rem] object-contain" />
+					<img src="/fidic-fccp-badge.png" alt="FIDIC Certified Consulting Professional" width="80" height="60" loading="lazy" class="h-11 w-auto max-w-[4.25rem] object-contain" />
+					<img src="/ciarb-logo.png" alt="CIArb — Chartered Institute of Arbitrators" width="80" height="60" loading="lazy" class="h-11 w-auto max-w-[4.25rem] object-contain" />
+					<img src="/drbf-logo.png" alt="DRBF — Dispute Resolution Board Foundation" width="80" height="60" loading="lazy" class="h-11 w-auto max-w-[4.25rem] object-contain" />
 				</div>
+			</div>
+
+			<div class="col-span-12 lg:col-span-6 lg:col-start-7">
+				<h2
+					class="academy-reveal font-serif text-[clamp(1.8rem,3vw,2.6rem)] leading-[1.06] font-normal tracking-[-0.025em]"
+				>
+					{name}
+				</h2>
+				<p class="mt-3 border-b border-academy-ink/15 pb-5 text-[0.8rem] leading-relaxed text-academy-taupe">
+					{role}
+				</p>
+
+				{
+					bio.map((p, i) => (
+						<p
+							class={`mt-4 leading-relaxed font-light ${i === 0 ? 'text-[1rem] text-academy-ink' : 'text-[0.9rem] text-[#5C5449]'}`}
+						>
+							{p}
+						</p>
+					))
+				}
+
+				<p class="academy-mark mt-9 text-academy-brass">{credsTitle}</p>
+				<ul class="mt-4 grid sm:grid-cols-2 sm:gap-x-10">
+					{
+						creds.map((c) => (
+							<li
+								class="border-t border-academy-ink/12 py-2.5 text-[0.82rem] leading-snug font-light text-[#5C5449] [&_a:hover]:underline [&_a]:text-academy-taupe-deep"
+								set:html={c}
+							/>
+						))
+					}
+				</ul>
+
+				<p class="mt-8">
+					<a
+						href="/larisa-belousova-cv.pdf"
+						target="_blank"
+						rel="noopener"
+						class="inline-flex min-h-[3rem] items-center rounded-full border border-academy-ink/25 px-8 text-[0.72rem] font-semibold tracking-[0.16em] text-academy-ink uppercase transition-colors duration-300 hover:border-academy-brass hover:bg-academy-brass hover:text-white"
+					>
+						{cvLabel}
+					</a>
+				</p>
 			</div>
 		</div>
 	</div>

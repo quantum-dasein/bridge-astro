@@ -1,14 +1,13 @@
 ---
 /**
- * Индекс модулей в духе оглавления архитектурного журнала.
+ * Индекс модулей — оглавление архитектурного журнала.
  *
- * Не восемнадцать одинаковых плиток и не капсулы, а крупные строки на
- * волосяных линейках. При наведении: номер уходит в латунь, строка
- * сдвигается, справа проявляется снимок группы и короткое пояснение.
- *
- * Превью у каждой строки своё и лежит в самой строке — так эффект чисто
- * CSS, без JS. Файлов всего четыре, браузер их кэширует.
+ * Строка: номер, название, поток. Превью группы лежит В ПРЕДЕЛАХ строки,
+ * а не выезжает за неё: раньше оно позиционировалось от правого края с
+ * translate наружу и обрезалось вьюпортом, попутно накрывая текст.
+ * Теперь превью занимает свою колонку в гриде и просто проявляется.
  */
+
 interface Props {
 	id?: string;
 	label: string;
@@ -25,69 +24,72 @@ interface Props {
 
 const { id = 'modules', label, title, groups } = Astro.props;
 
+// Название потока показываем один раз на группу, а не в каждой строке:
+// повторённое пять раз подряд оно превращается в шум.
 let counter = 0;
 const rows = groups.flatMap((g) =>
-	g.items.map((item) => ({
+	g.items.map((item, i) => ({
 		item,
 		n: String(++counter).padStart(2, '0'),
-		group: g.title,
-		note: g.note,
+		group: i === 0 ? g.title : null,
+		roman: g.roman,
+		first: i === 0,
 		image: g.image,
-		imageAlt: g.imageAlt,
 	}))
 );
 ---
 
-<section id={id} class="relative bg-academy-ground px-6 py-24 sm:px-10 lg:px-14 lg:py-36">
+<section id={id} class="relative bg-academy-ground px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
 	<div class="mx-auto w-full max-w-[1400px]">
-		<div class="grid grid-cols-12 gap-y-6 border-t border-academy-ink/18 pt-10">
+		<div class="grid grid-cols-12 items-baseline gap-y-4 border-t border-academy-ink/20 pt-8">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{label}</p>
 			<h2
-				class="academy-reveal col-span-12 max-w-[20ch] font-serif text-[clamp(1.9rem,3.6vw,3.1rem)] leading-[1.06] font-normal tracking-[-0.025em] text-balance lg:col-span-7 lg:col-start-3"
+				class="academy-reveal col-span-12 max-w-[22ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-7 lg:col-start-3"
 				set:html={title}
 			/>
 		</div>
 
-		<ol class="mt-14 lg:mt-20">
+		<ol class="mt-10 lg:mt-12">
 			{
 				rows.map((row) => (
-					<li class="group relative border-t border-academy-ink/14 last:border-b last:border-academy-ink/14">
+					<li
+						class={`group border-t last:border-b last:border-academy-ink/12 ${row.first ? 'border-academy-ink/35' : 'border-academy-ink/12'}`}
+					>
 						<a
 							href="#apply"
-							class="grid grid-cols-[3.2rem_minmax(0,1fr)] items-baseline gap-x-5 py-5 transition-[padding] duration-500 group-hover:pl-4 focus-visible:pl-4 lg:grid-cols-[4.5rem_minmax(0,1fr)_minmax(0,16rem)] lg:gap-x-8 lg:py-6"
+							class="grid grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-x-5 py-4 transition-[padding-left] duration-400 group-hover:pl-3 focus-visible:pl-3 lg:grid-cols-[4rem_minmax(0,1fr)_9rem_7rem] lg:gap-x-8 lg:py-4"
 						>
-							<span class="academy-mark text-[#77746D] transition-colors duration-400 group-hover:text-academy-brass">
+							<span class="academy-mark text-[#8B887F] transition-colors duration-300 group-hover:text-academy-brass">
 								{row.n}
 							</span>
 
-							<span class="font-serif text-[clamp(1.15rem,2vw,1.75rem)] leading-tight font-normal text-academy-ink">
+							<span class="font-serif text-[clamp(1.1rem,1.9vw,1.6rem)] leading-tight font-normal text-academy-ink">
 								{row.item}
 							</span>
 
-							<span class="col-start-2 mt-2 text-[0.8rem] leading-relaxed font-light text-[#77746D] opacity-0 transition-opacity duration-500 group-hover:opacity-100 lg:col-start-3 lg:mt-0 lg:opacity-0">
-								{row.group}
+							<span class="academy-mark hidden self-center text-academy-brass lg:block">
+								{row.first ? `${row.roman} · ${row.group}` : ''}
+							</span>
+
+							{/* Превью занимает собственную колонку — за край не выходит */}
+							<span
+								aria-hidden="true"
+								class="hidden h-[3.75rem] w-full overflow-hidden opacity-0 transition-opacity duration-400 group-hover:opacity-100 lg:block"
+							>
+								<picture>
+									<source srcset={`/${row.image}.avif`} type="image/avif" />
+									<source srcset={`/${row.image}.webp`} type="image/webp" />
+									<img
+										src={`/${row.image}.png`}
+										alt=""
+										width="900"
+										height="675"
+										loading="lazy"
+										class="h-full w-full object-cover"
+									/>
+								</picture>
 							</span>
 						</a>
-
-						{/* Превью группы: появляется у правого края при наведении */}
-						<span
-							aria-hidden="true"
-							class="pointer-events-none absolute top-1/2 right-0 hidden h-[8.5rem] w-[11.5rem] -translate-y-1/2 translate-x-6 overflow-hidden opacity-0 transition-[opacity,transform] duration-500 group-hover:translate-x-0 group-hover:opacity-100 xl:block"
-						>
-							<picture>
-								<source srcset={`/${row.image}.avif`} type="image/avif" />
-								<source srcset={`/${row.image}.webp`} type="image/webp" />
-								<img
-									src={`/${row.image}.png`}
-									alt=""
-									width="900"
-									height="675"
-									loading="lazy"
-									class="h-full w-full object-cover"
-								/>
-							</picture>
-							<span class="absolute inset-0 border border-academy-brass/40"></span>
-						</span>
 					</li>
 				))
 			}

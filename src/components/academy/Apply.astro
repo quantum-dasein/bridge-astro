@@ -1,6 +1,9 @@
 ---
 /**
- * Форма заявки.
+ * Финальный экран-заявка на карбоне.
+ *
+ * Не карточка с формой, а целая тёмная секция: слева крупное утверждение,
+ * справа форма на прозрачных полях с волосяными линейками вместо рамок.
  *
  * Отправляется на собственную функцию /api/apply (см. api/apply.js): она
  * рассылает заявку в Telegram и, если задан FORMSPREE_ID, дублирует на почту.
@@ -10,7 +13,6 @@
  * Тексты состояний лежат в data-атрибутах формы: один скрипт обслуживает все
  * языковые версии.
  */
-import SectionLabel from './SectionLabel.astro';
 
 interface Props {
 	id?: string;
@@ -37,41 +39,41 @@ const { id = 'apply', label, title, lead, list, mailNote, source, submit, states
 	Astro.props;
 
 const inputClass =
-	'w-full min-w-0 rounded-full border border-white/80 bg-white/55 px-5 py-3.5 text-[0.93rem] font-light tracking-normal text-academy-ink normal-case shadow-[inset_0_1px_0_rgb(255_255_255/.9)] transition-all duration-300 outline-none placeholder:text-[#9C9488] focus:border-academy-taupe/60 focus:bg-white/80 focus:ring-4 focus:ring-academy-taupe/12';
-const areaClass = inputClass.replace('rounded-full', 'rounded-[1.6rem]') + ' resize-y';
-const labelClass =
-	'grid min-w-0 gap-2 text-[0.66rem] font-medium tracking-[0.16em] text-[#8E867A] uppercase';
+	'w-full min-w-0 border-0 border-b border-academy-paper/25 bg-transparent px-0 py-3 text-[0.95rem] font-light tracking-normal text-academy-paper normal-case transition-colors duration-300 outline-none placeholder:text-academy-paper/30 focus:border-academy-brass';
+const labelClass = 'grid min-w-0 gap-1 academy-mark text-academy-paper/40';
 ---
 
-<section id={id} class="relative px-4 pt-28 pb-28 sm:px-6 lg:px-10 lg:pt-36 lg:pb-36">
+<section id={id} class="relative bg-academy-carbon px-6 py-20 text-academy-paper sm:px-10 lg:px-14 lg:py-28">
 	<div class="mx-auto w-full max-w-[1400px]">
-		<div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:gap-16">
-			<div class="academy-reveal">
-				<SectionLabel text={label} />
+		<div class="grid grid-cols-12 gap-y-12 border-t border-academy-paper/20 pt-8 lg:gap-x-8">
+			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{label}</p>
+
+			<div class="col-span-12 lg:col-span-5 lg:col-start-3">
 				<h2
-					class="mt-5 max-w-[18ch] font-serif text-[clamp(1.9rem,3.2vw,2.9rem)] leading-tight font-medium tracking-[-0.025em] text-balance"
+					class="academy-reveal max-w-[16ch] font-serif text-[clamp(2rem,3.8vw,3.2rem)] leading-[1.06] font-normal tracking-[-0.03em] text-balance"
 				>
 					{title}
 				</h2>
-				<p class="mt-5 max-w-[46ch] text-[clamp(0.98rem,1.15vw,1.1rem)] leading-relaxed font-light text-[#5C5449]">
+				<p class="academy-reveal mt-6 max-w-[44ch] text-[0.95rem] leading-relaxed font-light text-academy-paper/60">
 					{lead}
 				</p>
 
-				<ul class="mt-8 flex flex-wrap gap-2.5">
+				<ul class="mt-9">
 					{
-						list.map((item) => (
-							<li class="academy-pill rounded-full px-5 py-3 text-[0.86rem] font-light text-[#3D372F]">
-								{item}
+						list.map((item, i) => (
+							<li class="grid grid-cols-[2.5rem_minmax(0,1fr)] items-baseline gap-x-4 border-t border-academy-paper/12 py-3.5 text-[0.88rem] font-light text-academy-paper/75">
+								<span class="academy-mark text-academy-paper/30">{String(i + 1).padStart(2, '0')}</span>
+								<span>{item}</span>
 							</li>
 						))
 					}
 				</ul>
 
-				<p class="mt-7 text-[0.9rem] font-light text-[#5C5449]">
+				<p class="mt-7 text-[0.88rem] font-light text-academy-paper/60">
 					{mailNote}{' '}
 					<a
 						href="mailto:info@bridgeconsult.uz"
-						class="text-academy-taupe-deep underline-offset-4 transition-colors hover:text-academy-ink hover:underline"
+						class="text-academy-brass underline-offset-4 transition-colors hover:text-white hover:underline"
 						>info@bridgeconsult.uz</a
 					>
 				</p>
@@ -87,7 +89,7 @@ const labelClass =
 				data-sent={states.sent}
 				data-success-note={states.successNote}
 				data-error-note={states.errorNote}
-				class="academy-reveal academy-glass grid gap-4 rounded-[2.6rem] px-6 py-8 sm:px-10 sm:py-10"
+				class="academy-reveal col-span-12 grid gap-6 lg:col-span-4 lg:col-start-9"
 			>
 				<input type="hidden" name="source" value={source} />
 
@@ -109,32 +111,32 @@ const labelClass =
 				<label class={labelClass}>
 					{fields.programme.label}
 					<select name="programme" class={inputClass}>
-						{fields.programme.options.map((o: string) => <option>{o}</option>)}
+						{fields.programme.options.map((o: string) => <option class="bg-academy-carbon">{o}</option>)}
 					</select>
 				</label>
 
 				<label class={labelClass}>
 					{fields.participants.label}
 					<select name="participants" class={inputClass}>
-						{fields.participants.options.map((o: string) => <option>{o}</option>)}
+						{fields.participants.options.map((o: string) => <option class="bg-academy-carbon">{o}</option>)}
 					</select>
 				</label>
 
 				<label class={labelClass}>
 					{fields.language.label}
 					<select name="language" class={inputClass}>
-						{fields.language.options.map((o: string) => <option>{o}</option>)}
+						{fields.language.options.map((o: string) => <option class="bg-academy-carbon">{o}</option>)}
 					</select>
 				</label>
 
 				<label class={labelClass}>
 					{fields.cases.label}
-					<textarea name="cases_to_discuss" rows="4" placeholder={fields.cases.placeholder} class={areaClass}></textarea>
+					<textarea name="cases_to_discuss" rows="3" placeholder={fields.cases.placeholder} class={`${inputClass} resize-y`}></textarea>
 				</label>
 
 				<label class={labelClass}>
 					{fields.message.label}
-					<textarea name="message" rows="3" placeholder={fields.message.placeholder} class={areaClass}></textarea>
+					<textarea name="message" rows="2" placeholder={fields.message.placeholder} class={`${inputClass} resize-y`}></textarea>
 				</label>
 
 				<!-- Ловушка для ботов: не display:none — часть ботов такие поля пропускает.
@@ -150,8 +152,7 @@ const labelClass =
 
 				<button
 					type="submit"
-					data-magnetic
-					class="mt-2 inline-flex min-h-[3.25rem] w-full cursor-pointer items-center justify-center rounded-full bg-[linear-gradient(140deg,#A8927A,#8A7B66_52%,#5F5240)] px-8 text-[0.8rem] font-medium tracking-[0.03em] text-white shadow-[0_22px_46px_-18px_rgb(138_123_102/.85),inset_0_1.5px_0_rgb(255_255_255/.35)] transition-shadow duration-300 hover:shadow-[0_28px_56px_-18px_rgb(138_123_102/.95),inset_0_1.5px_0_rgb(255_255_255/.4)] disabled:cursor-default disabled:opacity-55"
+					class="mt-2 inline-flex min-h-[3.4rem] w-full cursor-pointer items-center justify-center rounded-full bg-academy-champagne px-8 text-[0.75rem] font-semibold tracking-[0.16em] text-[#17130A] uppercase transition-colors duration-300 hover:bg-white disabled:cursor-default disabled:opacity-50"
 				>
 					{submit}
 				</button>
@@ -160,7 +161,7 @@ const labelClass =
 					id="academyFormNote"
 					role="status"
 					aria-live="polite"
-					class="min-h-[1.5em] text-center text-[0.8rem] leading-relaxed font-light text-[#5C5449]"
+					class="min-h-[1.4em] text-[0.78rem] leading-relaxed font-light text-academy-paper/60"
 				>
 				</p>
 			</form>

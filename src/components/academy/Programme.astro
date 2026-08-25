@@ -1,9 +1,10 @@
 ---
 /**
- * «Чем эта программа отличается» — текст в стеклянной плите, цитата вынесена
- * в отдельную каплю, наезжающую на плиту снизу.
+ * «Чем эта программа отличается».
+ *
+ * Без стеклянной плиты: сетка 12 колонок, маркировка слева, текст в
+ * колонках 3–8, цитата отдельным блоком справа на волосяной линейке.
  */
-import SectionLabel from './SectionLabel.astro';
 
 interface Props {
 	id?: string;
@@ -16,38 +17,34 @@ interface Props {
 const { id = 'programme', label, title, paragraphs, pullquote } = Astro.props;
 ---
 
-<section id={id} class="relative px-4 pt-28 sm:px-6 lg:px-10 lg:pt-36">
+<section id={id} class="relative bg-academy-ground px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
 	<div class="mx-auto w-full max-w-[1400px]">
-		<div class="academy-reveal academy-glass rounded-[3rem] px-6 py-10 sm:px-12 sm:py-14 lg:px-16">
-			<div class="relative grid gap-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-16">
-				<div>
-					<SectionLabel text={label} />
-					<h2
-						class="mt-5 max-w-[14ch] font-serif text-[clamp(1.7rem,2.6vw,2.4rem)] leading-tight font-medium tracking-[-0.02em] text-balance"
-					>
-						{title}
-					</h2>
-				</div>
+		<div class="grid grid-cols-12 gap-y-8 border-t border-academy-ink/20 pt-8 lg:gap-x-8">
+			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{label}</p>
 
-				<div>
-					{
-						paragraphs.map((p) => (
-							<p
-								class="mb-5 max-w-[62ch] text-[clamp(0.98rem,1.15vw,1.1rem)] leading-relaxed font-light text-[#5C5449] last:mb-0 [&_b]:font-medium [&_b]:text-academy-ink"
-								set:html={p}
-							/>
-						))
-					}
-				</div>
+			<div class="col-span-12 lg:col-span-6 lg:col-start-3">
+				<h2
+					class="academy-reveal max-w-[16ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance"
+				>
+					{title}
+				</h2>
+				{
+					paragraphs.map((p) => (
+						<p
+							class="academy-reveal mt-6 max-w-[58ch] text-[0.98rem] leading-relaxed font-light text-[#5C5449] [&_b]:font-medium [&_b]:text-academy-ink"
+							set:html={p}
+						/>
+					))
+				}
 			</div>
-		</div>
 
-		<div class="academy-reveal relative z-20 -mt-8 flex justify-center px-4">
-			<p
-				class="academy-pill max-w-[46ch] rounded-[2.2rem] px-8 py-6 text-center font-serif text-[clamp(1.1rem,1.7vw,1.5rem)] leading-snug font-normal text-academy-taupe-deep italic text-balance"
-			>
-				{pullquote}
-			</p>
+			<div class="col-span-12 lg:col-span-3 lg:col-start-10">
+				<p
+					class="academy-reveal border-t border-academy-brass/50 pt-6 font-serif text-[clamp(1.2rem,1.8vw,1.55rem)] leading-[1.25] font-normal text-academy-taupe-deep italic"
+				>
+					{pullquote}
+				</p>
+			</div>
 		</div>
 	</div>
 </section>
