@@ -64,22 +64,49 @@ const labelClass = 'grid min-w-0 gap-1 academy-mark text-academy-taupe';
 				<ul data-reveal-group class="mt-9">
 					{
 						list.map((item, i) => (
-							<li class="grid grid-cols-[2.5rem_minmax(0,1fr)] items-baseline gap-x-4 border-t border-academy-ink/12 py-3.5 text-[0.88rem] font-light text-[#4A453D]">
-								<span class="academy-mark text-[#8E8A81]">{String(i + 1).padStart(2, '0')}</span>
+							<li class="group grid grid-cols-[2.5rem_minmax(0,1fr)_1.25rem] items-baseline gap-x-4 border-t border-academy-ink/12 py-3.5 text-[0.9rem] font-light text-[#4A453D] transition-colors duration-300 hover:text-academy-ink">
+								<span class="academy-mark text-[#8E8A81] transition-colors duration-300 group-hover:text-academy-brass">
+									{String(i + 1).padStart(2, '0')}
+								</span>
 								<span>{item}</span>
+								{/* Галочка проявляется на наведении: строка перестаёт быть
+								    просто перечислением и читается как «что вы получите». */}
+								<svg
+									aria-hidden="true"
+									class="h-3.5 w-3.5 self-center justify-self-end text-academy-brass opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									viewBox="0 0 24 24"
+								>
+									<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5" />
+								</svg>
 							</li>
 						))
 					}
 				</ul>
 
-				<p class="mt-7 text-[0.88rem] font-light text-[#5F5B53]">
-					{mailNote}{' '}
+				<!-- Прямой контакт. Раньше это была серая строчка в потоке текста и
+				     терялась насмерть; теперь — карточка с латунной чертой слева. -->
+				<div class="academy-reveal mt-9 border-l-2 border-academy-brass bg-academy-champagne/25 px-6 py-5">
+					<p class="academy-mark text-academy-brass">{mailNote}</p>
 					<a
 						href="mailto:info@bridgeconsult.uz"
-						class="text-academy-taupe-deep underline-offset-4 transition-colors hover:text-academy-brass hover:underline"
-						>info@bridgeconsult.uz</a
+						class="group mt-2.5 inline-flex items-center gap-3 font-serif text-[clamp(1.1rem,1.7vw,1.45rem)] leading-none font-normal text-academy-ink transition-colors duration-300 hover:text-academy-taupe-deep"
 					>
-				</p>
+						info@bridgeconsult.uz
+						<span
+							aria-hidden="true"
+							class="h-px w-6 bg-academy-brass transition-all duration-300 group-hover:w-11"
+						></span>
+					</a>
+					<a
+						href="tel:+998330001530"
+						class="mt-2 block text-[0.9rem] font-light text-[#5F5B53] transition-colors duration-300 hover:text-academy-taupe-deep"
+					>
+						+998 33 000 15 30
+					</a>
+				</div>
 			</div>
 
 			<form

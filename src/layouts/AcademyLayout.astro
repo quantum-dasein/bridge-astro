@@ -123,7 +123,41 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 				);
 			}
 
-			// 2. Магнитные кнопки: притягиваются к курсору в пределах своей зоны.
+			// 2. Появление при скролле. Timed-переходы, а не скраб по прокрутке:
+			//    скраб замирал полупрозрачным, стоило остановить колесо. Здесь класс
+			//    .academy-off снимается по позиции, и CSS доигрывает анимацию сам.
+			//    Никакого IntersectionObserver: обычный обработчик scroll, один
+			//    проход по ста элементам за кадр — дешевле, чем кажется.
+			//    Не выполнился скрипт — страница стоит видимой (базовое состояние).
+			if (!reduced) {
+				const els = Array.from(
+					document.querySelectorAll<HTMLElement>(
+						'.academy-reveal, .academy-reveal-mask, [data-reveal-group] > *:not([aria-hidden="true"])'
+					)
+				);
+				const update = () => {
+					const vh = innerHeight;
+					for (const el of els) {
+						const top = el.getBoundingClientRect().top;
+						// Гистерезис: показываем на 88% высоты экрана, прячем только
+						// когда элемент целиком ушёл за нижний край. Между порогами
+						// ничего не меняется — никакого мерцания на границе.
+						if (top < vh * 0.88) el.classList.remove('academy-off');
+						else if (top > vh) el.classList.add('academy-off');
+					}
+				};
+				// Слушаем scroll напрямую, без обёртки в requestAnimationFrame:
+				// браузер и так шлёт не больше одного события на кадр, а сто
+				// вызовов getBoundingClientRect стоят доли миллисекунды. Через
+				// rAF состояние иногда не успевало обновиться после резкого
+				// перехода (например, прыжка по якорю).
+				addEventListener('scroll', update, { passive: true });
+				addEventListener('resize', update, { passive: true });
+				addEventListener('load', update);
+				update();
+			}
+
+			// 3. Магнитные кнопки: притягиваются к курсору в пределах своей зоны.
 			if (!reduced && matchMedia('(pointer: fine)').matches) {
 				document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach((el) => {
 					el.style.transition = 'translate .35s cubic-bezier(.22,.61,.36,1)';

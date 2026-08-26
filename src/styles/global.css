@@ -119,63 +119,53 @@
 .academy-hair { background: currentColor; opacity: .28; }
 
 /* ── Появление при скролле ────────────────────────────────────────────────
-   Без JS. Раньше появление вешал IntersectionObserver, и если он почему-то
-   не отрабатывал, текст оставался невидимым — то есть страница просто не
-   показывала содержание. Это отказ, а не потеря анимации, поэтому механика
-   переделана так, что скрыть текст навсегда она физически не может:
+   Время, а не скраб. Scroll-driven animations (animation-timeline: view())
+   привязывали прогресс к позиции прокрутки: стоило остановить колесо на
+   середине диапазона — блок замирал полупрозрачным и размытым, а на быстрой
+   прокрутке движение заканчивалось за кадром, и анимации «не было вообще».
 
-   базовое состояние — ВИДИМО. Анимация живёт внутри @supports и привязана
-   к прокрутке средствами самого CSS (animation-timeline: view()). Браузер
-   без поддержки просто показывает текст статично.
+   Поэтому: базовое состояние ВИДИМО и имеет timed-переход. Класс .academy-off
+   (спрятан вниз) навешивает и снимает только скрипт в AcademyLayout — по
+   позиции элемента, с гистерезисом и обратным сворачиванием при прокрутке
+   вверх. Скрипт не выполнился — страница просто стоит видимой: скрыть
+   контент навсегда эта механика не может.
 
-   Привязка к прокрутке, а не ко времени, даёт то, что и нужно: на обратном
-   пути движение отыгрывается назад — блок складывается ровно так же, как
-   раскрывался. Конец диапазона задан в пикселях, а не в процентах cover:
-   у процентов знаменатель — высота элемента, и высокая форма или длинный
-   список стояли полупрозрачными, даже когда целиком были в кадре. Пиксели
-   дают всем блокам одинаковую скорость появления.
-
-   Три роли, чтобы движение читалось одним почерком:
+   Роли:
      .academy-reveal       — абзацы и блоки: всплывают снизу;
      .academy-reveal-mask  — заголовки: открываются шторкой снизу вверх;
-     [data-reveal-group]   — список: дети идут каскадом (сдвиг диапазона). */
+     [data-reveal-group]   — дети идут каскадом (transition-delay). */
 
-@keyframes academy-rise {
-  from { opacity: 0; transform: translateY(38px); filter: blur(6px); }
-  55%  { opacity: 1; }
-  to   { opacity: 1; transform: none; filter: blur(0); }
+.academy-reveal,
+.academy-reveal-mask,
+[data-reveal-group] > * {
+  transition:
+    opacity 0.85s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 0.61, 0.36, 1),
+    filter 0.85s cubic-bezier(0.22, 0.61, 0.36, 1),
+    clip-path 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-@keyframes academy-wipe {
-  from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(26px); }
-  to   { opacity: 1; clip-path: inset(0 0 0 0);   transform: none; }
+.academy-off {
+  opacity: 0;
+  transform: translateY(38px);
+  filter: blur(6px);
 }
 
-@supports (animation-timeline: view()) {
-  .academy-reveal,
-  [data-reveal-group] > *:not([aria-hidden='true']) {
-    animation: academy-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 340px;
-    will-change: opacity, transform;
-  }
-
-  .academy-reveal-mask {
-    animation: academy-wipe linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 300px;
-    will-change: opacity, clip-path, transform;
-  }
-
-  /* Каскад: каждый следующий ребёнок трогается чуть позже по той же
-     прокрутке. Ступеней шесть — дальше задержка перестаёт читаться и
-     превращается в ожидание. */
-  [data-reveal-group] > *:nth-child(2) { animation-range: entry 60px entry 400px; }
-  [data-reveal-group] > *:nth-child(3) { animation-range: entry 120px entry 460px; }
-  [data-reveal-group] > *:nth-child(4) { animation-range: entry 180px entry 520px; }
-  [data-reveal-group] > *:nth-child(5) { animation-range: entry 240px entry 580px; }
-  [data-reveal-group] > *:nth-child(n + 6) { animation-range: entry 300px entry 640px; }
+.academy-reveal-mask.academy-off {
+  clip-path: inset(0 0 100% 0);
+  transform: translateY(22px);
+  filter: none;
 }
+
+.academy-reveal-mask { clip-path: inset(0 0 0 0); }
+
+/* Каскад: каждый следующий ребёнок трогается чуть позже. Ступеней шесть —
+   дальше задержка перестаёт читаться и превращается в ожидание. */
+[data-reveal-group] > *:nth-child(2) { transition-delay: 0.08s; }
+[data-reveal-group] > *:nth-child(3) { transition-delay: 0.16s; }
+[data-reveal-group] > *:nth-child(4) { transition-delay: 0.24s; }
+[data-reveal-group] > *:nth-child(5) { transition-delay: 0.32s; }
+[data-reveal-group] > *:nth-child(n + 6) { transition-delay: 0.4s; }
 
 @media (prefers-reduced-motion: reduce) {
   .academy-blob { animation: none !important; }
@@ -183,13 +173,16 @@
   .academy-reveal,
   .academy-reveal-mask,
   [data-reveal-group] > * {
-    animation: none !important;
+    transition: none !important;
+  }
+  .academy-off {
     opacity: 1;
     transform: none;
-    clip-path: none;
     filter: none;
+    clip-path: none;
   }
 }
+
 
 html,
 body {

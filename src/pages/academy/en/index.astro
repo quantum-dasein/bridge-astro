@@ -1,0 +1,59 @@
+---
+/**
+ * Лендинг BRIDGE Consult Academy — english версия.
+ *
+ * Разметка и компоненты те же, что в русской версии; отличается только
+ * файл данных. Раньше здесь лежала статика public/academy/en/ — она
+ * удалена вместе с русской.
+ *
+ * Порядок секций — сценарий чтения: экран → утверждение → контракт как
+ * система → две редакции → чем отличается → метод → модули → архив кейсов →
+ * разбор одного кейса → для кого → формат → преподаватель → призыв → заявка.
+ *
+ * Контент целиком в src/data/academy.ru.ts: компоненты презентационные,
+ * EN и UZ добавятся такими же файлами данных.
+ */
+import AcademyLayout from '../../../layouts/AcademyLayout.astro';
+import Header from '../../../components/academy/Header.astro';
+import Hero from '../../../components/academy/Hero.astro';
+import Stats from '../../../components/academy/Stats.astro';
+import Statement from '../../../components/academy/Statement.astro';
+import ContractSystem from '../../../components/academy/ContractSystem.astro';
+import Editions from '../../../components/academy/Editions.astro';
+import Programme from '../../../components/academy/Programme.astro';
+import Method from '../../../components/academy/Method.astro';
+import Modules from '../../../components/academy/Modules.astro';
+import CaseWall from '../../../components/academy/CaseWall.astro';
+import CaseStudy from '../../../components/academy/CaseStudy.astro';
+import Audience from '../../../components/academy/Audience.astro';
+import Format from '../../../components/academy/Format.astro';
+import Trainer from '../../../components/academy/Trainer.astro';
+import FinalCta from '../../../components/academy/FinalCta.astro';
+import Apply from '../../../components/academy/Apply.astro';
+import Footer from '../../../components/academy/Footer.astro';
+import { academyEn as c } from '../../../data/academy.en';
+---
+
+<AcademyLayout title={c.meta.title} description={c.meta.description} lang={c.lang}>
+	<Header nav={c.nav} cta={c.cta} current="en" langLinks={c.langLinks} />
+
+	<main>
+		<Hero {...c.hero} />
+		<Stats {...c.stats} />
+		<Statement {...c.statement} />
+		<ContractSystem {...c.contractSystem} />
+		<Editions {...c.editions} />
+		<Programme {...c.programme} />
+		<Method {...c.method} />
+		<Modules {...c.modules} />
+		<CaseWall {...c.caseWall} />
+		<CaseStudy {...c.caseStudy} />
+		<Audience {...c.audience} />
+		<Format {...c.format} />
+		<Trainer {...c.trainer} />
+		<FinalCta {...c.finalCta} />
+		<Apply {...c.apply} />
+	</main>
+
+	<Footer {...c.footer} />
+</AcademyLayout>

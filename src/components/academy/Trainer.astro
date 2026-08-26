@@ -1,9 +1,12 @@
 ---
 /**
- * Преподаватель — редакционный портретный разворот, без стеклянной плиты.
+ * Преподаватель — портретный разворот с 3D-наклоном.
  *
+ * Портрет живёт в перспективной сцене: за курсором наклоняется вся плита
+ * (снимок + офсетная латунная рамка + подпись), за ней — кольца и метки.
  * Биография и список аккредитаций воспроизводятся дословно из источника
- * (src/data/academy.*.ts) — их сверяют, сокращать нельзя.
+ * (src/data/academy.*.ts) — их сверяют, сокращать нельзя; всё украшение
+ * только вокруг текста: буквица, роль как ряд меток, номера аккредитаций.
  *
  * height:auto на портрете обязателен: атрибуты width/height в разметке это
  * презентационная подсказка CSS, и вместе с w-full они задают обе стороны,
@@ -23,23 +26,64 @@ interface Props {
 }
 
 const { id = 'trainer', label, name, role, photoAlt, bio, credsTitle, creds, cvLabel } = Astro.props;
+const roleParts = role.split('·').map((p) => p.trim()).filter(Boolean);
 ---
 
-<section id={id} class="relative bg-academy-ground px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
-	<div class="mx-auto w-full max-w-[1400px]">
-		<div class="grid grid-cols-12 gap-y-10 border-t border-academy-ink/20 pt-8 lg:gap-x-8">
+<section id={id} class="relative overflow-hidden bg-academy-ground px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+	<!-- Фоновый узор: дуги и осевая линейка, как на чертёжном листе -->
+	<div aria-hidden="true" class="pointer-events-none absolute inset-0">
+		<span class="absolute -top-44 -right-52 h-[44rem] w-[44rem] rounded-full border border-academy-ink/8"></span>
+		<span class="absolute -top-28 -right-36 h-[32rem] w-[32rem] rounded-full border border-academy-brass/15"></span>
+		<span
+			class="absolute inset-y-0 left-1/2 hidden w-px bg-[linear-gradient(180deg,transparent,rgb(41_39_36/.07)_28%,rgb(41_39_36/.07)_72%,transparent)] lg:block"
+		></span>
+	</div>
+
+	<div class="relative mx-auto w-full max-w-[1400px]">
+		<div class="grid grid-cols-12 gap-y-12 border-t border-academy-ink/20 pt-8 lg:gap-x-8">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{label}</p>
 
-			<div class="col-span-12 sm:col-span-6 lg:col-span-3 lg:col-start-3">
-				<img
-					src="/larisa-belousova.jpg"
-					alt={photoAlt}
-					width="854"
-					height="1280"
-					loading="lazy"
-					class="aspect-[4/5] h-auto w-full object-cover object-top"
-				/>
-				<div class="mt-5 flex flex-wrap items-center gap-3">
+			<!-- Портрет: перспективная сцена с наклоном за курсором -->
+			<div class="col-span-12 sm:col-span-7 lg:col-span-4 lg:col-start-3">
+				<div data-tilt-scene class="relative [perspective:1100px]">
+					<span
+						aria-hidden="true"
+						class="absolute -top-7 -left-9 h-40 w-40 rounded-full border border-academy-brass/35"
+					></span>
+					<span aria-hidden="true" class="academy-mark absolute -top-5 right-0 text-[#8E8A81]">FCCE · FCCP</span>
+
+					<figure
+						data-tilt
+						class="relative m-0 transition-transform duration-500 ease-out will-change-transform [transform-style:preserve-3d]"
+					>
+						<!-- Офсетная латунная рамка, лежит глубже плиты -->
+						<span
+							aria-hidden="true"
+							class="absolute -right-4 -bottom-4 h-full w-full border border-academy-brass/45"
+							style="transform: translateZ(-38px);"
+						></span>
+
+						<div class="relative overflow-hidden bg-academy-champagne/30">
+							<img
+								src="/larisa-belousova.jpg"
+								alt={photoAlt}
+								width="854"
+								height="1280"
+								loading="lazy"
+								class="aspect-[4/5] h-auto w-full object-cover object-top"
+							/>
+							<span
+								aria-hidden="true"
+								class="absolute inset-x-0 bottom-0 h-24 bg-[linear-gradient(180deg,transparent,rgb(23_19_10/.55))]"
+							></span>
+							<figcaption class="academy-mark absolute bottom-4 left-4 text-white/85" style="transform: translateZ(34px);">
+								Larisa Belousova
+							</figcaption>
+						</div>
+					</figure>
+				</div>
+
+				<div class="mt-8 flex flex-wrap items-center gap-3">
 					<img src="/fidic-fcce-badge.png" alt="FIDIC Certified Consulting Engineer" width="80" height="60" loading="lazy" class="h-11 w-auto max-w-[4.25rem] object-contain" />
 					<img src="/fidic-fccp-badge.png" alt="FIDIC Certified Consulting Professional" width="80" height="60" loading="lazy" class="h-11 w-auto max-w-[4.25rem] object-contain" />
 					<img src="/ciarb-logo.png" alt="CIArb — Chartered Institute of Arbitrators" width="80" height="60" loading="lazy" class="h-11 w-auto max-w-[4.25rem] object-contain" />
@@ -49,47 +93,107 @@ const { id = 'trainer', label, name, role, photoAlt, bio, credsTitle, creds, cvL
 
 			<div class="col-span-12 lg:col-span-6 lg:col-start-7">
 				<h2
-					class="academy-reveal-mask font-serif text-[clamp(1.8rem,3vw,2.6rem)] leading-[1.06] font-normal tracking-[-0.025em]"
+					class="academy-reveal-mask font-serif text-[clamp(2rem,3.4vw,3rem)] leading-[1.04] font-normal tracking-[-0.025em]"
 				>
 					{name}
 				</h2>
-				<p class="mt-3 border-b border-academy-ink/15 pb-5 text-[0.8rem] leading-relaxed text-academy-taupe">
-					{role}
-				</p>
+
+				<!-- Специализации: не строка через точки, а ряд меток на линейке -->
+				<ul class="mt-5 flex flex-wrap gap-x-5 gap-y-2 border-y border-academy-ink/12 py-3.5">
+					{
+						roleParts.map((part) => (
+							<li class="academy-mark flex items-center gap-2 text-[#8E8A81]">
+								<span aria-hidden="true" class="h-1 w-1 rounded-full bg-academy-brass/70" />
+								{part}
+							</li>
+						))
+					}
+				</ul>
 
 				{
 					bio.map((p, i) => (
 						<p
-							class={`mt-4 leading-relaxed font-light ${i === 0 ? 'text-[1rem] text-academy-ink' : 'text-[0.9rem] text-[#4A453D]'}`}
+							class={
+								i === 0
+									? 'academy-dropcap mt-7 text-[1.05rem] leading-[1.75] font-light text-academy-ink'
+									: 'mt-4 text-[0.92rem] leading-relaxed font-light text-[#4A453D]'
+							}
 						>
 							{p}
 						</p>
 					))
 				}
 
-				<p class="academy-mark mt-9 text-academy-brass">{credsTitle}</p>
-				<ul data-reveal-group class="mt-4 grid sm:grid-cols-2 sm:gap-x-10">
+				<div class="mt-10 flex items-baseline justify-between gap-4 border-t border-academy-ink/15 pt-5">
+					<p class="academy-mark text-academy-brass">{credsTitle}</p>
+					<span class="academy-mark text-[#A8A49B]">{String(creds.length).padStart(2, '0')}</span>
+				</div>
+				<ul data-reveal-group class="mt-3 grid sm:grid-cols-2 sm:gap-x-10">
 					{
-						creds.map((c) => (
-							<li
-								class="border-t border-academy-ink/12 py-2.5 text-[0.82rem] leading-snug font-light text-[#4A453D] [&_a:hover]:underline [&_a]:text-academy-taupe-deep"
-								set:html={c}
-							/>
+						creds.map((c, i) => (
+							<li class="group grid grid-cols-[2.1rem_minmax(0,1fr)] items-baseline gap-x-3 border-t border-academy-ink/10 py-2.5 text-[0.84rem] leading-snug font-light text-[#4A453D] transition-colors duration-300 hover:text-academy-ink [&_a:hover]:underline [&_a]:text-academy-taupe-deep">
+								<span class="academy-mark text-[#A8A49B] transition-colors duration-300 group-hover:text-academy-brass">
+									{String(i + 1).padStart(2, '0')}
+								</span>
+								<span set:html={c} />
+							</li>
 						))
 					}
 				</ul>
 
-				<p class="mt-8">
+				<p class="mt-9">
 					<a
 						href="/larisa-belousova-cv.pdf"
 						target="_blank"
 						rel="noopener"
-						class="inline-flex min-h-[3rem] items-center rounded-full border border-academy-ink/25 px-8 text-[0.72rem] font-semibold tracking-[0.16em] text-academy-ink uppercase transition-colors duration-300 hover:border-academy-brass hover:bg-academy-brass hover:text-white"
+						data-magnetic
+						class="inline-flex min-h-[3.2rem] items-center gap-3 rounded-full border border-academy-ink/25 px-9 text-[0.72rem] font-semibold tracking-[0.16em] text-academy-ink uppercase transition-colors duration-300 hover:border-academy-brass hover:bg-academy-brass hover:text-white"
 					>
 						{cvLabel}
+						<svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+						</svg>
 					</a>
 				</p>
 			</div>
 		</div>
 	</div>
 </section>
+
+<style>
+	/* Буквица первого абзаца биографии. Текст дословный — украшение
+	   исключительно типографическое. */
+	.academy-dropcap::first-letter {
+		float: left;
+		margin: 0.06em 0.14em 0 0;
+		font-family: 'Playfair Display', serif;
+		font-size: 3.1em;
+		line-height: 0.84;
+		color: #a58a62;
+	}
+</style>
+
+<script>
+	// 3D-наклон портрета за курсором. Только точный указатель и полное
+	// движение: на тач-экранах и при prefers-reduced-motion плита статична.
+	const scene = document.querySelector<HTMLElement>('[data-tilt-scene]');
+	const plate = scene?.querySelector<HTMLElement>('[data-tilt]');
+	if (
+		scene &&
+		plate &&
+		matchMedia('(pointer: fine)').matches &&
+		!matchMedia('(prefers-reduced-motion: reduce)').matches
+	) {
+		scene.addEventListener('pointermove', (e) => {
+			const r = scene.getBoundingClientRect();
+			const x = (e.clientX - r.left) / r.width - 0.5;
+			const y = (e.clientY - r.top) / r.height - 0.5;
+			plate.style.transition = 'transform .12s linear';
+			plate.style.transform = `rotateY(${(x * 10).toFixed(2)}deg) rotateX(${(-y * 8).toFixed(2)}deg)`;
+		});
+		scene.addEventListener('pointerleave', () => {
+			plate.style.transition = 'transform .6s cubic-bezier(.22,.61,.36,1)';
+			plate.style.transform = 'rotateY(0deg) rotateX(0deg)';
+		});
+	}
+</script>
