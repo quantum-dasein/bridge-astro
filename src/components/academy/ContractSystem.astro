@@ -30,19 +30,19 @@ const { mark, title, lead, steps } = Astro.props;
 		<div class="grid grid-cols-12 gap-y-6 border-t border-academy-paper/20 pt-10">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
 			<h2
-				class="col-span-12 font-serif text-[clamp(1.8rem,3.4vw,2.9rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+				class="academy-reveal-mask col-span-12 font-serif text-[clamp(1.8rem,3.4vw,2.9rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
 			>
 				{title}
 			</h2>
 			<p
-				class="col-span-12 max-w-[42ch] text-[0.95rem] leading-relaxed font-light text-academy-paper/60 lg:col-span-4 lg:col-start-9"
+				class="academy-reveal col-span-12 max-w-[42ch] text-[0.95rem] leading-relaxed font-light text-academy-paper/60 lg:col-span-4 lg:col-start-9"
 			>
 				{lead}
 			</p>
 		</div>
 
 		<!-- Схема. На десктопе горизонтальная магистраль, на мобильном вертикальная. -->
-		<ol class="relative mt-16 grid gap-0 lg:mt-24 lg:grid-cols-7">
+		<ol data-reveal-group class="relative mt-16 grid gap-0 lg:mt-24 lg:grid-cols-7">
 			<!-- Магистраль -->
 			<span
 				aria-hidden="true"

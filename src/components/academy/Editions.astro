@@ -27,7 +27,7 @@ const { id = 'editions', mark, title, lead, rows } = Astro.props;
 		<div class="grid grid-cols-12 gap-y-5 border-t border-academy-ink/20 pt-8">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
 			<h2
-				class="academy-reveal col-span-12 max-w-[18ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+				class="academy-reveal-mask col-span-12 max-w-[18ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
 			>
 				{title}
 			</h2>
@@ -51,7 +51,7 @@ const { id = 'editions', mark, title, lead, rows } = Astro.props;
 
 		<!-- Сопоставление. Линейка посередине сплошная, разрывается только
 		     под подписью предмета сравнения. -->
-		<div class="relative mt-6 lg:mt-8">
+		<div data-reveal-group class="relative mt-6 lg:mt-8">
 			<span
 				aria-hidden="true"
 				class="absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-academy-ink/25 lg:block"

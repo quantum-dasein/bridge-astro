@@ -49,7 +49,7 @@ const { id = 'trainer', label, name, role, photoAlt, bio, credsTitle, creds, cvL
 
 			<div class="col-span-12 lg:col-span-6 lg:col-start-7">
 				<h2
-					class="academy-reveal font-serif text-[clamp(1.8rem,3vw,2.6rem)] leading-[1.06] font-normal tracking-[-0.025em]"
+					class="academy-reveal-mask font-serif text-[clamp(1.8rem,3vw,2.6rem)] leading-[1.06] font-normal tracking-[-0.025em]"
 				>
 					{name}
 				</h2>
@@ -68,7 +68,7 @@ const { id = 'trainer', label, name, role, photoAlt, bio, credsTitle, creds, cvL
 				}
 
 				<p class="academy-mark mt-9 text-academy-brass">{credsTitle}</p>
-				<ul class="mt-4 grid sm:grid-cols-2 sm:gap-x-10">
+				<ul data-reveal-group class="mt-4 grid sm:grid-cols-2 sm:gap-x-10">
 					{
 						creds.map((c) => (
 							<li

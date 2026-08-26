@@ -24,7 +24,7 @@ const { id = 'method', label, title, lead, rows } = Astro.props;
 		<div class="grid grid-cols-12 gap-y-5 border-t border-academy-ink/20 pt-8">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{label}</p>
 			<h2
-				class="academy-reveal col-span-12 max-w-[16ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+				class="academy-reveal-mask col-span-12 max-w-[16ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
 			>
 				{title}
 			</h2>
@@ -35,7 +35,7 @@ const { id = 'method', label, title, lead, rows } = Astro.props;
 			</p>
 		</div>
 
-		<div class="mt-10 grid gap-x-16 lg:mt-12 lg:grid-cols-2">
+		<div data-reveal-group class="mt-10 grid gap-x-16 lg:mt-12 lg:grid-cols-2">
 			{
 				rows.map((row, i) => (
 					<div class="group grid grid-cols-[2.75rem_minmax(0,1fr)] items-baseline gap-x-5 border-t border-academy-ink/12 py-4 lg:grid-cols-[3.5rem_minmax(0,11rem)_minmax(0,1fr)] lg:gap-x-6">

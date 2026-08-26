@@ -96,28 +96,7 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 			// public/academy/ занят старой статической версией страницы.
 			const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-			// 1. Появление блоков при скролле.
-			const reveals = document.querySelectorAll('.academy-reveal');
-			if (reduced || !('IntersectionObserver' in window)) {
-				reveals.forEach((el) => el.classList.add('is-in'));
-			} else {
-				const io = new IntersectionObserver(
-					(entries) => {
-						for (const entry of entries) {
-							if (!entry.isIntersecting) continue;
-							entry.target.classList.add('is-in');
-							io.unobserve(entry.target);
-						}
-					},
-					{ rootMargin: '0px 0px -12% 0px', threshold: 0.08 }
-				);
-				reveals.forEach((el, i) => {
-					(el as HTMLElement).style.transitionDelay = `${Math.min(i % 6, 5) * 70}ms`;
-					io.observe(el);
-				});
-			}
-
-			// 2. Пятна за стеклом мягко идут за курсором.
+			// 1. Пятна за стеклом мягко идут за курсором.
 			const light = document.getElementById('academy-light');
 			if (light && !reduced && matchMedia('(pointer: fine)').matches) {
 				let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
@@ -139,7 +118,7 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 				);
 			}
 
-			// 3. Магнитные кнопки: притягиваются к курсору в пределах своей зоны.
+			// 2. Магнитные кнопки: притягиваются к курсору в пределах своей зоны.
 			if (!reduced && matchMedia('(pointer: fine)').matches) {
 				document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach((el) => {
 					el.style.transition = 'translate .35s cubic-bezier(.22,.61,.36,1)';

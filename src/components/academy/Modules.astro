@@ -1,11 +1,16 @@
 ---
 /**
- * Индекс модулей — оглавление архитектурного журнала.
+ * Восемнадцать модулей — четыре карточки потоков.
  *
- * Строка: номер, название, поток. Превью группы лежит В ПРЕДЕЛАХ строки,
- * а не выезжает за неё: раньше оно позиционировалось от правого края с
- * translate наружу и обрезалось вьюпортом, попутно накрывая текст.
- * Теперь превью занимает свою колонку в гриде и просто проявляется.
+ * Раньше это был список строк с крошечным превью сбоку: снимок не вписывался
+ * ни в масштаб, ни в ритм строки. Теперь снимок и есть карточка — он лежит
+ * фоном во всю её площадь, а модули потока живут поверх. Карточек четыре,
+ * а не восемнадцать: восемнадцать одинаковых плиток ничего не сообщают
+ * о структуре программы, четыре потока — сообщают.
+ *
+ * Интерактивность: наведение поднимает карточку, снимок наезжает, оверлей
+ * светлеет, номера уходят в латунь. На тач-устройствах hover не существует,
+ * поэтому исходное состояние уже читаемо — эффект только усиливает.
  */
 
 interface Props {
@@ -24,75 +29,76 @@ interface Props {
 
 const { id = 'modules', label, title, groups } = Astro.props;
 
-// Название потока показываем один раз на группу, а не в каждой строке:
-// повторённое пять раз подряд оно превращается в шум.
+// Сквозная нумерация 01..18 поверх четырёх потоков
 let counter = 0;
-const rows = groups.flatMap((g) =>
-	g.items.map((item, i) => ({
-		item,
-		n: String(++counter).padStart(2, '0'),
-		group: i === 0 ? g.title : null,
-		roman: g.roman,
-		first: i === 0,
-		image: g.image,
-	}))
-);
+const streams = groups.map((g) => ({
+	...g,
+	items: g.items.map((item) => ({ item, n: String(++counter).padStart(2, '0') })),
+}));
 ---
 
-<section id={id} class="relative bg-academy-ground px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+<section id={id} class="relative bg-academy-carbon px-6 py-20 text-academy-paper sm:px-10 lg:px-14 lg:py-28">
 	<div class="mx-auto w-full max-w-[1400px]">
-		<div class="grid grid-cols-12 items-baseline gap-y-4 border-t border-academy-ink/20 pt-8">
+		<div class="grid grid-cols-12 items-baseline gap-y-4 border-t border-academy-paper/20 pt-8">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{label}</p>
 			<h2
-				class="academy-reveal col-span-12 max-w-[22ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-7 lg:col-start-3"
+				class="academy-reveal-mask col-span-12 max-w-[22ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-7 lg:col-start-3"
 				set:html={title}
 			/>
 		</div>
 
-		<ol class="mt-10 lg:mt-12">
+		<div data-reveal-group class="mt-10 grid gap-5 lg:mt-14 lg:grid-cols-2 lg:gap-6">
 			{
-				rows.map((row) => (
-					<li
-						class={`group border-t last:border-b last:border-academy-ink/12 ${row.first ? 'border-academy-ink/35' : 'border-academy-ink/12'}`}
-					>
-						<a
-							href="#apply"
-							class="grid grid-cols-[2.75rem_minmax(0,1fr)] items-center gap-x-5 py-4 transition-[padding-left] duration-400 group-hover:pl-3 focus-visible:pl-3 lg:grid-cols-[4rem_minmax(0,1fr)_9rem_7rem] lg:gap-x-8 lg:py-4"
-						>
-							<span class="academy-mark text-[#8B887F] transition-colors duration-300 group-hover:text-academy-brass">
-								{row.n}
-							</span>
+				streams.map((stream) => (
+					<article class="group relative isolate overflow-hidden rounded-[1.75rem] border border-academy-paper/12 transition-transform duration-600 hover:-translate-y-1">
+						{/* Снимок во всю площадь карточки */}
+						<picture>
+							<source srcset={`/${stream.image}.avif`} type="image/avif" />
+							<source srcset={`/${stream.image}.webp`} type="image/webp" />
+							<img
+								src={`/${stream.image}.png`}
+								alt={stream.imageAlt}
+								width="900"
+								height="675"
+								loading="lazy"
+								class="absolute inset-0 -z-10 h-full w-full scale-105 object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-100"
+							/>
+						</picture>
+						<span
+							aria-hidden="true"
+							class="absolute inset-0 -z-10 bg-[linear-gradient(155deg,rgb(17_17_17/.9),rgb(17_17_17/.82)_45%,rgb(17_17_17/.94))] transition-opacity duration-600 group-hover:opacity-90"
+						/>
 
-							<span class="font-serif text-[clamp(1.1rem,1.9vw,1.6rem)] leading-tight font-normal text-academy-ink">
-								{row.item}
-							</span>
+						<div class="p-7 lg:p-9">
+							<div class="flex items-baseline gap-4">
+								<span class="font-serif text-[clamp(1.9rem,2.6vw,2.5rem)] leading-none font-normal text-academy-brass">
+									{stream.roman}
+								</span>
+								<h3 class="font-serif text-[clamp(1.2rem,1.9vw,1.6rem)] leading-tight font-normal">
+									{stream.title}
+								</h3>
+							</div>
 
-							<span class="academy-mark hidden self-center text-academy-brass lg:block">
-								{row.first ? `${row.roman} · ${row.group}` : ''}
-							</span>
+							<p class="mt-3 max-w-[42ch] text-[0.86rem] leading-relaxed font-light text-academy-paper/55">
+								{stream.note}
+							</p>
 
-							{/* Превью занимает собственную колонку — за край не выходит */}
-							<span
-								aria-hidden="true"
-								class="hidden h-[3.75rem] w-full overflow-hidden opacity-0 transition-opacity duration-400 group-hover:opacity-100 lg:block"
-							>
-								<picture>
-									<source srcset={`/${row.image}.avif`} type="image/avif" />
-									<source srcset={`/${row.image}.webp`} type="image/webp" />
-									<img
-										src={`/${row.image}.png`}
-										alt=""
-										width="900"
-										height="675"
-										loading="lazy"
-										class="h-full w-full object-cover"
-									/>
-								</picture>
-							</span>
-						</a>
-					</li>
+							<ul class="mt-6 border-t border-academy-paper/15">
+								{stream.items.map(({ item, n }) => (
+									<li class="grid grid-cols-[2.5rem_minmax(0,1fr)] items-baseline gap-x-4 border-b border-academy-paper/10 py-2.5 last:border-b-0">
+										<span class="academy-mark text-academy-paper/35 transition-colors duration-400 group-hover:text-academy-brass">
+											{n}
+										</span>
+										<span class="text-[0.95rem] leading-snug font-light text-academy-paper/85 transition-colors duration-400 group-hover:text-white">
+											{item}
+										</span>
+									</li>
+								))}
+							</ul>
+						</div>
+					</article>
 				))
 			}
-		</ol>
+		</div>
 	</div>
 </section>

@@ -118,14 +118,66 @@
 /* Волосяная линейка чертежа. */
 .academy-hair { background: currentColor; opacity: .28; }
 
-/* Появление при скролле — включает academy-motion.js. */
-.academy-reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s cubic-bezier(.22,.61,.36,1), transform .9s cubic-bezier(.22,.61,.36,1); }
-.academy-reveal.is-in { opacity: 1; transform: none; }
+/* ── Появление при скролле ────────────────────────────────────────────────
+   Без JS. Раньше появление вешал IntersectionObserver, и если он почему-то
+   не отрабатывал, текст оставался невидимым — то есть страница просто не
+   показывала содержание. Это отказ, а не потеря анимации, поэтому механика
+   переделана так, что скрыть текст навсегда она физически не может:
+
+   базовое состояние — ВИДИМО. Анимация живёт внутри @supports и привязана
+   к прокрутке средствами самого CSS (animation-timeline: view()). Браузер
+   без поддержки просто показывает текст статично.
+
+   Три роли, чтобы движение читалось одним почерком:
+     .academy-reveal       — абзацы и блоки: всплывают снизу;
+     .academy-reveal-mask  — заголовки: открываются шторкой снизу вверх;
+     [data-reveal-group]   — список: дети идут каскадом (сдвиг диапазона). */
+
+@keyframes academy-rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes academy-wipe {
+  from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(14px); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); transform: none; }
+}
+
+@supports (animation-timeline: view()) {
+  .academy-reveal,
+  [data-reveal-group] > *:not([aria-hidden='true']) {
+    animation: academy-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 4% cover 26%;
+  }
+
+  .academy-reveal-mask {
+    animation: academy-wipe linear both;
+    animation-timeline: view();
+    animation-range: entry 4% cover 30%;
+  }
+
+  /* Каскад: каждый следующий ребёнок трогается чуть позже по той же
+     прокрутке. Ступеней шесть — дальше задержка перестаёт читаться и
+     превращается в ожидание. */
+  [data-reveal-group] > *:nth-child(2) { animation-range: entry 8% cover 30%; }
+  [data-reveal-group] > *:nth-child(3) { animation-range: entry 12% cover 34%; }
+  [data-reveal-group] > *:nth-child(4) { animation-range: entry 16% cover 38%; }
+  [data-reveal-group] > *:nth-child(5) { animation-range: entry 20% cover 42%; }
+  [data-reveal-group] > *:nth-child(n + 6) { animation-range: entry 24% cover 46%; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .academy-blob { animation: none !important; }
   .academy-glass::after { animation: none; opacity: 0; }
-  .academy-reveal { opacity: 1; transform: none; transition: none; }
+  .academy-reveal,
+  .academy-reveal-mask,
+  [data-reveal-group] > * {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
 }
 
 html,

@@ -37,7 +37,7 @@ const sizes = ['text-[clamp(1.1rem,2vw,1.7rem)]', 'text-[clamp(0.95rem,1.5vw,1.2
 				>
 					{value}{suffix && <span class="text-[0.4em] align-super text-academy-brass">{suffix}</span>}
 				</p>
-				<h2 class="mt-5 max-w-[18ch] font-serif text-[clamp(1.3rem,2.2vw,1.9rem)] leading-tight font-normal">
+				<h2 class="academy-reveal mt-5 max-w-[18ch] font-serif text-[clamp(1.3rem,2.2vw,1.9rem)] leading-tight font-normal">
 					{title}
 				</h2>
 				<p class="mt-4 max-w-[38ch] text-[0.92rem] leading-relaxed font-light text-[#77746D]">
@@ -46,7 +46,7 @@ const sizes = ['text-[clamp(1.1rem,2vw,1.7rem)]', 'text-[clamp(0.95rem,1.5vw,1.2
 			</div>
 
 			<!-- Архив тем -->
-			<ul class="academy-reveal col-span-12 flex flex-wrap items-baseline gap-x-7 gap-y-4 lg:col-span-6 lg:col-start-7 lg:self-center">
+			<ul data-reveal-group class="col-span-12 flex flex-wrap items-baseline gap-x-7 gap-y-4 lg:col-span-6 lg:col-start-7 lg:self-center">
 				{
 					topics.map((topic, i) => (
 						<li

@@ -23,7 +23,7 @@ const { id = 'audience', mark, title, lead, rows } = Astro.props;
 		<div class="grid grid-cols-12 gap-y-6 border-t border-academy-paper/20 pt-10">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
 			<h2
-				class="academy-reveal col-span-12 max-w-[22ch] font-serif text-[clamp(1.9rem,3.6vw,3.1rem)] leading-[1.06] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+				class="academy-reveal-mask col-span-12 max-w-[22ch] font-serif text-[clamp(1.9rem,3.6vw,3.1rem)] leading-[1.06] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
 			>
 				{title}
 			</h2>
@@ -34,7 +34,7 @@ const { id = 'audience', mark, title, lead, rows } = Astro.props;
 			</p>
 		</div>
 
-		<ul class="mt-14 lg:mt-20">
+		<ul data-reveal-group class="mt-14 lg:mt-20">
 			{
 				rows.map((row, i) => (
 					<li class="group relative overflow-hidden border-t border-academy-paper/16 last:border-b last:border-academy-paper/16">

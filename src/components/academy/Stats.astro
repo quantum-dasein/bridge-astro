@@ -20,10 +20,10 @@ const { items, trainerNote } = Astro.props;
 
 <section class="relative bg-academy-ground px-6 pt-20 pb-16 sm:px-10 lg:px-14 lg:pt-24">
 	<div class="mx-auto w-full max-w-[1400px]">
-		<dl class="grid grid-cols-2 lg:grid-cols-4">
+		<dl data-reveal-group class="grid grid-cols-2 lg:grid-cols-4">
 			{
 				items.map((item) => (
-					<div class="academy-reveal border-t border-academy-ink/18 pt-5 pr-6 pb-2 lg:pt-6">
+					<div class="border-t border-academy-ink/18 pt-5 pr-6 pb-2 lg:pt-6">
 						<dt class="academy-mark text-academy-brass">{item.mark}</dt>
 						<dd class="mt-5 font-serif text-[clamp(2.6rem,5vw,4.2rem)] leading-[0.9] font-normal tracking-[-0.03em] whitespace-nowrap text-academy-ink tabular-nums">
 							<span data-anim="stat-value" data-count={item.count}>{item.value}</span>
