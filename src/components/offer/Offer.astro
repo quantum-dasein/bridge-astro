@@ -1,0 +1,59 @@
+---
+/**
+ * Лендинг «Полное договорное сопровождение» целиком — одна сборка на все
+ * три языка. Отличается только файл данных (src/data/offer.*.ts).
+ *
+ * Порядок разделов — порядок коммерческого предложения: экран → три
+ * направления → утверждение → проблемы → результат → что входит → три
+ * раздела предложения (документы, финансы, право) → как работаем → форматы
+ * → стоимость → команда → границы ответственности → почему мы → основатель
+ * → призыв → запрос на диагностику.
+ *
+ * Шапка, футер, экран и блок основателя переиспользуются из Академии: это
+ * один визуальный язык, у страниц не должно быть двух разных почерков.
+ */
+import Header from '../academy/Header.astro';
+import Hero from '../academy/Hero.astro';
+import Stats from '../academy/Stats.astro';
+import Statement from '../academy/Statement.astro';
+import Trainer from '../academy/Trainer.astro';
+import FinalCta from '../academy/FinalCta.astro';
+import Footer from '../academy/Footer.astro';
+import Pillars from './Pillars.astro';
+import Bullets from './Bullets.astro';
+import SpecTable from './SpecTable.astro';
+import Boundaries from './Boundaries.astro';
+import Pricing from './Pricing.astro';
+import Apply from './Apply.astro';
+
+interface Props {
+	c: any;
+	current: 'ru' | 'en' | 'uz';
+}
+
+const { c, current } = Astro.props;
+---
+
+<Header nav={c.nav} cta={c.cta} current={current} langLinks={c.langLinks} />
+
+<main>
+	<Hero {...c.hero} />
+	<Stats {...c.stats} />
+	<Pillars {...c.pillars} />
+	<Statement {...c.statement} />
+	<Bullets {...c.problems} dark />
+	<SpecTable {...c.outcome} numbered={false} />
+	<Bullets {...c.scope} />
+	{c.tables.map((t: any) => <SpecTable {...t} />)}
+	<SpecTable {...c.process} dark />
+	<Pillars {...c.formats} />
+	<Pricing {...c.pricing} />
+	<Bullets {...c.team} />
+	<Boundaries {...c.boundaries} />
+	<SpecTable {...c.why} dark numbered={false} />
+	<Trainer {...c.founder} />
+	<FinalCta {...c.finalCta} />
+	<Apply {...c.apply} />
+</main>
+
+<Footer {...c.footer} />

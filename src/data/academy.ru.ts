@@ -28,7 +28,7 @@ export const academyRu = {
 	langLinks: { ru: '/academy/', en: '/academy/en/', uz: '/academy/uz/' },
 
 	hero: {
-		eyebrow: 'BRIDGE Consult Academy · Онлайн',
+		eyebrow: 'Bridge Consult Academy · Online programme · 01',
 		titleLines: ['Продвинутый', 'контракт-менеджмент'],
 		titleAccent: 'онлайн',
 		lead: 'Не чтение условий контракта пункт за пунктом, а разбор ситуаций, которые на площадке превращаются в требования, задержки и споры. Редакции 1999 и 2017 — параллельно.',

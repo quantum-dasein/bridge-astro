@@ -1,0 +1,13 @@
+---
+/**
+ * Лендинг «Полное договорное сопровождение» — версия en.
+ * Разметка та же, что у русской версии; отличается только файл данных.
+ */
+import AcademyLayout from '../../../layouts/AcademyLayout.astro';
+import Offer from '../../../components/offer/Offer.astro';
+import { offerEn as c } from '../../../data/offer.en';
+---
+
+<AcademyLayout title={c.meta.title} description={c.meta.description} lang={c.lang}>
+	<Offer c={c} current="en" />
+</AcademyLayout>

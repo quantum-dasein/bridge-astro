@@ -76,8 +76,11 @@ const { id = 'editions', mark, title, lead, rows } = Astro.props;
 
 							{/* Подпись предмета сравнения сидит на самой оси. Фон
 							    страницы под ней разрывает линию — так делают
-							    выноски на чертеже. */}
-							<p class="academy-mark hidden justify-self-center bg-academy-ground px-3 text-center text-academy-brass lg:block">
+							    выноски на чертеже. Вертикальные поля обязательны:
+							    без них фон был высотой ровно в строку текста,
+							    разрыв выходил в десяток пикселей и читался не
+							    как выноска, а как линия поперёк слова. */}
+							<p class="academy-mark hidden justify-self-center bg-academy-ground px-4 py-3 text-center leading-[1.7] text-academy-brass lg:block">
 								{row.topic}
 							</p>
 

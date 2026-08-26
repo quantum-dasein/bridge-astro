@@ -28,7 +28,7 @@ export const academyEn = {
 	langLinks: { ru: '/academy/', en: '/academy/en/', uz: '/academy/uz/' },
 
 	hero: {
-		eyebrow: 'BRIDGE Consult Academy · Online',
+		eyebrow: 'Bridge Consult Academy · Online programme · 01',
 		titleLines: ['Advanced contract', 'management'],
 		titleAccent: 'online',
 		lead: 'Not a clause-by-clause walkthrough, but a working through of the situations that turn into claims, delays and disputes on site. The 1999 and 2017 editions, side by side.',

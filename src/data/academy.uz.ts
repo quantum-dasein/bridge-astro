@@ -28,7 +28,7 @@ export const academyUz = {
 	langLinks: { ru: '/academy/', en: '/academy/en/', uz: '/academy/uz/' },
 
 	hero: {
-		eyebrow: 'BRIDGE Consult Academy · Onlayn',
+		eyebrow: 'Bridge Consult Academy · Onlayn dastur · 01',
 		titleLines: ["Ilg'or shartnoma", 'menejmenti'],
 		titleAccent: 'onlayn',
 		lead: "Shartnoma shartlarini band-band o'qish emas, balki obyektda talab, kechikish va nizoga aylanadigan vaziyatlarni tahlil qilish. 1999 va 2017 tahrirlari — yonma-yon.",

@@ -1,0 +1,98 @@
+---
+/**
+ * Границы ответственности — кто за что отвечает.
+ *
+ * В предложении это двухколоночная таблица. Здесь колонки разведены
+ * вертикальной осью, как сравнение редакций в Академии: слева зона
+ * BRIDGE Consult, справа зона Подрядчика. На телефоне колонки распадаются
+ * в пары с подписями — иначе непонятно, где чья строка.
+ */
+
+interface Props {
+	id?: string;
+	mark: string;
+	title: string;
+	principle: string;
+	colA: string;
+	colB: string;
+	rows: readonly { a: string; b: string }[];
+	notes: readonly string[];
+}
+
+const { id, mark, title, principle, colA, colB, rows, notes } = Astro.props;
+---
+
+<section id={id} class="relative bg-academy-ground px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class="grid grid-cols-12 gap-y-5 border-t border-academy-ink/20 pt-8">
+			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
+			<h2
+				class="academy-reveal-mask col-span-12 max-w-[18ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+			>
+				{title}
+			</h2>
+			<p
+				class="academy-reveal col-span-12 max-w-[46ch] border-l-2 border-academy-brass bg-academy-champagne/25 px-6 py-5 text-[0.92rem] leading-relaxed font-light text-[#4A453D] lg:col-span-4 lg:col-start-9"
+			>
+				{principle}
+			</p>
+		</div>
+
+		<div class="relative mt-12">
+			<span
+				aria-hidden="true"
+				class="absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-academy-ink/25 lg:block"
+			></span>
+
+			<div class="hidden grid-cols-[minmax(0,1fr)_2rem_minmax(0,1fr)] items-end gap-x-8 pb-5 lg:grid">
+				<p class="text-right font-serif text-[clamp(1.15rem,1.7vw,1.5rem)] leading-tight font-normal text-academy-ink">
+					{colA}
+				</p>
+				<span></span>
+				<p class="font-serif text-[clamp(1.15rem,1.7vw,1.5rem)] leading-tight font-normal text-[#8B887F]">
+					{colB}
+				</p>
+			</div>
+
+			<div data-reveal-group>
+				{
+					rows.map((row) => (
+						<div class="grid gap-y-3 border-t border-academy-ink/12 py-6 lg:grid-cols-[minmax(0,1fr)_2rem_minmax(0,1fr)] lg:gap-x-8 lg:border-t-0 lg:py-0">
+							<p class="max-w-[46ch] text-[0.9rem] leading-relaxed font-light text-academy-ink lg:justify-self-end lg:border-t lg:border-academy-ink/15 lg:py-6 lg:text-right">
+								<span class="academy-mark mr-2 text-academy-brass lg:hidden">BRIDGE</span>
+								{row.a}
+							</p>
+							<span aria-hidden="true" class="hidden lg:block"></span>
+							<p class="max-w-[46ch] text-[0.9rem] leading-relaxed font-light text-[#5F5B53] lg:border-t lg:border-academy-ink/15 lg:py-6">
+								<span class="academy-mark mr-2 text-[#8E8A81] lg:hidden">Подрядчик</span>
+								{row.b}
+							</p>
+						</div>
+					))
+				}
+			</div>
+
+			<div
+				aria-hidden="true"
+				class="hidden grid-cols-[minmax(0,1fr)_2rem_minmax(0,1fr)] gap-x-8 lg:grid"
+			>
+				<span class="border-t border-academy-ink/15"></span>
+				<span></span>
+				<span class="border-t border-academy-ink/15"></span>
+			</div>
+		</div>
+
+		<ul data-reveal-group class="mt-12 grid gap-x-16 lg:grid-cols-2">
+			{
+				notes.map((n) => (
+					<li class="grid grid-cols-[1.25rem_minmax(0,1fr)] items-baseline gap-x-3 border-t border-academy-ink/10 py-3.5 text-[0.82rem] leading-relaxed font-light text-[#5F5B53]">
+						<span aria-hidden="true" class="text-academy-brass">
+							—
+						</span>
+						<span>{n}</span>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

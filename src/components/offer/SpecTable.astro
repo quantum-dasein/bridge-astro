@@ -1,0 +1,86 @@
+---
+/**
+ * Нумерованный перечень «направление → что ведём».
+ *
+ * Универсальный блок предложения: им набраны разделы документооборота,
+ * финансов, права, порядок работы и причины выбора. В коммерческом
+ * предложении это таблицы; на странице таблица была бы нечитаемой на
+ * телефоне, поэтому это спецификация на волосяных линейках — номер,
+ * название направления, описание.
+ *
+ * dark=true переворачивает секцию на карбон: три светлых перечня подряд
+ * слиплись бы в одну простыню.
+ */
+
+interface Props {
+	id?: string;
+	mark: string;
+	title: string;
+	lead?: string;
+	note?: string;
+	dark?: boolean;
+	numbered?: boolean;
+	rows: readonly { name: string; text: string }[];
+}
+
+const { id, mark, title, lead, note, dark = false, numbered = true, rows } = Astro.props;
+
+const section = dark
+	? 'relative bg-academy-carbon text-academy-paper'
+	: 'relative bg-academy-ground text-academy-ink';
+const hair = dark ? 'border-academy-paper/20' : 'border-academy-ink/20';
+const hairThin = dark ? 'border-academy-paper/12' : 'border-academy-ink/12';
+const muted = dark ? 'text-academy-paper/55' : 'text-[#5F5B53]';
+const bodyText = dark ? 'text-academy-paper/70' : 'text-[#4A453D]';
+const numColor = dark ? 'text-academy-paper/35' : 'text-[#8E8A81]';
+---
+
+<section id={id} class={`${section} px-6 py-20 sm:px-10 lg:px-14 lg:py-28`}>
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class={`grid grid-cols-12 gap-y-5 border-t ${hair} pt-8`}>
+			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
+			<h2
+				class="academy-reveal-mask col-span-12 max-w-[20ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+			>
+				{title}
+			</h2>
+			{
+				lead && (
+					<p
+						class={`academy-reveal col-span-12 max-w-[44ch] text-[0.92rem] leading-relaxed font-light ${muted} lg:col-span-4 lg:col-start-9`}
+					>
+						{lead}
+					</p>
+				)
+			}
+		</div>
+
+		<div data-reveal-group class="mt-10 lg:mt-14">
+			{
+				rows.map((row, i) => (
+					<div
+						class={`group grid gap-x-6 gap-y-2 border-t ${hairThin} py-6 lg:grid-cols-[3.5rem_minmax(0,17rem)_minmax(0,1fr)] lg:gap-x-10`}
+					>
+						{numbered ? (
+							<span class={`academy-mark ${numColor} transition-colors duration-300 group-hover:text-academy-brass`}>
+								{String(i + 1).padStart(2, '0')}
+							</span>
+						) : (
+							<span aria-hidden="true" class="hidden lg:block" />
+						)}
+						<h3 class="text-[1rem] leading-snug font-medium">{row.name}</h3>
+						<p class={`max-w-[70ch] text-[0.9rem] leading-relaxed font-light ${bodyText}`}>{row.text}</p>
+					</div>
+				))
+			}
+		</div>
+
+		{
+			note && (
+				<p class={`academy-reveal mt-8 max-w-[86ch] border-t ${hairThin} pt-5 text-[0.8rem] leading-relaxed font-light ${muted}`}>
+					{note}
+				</p>
+			)
+		}
+	</div>
+</section>

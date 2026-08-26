@@ -1,0 +1,66 @@
+---
+/**
+ * Простой нумерованный список без описаний: «что входит», «состав команды»,
+ * «проблемы, которые мы решаем».
+ *
+ * Две колонки на широком экране — иначе десять коротких строк растягиваются
+ * в узкую ленту через весь разворот.
+ */
+
+interface Props {
+	id?: string;
+	mark: string;
+	title: string;
+	lead?: string;
+	dark?: boolean;
+	items: readonly string[];
+}
+
+const { id, mark, title, lead, dark = false, items } = Astro.props;
+
+const section = dark
+	? 'relative bg-academy-carbon text-academy-paper'
+	: 'relative bg-academy-ground text-academy-ink';
+const hair = dark ? 'border-academy-paper/20' : 'border-academy-ink/20';
+const hairThin = dark ? 'border-academy-paper/12' : 'border-academy-ink/12';
+const muted = dark ? 'text-academy-paper/55' : 'text-[#5F5B53]';
+const bodyText = dark ? 'text-academy-paper/80' : 'text-[#4A453D]';
+const numColor = dark ? 'text-academy-paper/35' : 'text-[#8E8A81]';
+---
+
+<section id={id} class={`${section} px-6 py-20 sm:px-10 lg:px-14 lg:py-28`}>
+	<div class="mx-auto w-full max-w-[1400px]">
+		<div class={`grid grid-cols-12 gap-y-5 border-t ${hair} pt-8`}>
+			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
+			<h2
+				class="academy-reveal-mask col-span-12 max-w-[20ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+			>
+				{title}
+			</h2>
+			{
+				lead && (
+					<p
+						class={`academy-reveal col-span-12 max-w-[44ch] text-[0.92rem] leading-relaxed font-light ${muted} lg:col-span-4 lg:col-start-9`}
+					>
+						{lead}
+					</p>
+				)
+			}
+		</div>
+
+		<ul data-reveal-group class="mt-10 grid lg:mt-14 lg:grid-cols-2 lg:gap-x-16">
+			{
+				items.map((item, i) => (
+					<li
+						class={`group grid grid-cols-[2.75rem_minmax(0,1fr)] items-baseline gap-x-4 border-t ${hairThin} py-4 text-[0.95rem] leading-relaxed font-light ${bodyText}`}
+					>
+						<span class={`academy-mark ${numColor} transition-colors duration-300 group-hover:text-academy-brass`}>
+							{String(i + 1).padStart(2, '0')}
+						</span>
+						<span>{item}</span>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

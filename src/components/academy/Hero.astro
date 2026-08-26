@@ -27,23 +27,37 @@ interface Props {
 	ctaPrimary: { label: string; href: string };
 	ctaSecondary: { label: string; href: string };
 	credsText: string;
+	/** Базовое имя снимка в public/ без расширения: <image>.avif/.webp/.png */
+	image?: string;
 	imageAlt: string;
 	scrollCue: string;
 }
 
-const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsText, imageAlt, scrollCue } =
-	Astro.props;
+const {
+	eyebrow,
+	titleLines,
+	titleAccent,
+	lead,
+	ctaPrimary,
+	ctaSecondary,
+	credsText,
+	image = 'academy-hero',
+	imageAlt,
+	scrollCue,
+} = Astro.props;
+
+const eyebrowParts = eyebrow.split('·').map((p) => p.trim()).filter(Boolean);
 ---
 
 <section data-hero class="relative isolate flex min-h-screen flex-col justify-end overflow-hidden">
 	<!-- Фон во весь экран -->
 	<div data-hero-media class="absolute inset-0 z-0 overflow-hidden">
 		<picture>
-			<source srcset="/academy-hero.avif" type="image/avif" />
-			<source srcset="/academy-hero.webp" type="image/webp" />
+			<source srcset={`/${image}.avif`} type="image/avif" />
+			<source srcset={`/${image}.webp`} type="image/webp" />
 			<img
 				data-hero-image
-				src="/academy-hero.png"
+				src={`/${image}.png`}
 				alt={imageAlt}
 				width="1600"
 				height="900"
@@ -71,13 +85,20 @@ const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsT
 	<!-- Контент -->
 	<div class="relative z-20 px-6 pt-28 pb-36 sm:px-10 lg:px-14 lg:pt-28 lg:pb-36">
 		<div class="mx-auto w-full max-w-[1400px]">
+			{/* Надзаголовок собирается из пропа: части разделены «·» в данных
+			    и разводятся косыми чертами. Раньше строка была прибита в
+			    разметке и на втором лендинге объявляла его онлайн-программой
+			    Академии. */}
 			<p data-hero-fade class="academy-mark flex flex-wrap items-center gap-x-4 gap-y-2 text-white/55">
 				<span class="h-px w-11 bg-[linear-gradient(90deg,transparent,#A58A62)]"></span>
-				<span class="text-academy-brass">Bridge Consult Academy</span>
-				<span class="text-white/25">/</span>
-				<span>Online programme</span>
-				<span class="text-white/25">/</span>
-				<span class="text-white/70">01</span>
+				{
+					eyebrowParts.map((part, i) => (
+						<>
+							{i > 0 && <span class="text-white/25">/</span>}
+							<span class={i === 0 ? 'text-academy-brass' : ''}>{part}</span>
+						</>
+					))
+				}
 			</p>
 
 			<h1
