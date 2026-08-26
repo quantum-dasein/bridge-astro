@@ -13,6 +13,8 @@
  * из-за чего aspect-ratio молча игнорируется.
  */
 
+import Badges from './Badges.astro';
+
 interface Props {
 	id?: string;
 	label: string;
@@ -97,12 +99,7 @@ const roleParts = role.split('·').map((p) => p.trim()).filter(Boolean);
 					</figure>
 				</div>
 
-				<div class="mt-8 flex flex-wrap items-center gap-3">
-					<img src="/fidic-fcce-badge.png" alt="FIDIC Certified Consulting Engineer" width="80" height="60" loading="lazy" class="h-11 w-auto max-w-[4.25rem] object-contain" />
-					<img src="/fidic-fccp-badge.png" alt="FIDIC Certified Consulting Professional" width="80" height="60" loading="lazy" class="h-11 w-auto max-w-[4.25rem] object-contain" />
-					<img src="/ciarb-logo.png" alt="CIArb — Chartered Institute of Arbitrators" width="80" height="60" loading="lazy" class="h-11 w-auto max-w-[4.25rem] object-contain" />
-					<img src="/drbf-logo.png" alt="DRBF — Dispute Resolution Board Foundation" width="80" height="60" loading="lazy" class="h-11 w-auto max-w-[4.25rem] object-contain" />
-				</div>
+				<Badges tone="light" class="mt-8" />
 			</div>
 
 			<div class="col-span-12 lg:col-span-6 lg:col-start-7">

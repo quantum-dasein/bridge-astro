@@ -19,6 +19,8 @@
  * height:auto на снимке не нужен: обе стороны заданы намеренно (h-full w-full).
  */
 
+import Badges from './Badges.astro';
+
 interface Props {
 	eyebrow: string;
 	titleLines: string[];
@@ -79,8 +81,20 @@ const eyebrowParts = eyebrow.split('·').map((p) => p.trim()).filter(Boolean);
 		class="absolute inset-0 z-10 bg-[radial-gradient(ellipse_50%_44%_at_16%_58%,rgb(201_183_156/.16),transparent_72%)]"
 	>
 	</div>
-	<!-- Никакого растворения в светлый фон: полоса выходила белым мазком
-	     поверх кадра и подписей. Кадр кончается чистым срезом. -->
+	<!-- Низ кадра. Белое растворение отсюда убрано — оно ложилось мазком
+	     поверх снимка и подписей. Вместо него кадр уходит в собственную
+	     тень и заканчивается латунной волосяной линейкой: срез становится
+	     намеренным краем, а не обрывом. -->
+	<div
+		aria-hidden="true"
+		class="absolute inset-x-0 bottom-0 z-10 h-56 bg-[linear-gradient(180deg,transparent,rgb(12_10_9/.55)_58%,rgb(12_10_9/.92))]"
+	>
+	</div>
+	<div
+		aria-hidden="true"
+		class="absolute inset-x-0 bottom-0 z-20 h-px bg-[linear-gradient(90deg,transparent,rgb(165_138_98/.75)_28%,rgb(165_138_98/.75)_72%,transparent)]"
+	>
+	</div>
 
 	<!-- Контент -->
 	<div class="relative z-20 px-6 pt-28 pb-36 sm:px-10 lg:px-14 lg:pt-28 lg:pb-36">
@@ -149,8 +163,7 @@ const eyebrowParts = eyebrow.split('·').map((p) => p.trim()).filter(Boolean);
 				data-hero-fade
 				class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-white/15 pt-6"
 			>
-				<img src="/fidic-fcce-badge.png" alt="FIDIC Certified Consulting Engineer" width="78" height="56" class="h-14 w-auto max-w-[5rem] object-contain" />
-				<img src="/fidic-fccp-badge.png" alt="FIDIC Certified Consulting Professional" width="78" height="56" class="h-14 w-auto max-w-[5rem] object-contain" />
+				<Badges tone="dark" compact />
 				<span class="max-w-[34ch] text-[0.8rem] leading-relaxed font-light text-white/60">
 					<Fragment set:html={credsText} />
 				</span>
@@ -161,7 +174,7 @@ const eyebrowParts = eyebrow.split('·').map((p) => p.trim()).filter(Boolean);
 	<!-- Индикатор прокрутки -->
 	<div
 		data-scroll-cue
-		class="absolute inset-x-0 bottom-24 z-20 hidden flex-col items-center gap-2.5 lg:flex"
+		class="absolute inset-x-0 bottom-7 z-30 hidden flex-col items-center gap-3 lg:flex"
 	>
 		<span class="text-[0.62rem] font-medium tracking-[0.3em] text-white/45 uppercase">{scrollCue}</span>
 		<span aria-hidden="true" class="hero-cue-line block h-10 w-px origin-top bg-[linear-gradient(180deg,rgb(255_255_255/.7),transparent)]"></span>

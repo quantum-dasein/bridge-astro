@@ -15,6 +15,8 @@
  * должен заканчивать страницу, а не осыпаться мелкими колонками.
  */
 
+import Badges from './Badges.astro';
+
 interface Props {
 	description: string;
 	navTitle: string;
@@ -67,12 +69,7 @@ const { description, navTitle, nav, contactsTitle, address, rights, disclaimer }
 		<div class="mt-12 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-12 lg:grid-cols-12 lg:gap-8">
 			<div class="lg:col-span-5">
 				<p class="max-w-sm text-[0.88rem] leading-relaxed font-light text-academy-paper/55">{description}</p>
-				<div class="mt-7 flex flex-wrap items-center gap-4">
-					<img src="/fidic-fcce-badge.png" alt="FIDIC Certified Consulting Engineer" width="70" height="52" loading="lazy" class="h-12 w-auto max-w-[4.5rem] object-contain" />
-					<img src="/fidic-fccp-badge.png" alt="FIDIC Certified Consulting Professional" width="70" height="52" loading="lazy" class="h-12 w-auto max-w-[4.5rem] object-contain" />
-					<img src="/ciarb-logo.png" alt="CIArb — Chartered Institute of Arbitrators" width="70" height="52" loading="lazy" class="h-12 w-auto max-w-[4.5rem] object-contain" />
-					<img src="/drbf-logo.png" alt="DRBF — Dispute Resolution Board Foundation" width="70" height="52" loading="lazy" class="h-12 w-auto max-w-[4.5rem] object-contain" />
-				</div>
+				<Badges tone="dark" class="mt-7" />
 			</div>
 
 			<div class="lg:col-span-3">
