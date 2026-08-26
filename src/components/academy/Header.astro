@@ -82,4 +82,28 @@ const langs = [
 			</a>
 		</div>
 	</div>
+
+	<!-- Навигация для телефона.
+	     Ниже lg в шапке не было вообще никакого меню: ни бургера, ни ссылок.
+	     Единственным способом добраться до раздела оставалась прокрутка всей
+	     страницы, а у предложения подрядчикам это два десятка экранов. Полоса
+	     чипов листается пальцем и едет вместе с фиксированной шапкой. -->
+	<nav class="border-t border-academy-paper/10 lg:hidden" aria-label="Разделы страницы">
+		<ul
+			class="flex snap-x gap-2 overflow-x-auto px-6 py-2.5 [scrollbar-width:none] sm:px-10 [&::-webkit-scrollbar]:hidden"
+		>
+			{
+				nav.map((item) => (
+					<li class="shrink-0 snap-start">
+						<a
+							href={item.href}
+							class="academy-mark inline-flex items-center rounded-full border border-academy-paper/15 bg-academy-paper/[0.04] px-3.5 py-1.5 text-[0.6rem] text-academy-paper/70 transition-colors duration-300 hover:border-academy-brass/60 hover:text-white"
+						>
+							{item.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</nav>
 </header>

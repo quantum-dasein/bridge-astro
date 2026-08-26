@@ -17,14 +17,14 @@ interface Props {
 const { id = 'programme', label, title, paragraphs, pullquote } = Astro.props;
 ---
 
-<section id={id} class="relative bg-academy-ground px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+<section id={id} class="relative bg-academy-ground px-6 py-16 sm:px-10 lg:px-14 lg:py-28">
 	<div class="mx-auto w-full max-w-[1400px]">
 		<div class="grid grid-cols-12 gap-y-8 border-t border-academy-ink/20 pt-8 lg:gap-x-8">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{label}</p>
 
 			<div class="col-span-12 lg:col-span-6 lg:col-start-3">
 				<h2
-					class="academy-reveal-mask max-w-[16ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance"
+					class="academy-reveal-mask max-w-[16ch] font-serif text-[clamp(1.55rem,5.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance"
 				>
 					{title}
 				</h2>

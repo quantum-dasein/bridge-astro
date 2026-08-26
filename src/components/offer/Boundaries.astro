@@ -17,17 +17,30 @@ interface Props {
 	colB: string;
 	rows: readonly { a: string; b: string }[];
 	notes: readonly string[];
+	moreLabel?: string;
+	lessLabel?: string;
 }
 
-const { id, mark, title, principle, colA, colB, rows, notes } = Astro.props;
+const {
+	id,
+	mark,
+	title,
+	principle,
+	colA,
+	colB,
+	rows,
+	notes,
+	moreLabel = 'Читать дальше',
+	lessLabel = 'Свернуть',
+} = Astro.props;
 ---
 
-<section id={id} class="relative bg-academy-ground px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+<section id={id} class="relative bg-academy-ground px-6 py-16 sm:px-10 lg:px-14 lg:py-28">
 	<div class="mx-auto w-full max-w-[1400px]">
-		<div class="grid grid-cols-12 gap-y-5 border-t border-academy-ink/20 pt-8">
+		<div class="grid grid-cols-12 gap-y-4 border-t border-academy-ink/20 pt-7 lg:gap-y-5 lg:pt-8">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
 			<h2
-				class="academy-reveal-mask col-span-12 max-w-[18ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+				class="academy-reveal-mask col-span-12 max-w-[18ch] font-serif text-[clamp(1.55rem,5.2vw,2.8rem)] leading-[1.1] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
 			>
 				{title}
 			</h2>
@@ -57,14 +70,14 @@ const { id, mark, title, principle, colA, colB, rows, notes } = Astro.props;
 			<div data-reveal-group>
 				{
 					rows.map((row) => (
-						<div class="grid gap-y-3 border-t border-academy-ink/12 py-6 lg:grid-cols-[minmax(0,1fr)_2rem_minmax(0,1fr)] lg:gap-x-8 lg:border-t-0 lg:py-0">
-							<p class="max-w-[46ch] text-[0.9rem] leading-relaxed font-light text-academy-ink lg:justify-self-end lg:border-t lg:border-academy-ink/15 lg:py-6 lg:text-right">
-								<span class="academy-mark mr-2 text-academy-brass lg:hidden">BRIDGE</span>
+						<div class="mb-3 grid gap-y-3 border-l-2 border-academy-brass/60 bg-academy-champagne/15 py-4 pr-4 pl-4 lg:mb-0 lg:grid-cols-[minmax(0,1fr)_2rem_minmax(0,1fr)] lg:gap-x-8 lg:border-l-0 lg:bg-transparent lg:p-0">
+							<p class="max-w-[46ch] text-[0.88rem] leading-relaxed font-light text-academy-ink lg:justify-self-end lg:border-t lg:border-academy-ink/15 lg:py-6 lg:text-right lg:text-[0.9rem]">
+								<span class="academy-mark mb-1 block text-academy-brass lg:hidden">{colA}</span>
 								{row.a}
 							</p>
 							<span aria-hidden="true" class="hidden lg:block"></span>
-							<p class="max-w-[46ch] text-[0.9rem] leading-relaxed font-light text-[#5F5B53] lg:border-t lg:border-academy-ink/15 lg:py-6">
-								<span class="academy-mark mr-2 text-[#8E8A81] lg:hidden">Подрядчик</span>
+							<p class="max-w-[46ch] border-t border-academy-ink/12 pt-3 text-[0.88rem] leading-relaxed font-light text-[#5F5B53] lg:border-academy-ink/15 lg:py-6 lg:pt-0 lg:text-[0.9rem]">
+								<span class="academy-mark mb-1 block text-[#8E8A81] lg:hidden">{colB}</span>
 								{row.b}
 							</p>
 						</div>
@@ -82,7 +95,8 @@ const { id, mark, title, principle, colA, colB, rows, notes } = Astro.props;
 			</div>
 		</div>
 
-		<ul data-reveal-group class="mt-12 grid gap-x-16 lg:grid-cols-2">
+		<div data-collapse data-collapsed="150" class="mt-10 lg:mt-12">
+		<ul data-reveal-group data-collapse-body class="relative grid overflow-hidden transition-[max-height] duration-700 ease-out lg:grid-cols-2 lg:gap-x-16">
 			{
 				notes.map((n) => (
 					<li class="grid grid-cols-[1.25rem_minmax(0,1fr)] items-baseline gap-x-3 border-t border-academy-ink/10 py-3.5 text-[0.82rem] leading-relaxed font-light text-[#5F5B53]">
@@ -93,6 +107,34 @@ const { id, mark, title, principle, colA, colB, rows, notes } = Astro.props;
 					</li>
 				))
 			}
+			<span
+				data-collapse-fade
+				aria-hidden="true"
+				class="pointer-events-none absolute inset-x-0 bottom-0 hidden h-16 bg-[linear-gradient(180deg,transparent,#F5F4F2)]"
+			></span>
 		</ul>
+
+		<button
+			type="button"
+			data-collapse-toggle
+			data-more={moreLabel}
+			data-less={lessLabel}
+			aria-expanded="true"
+			class="academy-mark mt-4 hidden items-center gap-2.5 text-academy-taupe-deep transition-colors duration-300 hover:text-academy-brass"
+		>
+			<span data-collapse-label>{moreLabel}</span>
+			<svg
+				data-collapse-chevron
+				class="h-3 w-3 transition-transform duration-500"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				aria-hidden="true"
+			>
+				<path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+			</svg>
+		</button>
+		</div>
 	</div>
 </section>

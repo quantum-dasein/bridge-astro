@@ -941,7 +941,7 @@ document.documentElement.style.height = '';
                         <a href="https://www.ciarb.org" target="_blank" rel="noopener" title="Chartered Institute of Arbitrators — MCIArb" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
                             <img src="../ciarb-logo.png" alt="CIArb — Chartered Institute of Arbitrators" loading="lazy" class="h-8 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
                         </a>
-                        <a href="https://www.drb.org" target="_blank" rel="noopener" title="Dispute Resolution Board Foundation" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
+                        <a href="https://www.drbf.org" target="_blank" rel="noopener" title="Dispute Resolution Board Foundation" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
                             <img src="../drbf-logo.png" alt="DRBF — Dispute Resolution Board Foundation" loading="lazy" class="h-8 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
                         </a>
                         <div class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300" title="International Construction Arbitrators Association — Next Generation">
@@ -953,10 +953,10 @@ document.documentElement.style.height = '';
                         <a href="https://www.lcia.org" target="_blank" rel="noopener" title="London Court of International Arbitration" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
                             <img src="../lcia-logo.png" alt="LCIA — Arbitration and ADR worldwide" loading="lazy" class="h-8 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
                         </a>
-                        <a href="https://fidic.org/professional-credentialing" target="_blank" rel="noopener" title="FIDIC Certified Consulting Engineer (FCCE) 2024–2027" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
+                        <a href="https://fcl.fidic.org/our-programmes/certified-engineers" target="_blank" rel="noopener" title="FIDIC Certified Consulting Engineer (FCCE) 2024–2027" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
                             <img src="../fidic-fcce-badge.png" alt="FIDIC FCCE — Certified Consulting Engineer 2024–2027" loading="lazy" class="h-10 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
                         </a>
-                        <a href="https://fidic.org/professional-credentialing" target="_blank" rel="noopener" title="FIDIC Certified Consulting Professional (FCCP) 2024–2027" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
+                        <a href="https://fcl.fidic.org/our-programmes/certified-professional" target="_blank" rel="noopener" title="FIDIC Certified Consulting Professional (FCCP) 2024–2027" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
                             <img src="../fidic-fccp-badge.png" alt="FIDIC FCCP — Certified Consulting Professional 2024–2027" loading="lazy" class="h-10 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
                         </a>
                         <a href="https://www.quality.org" target="_blank" rel="noopener" title="CQI Practitioner — IRCA, Leading Quality Since 1919" class="group flex items-center justify-center h-14 px-4 bg-gray-50 border border-gray-200 rounded-xl hover:shadow-md hover:border-bridge-taupe/40 hover:-translate-y-0.5 transition-all duration-300">
@@ -1600,7 +1600,7 @@ document.documentElement.style.height = '';
 <!-- ======================================================== -->
 <!-- FAQ SECTION: PREMIUM DESIGN                              -->
 <!-- ======================================================== -->
-<section id="faq" class="pt-32 pb-24 relative overflow-hidden font-sans border-t border-white/10" style="background:#1a1816;">
+<section id="faq" class="relative overflow-hidden font-sans border-t border-white/10" style="background:#1a1816; padding-top:8rem; padding-bottom:6rem;">
     
     <div id="vanta-faq-bg-uz" class="absolute inset-0 z-0"></div>
 
@@ -1743,7 +1743,10 @@ document.documentElement.style.height = '';
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             if (document.getElementById("vanta-faq-bg-uz")) {
-                VANTA.NET({
+                // Канвас Vanta замеряет размер один раз при инициализации, а
+                // секция растёт, когда открывают ответ. Без пересчёта нижний
+                // отступ оставался мёртвой чёрной полосой без сетки.
+                window.__faqVanta = VANTA.NET({
                     el: "#vanta-faq-bg-uz",
                     mouseControls: true,
                     touchControls: true,
@@ -1759,6 +1762,13 @@ document.documentElement.style.height = '';
                     spacing: 20.00,        
                     showDots: true
                 });
+
+                var faqSection = document.getElementById("faq");
+                if (faqSection && window.ResizeObserver) {
+                    new ResizeObserver(function () {
+                        if (window.__faqVanta && window.__faqVanta.resize) window.__faqVanta.resize();
+                    }).observe(faqSection);
+                }
             }
         });
     </script>
@@ -1767,7 +1777,7 @@ document.documentElement.style.height = '';
 <!-- ======================================================== -->
 <!-- YANGILIKLAR BLOKI                                        -->
 <!-- ======================================================== -->
-<section id="news" class="pt-24 pb-24 md:pb-32 relative overflow-hidden font-sans" style="background: #1a1816;">
+<section id="news" class="relative overflow-hidden font-sans" style="background: #1a1816; padding-top:5rem; padding-bottom:8rem;">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full pointer-events-none" style="background: rgba(138,123,102,0.12); filter: blur(120px);"></div>
     <div class="absolute bottom-0 right-0 w-80 h-80 rounded-full pointer-events-none" style="background: rgba(138,123,102,0.08); filter: blur(80px);"></div>
 
@@ -2203,7 +2213,7 @@ document.documentElement.style.height = '';
             
             <div class="lg:col-span-5">
                 <a href="/UZ/" class="mb-4 md:mb-6" style="display:flex;width:max-content;align-items:flex-start;" aria-label="BRIDGE Consult">
-                    <img src="/bridge%202.svg" alt="BRIDGE Consult" width="200" height="54" loading="lazy" class="h-11 w-auto object-contain md:h-12" style="filter: brightness(0) invert(1);">
+                    <img src="/bridge%202.svg" alt="BRIDGE Consult" width="200" height="54" loading="lazy" class="w-auto object-contain" style="filter: brightness(0) invert(1); height:2.75rem;">
                 </a>
                 <p class="text-gray-400 font-light leading-relaxed max-w-sm mb-6 md:mb-8 text-sm md:text-base">Shartnoma injiniringi va nizolarni hal qilish bo'yicha ishonchli hamkoringiz. Huquqiy ishonchlilik va loyihalarni muvaffaqiyatli amalga oshirish o'rtasida ko'priklar quramiz.</p>
             </div>

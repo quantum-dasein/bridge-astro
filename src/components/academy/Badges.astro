@@ -6,8 +6,11 @@
  * на фоне как случайные картинки разного размера и веса. Теперь каждый знак
  * сидит в своей рамке одинаковой высоты и ведёт на страницу организации.
  *
- * Адреса взяты те же, что уже опубликованы на основном сайте
- * (public/index.html) — новых я не выдумывал.
+ * Адреса проверены запросами 26.08.2026. Прежние вели в никуда:
+ * fidic.org/professional-credentialing отдаёт 404 — FIDIC перенёс
+ * аккредитацию на fcl.fidic.org, а drb.org редиректит на drbf.org и по
+ * https сам не отвечает. Обе ссылки поправлены и здесь, и на статических
+ * страницах основного сайта.
  *
  * tone="light" — для светлых секций, tone="dark" — для карбона и снимков.
  */
@@ -26,13 +29,13 @@ const items = [
 		src: '/fidic-fcce-badge.png',
 		alt: 'FIDIC Certified Consulting Engineer',
 		title: 'FIDIC Certified Consulting Engineer (FCCE)',
-		href: 'https://fidic.org/professional-credentialing',
+		href: 'https://fcl.fidic.org/our-programmes/certified-engineers',
 	},
 	{
 		src: '/fidic-fccp-badge.png',
 		alt: 'FIDIC Certified Consulting Professional',
 		title: 'FIDIC Certified Consulting Professional (FCCP)',
-		href: 'https://fidic.org/professional-credentialing',
+		href: 'https://fcl.fidic.org/our-programmes/certified-professional',
 	},
 	{
 		src: '/ciarb-logo.png',
@@ -44,7 +47,7 @@ const items = [
 		src: '/drbf-logo.png',
 		alt: 'DRBF — Dispute Resolution Board Foundation',
 		title: 'Dispute Resolution Board Foundation',
-		href: 'https://www.drb.org',
+		href: 'https://www.drbf.org',
 	},
 ];
 

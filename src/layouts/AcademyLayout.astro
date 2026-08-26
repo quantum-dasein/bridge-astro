@@ -157,7 +157,62 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 				update();
 			}
 
-			// 3. Магнитные кнопки: притягиваются к курсору в пределах своей зоны.
+			// 3. Сворачивание длинных блоков — биографии, списка аккредитаций,
+			//    оговорок о границах ответственности.
+			//    Только на узких экранах: на десктопе всё умещается в разворот.
+			//    Разметка приезжает раскрытой; не выполнился скрипт — текст остался
+			//    на месте, кнопка не показалась. Свёрнутое не удаляется из DOM —
+			//    его подрезает max-height, поэтому поиск по странице его находит.
+			const narrow = matchMedia('(max-width: 1023px)');
+
+			document.querySelectorAll<HTMLElement>('[data-collapse]').forEach((box) => {
+				const body = box.querySelector<HTMLElement>('[data-collapse-body]');
+				const toggle = box.querySelector<HTMLButtonElement>('[data-collapse-toggle]');
+				const label = box.querySelector<HTMLElement>('[data-collapse-label]');
+				const fade = box.querySelector<HTMLElement>('[data-collapse-fade]');
+				const chevron = box.querySelector<HTMLElement>('[data-collapse-chevron]');
+				if (!body || !toggle || !label || !fade || !chevron) return;
+
+				const collapsed = Number(box.dataset.collapsed ?? 168);
+				let open = false;
+
+				const apply = () => {
+					if (!narrow.matches) {
+						body.style.maxHeight = '';
+						toggle.classList.add('hidden');
+						toggle.classList.remove('inline-flex');
+						fade.classList.add('hidden');
+						return;
+					}
+					// Прятать нечего, если блок и так короче порога.
+					if (body.scrollHeight <= collapsed + 24) {
+						body.style.maxHeight = '';
+						toggle.classList.add('hidden');
+						fade.classList.add('hidden');
+						return;
+					}
+					toggle.classList.remove('hidden');
+					toggle.classList.add('inline-flex');
+					body.style.maxHeight = open ? body.scrollHeight + 'px' : collapsed + 'px';
+					fade.classList.toggle('hidden', open);
+					label.textContent = open ? (toggle.dataset.less ?? '') : (toggle.dataset.more ?? '');
+					toggle.setAttribute('aria-expanded', String(open));
+					chevron.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+				};
+
+				toggle.addEventListener('click', () => {
+					open = !open;
+					apply();
+					// Свернули — возвращаем взгляд к началу блока, иначе экран улетает
+					// вниз на высоту схлопнутого текста.
+					if (!open) box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+				});
+				narrow.addEventListener('change', apply);
+				addEventListener('resize', apply);
+				apply();
+			});
+
+			// 4. Магнитные кнопки: притягиваются к курсору в пределах своей зоны.
 			if (!reduced && matchMedia('(pointer: fine)').matches) {
 				document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach((el) => {
 					el.style.transition = 'translate .35s cubic-bezier(.22,.61,.36,1)';

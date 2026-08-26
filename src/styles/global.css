@@ -188,6 +188,15 @@
 }
 
 
+/* Переход по якорю не должен прятать заголовок под фиксированную шапку.
+   На телефоне шапка выше: под строкой с логотипом едет полоса разделов. */
+section[id] {
+  scroll-margin-top: 8.5rem;
+}
+@media (min-width: 1024px) {
+  section[id] { scroll-margin-top: 6rem; }
+}
+
 html,
 body {
   margin: 0;

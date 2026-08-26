@@ -3,10 +3,17 @@
  * Нумерованный перечень «направление → что ведём».
  *
  * Универсальный блок предложения: им набраны разделы документооборота,
- * финансов, права, порядок работы и причины выбора. В коммерческом
- * предложении это таблицы; на странице таблица была бы нечитаемой на
- * телефоне, поэтому это спецификация на волосяных линейках — номер,
- * название направления, описание.
+ * финансов, права, порядок работы и причины выбора.
+ *
+ * АДАПТИВНОСТЬ. В коммерческом предложении это таблицы на 9–11 строк с
+ * длинными описаниями. Развёрнутыми они дают на телефоне экран сплошного
+ * текста, который никто не читает. Поэтому строка — это <details>: на узком
+ * экране видно только номер и название направления, описание раскрывается
+ * по нажатию. От lg описания раскрыты всегда и summary перестаёт быть
+ * кликабельным — на десктопе это снова спецификация, а не аккордеон.
+ *
+ * Раскрытие сделано на <details>, а не на скрипте: без JS страница остаётся
+ * рабочей, а поиск по странице находит текст внутри закрытых строк.
  *
  * dark=true переворачивает секцию на карбон: три светлых перечня подряд
  * слиплись бы в одну простыню.
@@ -35,19 +42,19 @@ const bodyText = dark ? 'text-academy-paper/70' : 'text-[#4A453D]';
 const numColor = dark ? 'text-academy-paper/35' : 'text-[#8E8A81]';
 ---
 
-<section id={id} class={`${section} px-6 py-20 sm:px-10 lg:px-14 lg:py-28`}>
+<section id={id} class={`${section} px-6 py-16 sm:px-10 lg:px-14 lg:py-28`}>
 	<div class="mx-auto w-full max-w-[1400px]">
-		<div class={`grid grid-cols-12 gap-y-5 border-t ${hair} pt-8`}>
+		<div class={`grid grid-cols-12 gap-y-4 border-t ${hair} pt-7 lg:gap-y-5 lg:pt-8`}>
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
 			<h2
-				class="academy-reveal-mask col-span-12 max-w-[20ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+				class="academy-reveal-mask col-span-12 max-w-[20ch] font-serif text-[clamp(1.55rem,5.2vw,2.8rem)] leading-[1.1] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
 			>
 				{title}
 			</h2>
 			{
 				lead && (
 					<p
-						class={`academy-reveal col-span-12 max-w-[44ch] text-[0.92rem] leading-relaxed font-light ${muted} lg:col-span-4 lg:col-start-9`}
+						class={`academy-reveal col-span-12 max-w-[44ch] text-[0.9rem] leading-relaxed font-light ${muted} lg:col-span-4 lg:col-start-9`}
 					>
 						{lead}
 					</p>
@@ -55,22 +62,45 @@ const numColor = dark ? 'text-academy-paper/35' : 'text-[#8E8A81]';
 			}
 		</div>
 
-		<div data-reveal-group class="mt-10 lg:mt-14">
+		<div data-reveal-group class="offer-spec mt-8 lg:mt-14">
 			{
 				rows.map((row, i) => (
-					<div
-						class={`group grid gap-x-6 gap-y-2 border-t ${hairThin} py-6 lg:grid-cols-[3.5rem_minmax(0,17rem)_minmax(0,1fr)] lg:gap-x-10`}
-					>
-						{numbered ? (
-							<span class={`academy-mark ${numColor} transition-colors duration-300 group-hover:text-academy-brass`}>
-								{String(i + 1).padStart(2, '0')}
+					<details class={`group border-t ${hairThin}`} name={id ? `spec-${id}` : undefined}>
+						<summary
+							class="grid cursor-pointer list-none grid-cols-[2.75rem_minmax(0,1fr)_1.5rem] items-baseline gap-x-4 py-5 lg:grid-cols-[3.5rem_minmax(0,17rem)_minmax(0,1fr)] lg:cursor-default lg:gap-x-10 lg:py-6"
+						>
+							{numbered ? (
+								<span class={`academy-mark ${numColor} transition-colors duration-300 group-open:text-academy-brass`}>
+									{String(i + 1).padStart(2, '0')}
+								</span>
+							) : (
+								<span aria-hidden="true" />
+							)}
+							<h3 class="text-[0.98rem] leading-snug font-medium lg:text-[1rem]">{row.name}</h3>
+							{/* На десктопе в третьей колонке лежит само описание,
+							    на телефоне — только шеврон раскрытия. */}
+							<span
+								aria-hidden="true"
+								class="justify-self-end self-center text-academy-brass transition-transform duration-300 group-open:rotate-180 lg:hidden"
+							>
+								<svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+								</svg>
 							</span>
-						) : (
-							<span aria-hidden="true" class="hidden lg:block" />
-						)}
-						<h3 class="text-[1rem] leading-snug font-medium">{row.name}</h3>
-						<p class={`max-w-[70ch] text-[0.9rem] leading-relaxed font-light ${bodyText}`}>{row.text}</p>
-					</div>
+							<p
+								class={`offer-spec-desk col-span-3 hidden max-w-[70ch] text-[0.9rem] leading-relaxed font-light lg:col-span-1 lg:col-start-3 lg:block ${bodyText}`}
+							>
+								{row.text}
+							</p>
+						</summary>
+
+						{/* Мобильное раскрытие. На lg скрыто — там текст уже в summary. */}
+						<p
+							class={`col-span-2 max-w-[70ch] pr-8 pb-5 pl-[3.75rem] text-[0.9rem] leading-relaxed font-light lg:hidden ${bodyText}`}
+						>
+							{row.text}
+						</p>
+					</details>
 				))
 			}
 		</div>
@@ -84,3 +114,21 @@ const numColor = dark ? 'text-academy-paper/35' : 'text-[#8E8A81]';
 		}
 	</div>
 </section>
+
+<style>
+	/* Убираем родные маркеры <summary> во всех движках. */
+	.offer-spec summary::-webkit-details-marker {
+		display: none;
+	}
+	.offer-spec summary::marker {
+		content: '';
+	}
+
+	/* От lg строка перестаёт быть аккордеоном: описание видно всегда,
+	   нажатие ничего не делает, курсор обычный. */
+	@media (min-width: 1024px) {
+		.offer-spec summary {
+			pointer-events: none;
+		}
+	}
+</style>

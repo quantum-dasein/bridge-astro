@@ -18,14 +18,14 @@ interface Props {
 const { id, mark, title, lead, models, modelsNote, note } = Astro.props;
 ---
 
-<section id={id} class="relative bg-academy-carbon px-6 py-20 text-academy-paper sm:px-10 lg:px-14 lg:py-28">
+<section id={id} class="relative bg-academy-carbon px-6 py-16 text-academy-paper sm:px-10 lg:px-14 lg:py-28">
 	<div class="mx-auto w-full max-w-[1400px]">
 		<div class="grid grid-cols-12 gap-y-8 border-t border-academy-paper/20 pt-8 lg:gap-x-8">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
 
 			<div class="col-span-12 lg:col-span-5 lg:col-start-3">
 				<h2
-					class="academy-reveal-mask max-w-[16ch] font-serif text-[clamp(1.9rem,3.4vw,3rem)] leading-[1.06] font-normal tracking-[-0.03em] text-balance"
+					class="academy-reveal-mask max-w-[16ch] font-serif text-[clamp(1.6rem,5.4vw,3rem)] leading-[1.08] font-normal tracking-[-0.03em] text-balance"
 				>
 					{title}
 				</h2>

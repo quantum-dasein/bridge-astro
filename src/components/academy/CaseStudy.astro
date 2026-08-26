@@ -18,7 +18,7 @@ interface Props {
 const { label, title, lead, docTitle, clauses, blocks } = Astro.props;
 ---
 
-<section class="relative isolate overflow-hidden bg-academy-carbon px-6 py-20 text-academy-paper sm:px-10 lg:px-14 lg:py-28">
+<section class="relative isolate overflow-hidden bg-academy-carbon px-6 py-16 text-academy-paper sm:px-10 lg:px-14 lg:py-28">
 	<div aria-hidden="true" class="absolute inset-0 -z-10">
 		<picture>
 			<source srcset="/academy-atmosphere.avif" type="image/avif" />
@@ -39,7 +39,7 @@ const { label, title, lead, docTitle, clauses, blocks } = Astro.props;
 		<div class="grid grid-cols-12 gap-y-5 border-t border-academy-paper/25 pt-8">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{label}</p>
 			<h2
-				class="academy-reveal-mask col-span-12 max-w-[20ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+				class="academy-reveal-mask col-span-12 max-w-[20ch] font-serif text-[clamp(1.55rem,5.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
 			>
 				{title}
 			</h2>

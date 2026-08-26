@@ -22,12 +22,12 @@ interface Props {
 const { id = 'editions', mark, title, lead, rows } = Astro.props;
 ---
 
-<section id={id} class="relative bg-academy-ground px-6 py-20 sm:px-10 lg:px-14 lg:py-28">
+<section id={id} class="relative bg-academy-ground px-6 py-16 sm:px-10 lg:px-14 lg:py-28">
 	<div class="mx-auto w-full max-w-[1400px]">
-		<div class="grid grid-cols-12 gap-y-5 border-t border-academy-ink/20 pt-8">
+		<div class="grid grid-cols-12 gap-y-4 border-t border-academy-ink/20 pt-7 lg:gap-y-5 lg:pt-8">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{mark}</p>
 			<h2
-				class="academy-reveal-mask col-span-12 max-w-[18ch] font-serif text-[clamp(1.8rem,3.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
+				class="academy-reveal-mask col-span-12 max-w-[18ch] font-serif text-[clamp(1.55rem,5.2vw,2.8rem)] leading-[1.08] font-normal tracking-[-0.025em] text-balance lg:col-span-5 lg:col-start-3"
 			>
 				{title}
 			</h2>
