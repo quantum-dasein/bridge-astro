@@ -128,19 +128,27 @@
    к прокрутке средствами самого CSS (animation-timeline: view()). Браузер
    без поддержки просто показывает текст статично.
 
+   Привязка к прокрутке, а не ко времени, даёт то, что и нужно: на обратном
+   пути движение отыгрывается назад — блок складывается ровно так же, как
+   раскрывался. Конец диапазона задан в пикселях, а не в процентах cover:
+   у процентов знаменатель — высота элемента, и высокая форма или длинный
+   список стояли полупрозрачными, даже когда целиком были в кадре. Пиксели
+   дают всем блокам одинаковую скорость появления.
+
    Три роли, чтобы движение читалось одним почерком:
      .academy-reveal       — абзацы и блоки: всплывают снизу;
      .academy-reveal-mask  — заголовки: открываются шторкой снизу вверх;
      [data-reveal-group]   — список: дети идут каскадом (сдвиг диапазона). */
 
 @keyframes academy-rise {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: none; }
+  from { opacity: 0; transform: translateY(38px); filter: blur(6px); }
+  55%  { opacity: 1; }
+  to   { opacity: 1; transform: none; filter: blur(0); }
 }
 
 @keyframes academy-wipe {
-  from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(14px); }
-  to { opacity: 1; clip-path: inset(0 0 0 0); transform: none; }
+  from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translateY(26px); }
+  to   { opacity: 1; clip-path: inset(0 0 0 0);   transform: none; }
 }
 
 @supports (animation-timeline: view()) {
@@ -148,23 +156,25 @@
   [data-reveal-group] > *:not([aria-hidden='true']) {
     animation: academy-rise linear both;
     animation-timeline: view();
-    animation-range: entry 4% cover 26%;
+    animation-range: entry 0% entry 340px;
+    will-change: opacity, transform;
   }
 
   .academy-reveal-mask {
     animation: academy-wipe linear both;
     animation-timeline: view();
-    animation-range: entry 4% cover 30%;
+    animation-range: entry 0% entry 300px;
+    will-change: opacity, clip-path, transform;
   }
 
   /* Каскад: каждый следующий ребёнок трогается чуть позже по той же
      прокрутке. Ступеней шесть — дальше задержка перестаёт читаться и
      превращается в ожидание. */
-  [data-reveal-group] > *:nth-child(2) { animation-range: entry 8% cover 30%; }
-  [data-reveal-group] > *:nth-child(3) { animation-range: entry 12% cover 34%; }
-  [data-reveal-group] > *:nth-child(4) { animation-range: entry 16% cover 38%; }
-  [data-reveal-group] > *:nth-child(5) { animation-range: entry 20% cover 42%; }
-  [data-reveal-group] > *:nth-child(n + 6) { animation-range: entry 24% cover 46%; }
+  [data-reveal-group] > *:nth-child(2) { animation-range: entry 60px entry 400px; }
+  [data-reveal-group] > *:nth-child(3) { animation-range: entry 120px entry 460px; }
+  [data-reveal-group] > *:nth-child(4) { animation-range: entry 180px entry 520px; }
+  [data-reveal-group] > *:nth-child(5) { animation-range: entry 240px entry 580px; }
+  [data-reveal-group] > *:nth-child(n + 6) { animation-range: entry 300px entry 640px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -177,6 +187,7 @@
     opacity: 1;
     transform: none;
     clip-path: none;
+    filter: none;
   }
 }
 

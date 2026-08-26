@@ -32,7 +32,7 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 ---
 
 <!doctype html>
-<html lang={lang} class="scroll-smooth motion-reduce:scroll-auto">
+<html lang={lang} class="scroll-smooth motion-reduce:scroll-auto" style="color-scheme: light">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -41,6 +41,11 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 		<meta name="description" content={description} />
 		<link rel="canonical" href={pageUrl} />
 		<meta name="theme-color" content="#F5F4F2" />
+		<!-- Без этого Chrome/Brave считают страницу «не объявившей схему» и
+		     применяют к ней авто-тёмную тему: светлые секции инвертируются,
+		     текст выцветает, растворение первого экрана превращается в
+		     белую полосу. Объявление схемы отключает подмену. -->
+		<meta name="color-scheme" content="light" />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />

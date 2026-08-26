@@ -65,12 +65,8 @@ const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsT
 		class="absolute inset-0 z-10 bg-[radial-gradient(ellipse_50%_44%_at_16%_58%,rgb(201_183_156/.16),transparent_72%)]"
 	>
 	</div>
-	<!-- Растворение в светлый фон страницы -->
-	<div
-		aria-hidden="true"
-		class="absolute inset-x-0 bottom-0 z-10 h-40 bg-[linear-gradient(180deg,transparent,rgb(245_244_242/.85)_82%,#F5F4F2)]"
-	>
-	</div>
+	<!-- Никакого растворения в светлый фон: полоса выходила белым мазком
+	     поверх кадра и подписей. Кадр кончается чистым срезом. -->
 
 	<!-- Контент -->
 	<div class="relative z-20 px-6 pt-28 pb-36 sm:px-10 lg:px-14 lg:pt-28 lg:pb-36">
@@ -85,7 +81,7 @@ const { eyebrow, titleLines, titleAccent, lead, ctaPrimary, ctaSecondary, credsT
 			</p>
 
 			<h1
-				class="mt-7 max-w-[16ch] font-serif text-[clamp(2.6rem,6.4vw,5.6rem)] leading-[0.96] font-medium tracking-[-0.035em] text-white"
+				class="mt-7 max-w-[19ch] font-serif text-[clamp(2.1rem,5.3vw,4.9rem)] leading-[0.98] font-medium tracking-[-0.035em] text-white"
 			>
 				{
 					titleLines.map((line) => (

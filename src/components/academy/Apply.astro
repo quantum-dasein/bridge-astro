@@ -1,9 +1,12 @@
 ---
 /**
- * Финальный экран-заявка на карбоне.
+ * Экран-заявка на светлом.
  *
- * Не карточка с формой, а целая тёмная секция: слева крупное утверждение,
- * справа форма на прозрачных полях с волосяными линейками вместо рамок.
+ * Раньше секция была карбоновой и шла третьей тёмной подряд — после
+ * финального призыва и перед тёмным футером. Три чёрных экрана встык
+ * читались как одна мутная плита, а поля формы на них проваливались.
+ * Заявка вынесена на бумагу: она последняя, где от человека нужно
+ * действие, и должна быть самой светлой точкой страницы.
  *
  * Отправляется на собственную функцию /api/apply (см. api/apply.js): она
  * рассылает заявку в Telegram и, если задан FORMSPREE_ID, дублирует на почту.
@@ -39,13 +42,13 @@ const { id = 'apply', label, title, lead, list, mailNote, source, submit, states
 	Astro.props;
 
 const inputClass =
-	'w-full min-w-0 border-0 border-b border-academy-paper/25 bg-transparent px-0 py-3 text-[0.95rem] font-light tracking-normal text-academy-paper normal-case transition-colors duration-300 outline-none placeholder:text-academy-paper/30 focus:border-academy-brass';
-const labelClass = 'grid min-w-0 gap-1 academy-mark text-academy-paper/40';
+	'w-full min-w-0 border-0 border-b border-academy-ink/20 bg-transparent px-0 py-3 text-[0.95rem] font-light tracking-normal text-academy-ink normal-case transition-colors duration-300 outline-none placeholder:text-[#9A968D] focus:border-academy-brass';
+const labelClass = 'grid min-w-0 gap-1 academy-mark text-academy-taupe';
 ---
 
-<section id={id} class="relative bg-academy-carbon px-6 py-20 text-academy-paper sm:px-10 lg:px-14 lg:py-28">
+<section id={id} class="relative bg-academy-ground px-6 py-20 text-academy-ink sm:px-10 lg:px-14 lg:py-28">
 	<div class="mx-auto w-full max-w-[1400px]">
-		<div class="grid grid-cols-12 gap-y-12 border-t border-academy-paper/20 pt-8 lg:gap-x-8">
+		<div class="grid grid-cols-12 gap-y-12 border-t border-academy-ink/20 pt-8 lg:gap-x-8">
 			<p class="academy-mark col-span-12 text-academy-brass lg:col-span-2">{label}</p>
 
 			<div class="col-span-12 lg:col-span-5 lg:col-start-3">
@@ -54,26 +57,26 @@ const labelClass = 'grid min-w-0 gap-1 academy-mark text-academy-paper/40';
 				>
 					{title}
 				</h2>
-				<p class="academy-reveal mt-6 max-w-[44ch] text-[0.95rem] leading-relaxed font-light text-academy-paper/60">
+				<p class="academy-reveal mt-6 max-w-[44ch] text-[0.95rem] leading-relaxed font-light text-[#5F5B53]">
 					{lead}
 				</p>
 
 				<ul data-reveal-group class="mt-9">
 					{
 						list.map((item, i) => (
-							<li class="grid grid-cols-[2.5rem_minmax(0,1fr)] items-baseline gap-x-4 border-t border-academy-paper/12 py-3.5 text-[0.88rem] font-light text-academy-paper/75">
-								<span class="academy-mark text-academy-paper/30">{String(i + 1).padStart(2, '0')}</span>
+							<li class="grid grid-cols-[2.5rem_minmax(0,1fr)] items-baseline gap-x-4 border-t border-academy-ink/12 py-3.5 text-[0.88rem] font-light text-[#4A453D]">
+								<span class="academy-mark text-[#8E8A81]">{String(i + 1).padStart(2, '0')}</span>
 								<span>{item}</span>
 							</li>
 						))
 					}
 				</ul>
 
-				<p class="mt-7 text-[0.88rem] font-light text-academy-paper/60">
+				<p class="mt-7 text-[0.88rem] font-light text-[#5F5B53]">
 					{mailNote}{' '}
 					<a
 						href="mailto:info@bridgeconsult.uz"
-						class="text-academy-brass underline-offset-4 transition-colors hover:text-white hover:underline"
+						class="text-academy-taupe-deep underline-offset-4 transition-colors hover:text-academy-brass hover:underline"
 						>info@bridgeconsult.uz</a
 					>
 				</p>
@@ -111,21 +114,21 @@ const labelClass = 'grid min-w-0 gap-1 academy-mark text-academy-paper/40';
 				<label class={labelClass}>
 					{fields.programme.label}
 					<select name="programme" class={inputClass}>
-						{fields.programme.options.map((o: string) => <option class="bg-academy-carbon">{o}</option>)}
+						{fields.programme.options.map((o: string) => <option class="bg-white">{o}</option>)}
 					</select>
 				</label>
 
 				<label class={labelClass}>
 					{fields.participants.label}
 					<select name="participants" class={inputClass}>
-						{fields.participants.options.map((o: string) => <option class="bg-academy-carbon">{o}</option>)}
+						{fields.participants.options.map((o: string) => <option class="bg-white">{o}</option>)}
 					</select>
 				</label>
 
 				<label class={labelClass}>
 					{fields.language.label}
 					<select name="language" class={inputClass}>
-						{fields.language.options.map((o: string) => <option class="bg-academy-carbon">{o}</option>)}
+						{fields.language.options.map((o: string) => <option class="bg-white">{o}</option>)}
 					</select>
 				</label>
 
@@ -152,7 +155,7 @@ const labelClass = 'grid min-w-0 gap-1 academy-mark text-academy-paper/40';
 
 				<button
 					type="submit"
-					class="mt-2 inline-flex min-h-[3.4rem] w-full cursor-pointer items-center justify-center rounded-full bg-academy-champagne px-8 text-[0.75rem] font-semibold tracking-[0.16em] text-[#17130A] uppercase transition-colors duration-300 hover:bg-white disabled:cursor-default disabled:opacity-50"
+					class="mt-2 inline-flex min-h-[3.4rem] w-full cursor-pointer items-center justify-center rounded-full bg-academy-carbon px-8 text-[0.75rem] font-semibold tracking-[0.16em] text-academy-paper uppercase transition-colors duration-300 hover:bg-academy-taupe-deep disabled:cursor-default disabled:opacity-50"
 				>
 					{submit}
 				</button>
@@ -161,7 +164,7 @@ const labelClass = 'grid min-w-0 gap-1 academy-mark text-academy-paper/40';
 					id="academyFormNote"
 					role="status"
 					aria-live="polite"
-					class="min-h-[1.4em] text-[0.78rem] leading-relaxed font-light text-academy-paper/60"
+					class="min-h-[1.4em] text-[0.78rem] leading-relaxed font-light text-[#5F5B53]"
 				>
 				</p>
 			</form>

@@ -12,7 +12,7 @@
 export const academyRu = {
 	lang: 'ru',
 	meta: {
-		title: 'Онлайн-практикум по управлению контрактами FIDIC — BRIDGE Consult Academy',
+		title: 'Продвинутый контракт-менеджмент — онлайн-программа BRIDGE Consult Academy',
 		description:
 			'18 модулей и более 40 практических кейсов по редакциям FIDIC 1999 и 2017. Живые занятия онлайн, запись остаётся у участника, узбекские субтитры.',
 	},
@@ -25,12 +25,12 @@ export const academyRu = {
 		{ label: 'Преподаватель', href: '#trainer' },
 	],
 	cta: 'Оставить заявку',
-	langLinks: { ru: '/academy/v2/', en: '/academy/en/', uz: '/academy/uz/' },
+	langLinks: { ru: '/academy/', en: '/academy/en/', uz: '/academy/uz/' },
 
 	hero: {
 		eyebrow: 'BRIDGE Consult Academy · Онлайн',
-		titleLines: ['Управление', 'контрактами FIDIC'],
-		titleAccent: 'на практике',
+		titleLines: ['Продвинутый', 'контракт-менеджмент'],
+		titleAccent: 'онлайн',
 		lead: 'Не чтение условий контракта пункт за пунктом, а разбор ситуаций, которые на площадке превращаются в требования, задержки и споры. Редакции 1999 и 2017 — параллельно.',
 		ctaPrimary: { label: 'Оставить заявку', href: '#apply' },
 		ctaSecondary: { label: 'Смотреть 18 модулей', href: '#modules' },
@@ -344,7 +344,7 @@ export const academyRu = {
 			'Счёт и договор для оплаты по безналичному расчёту',
 		],
 		mailNote: 'Либо напишите напрямую:',
-		source: 'Онлайн-практикум FIDIC (BRIDGE Consult Academy)',
+		source: 'Продвинутый контракт-менеджмент (BRIDGE Consult Academy)',
 		submit: 'Отправить заявку',
 		states: {
 			sending: 'Отправляем...',
@@ -388,13 +388,13 @@ export const academyRu = {
 
 	footer: {
 		description:
-			'Практическая программа по управлению контрактами FIDIC для государственных заказчиков, инженеров, консультантов и подрядчиков Узбекистана.',
+			'«Продвинутый контракт-менеджмент» — практическая программа по управлению контрактами, претензиям, анализу задержек и разрешению споров для заказчиков, инженеров, консультантов и подрядчиков Узбекистана.',
 		navTitle: 'Навигация',
 		nav: [
 			{ label: 'Основной сайт', href: 'https://www.bridgeconsult.uz/' },
 			{ label: 'Проекты', href: 'https://www.bridgeconsult.uz/projects.html' },
 			{ label: 'Новости', href: 'https://www.bridgeconsult.uz/news/' },
-			{ label: 'Тренинги FIDIC', href: 'https://www.bridgeconsult.uz/#trainings' },
+			{ label: 'Обучение', href: 'https://www.bridgeconsult.uz/#trainings' },
 			{ label: 'СМИ и публикации', href: 'https://www.bridgeconsult.uz/#media' },
 		],
 		contactsTitle: 'Контактные данные',
@@ -402,7 +402,7 @@ export const academyRu = {
 			'100180, Республика Узбекистан,<br>г. Ташкент, Юнусабадский район,<br>ул. Ахмада Дониша, 12 квартал, 20А',
 		rights: 'Все права защищены.',
 		disclaimer:
-			'FIDIC® — товарный знак Международной федерации инженеров-консультантов. BRIDGE Consult проводит собственную обучающую программу и не выступает от имени FIDIC.',
+			'Все авторские права на стандартные формы контрактов FIDIC, официальные публикации, логотипы и иные объекты интеллектуальной собственности принадлежат Fédération Internationale des Ingénieurs-Conseils (FIDIC) и/или соответствующим правообладателям. Положения контрактов приводятся в виде ссылок на соответствующие подпункты и кратких фрагментов, необходимых для учебного разбора. Программа, кейсы, рабочие формы и методические разработки являются интеллектуальной собственностью BRIDGE Consult LLC. BRIDGE Consult проводит собственную обучающую программу и не выступает от имени FIDIC.',
 	},
 } as const;
 

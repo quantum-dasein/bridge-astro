@@ -60,7 +60,7 @@ const { id = 'trainer', label, name, role, photoAlt, bio, credsTitle, creds, cvL
 				{
 					bio.map((p, i) => (
 						<p
-							class={`mt-4 leading-relaxed font-light ${i === 0 ? 'text-[1rem] text-academy-ink' : 'text-[0.9rem] text-[#5C5449]'}`}
+							class={`mt-4 leading-relaxed font-light ${i === 0 ? 'text-[1rem] text-academy-ink' : 'text-[0.9rem] text-[#4A453D]'}`}
 						>
 							{p}
 						</p>
@@ -72,7 +72,7 @@ const { id = 'trainer', label, name, role, photoAlt, bio, credsTitle, creds, cvL
 					{
 						creds.map((c) => (
 							<li
-								class="border-t border-academy-ink/12 py-2.5 text-[0.82rem] leading-snug font-light text-[#5C5449] [&_a:hover]:underline [&_a]:text-academy-taupe-deep"
+								class="border-t border-academy-ink/12 py-2.5 text-[0.82rem] leading-snug font-light text-[#4A453D] [&_a:hover]:underline [&_a]:text-academy-taupe-deep"
 								set:html={c}
 							/>
 						))
