@@ -76,6 +76,13 @@ const projectIndexAlternates = {
 	'x-default': '/projects.html',
 };
 
+const contractSupportAlternates = {
+	ru: '/contract-support/',
+	en: '/contract-support/en/',
+	uz: '/contract-support/uz/',
+	'x-default': '/contract-support/',
+};
+
 const academyAlternates = {
 	ru: '/academy/',
 	en: '/academy/en/',
@@ -116,6 +123,11 @@ entries.push(urlEntry({
 entries.push(urlEntry({ loc: '/academy/', alternates: academyAlternates, changefreq: 'weekly', priority: '0.9' }));
 entries.push(urlEntry({ loc: '/academy/en/', alternates: academyAlternates, changefreq: 'weekly', priority: '0.8' }));
 entries.push(urlEntry({ loc: '/academy/uz/', alternates: academyAlternates, changefreq: 'weekly', priority: '0.8' }));
+
+// Лендинг договорного сопровождения — предложение подрядчикам.
+entries.push(urlEntry({ loc: '/contract-support/', alternates: contractSupportAlternates, changefreq: 'monthly', priority: '0.9' }));
+entries.push(urlEntry({ loc: '/contract-support/en/', alternates: contractSupportAlternates, changefreq: 'monthly', priority: '0.8' }));
+entries.push(urlEntry({ loc: '/contract-support/uz/', alternates: contractSupportAlternates, changefreq: 'monthly', priority: '0.8' }));
 
 // Лендинг Summer School Georgia 2026 (программа 12-20 августа 2026).
 // Страница живёт в public/ отдельно от Astro, поэтому её нужно перечислить руками.
