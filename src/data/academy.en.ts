@@ -327,6 +327,8 @@ export const academyEn = {
 			'PCQI — Practitioner of the Chartered Quality Institute (CQI), UK',
 			'ICAgile Certified Professional (ICP)',
 		],
+		moreLabel: 'Read more',
+		lessLabel: 'Show less',
 		cvLabel: 'Download CV (PDF)',
 	},
 

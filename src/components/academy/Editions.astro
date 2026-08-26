@@ -38,48 +38,67 @@ const { id = 'editions', mark, title, lead, rows } = Astro.props;
 			</p>
 		</div>
 
-		<!-- Шапка колонок -->
-		<div class="mt-12 hidden grid-cols-[minmax(0,1fr)_9rem_minmax(0,1fr)] items-end gap-x-8 lg:grid">
-			<p class="text-right font-serif text-[clamp(1.6rem,2.6vw,2.3rem)] leading-none font-normal text-[#8B887F]">
-				FIDIC 1999
-			</p>
-			<span></span>
-			<p class="font-serif text-[clamp(1.6rem,2.6vw,2.3rem)] leading-none font-normal text-academy-ink">
-				FIDIC 2017
-			</p>
-		</div>
-
-		<!-- Сопоставление. Линейка посередине сплошная, разрывается только
-		     под подписью предмета сравнения. -->
-		<div data-reveal-group class="relative mt-6 lg:mt-8">
+		<!-- Сопоставление.
+		     Линейки чертёжные, а не табличные: горизонтальные лежат только на
+		     боковых колонках и обрываются, не доходя до середины, поэтому
+		     вертикальная ось нигде не пересекается. Раньше рамки строк шли во
+		     всю ширину, резали ось поперёк, а снизу таблица вообще ничем не
+		     закрывалась — ось торчала в пустоту. -->
+		<div class="relative mt-12">
 			<span
 				aria-hidden="true"
 				class="absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-academy-ink/25 lg:block"
 			></span>
 
-			{
-				rows.map((row) => (
-					<div class="group grid gap-y-2 border-t border-academy-ink/12 py-6 lg:grid-cols-[minmax(0,1fr)_9rem_minmax(0,1fr)] lg:items-center lg:gap-x-8">
-						<p class="academy-mark text-academy-brass lg:hidden">{row.topic}</p>
+			<!-- Шапка колонок -->
+			<div class="hidden grid-cols-[minmax(0,1fr)_9rem_minmax(0,1fr)] items-end gap-x-8 pb-5 lg:grid">
+				<p class="text-right font-serif text-[clamp(1.6rem,2.6vw,2.3rem)] leading-none font-normal text-[#8B887F]">
+					FIDIC 1999
+				</p>
+				<span></span>
+				<p class="font-serif text-[clamp(1.6rem,2.6vw,2.3rem)] leading-none font-normal text-academy-ink">
+					FIDIC 2017
+				</p>
+			</div>
 
-						<p class="max-w-[42ch] text-[0.92rem] leading-relaxed font-light text-[#5F5B53] lg:justify-self-end lg:text-right">
-							{/* На мобильном шапка колонок скрыта, поэтому редакцию
-							    называем прямо в строке — иначе не понять, что где. */}
-							<span class="academy-mark mr-2 text-[#8E8A81] lg:hidden">1999</span>
-							{row.old}
-						</p>
+			<div data-reveal-group>
+				{
+					rows.map((row) => (
+						<div class="group grid gap-y-2 border-t border-academy-ink/12 py-6 lg:grid-cols-[minmax(0,1fr)_9rem_minmax(0,1fr)] lg:items-center lg:gap-x-8 lg:border-t-0 lg:py-0">
+							<p class="academy-mark text-academy-brass lg:hidden">{row.topic}</p>
 
-						<p class="academy-mark hidden justify-self-center bg-academy-ground px-3 text-center text-academy-brass lg:block">
-							{row.topic}
-						</p>
+							<p class="max-w-[42ch] text-[0.92rem] leading-relaxed font-light text-[#5F5B53] lg:justify-self-end lg:border-t lg:border-academy-ink/15 lg:py-6 lg:pl-8 lg:text-right">
+								{/* На мобильном шапка колонок скрыта, поэтому редакцию
+								    называем прямо в строке — иначе не понять, что где. */}
+								<span class="academy-mark mr-2 text-[#8E8A81] lg:hidden">1999</span>
+								{row.old}
+							</p>
 
-						<p class="max-w-[42ch] text-[0.92rem] leading-relaxed font-light text-academy-ink">
-							<span class="academy-mark mr-2 text-academy-brass lg:hidden">2017</span>
-							{row.now}
-						</p>
-					</div>
-				))
-			}
+							{/* Подпись предмета сравнения сидит на самой оси. Фон
+							    страницы под ней разрывает линию — так делают
+							    выноски на чертеже. */}
+							<p class="academy-mark hidden justify-self-center bg-academy-ground px-3 text-center text-academy-brass lg:block">
+								{row.topic}
+							</p>
+
+							<p class="max-w-[42ch] text-[0.92rem] leading-relaxed font-light text-academy-ink lg:border-t lg:border-academy-ink/15 lg:py-6 lg:pr-8">
+								<span class="academy-mark mr-2 text-academy-brass lg:hidden">2017</span>
+								{row.now}
+							</p>
+						</div>
+					))
+				}
+			</div>
+
+			<!-- Замыкающие линейки: без них ось обрывалась в пустоте. -->
+			<div
+				aria-hidden="true"
+				class="hidden grid-cols-[minmax(0,1fr)_9rem_minmax(0,1fr)] gap-x-8 lg:grid"
+			>
+				<span class="border-t border-academy-ink/15"></span>
+				<span></span>
+				<span class="border-t border-academy-ink/15"></span>
+			</div>
 		</div>
 	</div>
 </section>

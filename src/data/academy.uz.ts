@@ -326,6 +326,8 @@ export const academyUz = {
 			'PCQI — Qirollik sifat instituti (CQI) amaliyotchisi, Buyuk Britaniya',
 			'ICAgile sertifikatlangan professionali (ICP)',
 		],
+		moreLabel: "Davomini o'qish",
+		lessLabel: 'Yopish',
 		cvLabel: 'CV yuklab olish (PDF)',
 	},
 

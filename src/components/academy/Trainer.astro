@@ -23,9 +23,23 @@ interface Props {
 	credsTitle: string;
 	creds: readonly string[];
 	cvLabel: string;
+	moreLabel?: string;
+	lessLabel?: string;
 }
 
-const { id = 'trainer', label, name, role, photoAlt, bio, credsTitle, creds, cvLabel } = Astro.props;
+const {
+	id = 'trainer',
+	label,
+	name,
+	role,
+	photoAlt,
+	bio,
+	credsTitle,
+	creds,
+	cvLabel,
+	moreLabel = 'Читать дальше',
+	lessLabel = 'Свернуть',
+} = Astro.props;
 const roleParts = role.split('·').map((p) => p.trim()).filter(Boolean);
 ---
 
@@ -110,19 +124,48 @@ const roleParts = role.split('·').map((p) => p.trim()).filter(Boolean);
 					}
 				</ul>
 
-				{
-					bio.map((p, i) => (
-						<p
-							class={
-								i === 0
-									? 'academy-dropcap mt-7 text-[1.05rem] leading-[1.75] font-light text-academy-ink'
-									: 'mt-4 text-[0.92rem] leading-relaxed font-light text-[#4A453D]'
-							}
-						>
-							{p}
-						</p>
-					))
-				}
+				{/* Биография дословная и длинная — пять абзацев. На телефоне это
+				    полтора экрана до аккредитаций, поэтому хвост сворачивается.
+				    Свёрнутая часть остаётся в разметке (для поиска и печати), её
+				    только подрезает max-height. Без JS раскрыто всегда. */}
+				<div data-bio class="mt-7">
+				<p class="academy-dropcap text-[1.05rem] leading-[1.75] font-light text-academy-ink">{bio[0]}</p>
+
+				<div data-bio-rest class="relative overflow-hidden transition-[max-height] duration-700 ease-out">
+					{
+						bio.slice(1).map((p) => (
+							<p class="mt-4 text-[0.92rem] leading-relaxed font-light text-[#4A453D]">{p}</p>
+						))
+					}
+					<span
+						data-bio-fade
+						aria-hidden="true"
+						class="pointer-events-none absolute inset-x-0 bottom-0 hidden h-20 bg-[linear-gradient(180deg,transparent,#F5F4F2)]"
+					/>
+				</div>
+
+				<button
+					type="button"
+					data-bio-toggle
+					data-more={moreLabel}
+					data-less={lessLabel}
+					aria-expanded="true"
+					class="academy-mark mt-5 hidden items-center gap-2.5 text-academy-taupe-deep transition-colors duration-300 hover:text-academy-brass"
+				>
+					<span data-bio-toggle-label>{moreLabel}</span>
+					<svg
+						data-bio-chevron
+						class="h-3 w-3 transition-transform duration-500"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						aria-hidden="true"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6" />
+					</svg>
+				</button>
+			</div>
 
 				<div class="mt-10 flex items-baseline justify-between gap-4 border-t border-academy-ink/15 pt-5">
 					<p class="academy-mark text-academy-brass">{credsTitle}</p>
@@ -172,6 +215,52 @@ const roleParts = role.split('·').map((p) => p.trim()).filter(Boolean);
 		color: #a58a62;
 	}
 </style>
+
+<script>
+	// Сворачивание хвоста биографии. Только на узких экранах: на десктопе
+	// пять абзацев умещаются рядом с портретом и прятать их незачем.
+	// Разметка приезжает раскрытой — если скрипт не выполнится, текст
+	// останется на месте, а кнопка так и не покажется.
+	const bio = document.querySelector<HTMLElement>('[data-bio]');
+	const rest = bio?.querySelector<HTMLElement>('[data-bio-rest]');
+	const toggle = bio?.querySelector<HTMLButtonElement>('[data-bio-toggle]');
+	const toggleLabel = bio?.querySelector<HTMLElement>('[data-bio-toggle-label]');
+	const fade = bio?.querySelector<HTMLElement>('[data-bio-fade]');
+	const chevron = bio?.querySelector<HTMLElement>('[data-bio-chevron]');
+
+	if (bio && rest && toggle && toggleLabel && fade && chevron) {
+		const narrow = matchMedia('(max-width: 1023px)');
+		const COLLAPSED = 168; // ~четыре строки: видно, что текст продолжается
+		let open = false;
+
+		const apply = () => {
+			if (!narrow.matches) {
+				rest.style.maxHeight = '';
+				toggle.classList.add('hidden');
+				fade.classList.add('hidden');
+				return;
+			}
+			toggle.classList.remove('hidden');
+			toggle.classList.add('inline-flex');
+			rest.style.maxHeight = open ? rest.scrollHeight + 'px' : COLLAPSED + 'px';
+			fade.classList.toggle('hidden', open);
+			toggleLabel.textContent = open ? (toggle.dataset.less ?? '') : (toggle.dataset.more ?? '');
+			toggle.setAttribute('aria-expanded', String(open));
+			chevron.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+		};
+
+		toggle.addEventListener('click', () => {
+			open = !open;
+			apply();
+			// Развернули и тут же свернули — возвращаем взгляд к началу абзаца,
+			// иначе экран улетает вниз на высоту свёрнутого текста.
+			if (!open) bio.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+		});
+		narrow.addEventListener('change', apply);
+		addEventListener('resize', apply);
+		apply();
+	}
+</script>
 
 <script>
 	// 3D-наклон портрета за курсором. Только точный указатель и полное

@@ -11,6 +11,11 @@
  * Интерактивность: наведение поднимает карточку, снимок наезжает, оверлей
  * светлеет, номера уходят в латунь. На тач-устройствах hover не существует,
  * поэтому исходное состояние уже читаемо — эффект только усиливает.
+ *
+ * До lg карточки лежат не в столбик, а в горизонтальной ленте со снапом:
+ * четыре высокие карточки одна под другой давали на телефоне экран
+ * бесконечной прокрутки. Лента листается пальцем, карточка занимает 86%
+ * ширины — край следующей виден и подсказывает, что лента продолжается.
  */
 
 interface Props {
@@ -47,10 +52,27 @@ const streams = groups.map((g) => ({
 			/>
 		</div>
 
-		<div data-reveal-group class="mt-10 grid gap-5 lg:mt-14 lg:grid-cols-2 lg:gap-6">
+		<!-- Подсказка про свайп: на телефоне лента ничем не выдаёт, что её
+		     можно листать, кроме выглядывающего края следующей карточки. -->
+		<p class="academy-mark mt-8 flex items-center gap-2.5 text-academy-paper/40 lg:hidden">
+			Листайте вбок
+			<svg class="h-3 w-6" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M0 6h21m0 0l-5-5m5 5l-5 5" />
+			</svg>
+		</p>
+
+		<!-- До lg — лента со снапом, от lg — сетка 2×2. Отрицательные поля
+		     возвращают ленте края экрана, чтобы карточки уезжали под срез,
+		     а не упирались в отступ секции.
+		     Появление вешаем на всю ленту, а не на каждую карточку: сдвиг
+		     потомков внутри контейнера с overflow-x породил бы вертикальную
+		     прокрутку и обрезал размытие. -->
+		<div
+			class="academy-reveal -mx-6 mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] sm:-mx-10 sm:px-10 lg:mx-0 lg:mt-14 lg:grid lg:grid-cols-2 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden"
+		>
 			{
 				streams.map((stream) => (
-					<article class="group relative isolate overflow-hidden rounded-[1.75rem] border border-academy-paper/12 transition-transform duration-600 hover:-translate-y-1">
+					<article class="group relative isolate w-[86%] shrink-0 snap-start overflow-hidden rounded-[1.75rem] border border-academy-paper/12 transition-transform duration-600 hover:-translate-y-1 sm:w-[68%] lg:w-auto lg:shrink">
 						{/* Снимок во всю площадь карточки */}
 						<picture>
 							<source srcset={`/${stream.image}.avif`} type="image/avif" />
