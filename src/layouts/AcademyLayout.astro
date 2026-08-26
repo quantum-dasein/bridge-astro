@@ -17,6 +17,10 @@ interface Props {
 	lang?: string;
 	image?: string;
 	canonical?: string;
+	/** Адреса всех языковых версий этой же страницы — для hreflang. */
+	langLinks?: { ru: string; en: string; uz: string };
+	/** Готовый объект JSON-LD страницы. */
+	schema?: unknown;
 }
 
 const {
@@ -25,10 +29,27 @@ const {
 	lang = 'ru',
 	image = '/academy-launch-social.png',
 	canonical,
+	langLinks,
+	schema,
 } = Astro.props;
 
-const pageUrl = canonical ?? new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
+const site = Astro.site ?? new URL(Astro.url.origin);
+const pageUrl = canonical ?? new URL(Astro.url.pathname, site).toString();
 const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toString();
+
+// hreflang. Без него Google считает три языковые версии дублями и склеивает
+// их в одну, выбирая язык за пользователя. x-default отдаём на русскую:
+// основной рынок — Узбекистан.
+const alternates = langLinks
+	? [
+			{ hreflang: 'ru', href: new URL(langLinks.ru, site).toString() },
+			{ hreflang: 'en', href: new URL(langLinks.en, site).toString() },
+			{ hreflang: 'uz', href: new URL(langLinks.uz, site).toString() },
+			{ hreflang: 'x-default', href: new URL(langLinks.ru, site).toString() },
+		]
+	: [];
+
+const ogLocale = lang === 'en' ? 'en_US' : lang === 'uz' ? 'uz_UZ' : 'ru_RU';
 ---
 
 <!doctype html>
@@ -51,7 +72,17 @@ const ogImage = image.startsWith('http') ? image : new URL(image, pageUrl).toStr
 		<meta property="og:description" content={description} />
 		<meta property="og:image" content={ogImage} />
 		<meta property="og:url" content={pageUrl} />
+		<meta property="og:site_name" content="BRIDGE Consult" />
+		<meta property="og:locale" content={ogLocale} />
 		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+
+		{alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+
+		{schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
 
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

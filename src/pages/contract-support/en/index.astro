@@ -6,8 +6,16 @@
 import AcademyLayout from '../../../layouts/AcademyLayout.astro';
 import Offer from '../../../components/offer/Offer.astro';
 import { offerEn as c } from '../../../data/offer.en';
+import { offerSchema } from '../../../data/schema';
 ---
 
-<AcademyLayout title={c.meta.title} description={c.meta.description} lang={c.lang}>
+<AcademyLayout
+	title={c.meta.title}
+	description={c.meta.description}
+	lang={c.lang}
+	image="/academy-atmosphere.png"
+	langLinks={c.langLinks}
+	schema={offerSchema(c.lang, c.meta.title, c.meta.description, c.pillars.items.map((i) => i.title))}
+>
 	<Offer c={c} current="en" />
 </AcademyLayout>

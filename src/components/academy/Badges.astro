@@ -6,11 +6,15 @@
  * на фоне как случайные картинки разного размера и веса. Теперь каждый знак
  * сидит в своей рамке одинаковой высоты и ведёт на страницу организации.
  *
- * Адреса проверены запросами 26.08.2026. Прежние вели в никуда:
- * fidic.org/professional-credentialing отдаёт 404 — FIDIC перенёс
- * аккредитацию на fcl.fidic.org, а drb.org редиректит на drbf.org и по
- * https сам не отвечает. Обе ссылки поправлены и здесь, и на статических
- * страницах основного сайта.
+ * Знаки FIDIC ведут НЕ на страницу программы, а на именной сертификат
+ * Ларисы в реестре FIDIC (credentials.fidic.org/credential/<uuid>): по клику
+ * открывается сам документ с серийным номером и статусом Verified, а не
+ * рекламная страница про аккредитацию вообще. Идентификаторы выданы FIDIC
+ * Credentialing: FCCE от 27.11.2024, FCCP от 07.03.2024.
+ *
+ * Адреса проверены запросами 26.08.2026 — все отдают 200. Прежние вели в
+ * никуда: fidic.org/professional-credentialing отдаёт 404, а drb.org
+ * редиректит на drbf.org и по https сам не отвечает.
  *
  * tone="light" — для светлых секций, tone="dark" — для карбона и снимков.
  */
@@ -28,14 +32,14 @@ const items = [
 	{
 		src: '/fidic-fcce-badge.png',
 		alt: 'FIDIC Certified Consulting Engineer',
-		title: 'FIDIC Certified Consulting Engineer (FCCE)',
-		href: 'https://fcl.fidic.org/our-programmes/certified-engineers',
+		title: 'FIDIC Certified Consulting Engineer (FCCE) — открыть сертификат',
+		href: 'https://credentials.fidic.org/credential/69f72bbf-bc1f-4f5e-b480-90590afd6440',
 	},
 	{
 		src: '/fidic-fccp-badge.png',
 		alt: 'FIDIC Certified Consulting Professional',
-		title: 'FIDIC Certified Consulting Professional (FCCP)',
-		href: 'https://fcl.fidic.org/our-programmes/certified-professional',
+		title: 'FIDIC Certified Consulting Professional (FCCP) — открыть сертификат',
+		href: 'https://credentials.fidic.org/credential/d97d9db8-ab47-4971-81aa-495bfcf78b9e',
 	},
 	{
 		src: '/ciarb-logo.png',

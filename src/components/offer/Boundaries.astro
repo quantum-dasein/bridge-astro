@@ -76,7 +76,11 @@ const {
 								{row.a}
 							</p>
 							<span aria-hidden="true" class="hidden lg:block"></span>
-							<p class="max-w-[46ch] border-t border-academy-ink/12 pt-3 text-[0.88rem] leading-relaxed font-light text-[#5F5B53] lg:border-academy-ink/15 lg:py-6 lg:pt-0 lg:text-[0.9rem]">
+							{/* Мобильные border-t и pt-3 обязаны быть под max-lg:.
+							    Без него Tailwind выводит pt-0 после py-6 и обнуляет
+							    верхний отступ ячейки: правая колонка вставала на
+							    24px выше левой, и вся таблица разъезжалась. */}
+							<p class="max-w-[46ch] text-[0.88rem] leading-relaxed font-light text-[#5F5B53] max-lg:border-t max-lg:border-academy-ink/12 max-lg:pt-3 lg:border-t lg:border-academy-ink/15 lg:py-6 lg:text-[0.9rem]">
 								<span class="academy-mark mb-1 block text-[#8E8A81] lg:hidden">{colB}</span>
 								{row.b}
 							</p>
