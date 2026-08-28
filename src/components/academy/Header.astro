@@ -63,6 +63,8 @@ const langs = [
 								<span class="text-academy-brass uppercase">{l.code}</span>
 							) : (
 								<a
+									data-lang-link
+									data-base={l.href}
 									href={l.href}
 									class="text-academy-paper/45 uppercase transition-colors duration-300 hover:text-white"
 								>
@@ -107,3 +109,37 @@ const langs = [
 		</ul>
 	</nav>
 </header>
+
+<script>
+	// Переключение языка не должно возвращать в начало страницы.
+	//
+	// Идентификаторы секций одинаковы во всех трёх версиях (#pillars, #scope,
+	// #trainer и т.д.), поэтому достаточно дописать к адресу другой версии
+	// якорь той секции, которую человек читает сейчас. Скрипт держит адреса
+	// языковых ссылок в актуальном состоянии при прокрутке.
+	//
+	// Без JS ссылки ведут на верх соответствующей версии — как раньше.
+	const langLinks = document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]');
+
+	if (langLinks.length) {
+		const sections = Array.from(document.querySelectorAll<HTMLElement>('main section[id], footer[id]'));
+
+		const sync = () => {
+			// Берём секцию, чей верх ближе всего к линии под шапкой: именно её
+			// человек и читает. Порог 140px — высота шапки с полосой разделов.
+			let current = '';
+			for (const el of sections) {
+				if (el.getBoundingClientRect().top <= 140) current = el.id;
+				else break;
+			}
+			for (const link of langLinks) {
+				const base = link.dataset.base ?? link.getAttribute('href') ?? '';
+				link.href = current ? `${base}#${current}` : base;
+			}
+		};
+
+		addEventListener('scroll', sync, { passive: true });
+		addEventListener('resize', sync, { passive: true });
+		sync();
+	}
+</script>
