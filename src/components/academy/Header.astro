@@ -9,6 +9,8 @@
  * отказов вместе с зависимостью от JS.
  */
 
+import { uiFor } from '../../data/ui';
+
 interface Props {
 	nav: readonly { label: string; href: string }[];
 	cta: string;
@@ -17,6 +19,7 @@ interface Props {
 }
 
 const { nav, cta, current, langLinks } = Astro.props;
+const ui = uiFor(Astro.url.pathname);
 const langs = [
 	{ code: 'ru', href: langLinks.ru },
 	{ code: 'en', href: langLinks.en },
@@ -90,7 +93,7 @@ const langs = [
 	     Единственным способом добраться до раздела оставалась прокрутка всей
 	     страницы, а у предложения подрядчикам это два десятка экранов. Полоса
 	     чипов листается пальцем и едет вместе с фиксированной шапкой. -->
-	<nav class="border-t border-academy-paper/10 lg:hidden" aria-label="Разделы страницы">
+	<nav class="border-t border-academy-paper/10 lg:hidden" aria-label={ui.sections}>
 		<ul
 			class="flex snap-x gap-2 overflow-x-auto px-6 py-2.5 [scrollbar-width:none] sm:px-10 [&::-webkit-scrollbar]:hidden"
 		>

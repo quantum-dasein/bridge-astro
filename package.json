@@ -11,6 +11,7 @@
     "assets:images": "node scripts/optimize-news-images.mjs",
     "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "astro build",
+    "check:i18n": "node scripts/check-language-leaks.mjs",
     "preview": "astro preview",
     "build:tw": "npx -y tailwindcss@3.4.17 -c tailwind.marketing.config.cjs -i tailwind.marketing.css -o public/tw.css --minify",
     "astro": "astro"

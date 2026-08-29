@@ -7,6 +7,8 @@
  * телефон в бесконечный столбик.
  */
 
+import { uiFor } from '../../data/ui';
+
 interface Props {
 	id?: string;
 	mark: string;
@@ -22,6 +24,7 @@ interface Props {
 }
 
 const { id, mark, title, lead, items } = Astro.props;
+const ui = uiFor(Astro.url.pathname);
 ---
 
 <section id={id} class="relative bg-academy-carbon px-6 py-16 text-academy-paper sm:px-10 lg:px-14 lg:py-28">
@@ -43,7 +46,7 @@ const { id, mark, title, lead, items } = Astro.props;
 		</div>
 
 		<p class="academy-mark mt-8 flex items-center gap-2.5 text-academy-paper/40 lg:hidden">
-			Листайте вбок
+			{ui.swipe}
 			<svg class="h-3 w-6" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M0 6h21m0 0l-5-5m5 5l-5 5" />
 			</svg>

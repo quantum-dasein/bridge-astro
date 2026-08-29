@@ -7,6 +7,10 @@
  * в узкую ленту через весь разворот.
  */
 
+import { uiFor } from '../../data/ui';
+
+const ui = uiFor(Astro.url.pathname);
+
 interface Props {
 	id?: string;
 	mark: string;
@@ -25,8 +29,8 @@ const {
 	lead,
 	dark = false,
 	items,
-	moreLabel = 'Показать все',
-	lessLabel = 'Свернуть',
+	moreLabel = ui.showAll,
+	lessLabel = ui.showLess,
 } = Astro.props;
 
 const section = dark

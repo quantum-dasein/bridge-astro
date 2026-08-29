@@ -485,6 +485,7 @@ export const offerUz = {
 		name: 'Larisa Belousova',
 		role: "Infratuzilma shartnomalari · FIDIC · EPC/EPC+F · Xaridlar · Claims · Dispute Avoidance · Xalqaro arbitraj",
 		photoAlt: 'Larisa Belousova',
+		photoCaption: 'Larisa Belousova',
 		bio: [
 			"Infratuzilma shartnomalari, xaridlar, qurilish talablari va nizolarni hal qilish bo'yicha ekspert. Ishlab chiqarish va qurilish, logistika va xaridlar sohalarida 30 yildan ortiq boshqaruv tajribasi, shu jumladan FIDIC shartnomalarini boshqarish va xalqaro moliya institutlari moliyalashtiradigan infratuzilma loyihalarida 15 yildan ortiq ixtisoslashgan tajriba.",
 			"Uning tarmoq tajribasi avtomobil yo'llari va yo'l infratuzilmasi, ko'priklar va tunnellar, transport va aeroport infratuzilmasi, shahar va ijtimoiy infratuzilma, suv ta'minoti va oqova suv tizimlari, energetika hamda boshqa yirik infratuzilma loyihalarini qamrab oladi.",

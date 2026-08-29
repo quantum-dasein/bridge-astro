@@ -5,17 +5,22 @@
  * цена и какие три модели оплаты применяются.
  */
 
+import { uiFor } from '../../data/ui';
+
 interface Props {
 	id?: string;
 	mark: string;
 	title: string;
 	lead: string;
 	models: readonly string[];
+	/** Заголовок колонки. По умолчанию — подпись интерфейса на языке страницы. */
+	modelsTitle?: string;
 	modelsNote: string;
 	note: string;
 }
 
-const { id, mark, title, lead, models, modelsNote, note } = Astro.props;
+const { id, mark, title, lead, models, modelsTitle, modelsNote, note } = Astro.props;
+const ui = uiFor(Astro.url.pathname);
 ---
 
 <section id={id} class="relative bg-academy-carbon px-6 py-16 text-academy-paper sm:px-10 lg:px-14 lg:py-28">
@@ -35,7 +40,7 @@ const { id, mark, title, lead, models, modelsNote, note } = Astro.props;
 			</div>
 
 			<div class="col-span-12 lg:col-span-4 lg:col-start-9">
-				<p class="academy-mark text-academy-paper/40">Модели оплаты</p>
+				<p class="academy-mark text-academy-paper/40">{modelsTitle ?? ui.paymentModels}</p>
 				<ul data-reveal-group class="mt-4">
 					{
 						models.map((m, i) => (

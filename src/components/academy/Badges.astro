@@ -19,6 +19,8 @@
  * tone="light" — для светлых секций, tone="dark" — для карбона и снимков.
  */
 
+import { uiFor } from '../../data/ui';
+
 interface Props {
 	tone?: 'light' | 'dark';
 	/** Показывать только два знака FIDIC: для первого экрана и футера. */
@@ -27,18 +29,19 @@ interface Props {
 }
 
 const { tone = 'light', compact = false, class: extra = '' } = Astro.props;
+const ui = uiFor(Astro.url.pathname);
 
 const items = [
 	{
 		src: '/fidic-fcce-badge.png',
 		alt: 'FIDIC Certified Consulting Engineer',
-		title: 'FIDIC Certified Consulting Engineer (FCCE) — открыть сертификат',
+		title: `FIDIC Certified Consulting Engineer (FCCE) — ${ui.openCert}`,
 		href: 'https://credentials.fidic.org/credential/69f72bbf-bc1f-4f5e-b480-90590afd6440',
 	},
 	{
 		src: '/fidic-fccp-badge.png',
 		alt: 'FIDIC Certified Consulting Professional',
-		title: 'FIDIC Certified Consulting Professional (FCCP) — открыть сертификат',
+		title: `FIDIC Certified Consulting Professional (FCCP) — ${ui.openCert}`,
 		href: 'https://credentials.fidic.org/credential/d97d9db8-ab47-4971-81aa-495bfcf78b9e',
 	},
 	{

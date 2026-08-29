@@ -300,6 +300,7 @@ export const academyEn = {
 		name: 'Larisa Belousova',
 		role: 'Infrastructure contracts · FIDIC · EPC/EPC+F · Procurement · Claims · Dispute Avoidance · International arbitration',
 		photoAlt: 'Larisa Belousova',
+		photoCaption: 'Larisa Belousova',
 		bio: [
 			'Larisa Belousova is an international infrastructure contracts, procurement and construction disputes specialist with 27 years of management experience in manufacturing, construction, logistics and procurement, including more than 15 years of specialised experience in FIDIC contract management and IFI-financed infrastructure projects.',
 			'Her sector experience covers roads and highways, bridges and tunnels, transport and airport infrastructure, urban and public infrastructure, water supply and wastewater, energy and other major infrastructure projects.',

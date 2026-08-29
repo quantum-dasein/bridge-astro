@@ -18,6 +18,8 @@
  * ширины — край следующей виден и подсказывает, что лента продолжается.
  */
 
+import { uiFor } from '../../data/ui';
+
 interface Props {
 	id?: string;
 	label: string;
@@ -33,6 +35,7 @@ interface Props {
 }
 
 const { id = 'modules', label, title, groups } = Astro.props;
+const ui = uiFor(Astro.url.pathname);
 
 // Сквозная нумерация 01..18 поверх четырёх потоков
 let counter = 0;
@@ -55,7 +58,7 @@ const streams = groups.map((g) => ({
 		<!-- Подсказка про свайп: на телефоне лента ничем не выдаёт, что её
 		     можно листать, кроме выглядывающего края следующей карточки. -->
 		<p class="academy-mark mt-8 flex items-center gap-2.5 text-academy-paper/40 lg:hidden">
-			Листайте вбок
+			{ui.swipe}
 			<svg class="h-3 w-6" viewBox="0 0 24 12" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M0 6h21m0 0l-5-5m5 5l-5 5" />
 			</svg>

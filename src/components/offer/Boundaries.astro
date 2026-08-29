@@ -8,6 +8,10 @@
  * в пары с подписями — иначе непонятно, где чья строка.
  */
 
+import { uiFor } from '../../data/ui';
+
+const ui = uiFor(Astro.url.pathname);
+
 interface Props {
 	id?: string;
 	mark: string;
@@ -30,8 +34,8 @@ const {
 	colB,
 	rows,
 	notes,
-	moreLabel = 'Читать дальше',
-	lessLabel = 'Свернуть',
+	moreLabel = ui.readMore,
+	lessLabel = ui.showLess,
 } = Astro.props;
 ---
 
