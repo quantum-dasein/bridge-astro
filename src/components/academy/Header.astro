@@ -113,33 +113,77 @@ const langs = [
 <script>
 	// Переключение языка не должно возвращать в начало страницы.
 	//
-	// Идентификаторы секций одинаковы во всех трёх версиях (#pillars, #scope,
-	// #trainer и т.д.), поэтому достаточно дописать к адресу другой версии
-	// якорь той секции, которую человек читает сейчас. Скрипт держит адреса
-	// языковых ссылок в актуальном состоянии при прокрутке.
+	// Первая версия дописывала к адресу якорь текущей секции — и человек
+	// попадал не туда, где читал, а в НАЧАЛО этой секции, то есть заметно
+	// выше. Здесь запоминается ещё и то, насколько глубоко он в секции:
+	// доля от её высоты. Доля, а не пиксели, потому что переводы разной
+	// длины и одна и та же секция на разных языках имеет разную высоту.
 	//
-	// Без JS ссылки ведут на верх соответствующей версии — как раньше.
+	// Якорь в адресе остаётся — он работает как запасной вариант без JS и
+	// как грубая наводка, а точную позицию доводит скрипт после загрузки.
 	const langLinks = document.querySelectorAll<HTMLAnchorElement>('[data-lang-link]');
 
 	if (langLinks.length) {
-		const sections = Array.from(document.querySelectorAll<HTMLElement>('main section[id], footer[id]'));
+		const sections = Array.from(document.querySelectorAll<HTMLElement>('main section[id]'));
+		// Линия чтения: сразу под фиксированной шапкой. На телефоне она выше —
+		// под строкой с логотипом едет ещё полоса разделов.
+		const READING_LINE = 140;
+		const KEY = 'bc:lang-pos';
 
-		const sync = () => {
-			// Берём секцию, чей верх ближе всего к линии под шапкой: именно её
-			// человек и читает. Порог 140px — высота шапки с полосой разделов.
-			let current = '';
+		/** Секция под линией чтения и глубина захода в неё долей высоты. */
+		const position = () => {
 			for (const el of sections) {
-				if (el.getBoundingClientRect().top <= 140) current = el.id;
-				else break;
+				const r = el.getBoundingClientRect();
+				if (r.top <= READING_LINE && r.bottom > READING_LINE) {
+					return { id: el.id, frac: (READING_LINE - r.top) / (r.height || 1) };
+				}
 			}
+			return null;
+		};
+
+		// Адрес языковой ссылки держим в актуальном состоянии: без JS на той
+		// стороне человек хотя бы попадёт в нужный раздел.
+		const sync = () => {
+			const pos = position();
 			for (const link of langLinks) {
-				const base = link.dataset.base ?? link.getAttribute('href') ?? '';
-				link.href = current ? `${base}#${current}` : base;
+				const base = link.dataset.base ?? '';
+				link.href = pos ? `${base}#${pos.id}` : base;
 			}
 		};
+
+		for (const link of langLinks) {
+			link.addEventListener('click', () => {
+				const pos = position();
+				// sessionStorage переживает переход внутри одного домена и
+				// умирает вместе с вкладкой — ровно то, что нужно.
+				if (pos) sessionStorage.setItem(KEY, JSON.stringify(pos));
+				else sessionStorage.removeItem(KEY);
+			});
+		}
 
 		addEventListener('scroll', sync, { passive: true });
 		addEventListener('resize', sync, { passive: true });
 		sync();
+
+		// Восстановление на новой языковой версии.
+		const saved = sessionStorage.getItem(KEY);
+		if (saved) {
+			sessionStorage.removeItem(KEY);
+			try {
+				const { id, frac } = JSON.parse(saved);
+				const restore = () => {
+					const el = document.getElementById(id);
+					if (!el) return;
+					const y = el.getBoundingClientRect().top + scrollY + frac * el.offsetHeight - READING_LINE;
+					scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+				};
+				restore();
+				// Повторяем после загрузки картинок: пока они не пришли,
+				// высоты секций другие и позиция уезжает.
+				addEventListener('load', restore);
+			} catch {
+				/* мусор в хранилище — просто игнорируем */
+			}
+		}
 	}
 </script>
