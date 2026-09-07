@@ -13,6 +13,7 @@
     var loading  = document.getElementById('uni-loading');
     var autoBtn  = document.getElementById('uni-autorotate');
     var head     = document.querySelector('.uni-head');
+    var univEl   = document.getElementById('universe');
     var detail   = document.getElementById('uni-detail');
     if (!wrap || !labelsEl || !detail) return;
 
@@ -416,9 +417,9 @@
         // + half a label: the mobile marker (photo + caption under it) is taller
         var wantTop = headBottom + (mobile ? 30 : 46) + (mobile ? 52 : 30);
         var loPx = (mobile ? 0.74 : 0.76) * vp;             // planet centre, 1st viewport
-        var hiPx = (mobile ? 0.88 : 0.90) * vp;
+        var hiPx = (mobile ? 0.92 : 0.96) * vp;
 
-        var z = (mobile ? 8.2 : 6.4) * (H / vp);
+        var z = (mobile ? 8.2 : 5.4) * (H / vp);
         var zMax = z * 1.35, targetPx = hiPx, need;
         for (var it = 0; it < 24; it++) {
             need = H / 2 - (H / 2 - focal / (z - TOP_Z) * TOP_Y - wantTop) / (z / (z - TOP_Z));
@@ -440,6 +441,17 @@
         universe.position.y = yOff;
         rings.position.y = yOff;
         glowSprite.position.y = yOff;
+
+        /* The lowest node swings just as far BELOW the planet, over the case
+           index that follows the sphere section. Publish how much room that
+           label needs so the case index can push itself down (CSS keeps its
+           own padding as the minimum). */
+        var BOT_Y = 0.64 * NODE_R;   // lowest node (DIRS[3]) ...
+        var BOT_Z = 0.768 * NODE_R;  // ... and its depth when it faces the camera
+        var lowest = H / 2 - (H / 2 - targetPx) * (z / (z - BOT_Z)) + focal * BOT_Y / (z - BOT_Z)
+                   + (mobile ? 52 : 30) + (mobile ? 34 : 52); // half a label + breathing room
+        var below = Math.max(0, lowest - (univEl ? univEl.offsetHeight : vp));
+        document.documentElement.style.setProperty('--uni-below-gap', Math.round(below) + 'px');
 
         renderer.setSize(W, H);
     }

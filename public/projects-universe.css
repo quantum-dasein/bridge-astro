@@ -271,7 +271,9 @@
 .uni-case-index {
     position: relative;
     z-index: 2;
-    padding: 7rem 1.5rem 2.4rem;
+    /* --uni-below-gap is set by the scene script: the room the sphere's lowest
+       project label needs, so the case index never sits under it */
+    padding: max(7rem, var(--uni-below-gap, 0px)) 1.5rem 2.4rem;
     background: transparent;
     font-family: Inter, system-ui, sans-serif;
 }
@@ -367,7 +369,7 @@
     .uni-case-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 1024px) {
-    .uni-case-index { padding-top: 8.4rem; }
+    .uni-case-index { padding-top: max(8.4rem, var(--uni-below-gap, 0px)); }
     .uni-case-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
