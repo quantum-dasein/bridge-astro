@@ -12,6 +12,7 @@
     var labelsEl = document.getElementById('uni-labels');
     var loading  = document.getElementById('uni-loading');
     var autoBtn  = document.getElementById('uni-autorotate');
+    var head     = document.querySelector('.uni-head');
     var detail   = document.getElementById('uni-detail');
     if (!wrap || !labelsEl || !detail) return;
 
@@ -206,6 +207,11 @@
         });
 
         layoutScene();
+        // the planet is placed under the MEASURED heading, so re-run once the
+        // web font is in (a late font swap changes the heading's height)
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(function () { layoutScene(); });
+        }
         wireInput();
         // iOS Safari fires resize when the address bar shows/hides (height-only change).
         // Only re-layout when the WIDTH changes to prevent the planet jumping on scroll.
@@ -385,18 +391,42 @@
 
     /* The canvas spans the WHOLE .uni-scene (universe + document CTA), so the
        3D starfield fills both. The planet must still sit inside the first
-       viewport, well below the heading text — this computes camera distance
-       (keeping the planet's on-screen size constant regardless of canvas
-       height) and the world-Y offset that pins the planet centre to a fixed
-       fraction of the first viewport. */
+       viewport and clear of the heading text — this computes the camera
+       distance (keeping the planet's on-screen size independent of the canvas
+       height) and the world-Y offset that hangs the planet under the heading. */
     function layoutScene() {
         if (!renderer) return;
         var W = wrap.clientWidth, H = wrap.clientHeight || window.innerHeight;
         var vp = window.innerHeight || H;
         var mobile = W < 768;
 
-        var zBase = mobile ? 8.2 : 6.4;
-        var z = zBase * (H / vp);
+        var TAN = Math.tan(Math.PI * 45 / 360);
+        var focal = (H / 2) / TAN;   // px per world unit at distance 1
+
+        /* The planet hangs BELOW the heading block. The label that climbs
+           highest is the top-latitude node when it swings to the front, so we
+           solve for the planet centre that keeps THAT label a clear gap under
+           the last line of the sub-heading. The heading is measured live, so a
+           longer RU / EN / UZ heading pushes the planet further down; on a short
+           viewport, where lowering alone can't clear the text, the camera also
+           pulls back (capped) so the sphere shrinks into the room that's left. */
+        var TOP_Y = 0.707 * NODE_R;  // highest node (DIRS[6]) ...
+        var TOP_Z = 0.707 * NODE_R;  // ... and its depth when it faces the camera
+        var headBottom = head ? head.offsetTop + head.offsetHeight : 0.36 * vp;
+        // + half a label: the mobile marker (photo + caption under it) is taller
+        var wantTop = headBottom + (mobile ? 30 : 46) + (mobile ? 52 : 30);
+        var loPx = (mobile ? 0.74 : 0.76) * vp;             // planet centre, 1st viewport
+        var hiPx = (mobile ? 0.88 : 0.90) * vp;
+
+        var z = (mobile ? 8.2 : 6.4) * (H / vp);
+        var zMax = z * 1.35, targetPx = hiPx, need;
+        for (var it = 0; it < 24; it++) {
+            need = H / 2 - (H / 2 - focal / (z - TOP_Z) * TOP_Y - wantTop) / (z / (z - TOP_Z));
+            targetPx = clamp(need, loPx, hiPx);
+            if (need <= hiPx || z >= zMax) break;
+            z = Math.min(zMax, z * 1.04);
+        }
+
         camera.aspect = W / H;
         camera.position.z = z;
         // keep fog constant at the planet's distance regardless of how tall the
@@ -405,8 +435,7 @@
         if (scene && scene.fog) scene.fog.density = 0.24 / z;
         camera.updateProjectionMatrix();
 
-        var worldH = 2 * z * Math.tan(Math.PI * 45 / 360); // world units per canvas height
-        var targetPx = (mobile ? 0.74 : 0.72) * vp;        // planet centre in the 1st viewport
+        var worldH = 2 * z * TAN; // world units per canvas height
         var yOff = (1 - 2 * (targetPx / H)) * worldH / 2;
         universe.position.y = yOff;
         rings.position.y = yOff;
