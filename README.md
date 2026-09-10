@@ -9,8 +9,9 @@ the news desk, the Academy and Contract Support landing pages, and the project
 case pages. Everything here is trilingual — **Russian, English, Uzbek** — and
 ships as pre-rendered HTML.
 
-> The site's original hand-written pages still serve some routes. This repo is
-> the migration, not the whole domain.
+> The site's original hand-written pages have not been ported yet — the home
+> page among them. They are served as-is from `public/` (`index.html`,
+> `main.js`), so this repository is the whole domain, half of it migrated.
 
 ---
 
