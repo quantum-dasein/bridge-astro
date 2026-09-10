@@ -25,6 +25,5 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# local optimization tooling
-tmp/ffmpeg-tool/
-tmp/adjudication-survey-extract/
+# local scratch: screenshots, extracts and one-off tooling
+tmp/
