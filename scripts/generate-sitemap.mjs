@@ -103,6 +103,10 @@ entries.push(urlEntry({ loc: '/', alternates: homeAlternates, priority: '1.0' })
 entries.push(urlEntry({ loc: '/EN/', alternates: homeAlternates, priority: '0.9' }));
 entries.push(urlEntry({ loc: '/UZ/', alternates: homeAlternates, priority: '0.9' }));
 
+// Персональная страница основателя. Один постоянный URL обслуживает RU/EN
+// переключателем на клиенте — именно на него напечатан QR-код.
+entries.push(urlEntry({ loc: '/larisa/', changefreq: 'monthly', priority: '0.8' }));
+
 entries.push(urlEntry({ loc: '/projects.html', alternates: projectIndexAlternates, priority: '0.8' }));
 entries.push(urlEntry({ loc: '/EN/projects.html', alternates: projectIndexAlternates, priority: '0.7' }));
 entries.push(urlEntry({ loc: '/UZ/projects.html', alternates: projectIndexAlternates, priority: '0.7' }));

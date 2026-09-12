@@ -26,6 +26,11 @@
       "permanent": true
     },
     {
+      "source": "/larisa",
+      "destination": "/larisa/",
+      "permanent": true
+    },
+    {
       "source": "/EN/index.html",
       "destination": "/EN/",
       "permanent": true
