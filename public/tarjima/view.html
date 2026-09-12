@@ -59,6 +59,8 @@
 			document.getElementById('big').onchange = (e) =>
 				document.body.classList.toggle('big', e.target.checked);
 
+			// seen — сколько строк занятия уже показано. Лента отдаёт всем один и
+			// тот же хвост, поэтому нужное отсекаем здесь, по абсолютному номеру.
 			let seen = 0, first = true, fails = 0;
 
 			function add(ev) {
@@ -75,13 +77,19 @@
 
 			async function poll() {
 				try {
-					const r = await fetch(`/api/tarjima/feed?room=${encodeURIComponent(room)}&after=${seen}`, {
-						cache: 'no-store',
-					});
+					const r = await fetch(`/api/tarjima/feed?room=${encodeURIComponent(room)}`);
 					const d = await r.json();
 					if (d.error) throw new Error(d.error);
-					for (const line of d.lines) add(line);
-					seen = d.total ?? seen;
+
+					// Началось новое занятие (прежний след истёк) — счёт с нуля,
+					// иначе зритель со старым номером не увидел бы ничего.
+					if (d.total < seen) seen = 0;
+
+					const base = d.total - d.lines.length; // номер первой присланной
+					for (let i = 0; i < d.lines.length; i++)
+						if (base + i >= seen) add(d.lines[i]);
+					seen = Math.max(seen, d.total);
+
 					fails = 0;
 					dot.className = 'dot on';
 					status.textContent = 'Efirda';
@@ -96,7 +104,7 @@
 			}
 
 			poll();
-			setInterval(poll, 1500);
+			setInterval(poll, 2000);
 			// Вернулись во вкладку — не ждём следующего тика.
 			document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
 		</script>

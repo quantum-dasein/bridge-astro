@@ -28,17 +28,18 @@ const TTL = 21600; // 6 часов: занятие кончилось — сле
 // раньше, чем «Продление срока».
 const TERMS = [...glossary].sort((a, b) => b.ru.length - a.ru.length);
 
-async function redis(command) {
+/** Обе команды одним HTTP-запросом: меньше задержка до субтитра. */
+async function pipeline(commands) {
   const url = process.env.KV_REST_API_URL;
   const token = process.env.KV_REST_API_TOKEN;
   if (!url || !token) throw new Error('KV не подключён: нет KV_REST_API_URL / KV_REST_API_TOKEN');
-  const res = await fetch(url, {
+  const res = await fetch(`${url}/pipeline`, {
     method: 'POST',
     headers: { authorization: `Bearer ${token}`, 'content-type': 'application/json' },
-    body: JSON.stringify(command),
+    body: JSON.stringify(commands),
   });
   if (!res.ok) throw new Error(`KV ${res.status}: ${(await res.text()).slice(0, 160)}`);
-  return (await res.json()).result;
+  return (await res.json()).map((r) => r.result);
 }
 
 /** Только те термины, что реально встретились: иначе подсказка раздувается. */
@@ -134,8 +135,10 @@ export default async function handler(req) {
   let total = null;
   try {
     const key = `tarjima:${room}`;
-    total = await redis(['RPUSH', key, JSON.stringify(line)]);
-    await redis(['EXPIRE', key, TTL]);
+    [total] = await pipeline([
+      ['RPUSH', key, JSON.stringify(line)],
+      ['EXPIRE', key, TTL],
+    ]);
   } catch (e) {
     // Перевод показываем преподавателю даже если хранилище отвалилось —
     // он хотя бы увидит, что распознавание живо.
