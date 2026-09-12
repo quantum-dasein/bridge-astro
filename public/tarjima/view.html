@@ -28,6 +28,11 @@
 			.ru { margin-top: 6px; font-size: .82rem; color: #7E7A72; }
 			.hide-ru .ru { display: none; }
 			.empty { color: #6E6A62; font-style: italic; padding: 40px 0; text-align: center; }
+			/* Перевод не состоялся: показываем русский оригинал и говорим об этом
+			   прямо, иначе слушатель примет его за узбекский текст. */
+			.row.raw { border-left: 2px solid #C4564A; padding-left: 12px; }
+			.row.raw .uz { color: #B9B5AC; }
+			.warn { margin-top: 6px; font-size: .72rem; letter-spacing: .04em; color: #C4564A; }
 			.big .uz { font-size: 1.45rem; }
 		</style>
 	</head>
@@ -70,6 +75,13 @@
 				row.innerHTML = '<div class="uz"></div><div class="ru"></div>';
 				row.querySelector('.uz').textContent = ev.uz;
 				row.querySelector('.ru').textContent = ev.ru;
+				if (ev.raw) {
+					row.classList.add('raw');
+					const warn = document.createElement('div');
+					warn.className = 'warn';
+					warn.textContent = 'Tarjima ishlamadi — matn rus tilida';
+					row.append(warn);
+				}
 				feed.append(row);
 				while (feed.children.length > 200) feed.firstChild.remove();
 				if (follow.checked) row.scrollIntoView({ block: 'end', behavior: 'smooth' });

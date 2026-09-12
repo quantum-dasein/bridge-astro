@@ -159,7 +159,12 @@ export default async function handler(req) {
     uz = byGlossary(text); // сбой модели не должен гасить субтитры
   }
 
-  const line = { ru: text, uz, ms: Date.now() - started, at: Date.now(), error };
+  // В ленту уходит признак «это не перевод», а не текст ошибки: слушателям
+  // внутренности сервера ни к чему, а вот знать, что перед ними русский
+  // оригинал, а не узбекский перевод, — обязательно. Молча выдать одно за
+  // другое на занятии по контрактам нельзя.
+  const line = { ru: text, uz, at: Date.now() };
+  if (error) line.raw = true;
 
   let total = null;
   try {
@@ -174,7 +179,8 @@ export default async function handler(req) {
     line.storeError = String(e.message ?? e);
   }
 
-  return new Response(JSON.stringify({ ...line, total }), {
+  // Преподавателю — подробности: ему чинить.
+  return new Response(JSON.stringify({ ...line, ms: Date.now() - started, error, total }), {
     status: 200,
     headers: { 'content-type': 'application/json; charset=utf-8' },
   });
