@@ -145,6 +145,27 @@
 				rec.start();
 			}
 
+			// Перед эфиром преподаватель обычно проверяет микрофон — эти пробы
+			// не должны встречать слушателей в хвосте ленты.
+			document.getElementById('reset').onclick = async () => {
+				if (!keyBox.value) return fail('Сначала введите ключ преподавателя.');
+				if (!confirm('Убрать все прежние фразы у слушателей?')) return;
+				try {
+					const r = await fetch('/api/tarjima/say', {
+						method: 'POST',
+						headers: { 'content-type': 'application/json' },
+						body: JSON.stringify({ reset: true, room, key: keyBox.value }),
+					});
+					if (r.status === 401) return fail('Неверный ключ преподавателя.');
+					if (!r.ok) return fail('Сервер: ' + r.status + ' ' + (await r.text()).slice(0, 120));
+					log.innerHTML = '';
+					state.className = 'state';
+					state.textContent = 'Лента очищена. Можно начинать занятие.';
+				} catch (e) {
+					fail('Сеть: ' + e.message);
+				}
+			};
+
 			go.onclick = () => {
 				if (!keyBox.value) return fail('Сначала введите ключ преподавателя.');
 				localStorage.setItem('tarjima:key', keyBox.value);

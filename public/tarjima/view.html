@@ -93,9 +93,14 @@
 					const d = await r.json();
 					if (d.error) throw new Error(d.error);
 
-					// Началось новое занятие (прежний след истёк) — счёт с нуля,
-					// иначе зритель со старым номером не увидел бы ничего.
-					if (d.total < seen) seen = 0;
+					// Началось новое занятие (преподаватель очистил ленту или след
+					// истёк) — счёт с нуля и экран заново, иначе зритель со старым
+					// номером не увидел бы ничего, а прежние фразы так и висели бы.
+					if (d.total < seen) {
+						seen = 0;
+						feed.innerHTML = '<div class="empty">Mashg‘ulot boshlanishini kuting…</div>';
+						first = true;
+					}
 
 					const base = d.total - d.lines.length; // номер первой присланной
 					for (let i = 0; i < d.lines.length; i++)

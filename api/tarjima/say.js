@@ -145,9 +145,25 @@ export default async function handler(req) {
   if (!expected) return new Response('TARJIMA_KEY не задан на сервере', { status: 500 });
   if (body.key !== expected) return new Response('неверный ключ', { status: 401 });
 
+  const room = String(body.room ?? 'main').replace(/[^a-z0-9_-]/gi, '').slice(0, 40) || 'main';
+
+  // «Новое занятие»: убрать прежние фразы, чтобы пробы перед эфиром не
+  // висели у слушателей в хвосте ленты. Сам след и так живёт шесть часов,
+  // но два занятия в один день иначе склеились бы.
+  if (body.reset) {
+    try {
+      await pipeline([['DEL', `tarjima:${room}`]]);
+    } catch (e) {
+      return new Response('хранилище: ' + String(e.message ?? e), { status: 500 });
+    }
+    return new Response(JSON.stringify({ reset: true }), {
+      status: 200,
+      headers: { 'content-type': 'application/json; charset=utf-8' },
+    });
+  }
+
   const text = String(body.text ?? '').trim().slice(0, 2000);
   if (!text) return new Response('empty', { status: 400 });
-  const room = String(body.room ?? 'main').replace(/[^a-z0-9_-]/gi, '').slice(0, 40) || 'main';
 
   const started = Date.now();
   let uz;
