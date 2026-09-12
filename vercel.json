@@ -108,6 +108,23 @@
   ],
   "headers": [
     {
+      "source": "/larisa-contact.vcf",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/vcard; charset=utf-8"
+        },
+        {
+          "key": "Content-Disposition",
+          "value": "inline; filename=larisa-belousova.vcf"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, s-maxage=300"
+        }
+      ]
+    },
+    {
       "source": "/(sitemap.xml|robots.txt)",
       "headers": [
         {
