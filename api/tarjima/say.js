@@ -29,9 +29,38 @@ const TTL = 21600; // 6 часов: занятие кончилось — сле
 const TERMS = [...glossary].sort((a, b) => b.ru.length - a.ru.length);
 
 /** Обе команды одним HTTP-запросом: меньше задержка до субтитра. */
+/**
+ * Адрес и токен хранилища. Мастер подключения Upstash даёт переменным имена
+ * в зависимости от выбранного префикса, поэтому одно жёстко заданное имя —
+ * это лишняя буква в мастере и молча погасшие субтитры. Сначала стандартные
+ * имена, потом поиск по виду значения: адрес REST у Upstash всегда
+ * *.upstash.io, а токен лежит рядом под тем же префиксом.
+ */
+function store() {
+  const env = process.env;
+
+  let url = env.KV_REST_API_URL || env.UPSTASH_REDIS_REST_URL;
+  let token = env.KV_REST_API_TOKEN || env.UPSTASH_REDIS_REST_TOKEN;
+  if (url && token) return { url, token };
+
+  const isRest = (v) => typeof v === 'string' && /^https:\/\/[\w.-]+\.upstash\.io\/?$/.test(v.trim());
+  const found = Object.entries(env).find(([n, v]) => isRest(v) && !n.includes('READ_ONLY'));
+  if (!found) return { url: null, token: null };
+
+  // «FOO_URL» → «FOO_», дальше ищем токен под тем же префиксом.
+  const prefix = found[0].replace(/URL$/, '');
+  token =
+    token ||
+    Object.entries(env).find(
+      ([n, v]) => v && n.startsWith(prefix) && n.endsWith('TOKEN') && !n.includes('READ_ONLY'),
+    )?.[1] ||
+    null;
+
+  return { url: found[1].trim().replace(/\/$/, ''), token };
+}
+
 async function pipeline(commands) {
-  const url = process.env.KV_REST_API_URL;
-  const token = process.env.KV_REST_API_TOKEN;
+  const { url, token } = store();
   if (!url || !token) throw new Error('KV не подключён: нет KV_REST_API_URL / KV_REST_API_TOKEN');
   const res = await fetch(`${url}/pipeline`, {
     method: 'POST',
