@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="uz">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Tarjima — BRIDGE Consult Academy</title>
+		<style>
+			:root { color-scheme: dark; }
+			* { box-sizing: border-box; }
+			body {
+				margin: 0; padding: 20px 20px 40px;
+				font: 18px/1.55 system-ui, sans-serif;
+				background: #111; color: #E8E5DD;
+			}
+			.wrap { max-width: 760px; margin: 0 auto; }
+			header {
+				position: sticky; top: 0; z-index: 2;
+				display: flex; align-items: center; justify-content: space-between;
+				gap: 12px; padding: 10px 0 14px;
+				background: linear-gradient(#111 70%, #111a);
+				border-bottom: 1px solid #ffffff14;
+			}
+			.t { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: #A58A62; }
+			.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #C4564A; margin-right: 7px; }
+			.dot.on { background: #5E9E5E; }
+			.ctl { font-size: .72rem; color: #8E8A81; display: flex; gap: 14px; align-items: center; }
+			label { cursor: pointer; user-select: none; }
+			#feed { margin-top: 18px; }
+			.row { padding: 14px 0; border-bottom: 1px solid #ffffff0f; animation: in .35s ease-out; }
+			@keyframes in { from { opacity: 0; transform: translateY(8px); } }
+			.uz { font-size: 1.15rem; }
+			.ru { margin-top: 6px; font-size: .82rem; color: #7E7A72; }
+			.hide-ru .ru { display: none; }
+			.empty { color: #6E6A62; font-style: italic; padding: 40px 0; text-align: center; }
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<header>
+				<span class="t"><span class="dot" id="dot"></span><span id="status">Ulanmoqda…</span></span>
+				<span class="ctl">
+					<label><input type="checkbox" id="ru" /> rus tilida ham</label>
+					<label><input type="checkbox" id="follow" checked /> avto-aylantirish</label>
+				</span>
+			</header>
+			<div id="feed"><div class="empty">Mashg‘ulot boshlanishini kuting…</div></div>
+		</div>
+
+		<script>
+			const feed = document.getElementById('feed');
+			const dot = document.getElementById('dot');
+			const status = document.getElementById('status');
+			const ruBox = document.getElementById('ru');
+			const follow = document.getElementById('follow');
+
+			// Русский подстрочник по умолчанию скрыт: он нужен не всем,
+			// а на телефоне занимает половину экрана.
+			document.body.classList.add('hide-ru');
+			ruBox.onchange = () => document.body.classList.toggle('hide-ru', !ruBox.checked);
+
+			let first = true;
+			function add(ev) {
+				if (first) { feed.innerHTML = ''; first = false; }
+				const row = document.createElement('div');
+				row.className = 'row';
+				row.innerHTML = '<div class="uz"></div><div class="ru"></div>';
+				row.querySelector('.uz').textContent = ev.uz;
+				row.querySelector('.ru').textContent = ev.ru;
+				feed.append(row);
+				while (feed.children.length > 200) feed.firstChild.remove();
+				if (follow.checked) row.scrollIntoView({ block: 'end', behavior: 'smooth' });
+			}
+
+			// EventSource сам переподключается при обрыве — на мобильном
+			// интернете это происходит постоянно.
+			function connect() {
+				const es = new EventSource('/stream');
+				es.onopen = () => { dot.className = 'dot on'; status.textContent = 'Efirda'; };
+				es.onmessage = (e) => add(JSON.parse(e.data));
+				es.onerror = () => { dot.className = 'dot'; status.textContent = 'Qayta ulanmoqda…'; };
+			}
+			connect();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Переводчик — преподаватель</title>
+		<style>
+			:root { color-scheme: dark; }
+			* { box-sizing: border-box; }
+			body {
+				margin: 0; padding: 24px;
+				font: 16px/1.6 system-ui, sans-serif;
+				background: #111; color: #E8E5DD;
+			}
+			.wrap { max-width: 820px; margin: 0 auto; }
+			h1 { font-size: 1.25rem; font-weight: 600; margin: 0 0 4px; }
+			.sub { color: #8E8A81; font-size: .85rem; margin-bottom: 24px; }
+			button {
+				font: inherit; font-weight: 600; cursor: pointer;
+				border: 0; border-radius: 999px; padding: 14px 32px;
+				background: #A58A62; color: #17130A;
+			}
+			button.stop { background: #6E2B2B; color: #fff; }
+			button:disabled { opacity: .4; cursor: default; }
+			.state { margin: 20px 0; padding: 12px 16px; border-left: 2px solid #A58A62; background: #ffffff0a; font-size: .9rem; }
+			.err { border-color: #C4564A; }
+			.live { min-height: 2.4em; margin: 18px 0; color: #8E8A81; font-style: italic; }
+			.row { border-top: 1px solid #ffffff14; padding: 12px 0; }
+			.ru { color: #B9B5AC; font-size: .9rem; }
+			.uz { margin-top: 4px; font-size: 1.05rem; }
+			.ms { float: right; color: #6E6A62; font-size: .75rem; font-variant-numeric: tabular-nums; }
+			a { color: #A58A62; }
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<h1>Переводчик речи — страница преподавателя</h1>
+			<p class="sub">
+				Распознаёт русскую речь и переводит на узбекский.
+				Слушатели открывают <a href="/view" target="_blank">страницу субтитров</a>.
+			</p>
+
+			<button id="go">Начать</button>
+			<div class="state" id="state">Готово. Нужен Chrome и разрешение на микрофон.</div>
+			<div class="live" id="live"></div>
+			<div id="log"></div>
+		</div>
+
+		<script>
+			const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+			const go = document.getElementById('go');
+			const state = document.getElementById('state');
+			const live = document.getElementById('live');
+			const log = document.getElementById('log');
+
+			if (!SR) {
+				state.className = 'state err';
+				state.textContent = 'Этот браузер не умеет распознавать речь. Нужен Chrome или Edge.';
+				go.disabled = true;
+			}
+
+			let rec = null;
+			let running = false;
+
+			function show(ev) {
+				const row = document.createElement('div');
+				row.className = 'row';
+				row.innerHTML =
+					'<span class="ms">' + ev.ms + ' мс</span>' +
+					'<div class="ru"></div><div class="uz"></div>';
+				row.querySelector('.ru').textContent = ev.ru;
+				row.querySelector('.uz').textContent = ev.uz;
+				log.prepend(row);
+				while (log.children.length > 30) log.lastChild.remove();
+			}
+
+			async function send(text) {
+				try {
+					const r = await fetch('/say', {
+						method: 'POST',
+						headers: { 'content-type': 'application/json' },
+						body: JSON.stringify({ text }),
+					});
+					show(await r.json());
+				} catch (e) {
+					state.className = 'state err';
+					state.textContent = 'Сервер не отвечает: ' + e.message;
+				}
+			}
+
+			function start() {
+				rec = new SR();
+				rec.lang = 'ru-RU';
+				rec.continuous = true;
+				rec.interimResults = true;
+
+				rec.onresult = (e) => {
+					let interim = '';
+					for (let i = e.resultIndex; i < e.results.length; i++) {
+						const r = e.results[i];
+						// Отправляем только финальные фразы: промежуточные
+						// переписываются на лету и переводить их — жечь деньги.
+						if (r.isFinal) {
+							const t = r[0].transcript.trim();
+							if (t) send(t);
+						} else {
+							interim += r[0].transcript;
+						}
+					}
+					live.textContent = interim;
+				};
+
+				rec.onerror = (e) => {
+					if (e.error === 'no-speech' || e.error === 'aborted') return;
+					state.className = 'state err';
+					state.textContent = 'Распознавание: ' + e.error;
+				};
+
+				// Chrome обрывает сессию сам каждые несколько минут — поднимаем
+				// заново, иначе субтитры молча умрут посреди занятия.
+				rec.onend = () => {
+					if (running) setTimeout(() => { try { rec.start(); } catch {} }, 250);
+				};
+
+				rec.start();
+			}
+
+			go.onclick = () => {
+				running = !running;
+				if (running) {
+					start();
+					go.textContent = 'Остановить';
+					go.className = 'stop';
+					state.className = 'state';
+					state.textContent = 'Идёт распознавание. Говорите обычным темпом, делайте паузы между мыслями.';
+				} else {
+					try { rec.stop(); } catch {}
+					go.textContent = 'Начать';
+					go.className = '';
+					state.textContent = 'Остановлено.';
+					live.textContent = '';
+				}
+			};
+		</script>
+	</body>
+</html>
