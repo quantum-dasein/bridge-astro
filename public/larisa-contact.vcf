@@ -4,9 +4,12 @@ N:Belousova;Larisa;K.;;
 FN:Larisa K. Belousova
 ORG:BRIDGE Consult LLC
 TITLE:Founder & Director
+ROLE:Infrastructure Contracts Specialist
 TEL;TYPE=CELL,VOICE:+998330001530
 EMAIL;TYPE=INTERNET:mail@lkbelousova.ru
-URL:https://bridgeconsult.uz/larisa
+URL:https://www.bridgeconsult.uz/larisa/
+URL;TYPE=WORK:https://www.bridgeconsult.uz
+ADR;TYPE=WORK:;;;Tashkent;;;Uzbekistan
 X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/larissalk
-NOTE:Infrastructure contracts | FIDIC | EPC/EPC+F | Claims | Dispute Avoidance
+NOTE:Infrastructure contracts | FIDIC | EPC/EPC+F | Claims | Dispute Avoidance | Procurement
 END:VCARD

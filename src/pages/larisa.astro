@@ -1,13 +1,52 @@
 ---
 import '../styles/global.css';
 
-const pageUrl = 'https://bridgeconsult.uz/larisa/';
+const origin = 'https://www.bridgeconsult.uz';
+const pageUrl = `${origin}/larisa/`;
+const shortUrl = 'bridgeconsult.uz/larisa';
 const pageTitle = 'Лариса Белоусова — Founder & Director, BRIDGE Consult';
-const pageDescription = 'Лариса Белоусова — международный эксперт по инфраструктурным контрактам, FIDIC, EPC/EPC+F, закупкам, claims и предотвращению споров.';
+const pageDescription =
+  'Лариса Белоусова — специалист по инфраструктурным контрактам: FIDIC, EPC/EPC+F, закупки, claims, предотвращение и разрешение споров. Визитная карточка, контакты и CV.';
+const year = new Date().getFullYear();
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Larisa K. Belousova',
+  alternateName: ['Лариса Константиновна Белоусова', 'Larisa Belousova'],
+  jobTitle: 'Founder & Director',
+  description:
+    'Infrastructure contracts specialist with 27+ years of experience, supporting governments, international financial institutions and private clients in the delivery of complex infrastructure projects.',
+  url: pageUrl,
+  image: `${origin}/larisa-belousova.jpg`,
+  email: 'mailto:mail@lkbelousova.ru',
+  telephone: '+998330001530',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'BRIDGE Consult LLC',
+    url: origin
+  },
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Tashkent',
+    addressCountry: 'UZ'
+  },
+  knowsAbout: [
+    'FIDIC contracts',
+    'EPC / EPC+F',
+    'Construction claims',
+    'Dispute avoidance',
+    'Dispute boards (DB/DAAB)',
+    'Public procurement',
+    'Infrastructure projects'
+  ],
+  knowsLanguage: ['ru', 'en', 'uz'],
+  sameAs: ['https://www.linkedin.com/in/larissalk', origin]
+};
 ---
 
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-language="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,35 +59,58 @@ const pageDescription = 'Лариса Белоусова — междунаро�
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={pageUrl} />
-    <meta property="og:image" content="https://bridgeconsult.uz/larisa-belousova.jpg" />
+    <meta property="og:image" content={`${origin}/larisa-belousova.jpg`} />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="uz_UZ" />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>{pageTitle}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap"
+      rel="stylesheet"
+    />
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <script is:inline>
-      document.documentElement.classList.add('has-js');
+      /* Язык выбирается до первой отрисовки — страница не мигает. */
+      (function () {
+        var root = document.documentElement;
+        root.classList.add('has-js');
+        var allowed = ['ru', 'en', 'uz'];
+        var chosen = 'ru';
+        try {
+          var saved = localStorage.getItem('larisa-language');
+          if (allowed.indexOf(saved) > -1) chosen = saved;
+        } catch (e) {}
+        root.dataset.language = chosen;
+        root.lang = chosen;
+      })();
     </script>
   </head>
-  <body data-language="ru">
+  <body>
     <div class="page-progress" aria-hidden="true"><span></span></div>
 
-    <header class="site-nav" aria-label="Основная навигация">
-      <a class="brand" href="/" aria-label="Bridge Consult — главная">
+    <a class="skip-link" href="#about"><span data-lang="ru">Перейти к содержанию</span><span data-lang="en">Skip to content</span><span data-lang="uz">Kontentga o‘tish</span></a>
+
+    <header class="site-nav" aria-label="Bridge Consult">
+      <a class="brand" href="/" aria-label="Bridge Consult">
         <img src="/bridge 2.svg" alt="Bridge Consult" width="160" height="60" />
       </a>
       <nav class="nav-links" aria-label="Разделы страницы">
-        <a href="#about"><span data-lang="ru">Обо мне</span><span data-lang="en">About</span></a>
-        <a href="#expertise"><span data-lang="ru">Экспертиза</span><span data-lang="en">Expertise</span></a>
-        <a href="#credentials"><span data-lang="ru">Квалификации</span><span data-lang="en">Credentials</span></a>
+        <a href="#about" data-nav-link><span data-lang="ru">Обо мне</span><span data-lang="en">About</span><span data-lang="uz">Men haqimda</span></a>
+        <a href="#expertise" data-nav-link><span data-lang="ru">Экспертиза</span><span data-lang="en">Expertise</span><span data-lang="uz">Ekspertiza</span></a>
+        <a href="#credentials" data-nav-link><span data-lang="ru">Квалификации</span><span data-lang="en">Credentials</span><span data-lang="uz">Malakalar</span></a>
       </nav>
       <div class="nav-actions">
-        <div class="language-switcher" role="group" aria-label="Language">
-          <button type="button" data-language-button="ru" aria-pressed="true">RU</button>
-          <span aria-hidden="true"></span>
-          <button type="button" data-language-button="en" aria-pressed="false">EN</button>
+        <div class="language-switcher" role="group" aria-label="Language / Язык / Til" data-language-switcher>
+          <span class="language-thumb" aria-hidden="true"></span>
+          <button type="button" data-language-button="ru" aria-pressed="true" lang="ru">RU</button>
+          <button type="button" data-language-button="en" aria-pressed="false" lang="en">EN</button>
+          <button type="button" data-language-button="uz" aria-pressed="false" lang="uz">UZ</button>
         </div>
-        <a class="nav-contact" href="#connect" aria-label="Перейти к контактам / Go to contacts">
-          <span data-lang="ru">Связаться</span><span data-lang="en">Connect</span>
+        <a class="nav-contact" href="#connect" aria-label="Связаться / Connect / Bog‘lanish">
+          <span data-lang="ru">Связаться</span><span data-lang="en">Connect</span><span data-lang="uz">Bog‘lanish</span>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
         </a>
       </div>
@@ -60,18 +122,18 @@ const pageDescription = 'Лариса Белоусова — междунаро�
         <div class="hero-glow" aria-hidden="true"></div>
         <div class="hero-monogram" aria-hidden="true">L·B</div>
 
-        <div class="portrait-stage hero-enter">
+        <div class="portrait-stage hero-enter" data-tilt>
           <div class="portrait-index" aria-hidden="true"><span>01</span> Executive profile</div>
           <div class="portrait-frame" data-parallax-frame>
             <img src="/larisa-belousova.jpg" alt="Лариса Константиновна Белоусова" width="854" height="1280" fetchpriority="high" />
             <div class="portrait-wash"></div>
+            <div class="portrait-sheen" aria-hidden="true"></div>
             <div class="portrait-caption">
               <span>BRIDGE Consult LLC</span>
               <span>Tashkent · Uzbekistan</span>
             </div>
           </div>
           <div class="orbit orbit-one" aria-hidden="true"></div>
-          <div class="orbit orbit-two" aria-hidden="true"></div>
           <span class="coordinates" aria-hidden="true">41.2995° N&nbsp;&nbsp; 69.2401° E</span>
           <div class="portrait-seal" aria-hidden="true">
             <svg viewBox="0 0 120 120">
@@ -87,25 +149,30 @@ const pageDescription = 'Лариса Белоусова — междунаро�
             <span class="status-dot"></span>
             <span data-lang="ru">Ташкент · международные проекты</span>
             <span data-lang="en">Tashkent · international projects</span>
+            <span data-lang="uz">Toshkent · xalqaro loyihalar</span>
           </div>
           <div class="eyebrow hero-enter" style="--delay: .1s">
             <span class="eyebrow-line"></span>
             <span data-lang="ru">Основатель и директор</span>
             <span data-lang="en">Founder &amp; Director</span>
+            <span data-lang="uz">Asoschi va direktor</span>
           </div>
           <h1 class="hero-title hero-enter" style="--delay: .18s">
             <span>Larisa K.</span>
             <em>Belousova</em>
           </h1>
           <p class="hero-lead hero-enter" style="--delay: .28s" data-lang="ru">
-            Международный эксперт по инфраструктурным контрактам с 27-летним управленческим опытом — от стратегии контракта до предотвращения и разрешения споров.
+            Специалист по инфраструктурным контрактам с опытом более 27 лет. Сопровождаю государственные органы, международные финансовые институты и частных клиентов в успешной реализации сложных инфраструктурных проектов.
           </p>
           <p class="hero-lead hero-enter" style="--delay: .28s" data-lang="en">
-            An international infrastructure contracts specialist with 27 years of management experience — from contract strategy to dispute avoidance and resolution.
+            An infrastructure contracts specialist with 27+ years of experience, supporting governments, international financial institutions and private clients in the successful delivery of complex infrastructure projects.
+          </p>
+          <p class="hero-lead hero-enter" style="--delay: .28s" data-lang="uz">
+            Infratuzilma shartnomalari bo‘yicha 27 yildan ortiq tajribaga ega mutaxassis. Davlat organlari, xalqaro moliya institutlari va xususiy mijozlarga murakkab infratuzilma loyihalarini muvaffaqiyatli amalga oshirishda ko‘maklashaman.
           </p>
 
           <div class="hero-credentials hero-enter" style="--delay: .32s" aria-label="Ключевые квалификации">
-            <span>FCCE</span><i aria-hidden="true"></i><span>FCCP</span><i aria-hidden="true"></i><span>ADB Accredited</span><i aria-hidden="true"></i><span>MCIArb</span>
+            <span>FCCE</span><i aria-hidden="true"></i><span>FCCP</span><i aria-hidden="true"></i><span>ADB Accredited</span><i aria-hidden="true"></i><span>MCIArb</span><i aria-hidden="true"></i><span>DRBF</span>
           </div>
 
           <div class="hero-actions hero-enter" style="--delay: .36s">
@@ -113,25 +180,32 @@ const pageDescription = 'Лариса Белоусова — междунаро�
               <span class="action-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M15 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M8.5 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM19 8v6M16 11h6" /></svg>
               </span>
-              <span><strong data-contact-label data-lang="ru">Добавить в контакты</strong><strong data-contact-label data-lang="en">Add to contacts</strong><small data-lang="ru">Откроется карточка контакта</small><small data-lang="en">Opens your contact card</small></span>
+              <span class="action-text"
+                ><strong data-contact-label data-lang="ru">Добавить в контакты</strong><strong data-contact-label data-lang="en">Add to contacts</strong><strong data-contact-label data-lang="uz">Kontaktga qo‘shish</strong
+                ><small data-lang="ru">Откроется карточка контакта</small><small data-lang="en">Opens your contact card</small><small data-lang="uz">Kontakt kartasi ochiladi</small></span
+              >
               <svg class="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </a>
-            <a class="secondary-action magnetic" href="https://wa.me/998330001530" target="_blank" rel="noopener" aria-label="Написать Ларисе Белоусовой в WhatsApp">
-              <span class="action-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.5L3 20.5l1.4-4.7A8.5 8.5 0 1 1 20.5 11.6ZM8.3 7.4c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.9 2.1c.1.3 0 .5-.2.8l-.7.8c-.2.2-.1.5 0 .7.7 1.2 1.7 2.2 3 2.9.2.1.5.1.7-.1l.9-1c.2-.2.5-.3.8-.2l2 .9c.3.1.4.3.4.6 0 .5-.2 1.5-.8 2-.6.5-1.4.8-2.3.6-1-.2-2.4-.7-4.1-1.8-2.5-1.6-4.1-4-4.5-5.1-.4-1.1 0-2.4.5-2.9l.7-.3Z" /></svg></span>
-              <span><strong>WhatsApp</strong><small data-lang="ru">Написать напрямую</small><small data-lang="en">Message directly</small></span>
+            <a class="secondary-action magnetic" href="https://wa.me/998330001530" target="_blank" rel="noopener" aria-label="WhatsApp — Larisa Belousova">
+              <span class="action-icon"
+                ><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.5L3 20.5l1.4-4.7A8.5 8.5 0 1 1 20.5 11.6ZM8.3 7.4c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.9 2.1c.1.3 0 .5-.2.8l-.7.8c-.2.2-.1.5 0 .7.7 1.2 1.7 2.2 3 2.9.2.1.5.1.7-.1l.9-1c.2-.2.5-.3.8-.2l2 .9c.3.1.4.3.4.6 0 .5-.2 1.5-.8 2-.6.5-1.4.8-2.3.6-1-.2-2.4-.7-4.1-1.8-2.5-1.6-4.1-4-4.5-5.1-.4-1.1 0-2.4.5-2.9l.7-.3Z" /></svg
+              ></span>
+              <span class="action-text"
+                ><strong>WhatsApp</strong><small data-lang="ru">Написать напрямую</small><small data-lang="en">Message directly</small><small data-lang="uz">To‘g‘ridan-to‘g‘ri yozing</small></span
+              >
             </a>
           </div>
 
           <div class="stats hero-enter" style="--delay: .44s" aria-label="Опыт и охват">
-            <div><strong><span data-count="27">27</span>+</strong><span data-lang="ru">лет опыта</span><span data-lang="en">years of experience</span></div>
-            <div><strong><span data-count="15">15</span>+</strong><span data-lang="ru">лет в международных проектах</span><span data-lang="en">years in international projects</span></div>
-            <div><strong><span data-count="600">600</span>+</strong><span data-lang="ru">обученных специалистов</span><span data-lang="en">specialists trained</span></div>
-            <div><strong><span data-count="10">10</span>+</strong><span data-lang="ru">стран</span><span data-lang="en">countries</span></div>
+            <div><strong><span data-count="27">27</span>+</strong><span data-lang="ru">лет опыта</span><span data-lang="en">years of experience</span><span data-lang="uz">yillik tajriba</span></div>
+            <div><strong><span data-count="15">15</span>+</strong><span data-lang="ru">лет в международных проектах</span><span data-lang="en">years in international projects</span><span data-lang="uz">yil xalqaro loyihalarda</span></div>
+            <div><strong><span data-count="600">600</span>+</strong><span data-lang="ru">обученных специалистов</span><span data-lang="en">specialists trained</span><span data-lang="uz">o‘qitilgan mutaxassis</span></div>
+            <div><strong><span data-count="10">10</span>+</strong><span data-lang="ru">стран</span><span data-lang="en">countries</span><span data-lang="uz">davlat</span></div>
           </div>
         </div>
 
-        <a class="scroll-cue" href="#expertise" aria-label="Листать к разделу Экспертиза">
-          <span data-lang="ru">Смотреть профиль</span><span data-lang="en">Explore profile</span>
+        <a class="scroll-cue" href="#expertise" aria-label="К разделу «Экспертиза»">
+          <span data-lang="ru">Смотреть профиль</span><span data-lang="en">Explore profile</span><span data-lang="uz">Profilni ko‘rish</span>
           <i aria-hidden="true"></i>
         </a>
       </section>
@@ -142,61 +216,108 @@ const pageDescription = 'Лариса Белоусова — междунаро�
           <div>
             <p class="section-kicker" data-lang="ru">Ключевая экспертиза</p>
             <p class="section-kicker" data-lang="en">Key expertise</p>
+            <p class="section-kicker" data-lang="uz">Asosiy ekspertiza</p>
             <h2 data-lang="ru">Контракты, которые<br /><span class="title-accent">работают на проект.</span></h2>
             <h2 data-lang="en">Contracts that<br /><span class="title-accent">work for the project.</span></h2>
+            <h2 data-lang="uz">Loyiha uchun<br /><span class="title-accent">ishlaydigan shartnomalar.</span></h2>
           </div>
           <p class="section-summary" data-lang="ru">Консультационная поддержка заказчиков, подрядчиков, инженеров и государственных органов на всём жизненном цикле крупных инфраструктурных проектов.</p>
           <p class="section-summary" data-lang="en">Advising employers, contractors, engineers and public authorities throughout the full lifecycle of major infrastructure projects.</p>
+          <p class="section-summary" data-lang="uz">Yirik infratuzilma loyihalarining butun hayot sikli davomida buyurtmachilar, pudratchilar, muhandislar va davlat organlariga konsalting yordami.</p>
         </div>
 
-        <div class="expertise-grid">
-          <article class="expertise-card reveal" style="--i: 0">
-            <div class="card-top"><span class="card-index">01</span><span class="card-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 38V10h32v28H8Zm7-20h18M15 25h18M15 32h10" /></svg></span></div>
+        <div class="expertise-grid stagger">
+          <article class="expertise-card reveal is-wide">
+            <div class="card-top">
+              <span class="card-index">01</span>
+              <span class="card-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 38V10h32v28H8Zm7-20h18M15 25h18M15 32h10" /></svg></span>
+            </div>
             <h3 data-lang="ru">Стратегия и подготовка контрактов</h3>
             <h3 data-lang="en">Contract strategy &amp; drafting</h3>
-            <div class="expertise-tags" aria-label="FIDIC, EPC / EPC+F, MDB Harmonised"><span>FIDIC</span><span>EPC / EPC+F</span><span>MDB Harmonised</span></div>
+            <h3 data-lang="uz">Shartnoma strategiyasi va tayyorlash</h3>
+            <div class="expertise-tags"><span>FIDIC</span><span>EPC / EPC+F</span><span>MDB Harmonised</span></div>
           </article>
-          <article class="expertise-card reveal" style="--i: 1">
-            <div class="card-top"><span class="card-index">02</span><span class="card-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 39 24 8l15 31H9Zm15-20v9m0 5v.5" /></svg></span></div>
+          <article class="expertise-card reveal is-wide">
+            <div class="card-top">
+              <span class="card-index">02</span>
+              <span class="card-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M9 39 24 8l15 31H9Zm15-20v9m0 5v.5" /></svg></span>
+            </div>
             <h3 data-lang="ru">Claims и предотвращение споров</h3>
             <h3 data-lang="en">Claims &amp; dispute avoidance</h3>
-            <div class="expertise-tags" aria-label="DAB / DAAB, Mediation, Arbitration"><span>DAB / DAAB</span><span>Mediation</span><span>Arbitration</span></div>
+            <h3 data-lang="uz">Claims va nizolarning oldini olish</h3>
+            <div class="expertise-tags"><span>DB / DAAB</span><span>Mediation</span><span>Arbitration</span></div>
           </article>
-          <article class="expertise-card reveal" style="--i: 2">
-            <div class="card-top"><span class="card-index">03</span><span class="card-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 38h28M14 38V20h20v18M19 20v-6h10v6M20 27h8" /></svg></span></div>
+          <article class="expertise-card reveal">
+            <div class="card-top">
+              <span class="card-index">03</span>
+              <span class="card-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 38h28M14 38V20h20v18M19 20v-6h10v6M20 27h8" /></svg></span>
+            </div>
             <h3 data-lang="ru">Закупки и управление рисками</h3>
             <h3 data-lang="en">Procurement &amp; risk management</h3>
-            <div class="expertise-tags" aria-label="Tendering, Variations, Commercial risk"><span>Tendering</span><span>Variations</span><span>Commercial risk</span></div>
+            <h3 data-lang="uz">Xaridlar va risklarni boshqarish</h3>
+            <div class="expertise-tags"><span>Tendering</span><span>Variations</span><span>Commercial risk</span></div>
           </article>
-          <article class="expertise-card reveal" style="--i: 3">
-            <div class="card-top"><span class="card-index">04</span><span class="card-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 34c5-8 9-12 14-12s9 4 14 12M24 22V9m-6 5 6-5 6 5M12 39h24" /></svg></span></div>
+          <article class="expertise-card reveal">
+            <div class="card-top">
+              <span class="card-index">04</span>
+              <span class="card-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6 9 13v10c0 9 6.4 16.3 15 19 8.6-2.7 15-10 15-19V13L24 6Zm-6 18 4.5 4.5L31 20" /></svg></span>
+            </div>
+            <h3 data-lang="ru">Стратегический советник по контрактам</h3>
+            <h3 data-lang="en">Strategic contract advisor</h3>
+            <h3 data-lang="uz">Strategik shartnoma maslahatchisi</h3>
+            <p class="card-note" data-lang="ru">Заказчикам, подрядчикам и другим участникам проекта.</p>
+            <p class="card-note" data-lang="en">To employers, contractors and other project parties.</p>
+            <p class="card-note" data-lang="uz">Buyurtmachilar, pudratchilar va boshqa loyiha ishtirokchilariga.</p>
+            <div class="expertise-tags"><span>Employers</span><span>Contractors</span><span>Project parties</span></div>
+          </article>
+          <article class="expertise-card reveal">
+            <div class="card-top">
+              <span class="card-index">05</span>
+              <span class="card-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 10 6 18l18 8 18-8-18-8Zm-11 12v9c0 3.3 4.9 6 11 6s11-2.7 11-6v-9M40 20v11" /></svg></span>
+            </div>
             <h3 data-lang="ru">Обучение и развитие потенциала</h3>
             <h3 data-lang="en">Training &amp; capacity building</h3>
-            <div class="expertise-tags" aria-label="FIDIC training, Workshops, Mentoring"><span>FIDIC training</span><span>Workshops</span><span>Mentoring</span></div>
+            <h3 data-lang="uz">O‘qitish va salohiyatni rivojlantirish</h3>
+            <div class="expertise-tags"><span>FIDIC training</span><span>Workshops</span><span>Mentoring</span></div>
           </article>
         </div>
       </section>
 
       <section class="manifesto-section" aria-label="Подход к работе">
-        <img class="manifesto-image" src="/hero-bg2.png" alt="Международный инфраструктурный проект" width="1917" height="853" loading="lazy" />
+        <img class="manifesto-image" src="/hero-bg2.png" alt="" width="1917" height="853" loading="lazy" aria-hidden="true" />
         <div class="manifesto-shade" aria-hidden="true"></div>
         <div class="manifesto-content reveal">
           <div class="manifesto-copy">
             <p class="section-kicker" data-lang="ru">От сложности — к ясности</p>
             <p class="section-kicker" data-lang="en">From complexity to clarity</p>
+            <p class="section-kicker" data-lang="uz">Murakkablikdan aniqlikka</p>
             <h2 data-lang="ru">Инфраструктура строится<br />на <span class="title-accent">сильных решениях.</span></h2>
             <h2 data-lang="en">Infrastructure is built<br />on <span class="title-accent">strong decisions.</span></h2>
+            <h2 data-lang="uz">Infratuzilma <span class="title-accent">kuchli qarorlar</span><br />ustiga quriladi.</h2>
             <p class="manifesto-lead" data-lang="ru">Практический взгляд на контракт как на систему управления результатом — людьми, сроками, рисками и доверием.</p>
             <p class="manifesto-lead" data-lang="en">A practical view of the contract as a system for managing outcomes — people, time, risk and trust.</p>
+            <p class="manifesto-lead" data-lang="uz">Shartnomaga natijani boshqarish tizimi sifatida amaliy qarash — odamlar, muddatlar, risklar va ishonch.</p>
           </div>
-          <div class="principles">
-            <div><div class="principle-top"><span>01</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6" /></svg></div><strong data-lang="ru">Ясность до конфликта</strong><strong data-lang="en">Clarity before conflict</strong></div>
-            <div><div class="principle-top"><span>02</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 7v5c0 4.7 3.3 7.8 8 9 4.7-1.2 8-4.3 8-9V7l-8-4Z" /></svg></div><strong data-lang="ru">Риски под контролем</strong><strong data-lang="en">Risk under control</strong></div>
-            <div><div class="principle-top"><span>03</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11" /></svg></div><strong data-lang="ru">Решения, которые работают</strong><strong data-lang="en">Decisions that deliver</strong></div>
+          <div class="principles stagger">
+            <div>
+              <div class="principle-top"><span>01</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6" /></svg></div>
+              <strong data-lang="ru">Ясность до конфликта</strong><strong data-lang="en">Clarity before conflict</strong><strong data-lang="uz">Nizodan oldin aniqlik</strong>
+            </div>
+            <div>
+              <div class="principle-top"><span>02</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 7v5c0 4.7 3.3 7.8 8 9 4.7-1.2 8-4.3 8-9V7l-8-4Z" /></svg></div>
+              <strong data-lang="ru">Риски под контролем</strong><strong data-lang="en">Risk under control</strong><strong data-lang="uz">Risklar nazorat ostida</strong>
+            </div>
+            <div>
+              <div class="principle-top"><span>03</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M8 5h11v11" /></svg></div>
+              <strong data-lang="ru">Решения, которые работают</strong><strong data-lang="en">Decisions that deliver</strong><strong data-lang="uz">Natija beradigan qarorlar</strong>
+            </div>
           </div>
         </div>
         <div class="manifesto-marquee" aria-hidden="true">
-          <div>FIDIC <i></i> EPC / EPC+F <i></i> CLAIMS <i></i> DISPUTE AVOIDANCE <i></i> PROCUREMENT <i></i> FIDIC <i></i> EPC / EPC+F <i></i> CLAIMS <i></i> DISPUTE AVOIDANCE <i></i> PROCUREMENT <i></i></div>
+          <div>
+            <span>FIDIC</span><i></i><span>EPC / EPC+F</span><i></i><span>CLAIMS</span><i></i><span>DISPUTE AVOIDANCE</span><i></i><span>PROCUREMENT</span><i></i>
+            <span>FIDIC</span><i></i><span>EPC / EPC+F</span><i></i><span>CLAIMS</span><i></i><span>DISPUTE AVOIDANCE</span><i></i><span>PROCUREMENT</span><i></i>
+          </div>
         </div>
       </section>
 
@@ -210,6 +331,7 @@ const pageDescription = 'Лариса Белоусова — междунаро�
             <span class="quote-mark">“</span>
             <blockquote data-lang="ru">Сильный контракт создаёт не барьеры, а ясность, доверие и общий путь к результату.</blockquote>
             <blockquote data-lang="en">A strong contract creates not barriers, but clarity, trust and a shared path to results.</blockquote>
+            <blockquote data-lang="uz">Kuchli shartnoma to‘siq emas — aniqlik, ishonch va natijaga umumiy yo‘l yaratadi.</blockquote>
           </div>
         </div>
 
@@ -217,22 +339,95 @@ const pageDescription = 'Лариса Белоусова — междунаро�
           <div class="section-number">02</div>
           <p class="section-kicker" data-lang="ru">Профессиональный уровень</p>
           <p class="section-kicker" data-lang="en">Selected credentials</p>
+          <p class="section-kicker" data-lang="uz">Tanlangan malakalar</p>
           <h2 data-lang="ru">Международные<br /><em>квалификации.</em></h2>
           <h2 data-lang="en">International<br /><em>credentials.</em></h2>
-          <ul class="credential-list">
-            <li><span>FCCE</span><p>FIDIC Certified Consulting Engineer</p></li>
-            <li><span>FCCP</span><p>FIDIC Certified Consulting Professional</p></li>
-            <li><span>ADB</span><p>Accredited Contract Management &amp; Dispute Avoidance Specialist</p></li>
-            <li><span>MCIArb</span><p data-lang="ru">Член Королевского института арбитров</p><p data-lang="en">Member, Chartered Institute of Arbitrators</p></li>
-            <li><span>DRBF</span><p>Dispute Board Practitioner</p></li>
-            <li><span>IMC</span><p data-lang="ru">Член Комитета FIDIC по управлению добросовестностью</p><p data-lang="en">Member, FIDIC Integrity Management Committee</p></li>
+          <h2 data-lang="uz">Xalqaro<br /><em>malakalar.</em></h2>
+
+          <ul class="credential-list stagger">
+            <li>
+              <span>FCCE</span>
+              <p data-lang="ru">FIDIC Certified Consulting Engineer — сертифицированный инженер-консультант FIDIC</p>
+              <p data-lang="en">FIDIC Certified Consulting Engineer</p>
+              <p data-lang="uz">FIDIC Certified Consulting Engineer — FIDIC sertifikatlangan muhandis-konsultanti</p>
+            </li>
+            <li>
+              <span>FCCP</span>
+              <p data-lang="ru">FIDIC Certified Consulting Professional — сертифицированный профессиональный консультант FIDIC</p>
+              <p data-lang="en">FIDIC Certified Consulting Professional</p>
+              <p data-lang="uz">FIDIC Certified Consulting Professional — FIDIC sertifikatlangan professional konsultanti</p>
+            </li>
+            <li>
+              <span>FIDIC IMC</span>
+              <p data-lang="ru">Член Комитета FIDIC по управлению добросовестностью</p>
+              <p data-lang="en">Member, FIDIC Integrity Management Committee</p>
+              <p data-lang="uz">FIDIC Yaxlitlikni boshqarish qo‘mitasi a’zosi</p>
+            </li>
+            <li>
+              <span>FIDIC</span>
+              <p data-lang="ru">Член Сертификационного комитета FCCE, FIDIC Credentialing</p>
+              <p data-lang="en">Member, FCCE Certification Committee — FIDIC Credentialing</p>
+              <p data-lang="uz">FCCE Sertifikatsiya qo‘mitasi a’zosi, FIDIC Credentialing</p>
+            </li>
+            <li>
+              <span>DRBF</span>
+              <p data-lang="ru">Практик Совета по разрешению споров (Dispute Board Practitioner)</p>
+              <p data-lang="en">DRBF Dispute Board Practitioner</p>
+              <p data-lang="uz">Nizolar bo‘yicha kengash (DB) amaliyotchisi</p>
+            </li>
+            <li>
+              <span>ADB</span>
+              <p data-lang="ru">Аккредитованный АБР специалист по управлению контрактами и предотвращению споров</p>
+              <p data-lang="en">ADB Accredited Contract Manager &amp; Dispute Avoidance Specialist</p>
+              <p data-lang="uz">ADB akkreditatsiyasidan o‘tgan shartnomalarni boshqarish va nizolarning oldini olish mutaxassisi</p>
+            </li>
+            <li>
+              <span>MCIArb</span>
+              <p data-lang="ru">Член Королевского института арбитров</p>
+              <p data-lang="en">Member, Chartered Institute of Arbitrators</p>
+              <p data-lang="uz">Qirollik arbitrlari instituti a’zosi</p>
+            </li>
+            <li>
+              <span>ICAC</span>
+              <p data-lang="ru">Арбитр Международного коммерческого арбитражного суда при ТПП Республики Узбекистан</p>
+              <p data-lang="en">Arbitrator, International Commercial Arbitration Court (ICAC Uzbekistan)</p>
+              <p data-lang="uz">O‘zbekiston Respublikasi SSP huzuridagi Xalqaro tijorat arbitraj sudi arbitri</p>
+            </li>
+            <li>
+              <span>Mediator</span>
+              <p data-lang="ru">Независимый медиатор, зарегистрированный в Министерстве юстиции Республики Узбекистан</p>
+              <p data-lang="en">Independent Mediator registered with the Ministry of Justice of Uzbekistan</p>
+              <p data-lang="uz">O‘zbekiston Respublikasi Adliya vazirligida ro‘yxatdan o‘tgan mustaqil mediator</p>
+            </li>
+            <li>
+              <span>KNAPEK</span>
+              <p data-lang="ru">Действительный член Национальной ассоциации профессиональных инженеров и консультантов</p>
+              <p data-lang="en">Full Member of the National Association of Professional Engineers and Consultants</p>
+              <p data-lang="uz">Professional muhandislar va konsultantlar milliy assotsiatsiyasining to‘liq a’zosi</p>
+            </li>
+            <li>
+              <span>URA</span>
+              <p data-lang="ru">Член Правления Ассоциации дорожников Узбекистана</p>
+              <p data-lang="en">Board Member of the Uzbekistan Road Association</p>
+              <p data-lang="uz">O‘zbekiston avtomobil yo‘llari assotsiatsiyasi Kengashi a’zosi</p>
+            </li>
+            <li>
+              <span>ICP · PCQI</span>
+              <p data-lang="ru">Сертифицированный профессионал ICAgile · Практик Королевского института качества (CQI)</p>
+              <p data-lang="en">ICAgile Certified Professional · Practitioner of the Chartered Quality Institute</p>
+              <p data-lang="uz">ICAgile sertifikatlangan professionali · Qirollik sifat instituti (CQI) amaliyotchisi</p>
+            </li>
           </ul>
-          <div class="credential-badges" aria-label="Профессиональные организации">
+
+          <div class="credential-badges stagger" aria-label="Профессиональные организации">
             <a href="https://credentials.fidic.org/credential/69f72bbf-bc1f-4f5e-b480-90590afd6440" target="_blank" rel="noopener" title="FIDIC FCCE">
               <img src="/fidic-fcce-badge.png" alt="FIDIC Certified Consulting Engineer" loading="lazy" />
             </a>
             <a href="https://credentials.fidic.org/credential/d97d9db8-ab47-4971-81aa-495bfcf78b9e" target="_blank" rel="noopener" title="FIDIC FCCP">
               <img src="/fidic-fccp-badge.png" alt="FIDIC Certified Consulting Professional" loading="lazy" />
+            </a>
+            <a href="https://www.adb.org" target="_blank" rel="noopener" title="Asian Development Bank">
+              <img src="/ADB logo stacked.png" alt="Asian Development Bank" loading="lazy" />
             </a>
             <a href="https://www.ciarb.org" target="_blank" rel="noopener" title="Chartered Institute of Arbitrators">
               <img src="/ciarb-logo.png" alt="Chartered Institute of Arbitrators" loading="lazy" />
@@ -240,11 +435,37 @@ const pageDescription = 'Лариса Белоусова — междунаро�
             <a href="https://www.drbf.org" target="_blank" rel="noopener" title="Dispute Resolution Board Foundation">
               <img src="/drbf-logo.png" alt="Dispute Resolution Board Foundation" loading="lazy" />
             </a>
+            <a href="https://www.quality.org" target="_blank" rel="noopener" title="Chartered Quality Institute">
+              <img src="/cqi-irca-practitioner-badge.png" alt="Chartered Quality Institute — Practitioner" loading="lazy" />
+            </a>
           </div>
+
           <a class="text-link" href="https://hyperstack.id/arisaelousova" target="_blank" rel="noopener">
-            <span data-lang="ru">Все квалификации и членства</span><span data-lang="en">All credentials &amp; memberships</span>
+            <span data-lang="ru">Все квалификации и членства</span><span data-lang="en">All credentials &amp; memberships</span><span data-lang="uz">Barcha malaka va a’zoliklar</span>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>
+        </div>
+      </section>
+
+      <section class="ethos-section" aria-label="BRIDGE Consult">
+        <div class="ethos-inner reveal">
+          <p class="ethos-line" data-lang="ru">Строим связи — <em>достигаем результата</em></p>
+          <p class="ethos-line" data-lang="en">Building connections — <em>delivering results</em></p>
+          <p class="ethos-line" data-lang="uz">Aloqalarni quramiz — <em>natijaga erishamiz</em></p>
+          <div class="ethos-pillars stagger">
+            <div>
+              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 27s-9-5.5-9-12a5.5 5.5 0 0 1 9-4.3A5.5 5.5 0 0 1 25 15c0 6.5-9 12-9 12Z" /></svg>
+              <strong data-lang="ru">Инфраструктура для людей</strong><strong data-lang="en">Infrastructure for people</strong><strong data-lang="uz">Odamlar uchun infratuzilma</strong>
+            </div>
+            <div>
+              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 14a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm9 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM4 25v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2M22 17h1a5 5 0 0 1 5 5v3" /></svg>
+              <strong data-lang="ru">Через сотрудничество</strong><strong data-lang="en">Through collaboration</strong><strong data-lang="uz">Hamkorlik orqali</strong>
+            </div>
+            <div>
+              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 27V17m7 10V11m7 16V7m7 20V14" /></svg>
+              <strong data-lang="ru">К лучшему будущему</strong><strong data-lang="en">Towards a better future</strong><strong data-lang="uz">Yaxshiroq kelajak sari</strong>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -253,31 +474,39 @@ const pageDescription = 'Лариса Белоусова — междунаро�
         <div class="connect-copy reveal">
           <p class="section-kicker" data-lang="ru">На связи</p>
           <p class="section-kicker" data-lang="en">Let’s connect</p>
+          <p class="section-kicker" data-lang="uz">Bog‘lanamiz</p>
           <h2 data-lang="ru">Начнём с<br /><em>разговора.</em></h2>
           <h2 data-lang="en">Let’s start with<br /><em>a conversation.</em></h2>
+          <h2 data-lang="uz">Suhbatdan<br /><em>boshlaymiz.</em></h2>
           <p data-lang="ru">По вопросам консультаций, проектов, выступлений и обучения.</p>
           <p data-lang="en">For consulting, projects, speaking engagements and training.</p>
+          <p data-lang="uz">Konsalting, loyihalar, chiqishlar va o‘quv dasturlari bo‘yicha.</p>
         </div>
 
-        <div class="contact-list reveal">
+        <div class="contact-list reveal stagger">
           <a href="tel:+998330001530">
             <span class="contact-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 3.5 9 3l2 5-2.2 1.5a14 14 0 0 0 5.7 5.7L16 13l5 2-.5 2.5a4 4 0 0 1-4.4 3.1C9.4 19.7 4.3 14.6 3.4 7.9A4 4 0 0 1 6.5 3.5Z" /></svg></span>
-            <span><small data-lang="ru">Телефон / WhatsApp</small><small data-lang="en">Call / WhatsApp</small><strong>+998 33 000 15 30</strong></span>
+            <span class="contact-text"><small data-lang="ru">Телефон / WhatsApp</small><small data-lang="en">Call / WhatsApp</small><small data-lang="uz">Telefon / WhatsApp</small><strong>+998 33 000 15 30</strong></span>
             <svg class="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>
           <a href="mailto:mail@lkbelousova.ru">
             <span class="contact-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18v12H3V6Zm1 1 8 6 8-6" /></svg></span>
-            <span><small>Email</small><strong>mail@lkbelousova.ru</strong></span>
+            <span class="contact-text"><small>Email</small><strong>mail@lkbelousova.ru</strong></span>
             <svg class="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>
           <a href="https://www.linkedin.com/in/larissalk" target="_blank" rel="noopener">
             <span class="contact-icon linkedin-icon" aria-hidden="true">in</span>
-            <span><small>LinkedIn</small><strong>Larisa Belousova</strong></span>
+            <span class="contact-text"><small>LinkedIn</small><strong>Larisa Belousova</strong></span>
+            <svg class="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+          <a href="/">
+            <span class="contact-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-18c2.5 2.4 3.8 5.4 3.8 9S14.5 18.6 12 21c-2.5-2.4-3.8-5.4-3.8-9S9.5 5.4 12 3ZM3.6 9h16.8M3.6 15h16.8" /></svg></span>
+            <span class="contact-text"><small data-lang="ru">Сайт компании</small><small data-lang="en">Company website</small><small data-lang="uz">Kompaniya sayti</small><strong>www.bridgeconsult.uz</strong></span>
             <svg class="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>
           <a href="/larisa-belousova-cv.pdf" target="_blank">
             <span class="contact-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h8l4 4v14H6V3Zm8 0v5h5M9 13h6M9 17h4" /></svg></span>
-            <span><small>Curriculum vitae</small><strong data-lang="ru">Скачать CV</strong><strong data-lang="en">Download CV</strong></span>
+            <span class="contact-text"><small>Curriculum vitae</small><strong data-lang="ru">Скачать CV</strong><strong data-lang="en">Download CV</strong><strong data-lang="uz">CV yuklab olish</strong></span>
             <svg class="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>
         </div>
@@ -287,20 +516,23 @@ const pageDescription = 'Лариса Белоусова — междунаро�
           <div>
             <p class="section-kicker" data-lang="ru">Постоянная ссылка</p>
             <p class="section-kicker" data-lang="en">Permanent link</p>
-            <h3>bridgeconsult.uz/larisa</h3>
-            <p data-lang="ru">Сканируйте QR-код, чтобы открыть эту страницу и сохранить контакт.</p>
-            <p data-lang="en">Scan the QR code to open this page and save the contact.</p>
+            <p class="section-kicker" data-lang="uz">Doimiy havola</p>
+            <h3>{shortUrl}</h3>
+            <p data-lang="ru">Сканируйте QR-код, чтобы открыть эту страницу и сохранить контакт. Ссылка и QR-код не меняются — телефон, должность, CV и ссылки обновляются на странице.</p>
+            <p data-lang="en">Scan the QR code to open this page and save the contact. The link and the QR code never change — phone, title, CV and links are updated on the page.</p>
+            <p data-lang="uz">Ushbu sahifani ochish va kontaktni saqlash uchun QR-kodni skanerlang. Havola va QR-kod o‘zgarmaydi — telefon, lavozim, CV va havolalar sahifada yangilanadi.</p>
             <button type="button" class="copy-link" data-copy-link>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8h11v11H8V8Zm-3 8H3V3h13v2" /></svg>
               <span data-copy-label data-lang="ru">Копировать ссылку</span>
               <span data-copy-label data-lang="en">Copy link</span>
+              <span data-copy-label data-lang="uz">Havolani nusxalash</span>
             </button>
           </div>
         </div>
 
         <footer>
           <a class="footer-brand" href="/"><img src="/bridge 2.svg" alt="Bridge Consult" width="150" height="56" /></a>
-          <p>© {new Date().getFullYear()} BRIDGE Consult LLC</p>
+          <p>© {year} BRIDGE Consult LLC</p>
           <p>Tashkent&nbsp;&nbsp; | &nbsp;&nbsp;Uzbekistan&nbsp;&nbsp; | &nbsp;&nbsp;Worldwide</p>
         </footer>
       </section>
@@ -309,53 +541,108 @@ const pageDescription = 'Лариса Белоусова — междунаро�
     <div class="mobile-contact-dock" data-contact-dock>
       <a href="/larisa-contact.vcf" data-save-contact>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M8.5 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM19 8v6M16 11h6" /></svg>
-        <span data-lang="ru">Добавить контакт</span><span data-lang="en">Add contact</span>
+        <span data-lang="ru">Добавить контакт</span><span data-lang="en">Add contact</span><span data-lang="uz">Kontakt qo‘shish</span>
       </a>
       <a href="https://wa.me/998330001530" target="_blank" rel="noopener">WhatsApp</a>
     </div>
 
+    <div class="toast" data-toast role="status" aria-live="polite"></div>
+
     <script is:inline>
       (() => {
         const body = document.body;
-        const buttons = document.querySelectorAll('[data-language-button]');
-        const titles = {
-          ru: 'Лариса Белоусова — основатель и директор BRIDGE Consult',
-          en: 'Larisa Belousova — Founder & Director, BRIDGE Consult'
+        const root = document.documentElement;
+        const LANGS = ['ru', 'en', 'uz'];
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const finePointer = window.matchMedia('(pointer: fine)').matches;
+
+        /* ── Language ─────────────────────────────────────────────── */
+        const buttons = Array.from(document.querySelectorAll('[data-language-button]'));
+        const switcher = document.querySelector('[data-language-switcher]');
+        const meta = {
+          ru: {
+            title: 'Лариса Белоусова — основатель и директор BRIDGE Consult',
+            description:
+              'Лариса Белоусова — специалист по инфраструктурным контрактам: FIDIC, EPC/EPC+F, закупки, claims, предотвращение и разрешение споров.'
+          },
+          en: {
+            title: 'Larisa Belousova — Founder & Director, BRIDGE Consult',
+            description:
+              'Larisa Belousova — infrastructure contracts specialist: FIDIC, EPC/EPC+F, procurement, claims, dispute avoidance and resolution.'
+          },
+          uz: {
+            title: 'Larisa Belousova — BRIDGE Consult asoschisi va direktori',
+            description:
+              'Larisa Belousova — infratuzilma shartnomalari bo‘yicha mutaxassis: FIDIC, EPC/EPC+F, xaridlar, claims, nizolarning oldini olish va hal etish.'
+          }
+        };
+        const descriptionTag = document.querySelector('meta[name="description"]');
+        const labels = {
+          contact: { ru: 'Добавить в контакты', en: 'Add to contacts', uz: 'Kontaktga qo‘shish' },
+          contactBusy: { ru: 'Открываем контакт…', en: 'Opening contact…', uz: 'Kontakt ochilmoqda…' },
+          copy: { ru: 'Копировать ссылку', en: 'Copy link', uz: 'Havolani nusxalash' },
+          copied: { ru: 'Ссылка скопирована', en: 'Link copied', uz: 'Havola nusxalandi' }
         };
 
-        const setLanguage = (language) => {
-          body.dataset.language = language;
-          document.documentElement.lang = language;
-          document.title = titles[language];
-          localStorage.setItem('larisa-language', language);
-          buttons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.languageButton === language)));
+        const setLanguage = (language, persist) => {
+          if (!LANGS.includes(language)) language = 'ru';
+          root.dataset.language = language;
+          root.lang = language;
+          document.title = meta[language].title;
+          if (descriptionTag) descriptionTag.setAttribute('content', meta[language].description);
+          if (persist) {
+            try {
+              localStorage.setItem('larisa-language', language);
+            } catch (e) {}
+          }
+          buttons.forEach((button, index) => {
+            const active = button.dataset.languageButton === language;
+            button.setAttribute('aria-pressed', String(active));
+            if (active && switcher) switcher.style.setProperty('--active', String(index));
+          });
         };
-        buttons.forEach((button) => button.addEventListener('click', () => setLanguage(button.dataset.languageButton)));
-        const savedLanguage = localStorage.getItem('larisa-language');
-        if (savedLanguage === 'en' || savedLanguage === 'ru') setLanguage(savedLanguage);
 
+        buttons.forEach((button) =>
+          button.addEventListener('click', () => {
+            if (root.dataset.language === button.dataset.languageButton) return;
+            body.classList.add('is-switching');
+            setLanguage(button.dataset.languageButton, true);
+            window.setTimeout(() => body.classList.remove('is-switching'), 320);
+          })
+        );
+        /* Язык уже выбран встроенным скриптом в <head> — синхронизируем кнопки и мета-теги. */
+        setLanguage(root.dataset.language, false);
+
+        /* ── Scroll: progress, sticky nav, dock, parallax ─────────── */
         const progress = document.querySelector('.page-progress span');
         const frame = document.querySelector('[data-parallax-frame]');
         const contactDock = document.querySelector('[data-contact-dock]');
         let ticking = false;
         const updateScroll = () => {
-          const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-          progress.style.transform = `scaleX(${scrollable > 0 ? window.scrollY / scrollable : 0})`;
+          const scrollable = root.scrollHeight - window.innerHeight;
+          if (progress) progress.style.transform = `scaleX(${scrollable > 0 ? window.scrollY / scrollable : 0})`;
           body.classList.toggle('is-scrolled', window.scrollY > 24);
-          contactDock?.classList.toggle('is-visible', window.scrollY > Math.min(620, window.innerHeight * .7));
-          if (frame && window.innerWidth > 820 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            frame.style.setProperty('--parallax', `${Math.min(window.scrollY * .045, 36)}px`);
+          if (contactDock) contactDock.classList.toggle('is-visible', window.scrollY > Math.min(620, window.innerHeight * 0.7));
+          if (frame && window.innerWidth > 820 && !reduced) {
+            frame.style.setProperty('--parallax', `${Math.min(window.scrollY * 0.045, 36)}px`);
           }
           ticking = false;
         };
-        window.addEventListener('scroll', () => {
-          if (!ticking) { requestAnimationFrame(updateScroll); ticking = true; }
-        }, { passive: true });
+        window.addEventListener(
+          'scroll',
+          () => {
+            if (!ticking) {
+              requestAnimationFrame(updateScroll);
+              ticking = true;
+            }
+          },
+          { passive: true }
+        );
         updateScroll();
 
-        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        /* ── Pointer lighting ─────────────────────────────────────── */
         const hero = document.querySelector('.hero');
-        if (hero && !reduced && window.matchMedia('(pointer: fine)').matches) {
+        if (hero && !reduced && finePointer) {
           hero.addEventListener('pointermove', (event) => {
             const rect = hero.getBoundingClientRect();
             hero.style.setProperty('--spot-x', `${event.clientX - rect.left}px`);
@@ -363,8 +650,8 @@ const pageDescription = 'Лариса Белоусова — междунаро�
           });
         }
 
-        if (!reduced && window.matchMedia('(pointer: fine)').matches) {
-          document.querySelectorAll('.expertise-card').forEach((card) => {
+        if (!reduced && finePointer) {
+          document.querySelectorAll('.expertise-card, .principles > div, .ethos-pillars > div').forEach((card) => {
             card.addEventListener('pointermove', (event) => {
               const rect = card.getBoundingClientRect();
               card.style.setProperty('--mx', `${event.clientX - rect.left}px`);
@@ -373,98 +660,183 @@ const pageDescription = 'Лариса Белоусова — междунаро�
           });
         }
 
-        document.querySelectorAll('[data-save-contact]').forEach((link) => {
-          link.addEventListener('click', () => {
-            link.classList.add('is-opening');
-            link.querySelectorAll('[data-contact-label]').forEach((label) => {
-              label.textContent = label.dataset.lang === 'ru' ? 'Открываем контакт…' : 'Opening contact…';
-            });
-            window.setTimeout(() => {
-              link.classList.remove('is-opening');
-              link.querySelectorAll('[data-contact-label]').forEach((label) => {
-                label.textContent = label.dataset.lang === 'ru' ? 'Добавить в контакты' : 'Add to contacts';
-              });
-            }, 1800);
+        /* ── Portrait tilt ────────────────────────────────────────── */
+        const tilt = document.querySelector('[data-tilt]');
+        if (tilt && !reduced && finePointer) {
+          tilt.addEventListener('pointermove', (event) => {
+            const rect = tilt.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width - 0.5;
+            const y = (event.clientY - rect.top) / rect.height - 0.5;
+            tilt.style.setProperty('--tilt-x', `${(-y * 4).toFixed(2)}deg`);
+            tilt.style.setProperty('--tilt-y', `${(x * 5).toFixed(2)}deg`);
           });
+          tilt.addEventListener('pointerleave', () => {
+            tilt.style.setProperty('--tilt-x', '0deg');
+            tilt.style.setProperty('--tilt-y', '0deg');
+          });
+        }
+
+        /* ── Staggered reveals ────────────────────────────────────── */
+        document.querySelectorAll('.stagger').forEach((group) => {
+          Array.from(group.children).forEach((child, index) => child.style.setProperty('--i', String(index)));
         });
 
         const reveals = document.querySelectorAll('.reveal');
         if (!reduced && 'IntersectionObserver' in window) {
-          const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-              }
-            });
-          }, { threshold: .14, rootMargin: '0px 0px -5% 0px' });
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-visible');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }
+          );
           reveals.forEach((element) => observer.observe(element));
         } else {
           reveals.forEach((element) => element.classList.add('is-visible'));
         }
 
+        /* ── Counters ─────────────────────────────────────────────── */
         const counters = document.querySelectorAll('[data-count]');
         if (!reduced && 'IntersectionObserver' in window) {
-          const counterObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (!entry.isIntersecting) return;
-              const node = entry.target;
-              const target = Number(node.dataset.count);
-              const duration = 900;
-              const start = performance.now();
-              const step = (now) => {
-                const amount = Math.min((now - start) / duration, 1);
-                node.textContent = Math.round(target * (1 - Math.pow(1 - amount, 3)));
-                if (amount < 1) requestAnimationFrame(step);
-              };
-              requestAnimationFrame(step);
-              counterObserver.unobserve(node);
-            });
-          }, { threshold: .8 });
+          const counterObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                const node = entry.target;
+                const target = Number(node.dataset.count);
+                const duration = 1100;
+                const start = performance.now();
+                const step = (now) => {
+                  const amount = Math.min((now - start) / duration, 1);
+                  node.textContent = String(Math.round(target * (1 - Math.pow(1 - amount, 4))));
+                  if (amount < 1) requestAnimationFrame(step);
+                };
+                requestAnimationFrame(step);
+                counterObserver.unobserve(node);
+              });
+            },
+            { threshold: 0.8 }
+          );
           counters.forEach((counter) => counterObserver.observe(counter));
         }
 
-        if (!reduced && window.matchMedia('(pointer: fine)').matches) {
+        /* ── Active section in the nav ────────────────────────────── */
+        const navLinks = Array.from(document.querySelectorAll('[data-nav-link]'));
+        const sections = navLinks.map((link) => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+        if (sections.length && 'IntersectionObserver' in window) {
+          const navObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                navLinks.forEach((link) => link.classList.toggle('is-current', link.getAttribute('href') === `#${entry.target.id}`));
+              });
+            },
+            { rootMargin: '-45% 0px -50% 0px' }
+          );
+          sections.forEach((section) => navObserver.observe(section));
+        }
+
+        /* ── Magnetic buttons ─────────────────────────────────────── */
+        if (!reduced && finePointer) {
           document.querySelectorAll('.magnetic').forEach((element) => {
             element.addEventListener('pointermove', (event) => {
               const rect = element.getBoundingClientRect();
-              element.style.transform = `translate(${(event.clientX - rect.left - rect.width / 2) * .08}px, ${(event.clientY - rect.top - rect.height / 2) * .08}px)`;
+              element.style.setProperty('--mag-x', `${((event.clientX - rect.left - rect.width / 2) * 0.07).toFixed(2)}px`);
+              element.style.setProperty('--mag-y', `${((event.clientY - rect.top - rect.height / 2) * 0.07).toFixed(2)}px`);
             });
-            element.addEventListener('pointerleave', () => { element.style.transform = ''; });
+            element.addEventListener('pointerleave', () => {
+              element.style.setProperty('--mag-x', '0px');
+              element.style.setProperty('--mag-y', '0px');
+            });
           });
         }
 
-        document.querySelector('[data-copy-link]')?.addEventListener('click', async () => {
-          try {
-            await navigator.clipboard.writeText('https://bridgeconsult.uz/larisa');
-            document.querySelectorAll('[data-copy-label]').forEach((label) => {
-              label.textContent = label.dataset.lang === 'ru' ? 'Ссылка скопирована' : 'Link copied';
+        /* ── Toast ────────────────────────────────────────────────── */
+        const toast = document.querySelector('[data-toast]');
+        let toastTimer;
+        const showToast = (message) => {
+          if (!toast) return;
+          toast.textContent = message;
+          toast.classList.add('is-visible');
+          window.clearTimeout(toastTimer);
+          toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 2400);
+        };
+
+        /* ── Save contact ─────────────────────────────────────────── */
+        document.querySelectorAll('[data-save-contact]').forEach((link) => {
+          link.addEventListener('click', () => {
+            const language = root.dataset.language;
+            link.classList.add('is-opening');
+            link.querySelectorAll('[data-contact-label]').forEach((label) => {
+              label.textContent = labels.contactBusy[label.dataset.lang] || labels.contactBusy.ru;
             });
-            setTimeout(() => document.querySelectorAll('[data-copy-label]').forEach((label) => {
-              label.textContent = label.dataset.lang === 'ru' ? 'Копировать ссылку' : 'Copy link';
-            }), 1800);
-          } catch (_) {}
+            showToast(labels.contactBusy[language] || labels.contactBusy.ru);
+            window.setTimeout(() => {
+              link.classList.remove('is-opening');
+              link.querySelectorAll('[data-contact-label]').forEach((label) => {
+                label.textContent = labels.contact[label.dataset.lang] || labels.contact.ru;
+              });
+            }, 1800);
+          });
         });
+
+        /* ── Copy link ────────────────────────────────────────────── */
+        const copyButton = document.querySelector('[data-copy-link]');
+        if (copyButton) {
+          copyButton.addEventListener('click', async () => {
+            const language = root.dataset.language;
+            const url = 'https://www.bridgeconsult.uz/larisa/';
+            try {
+              await navigator.clipboard.writeText(url);
+            } catch (e) {
+              const field = document.createElement('input');
+              field.value = url;
+              document.body.appendChild(field);
+              field.select();
+              try {
+                document.execCommand('copy');
+              } catch (err) {}
+              field.remove();
+            }
+            copyButton.classList.add('is-copied');
+            document.querySelectorAll('[data-copy-label]').forEach((label) => {
+              label.textContent = labels.copied[label.dataset.lang] || labels.copied.ru;
+            });
+            showToast(labels.copied[language] || labels.copied.ru);
+            window.setTimeout(() => {
+              copyButton.classList.remove('is-copied');
+              document.querySelectorAll('[data-copy-label]').forEach((label) => {
+                label.textContent = labels.copy[label.dataset.lang] || labels.copy.ru;
+              });
+            }, 2000);
+          });
+        }
       })();
     </script>
   </body>
 </html>
 
 <style is:global>
+  /* ═══ Tokens ══════════════════════════════════════════════════════════ */
   :root {
     --carbon: #0d0c0b;
     --carbon-soft: #151311;
-    --paper: #eee9df;
-    --paper-bright: #faf7f0;
+    --paper: #f4efe6;
     --champagne: #d8bd96;
-    --bronze: #987956;
-    --muted: #a59d91;
-    --line-dark: rgba(216, 189, 150, .2);
-    --line-light: rgba(45, 38, 31, .14);
+    --champagne-bright: #f0dcba;
+    --bronze: #9b7c56;
+    --line-dark: rgba(216, 189, 150, 0.2);
+    --line-light: rgba(45, 38, 31, 0.14);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --gutter: max(22px, calc((100vw - 1400px) / 2));
   }
 
   * { box-sizing: border-box; }
-  html { background: var(--carbon); scroll-behavior: smooth; }
+  html { background: var(--carbon); scroll-behavior: smooth; scroll-padding-top: 108px; }
   body {
     margin: 0;
     overflow-x: hidden;
@@ -472,6 +844,7 @@ const pageDescription = 'Лариса Белоусова — междунаро�
     color: #f8f5ef;
     font-family: 'Manrope', 'Inter', sans-serif;
     font-weight: 400;
+    -webkit-font-smoothing: antialiased;
   }
   body::before {
     content: '';
@@ -479,207 +852,218 @@ const pageDescription = 'Лариса Белоусова — междунаро�
     inset: 0;
     z-index: 30;
     pointer-events: none;
-    opacity: .035;
+    opacity: 0.035;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
     mix-blend-mode: soft-light;
   }
   a { color: inherit; text-decoration: none; }
   button { color: inherit; font: inherit; }
   svg { display: block; }
-  [data-lang='en'] { display: none !important; }
-  body[data-language='en'] [data-lang='ru'] { display: none !important; }
-  body[data-language='en'] [data-lang='en'] { display: revert !important; }
+  :focus-visible { outline: 2px solid var(--champagne); outline-offset: 4px; border-radius: 4px; }
 
-  :focus-visible { outline: 2px solid var(--champagne); outline-offset: 4px; }
-  .page-progress { position: fixed; inset: 0 0 auto; z-index: 100; height: 2px; background: rgba(255,255,255,.04); }
-  .page-progress span { display: block; width: 100%; height: 100%; background: var(--champagne); transform: scaleX(0); transform-origin: left; will-change: transform; }
+  /* ═══ Languages ═══════════════════════════════════════════════════════ */
+  [data-lang] { display: none !important; }
+  :root[data-language='ru'] [data-lang='ru'],
+  :root[data-language='en'] [data-lang='en'],
+  :root[data-language='uz'] [data-lang='uz'] { display: revert !important; }
+  body.is-switching main,
+  body.is-switching .site-nav .nav-links { animation: language-fade 0.32s ease; }
 
-  .site-nav {
-    position: absolute;
-    z-index: 20;
-    top: 0;
+  /* ═══ Shared utilities ════════════════════════════════════════════════ */
+  .skip-link {
+    position: fixed;
+    top: 12px;
     left: 50%;
-    width: min(100% - 64px, 1400px);
-    min-height: 112px;
-    transform: translateX(-50%);
+    z-index: 200;
+    padding: 12px 22px;
+    border-radius: 999px;
+    background: var(--champagne);
+    color: #17120e;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    transform: translate(-50%, -160%);
+    transition: transform 0.3s var(--ease-out);
+  }
+  .skip-link:focus-visible { transform: translate(-50%, 0); }
+
+  .page-progress { position: fixed; inset: 0 0 auto; z-index: 100; height: 2px; background: rgba(255, 255, 255, 0.04); }
+  .page-progress span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--bronze), var(--champagne-bright));
+    transform: scaleX(0);
+    transform-origin: left;
+    will-change: transform;
+  }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    z-index: 120;
+    max-width: min(92vw, 420px);
+    padding: 13px 22px;
+    border: 1px solid rgba(216, 189, 150, 0.28);
+    border-radius: 999px;
+    background: rgba(14, 13, 11, 0.94);
+    color: var(--champagne);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-align: center;
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(18px);
+    opacity: 0;
+    transform: translate(-50%, 16px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.4s var(--ease-out);
+  }
+  .toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+  .section-number { color: var(--bronze); font-family: ui-monospace, monospace; font-size: 12px; letter-spacing: 0.14em; }
+  .section-kicker { margin: 0 0 18px; color: var(--bronze); font-size: 12px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase; }
+  .title-accent { color: var(--champagne); font: inherit; letter-spacing: inherit; }
+
+  .has-js .reveal {
+    opacity: 0;
+    transform: translateY(34px);
+    transition: opacity 0.8s ease, transform 0.9s var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+  .has-js .reveal.is-visible { opacity: 1; transform: none; }
+  .has-js .reveal .stagger > *:not(.reveal),
+  .has-js .reveal.stagger > *:not(.reveal) {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease calc(var(--i, 0) * 55ms + 0.12s), transform 0.75s var(--ease-out) calc(var(--i, 0) * 55ms + 0.12s);
+  }
+  .has-js .reveal.is-visible .stagger > *:not(.reveal),
+  .has-js .reveal.is-visible.stagger > *:not(.reveal) { opacity: 1; transform: none; }
+
+  /* ═══ Navigation ══════════════════════════════════════════════════════ */
+  .site-nav {
+    position: fixed;
+    z-index: 20;
+    top: 16px;
+    left: 50%;
+    width: min(calc(100% - 36px), 1400px);
+    min-height: 74px;
+    padding: 0 10px 0 22px;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,.12);
-  }
-  .brand { width: 154px; height: 58px; display: flex; align-items: center; }
-  .brand img, .footer-brand img { width: 100%; height: auto; filter: brightness(0) invert(1); opacity: .95; }
-  .nav-links { display: flex; gap: clamp(24px, 3vw, 54px); color: rgba(255,255,255,.65); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
-  .nav-links a { position: relative; transition: color .2s ease; }
-  .nav-links a::after { content: ''; position: absolute; left: 0; bottom: -8px; width: 100%; height: 1px; background: var(--champagne); transform: scaleX(0); transform-origin: right; transition: transform .3s ease; }
-  .nav-links a:hover { color: white; }
-  .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
-  .nav-actions { justify-self: end; display: flex; align-items: center; gap: 28px; }
-  .language-switcher { display: flex; align-items: center; gap: 9px; }
-  .language-switcher span { width: 12px; height: 1px; background: rgba(255,255,255,.2); }
-  .language-switcher button { border: 0; padding: 10px 2px; background: none; color: rgba(255,255,255,.4); font-size: 11px; letter-spacing: .12em; cursor: pointer; transition: color .2s; }
-  .language-switcher button[aria-pressed='true'] { color: var(--champagne); }
-  .nav-contact { display: flex; align-items: center; gap: 14px; border: 1px solid rgba(255,255,255,.24); border-radius: 999px; padding: 12px 17px; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; transition: border-color .2s, background .2s; }
-  .nav-contact:hover { border-color: var(--champagne); background: rgba(216,189,150,.08); }
-  .nav-contact svg, .action-arrow, .text-link svg { width: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; }
-
-  .hero {
-    position: relative;
-    min-height: max(820px, 100svh);
-    padding: 152px max(32px, calc((100vw - 1400px) / 2)) 88px;
-    display: grid;
-    grid-template-columns: minmax(360px, .95fr) minmax(520px, 1.05fr);
-    gap: clamp(56px, 7vw, 118px);
-    align-items: center;
-    isolation: isolate;
-    background: radial-gradient(circle at 12% 15%, #27221d 0, #12100e 38%, #0b0a09 74%);
-  }
-  .hero-grid { position: absolute; inset: 0; z-index: -2; opacity: .18; background-image: linear-gradient(rgba(216,189,150,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(216,189,150,.08) 1px, transparent 1px); background-size: 112px 112px; mask-image: linear-gradient(90deg, black, transparent 75%); }
-  .hero-glow { position: absolute; z-index: -1; width: 520px; height: 520px; left: 29%; top: 15%; border-radius: 50%; background: rgba(142,88,47,.12); filter: blur(90px); animation: glow-drift 8s ease-in-out infinite alternate; }
-  .portrait-stage { position: relative; justify-self: end; width: min(100%, 540px); }
-  .portrait-frame { --parallax: 0px; position: relative; aspect-ratio: .79; overflow: hidden; border-radius: 230px 230px 28px 28px; border: 1px solid rgba(216,189,150,.34); box-shadow: 0 44px 120px rgba(0,0,0,.48); transform: translateY(var(--parallax)); will-change: transform; }
-  .portrait-frame::before { content: ''; position: absolute; inset: 13px; z-index: 2; border: 1px solid rgba(255,255,255,.18); border-radius: inherit; pointer-events: none; }
-  .portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; filter: saturate(.88) contrast(1.03); transform: scale(1.015); }
-  .portrait-wash { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 48%, rgba(5,4,3,.9) 100%); }
-  .portrait-caption { position: absolute; inset: auto 34px 29px; display: flex; justify-content: space-between; color: rgba(255,255,255,.62); font-size: 8px; letter-spacing: .17em; text-transform: uppercase; }
-  .orbit { position: absolute; border: 1px solid rgba(216,189,150,.22); border-radius: 50%; pointer-events: none; }
-  .orbit::before { content: ''; position: absolute; width: 6px; height: 6px; top: 50%; left: -3px; border-radius: 50%; background: var(--champagne); box-shadow: 0 0 20px var(--champagne); }
-  .orbit-one { width: 114%; aspect-ratio: 1; left: -18%; top: 4%; animation: orbit-spin 22s linear infinite; }
-  .orbit-two { width: 80%; aspect-ratio: 1; left: 31%; top: 25%; border-color: rgba(255,255,255,.1); animation: orbit-spin 30s linear infinite reverse; }
-  .coordinates { position: absolute; right: -54px; bottom: 70px; color: rgba(255,255,255,.32); font-family: monospace; font-size: 8px; letter-spacing: .16em; transform: rotate(-90deg); }
-  .hero-copy { position: relative; z-index: 2; max-width: 700px; }
-  .eyebrow { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; color: var(--champagne); font-size: 11px; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; }
-  .eyebrow-line { width: 46px; height: 1px; background: var(--champagne); }
-  .hero-title { margin: 0 0 28px; font-family: 'Manrope', sans-serif; font-size: clamp(64px, 7vw, 112px); font-weight: 300; letter-spacing: -.075em; line-height: .82; }
-  .hero-title span, .hero-title em { display: block; }
-  .hero-title em { margin-left: .35em; color: var(--champagne); font-family: 'Playfair Display', serif; font-weight: 500; letter-spacing: -.035em; }
-  .hero-lead { max-width: 610px; margin: 0 0 36px; color: rgba(255,255,255,.65); font-size: clamp(16px, 1.3vw, 19px); font-weight: 300; line-height: 1.72; }
-  .hero-actions { display: flex; gap: 12px; margin-bottom: 44px; }
-  .primary-action { min-width: 300px; min-height: 72px; padding: 10px 17px 10px 11px; display: flex; align-items: center; gap: 14px; border-radius: 999px; background: linear-gradient(110deg, #e7d2b1, #c49f70); color: #17120e; box-shadow: 0 18px 50px rgba(158,113,61,.2); transition: box-shadow .25s ease, transform .25s ease; }
-  .primary-action:hover { box-shadow: 0 22px 64px rgba(198,154,99,.36); }
-  .action-icon, .round-action, .contact-icon { flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; }
-  .action-icon { width: 50px; height: 50px; background: rgba(255,255,255,.37); }
-  .action-icon svg, .round-action svg, .contact-icon svg { width: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-  .primary-action > span:nth-child(2) { display: grid; gap: 2px; }
-  .primary-action strong { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
-  .primary-action small { font-family: monospace; font-size: 8px; letter-spacing: .17em; opacity: .56; }
-  .primary-action .action-arrow { margin-left: auto; }
-  .round-action { width: 72px; height: 72px; border: 1px solid rgba(255,255,255,.3); transition: border-color .25s, background .25s, transform .25s ease; }
-  .round-action:hover { border-color: var(--champagne); background: rgba(216,189,150,.1); }
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line-dark); border-bottom: 1px solid var(--line-dark); }
-  .stats > div { padding: 22px 18px 22px 0; min-height: 114px; display: flex; flex-direction: column; justify-content: space-between; }
-  .stats > div + div { padding-left: 18px; border-left: 1px solid var(--line-dark); }
-  .stats strong { color: var(--champagne); font-family: 'Playfair Display', serif; font-size: clamp(27px, 2.2vw, 38px); font-weight: 500; }
-  .stats div > span { max-width: 115px; color: rgba(255,255,255,.47); font-size: 9px; line-height: 1.35; letter-spacing: .08em; text-transform: uppercase; }
-  .scroll-cue { position: absolute; left: max(32px, calc((100vw - 1400px) / 2)); bottom: 30px; display: flex; align-items: center; gap: 15px; color: rgba(255,255,255,.36); font-size: 8px; letter-spacing: .2em; text-transform: uppercase; }
-  .scroll-cue i { position: relative; display: block; width: 54px; height: 1px; overflow: hidden; background: rgba(255,255,255,.17); }
-  .scroll-cue i::after { content: ''; position: absolute; width: 50%; height: 100%; background: var(--champagne); animation: scan-line 2s ease-in-out infinite; }
-  .hero-enter { animation: hero-in .9s cubic-bezier(.2,.65,.25,1) both; animation-delay: var(--delay, 0s); }
-
-  .profile-section { background: var(--paper); color: #221f1b; padding: 132px max(32px, calc((100vw - 1400px) / 2)); }
-  .section-intro { display: grid; grid-template-columns: 70px 1.1fr .9fr; gap: 34px; align-items: end; margin-bottom: 76px; }
-  .section-number { align-self: start; color: var(--bronze); font-family: monospace; font-size: 10px; letter-spacing: .14em; }
-  .section-kicker { margin: 0 0 18px; color: var(--bronze); font-size: 10px; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; }
-  .section-intro h2, .credentials-copy h2, .connect-copy h2 { margin: 0; font-family: 'Manrope', sans-serif; font-size: clamp(42px, 5vw, 76px); font-weight: 400; letter-spacing: -.055em; line-height: .98; }
-  .section-intro h2 em, .credentials-copy h2 em, .connect-copy h2 em { color: var(--bronze); font-family: 'Playfair Display', serif; font-weight: 500; }
-  .section-summary { max-width: 480px; margin: 0 0 5px; color: #6f675e; font-size: 16px; font-weight: 400; line-height: 1.75; }
-  .expertise-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line-light); border-left: 1px solid var(--line-light); }
-  .expertise-card { position: relative; min-height: 330px; padding: 30px; display: flex; flex-direction: column; overflow: hidden; border-right: 1px solid var(--line-light); border-bottom: 1px solid var(--line-light); transition: color .35s ease, background .35s ease; transition-delay: calc(var(--i) * 60ms); }
-  .expertise-card::before { content: ''; position: absolute; inset: 0; background: var(--carbon-soft); transform: translateY(101%); transition: transform .45s cubic-bezier(.2,.7,.25,1); }
-  .expertise-card > * { position: relative; z-index: 1; }
-  .expertise-card:hover { color: white; }
-  .expertise-card:hover::before { transform: translateY(0); }
-  .expertise-card .card-index { align-self: end; color: #91887d; font-family: monospace; font-size: 9px; letter-spacing: .14em; }
-  .expertise-card > svg { width: 54px; margin: 46px 0 auto; fill: none; stroke: var(--bronze); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
-  .expertise-card h3 { max-width: 270px; margin: 28px 0 11px; font-family: 'Playfair Display', serif; font-size: 23px; font-weight: 500; line-height: 1.18; }
-  .expertise-card p { margin: 0; color: #817970; font-family: monospace; font-size: 9px; line-height: 1.5; letter-spacing: .05em; text-transform: uppercase; }
-
-  .credentials-section { padding: 132px max(32px, calc((100vw - 1400px) / 2)); display: grid; grid-template-columns: .92fr 1.08fr; gap: clamp(70px, 9vw, 160px); align-items: center; background: #f8f5ee; color: #221f1b; }
-  .credentials-visual { position: relative; min-height: 720px; }
-  .credentials-photo { width: 78%; height: 650px; overflow: hidden; border-radius: 220px 220px 24px 24px; filter: grayscale(.18); }
-  .credentials-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; transform: scale(1.04); }
-  .vertical-word { position: absolute; right: 2%; top: 2%; margin: 0; color: rgba(71,60,49,.1); font-size: 70px; font-weight: 300; letter-spacing: .08em; writing-mode: vertical-rl; }
-  .quote-card { position: absolute; right: 0; bottom: 0; width: min(390px, 70%); padding: 32px 36px; background: rgba(20,18,16,.95); color: white; box-shadow: 0 30px 70px rgba(57,45,31,.25); }
-  .quote-mark { display: block; height: 42px; color: var(--champagne); font-family: 'Playfair Display', serif; font-size: 70px; line-height: .8; }
-  .quote-card blockquote { margin: 14px 0 0; font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; line-height: 1.55; }
-  .credentials-copy { position: relative; }
-  .credentials-copy .section-number { position: absolute; top: 7px; right: 0; }
-  .credentials-copy h2 { margin-bottom: 45px; }
-  .credential-list { list-style: none; margin: 0 0 30px; padding: 0; border-top: 1px solid var(--line-light); }
-  .credential-list li { min-height: 66px; display: grid; grid-template-columns: 94px 1fr; gap: 22px; align-items: center; border-bottom: 1px solid var(--line-light); }
-  .credential-list span { color: var(--bronze); font-family: monospace; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-  .credential-list p { margin: 0; color: #4f4942; font-size: 13px; line-height: 1.45; }
-  .text-link { min-height: 44px; display: inline-flex; align-items: center; gap: 18px; color: #28231e; font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
-  .text-link svg { transition: transform .25s; }
-  .text-link:hover svg { transform: translateX(6px); }
-
-  .connect-section { position: relative; padding: 132px max(32px, calc((100vw - 1400px) / 2)) 36px; display: grid; grid-template-columns: .8fr 1fr; gap: 50px 8vw; overflow: hidden; background: #0b0a09; color: white; }
-  .connect-lines { position: absolute; inset: 0; pointer-events: none; opacity: .24; background: radial-gradient(circle at 80% 20%, rgba(173,123,72,.18), transparent 34%), repeating-linear-gradient(110deg, transparent 0 150px, rgba(216,189,150,.11) 151px 152px, transparent 153px 300px); }
-  .connect-copy, .contact-list, .qr-card, footer { position: relative; z-index: 1; }
-  .connect-copy h2 { margin-bottom: 30px; }
-  .connect-copy h2 em { color: var(--champagne); }
-  .connect-copy > p:last-child { max-width: 450px; margin: 0; color: rgba(255,255,255,.5); font-size: 16px; line-height: 1.7; }
-  .contact-list { border-top: 1px solid var(--line-dark); }
-  .contact-list > a { min-height: 92px; padding: 12px 4px; display: grid; grid-template-columns: 56px 1fr 28px; gap: 20px; align-items: center; border-bottom: 1px solid var(--line-dark); transition: background .25s, padding .25s; }
-  .contact-list > a:hover { padding-inline: 16px; background: rgba(216,189,150,.06); }
-  .contact-icon { width: 50px; height: 50px; border: 1px solid rgba(255,255,255,.2); color: var(--champagne); }
-  .linkedin-icon { font-family: 'Inter', sans-serif; font-size: 21px; font-weight: 700; }
-  .contact-list a > span:nth-child(2) { display: grid; gap: 6px; }
-  .contact-list small { color: rgba(255,255,255,.4); font-size: 8px; letter-spacing: .19em; text-transform: uppercase; }
-  .contact-list strong { font-size: 15px; font-weight: 500; letter-spacing: .015em; }
-  .contact-list .action-arrow { color: var(--champagne); transition: transform .25s; }
-  .contact-list a:hover .action-arrow { transform: translateX(5px); }
-  .qr-card { grid-column: 1 / -1; margin-top: 30px; padding: 34px; display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 38px; align-items: center; border: 1px solid var(--line-dark); background: rgba(255,255,255,.035); backdrop-filter: blur(18px); }
-  .qr-shell { padding: 12px; border-radius: 4px; background: #f8f5ee; }
-  .qr-shell img { display: block; width: 100%; height: auto; }
-  .qr-card h3 { margin: 0 0 13px; font-family: 'Playfair Display', serif; font-size: clamp(27px, 3vw, 46px); font-weight: 500; overflow-wrap: anywhere; }
-  .qr-card > div:last-child > p:not(.section-kicker) { max-width: 620px; margin: 0 0 20px; color: rgba(255,255,255,.5); font-size: 13px; line-height: 1.65; }
-  .copy-link { min-height: 44px; padding: 0; display: inline-flex; align-items: center; gap: 10px; border: 0; background: transparent; color: var(--champagne); font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; }
-  .copy-link svg { width: 17px; fill: none; stroke: currentColor; stroke-width: 1.5; }
-  footer { grid-column: 1 / -1; margin-top: 70px; padding-top: 26px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; border-top: 1px solid var(--line-dark); color: rgba(255,255,255,.34); font-size: 8px; letter-spacing: .14em; text-transform: uppercase; }
-  footer p { margin: 0; }
-  footer p:last-child { justify-self: end; }
-  .footer-brand { width: 125px; }
-
-  .has-js .reveal { opacity: 0; transform: translateY(36px); filter: blur(5px); transition: opacity .85s ease, transform .85s cubic-bezier(.2,.65,.25,1), filter .85s ease; }
-  .has-js .reveal.is-visible { opacity: 1; transform: none; filter: none; }
-
-  @keyframes hero-in { from { opacity: 0; transform: translateY(28px); filter: blur(7px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-  @keyframes orbit-spin { to { transform: rotate(360deg); } }
-  @keyframes glow-drift { to { transform: translate(60px, 40px) scale(1.14); } }
-  @keyframes scan-line { 0% { transform: translateX(-110%); } 100% { transform: translateX(220%); } }
-
-  /* ── V2: cinematic editorial direction ─────────────────────────────── */
-  html { scroll-padding-top: 110px; }
-  .site-nav {
-    position: fixed;
-    top: 18px;
-    width: min(calc(100% - 40px), 1400px);
-    min-height: 76px;
-    padding: 0 12px 0 24px;
-    border: 1px solid rgba(255,255,255,.13);
+    border: 1px solid rgba(255, 255, 255, 0.13);
     border-radius: 22px;
-    background: rgba(12, 11, 10, .7);
-    box-shadow: 0 16px 50px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.05);
+    background: rgba(12, 11, 10, 0.7);
+    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(22px) saturate(130%);
     -webkit-backdrop-filter: blur(22px) saturate(130%);
-    transition: min-height .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
+    transform: translateX(-50%);
+    transition: min-height 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   }
-  .is-scrolled .site-nav { min-height: 66px; background: rgba(10,9,8,.88); border-color: rgba(216,189,150,.22); box-shadow: 0 18px 60px rgba(0,0,0,.34); }
-  .brand { width: 132px; }
-  .nav-contact { padding: 13px 19px; border-color: rgba(216,189,150,.35); background: rgba(216,189,150,.08); }
+  .is-scrolled .site-nav {
+    min-height: 64px;
+    border-color: rgba(216, 189, 150, 0.22);
+    background: rgba(10, 9, 8, 0.9);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.36);
+  }
+  .brand { width: 132px; height: 50px; display: flex; align-items: center; }
+  .brand img,
+  .footer-brand img { width: 100%; height: auto; filter: brightness(0) invert(1); opacity: 0.95; }
+  .nav-links { display: flex; gap: clamp(22px, 3vw, 48px); color: rgba(255, 255, 255, 0.62); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .nav-links a { position: relative; padding: 6px 0; transition: color 0.25s ease; }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--champagne);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.35s var(--ease-out);
+  }
+  .nav-links a:hover,
+  .nav-links a.is-current { color: #fff; }
+  .nav-links a:hover::after,
+  .nav-links a.is-current::after { transform: scaleX(1); transform-origin: left; }
+  .nav-actions { justify-self: end; display: flex; align-items: center; gap: 18px; }
 
+  .language-switcher {
+    --active: 0;
+    position: relative;
+    display: grid;
+    grid-auto-flow: column;
+    padding: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+  }
+  .language-thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    z-index: 0;
+    width: 40px;
+    height: calc(100% - 6px);
+    border-radius: 999px;
+    background: linear-gradient(120deg, var(--champagne-bright), #c49f70);
+    box-shadow: 0 6px 18px rgba(188, 142, 88, 0.28);
+    transform: translateX(calc(var(--active) * 40px));
+    transition: transform 0.42s var(--ease-out);
+  }
+  .language-switcher button {
+    position: relative;
+    z-index: 1;
+    width: 40px;
+    min-height: 34px;
+    border: 0;
+    background: none;
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  .language-switcher button:hover { color: rgba(255, 255, 255, 0.85); }
+  .language-switcher button[aria-pressed='true'] { color: #17120e; }
+
+  .nav-contact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1px solid rgba(216, 189, 150, 0.35);
+    border-radius: 999px;
+    background: rgba(216, 189, 150, 0.08);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+  }
+  .nav-contact:hover { border-color: var(--champagne); background: rgba(216, 189, 150, 0.16); }
+  .nav-contact svg,
+  .action-arrow,
+  .text-link svg { width: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ═══ Hero ════════════════════════════════════════════════════════════ */
   .hero {
     --spot-x: 72%;
     --spot-y: 30%;
+    position: relative;
     min-height: 100svh;
-    padding-top: 126px;
-    padding-bottom: 66px;
-    grid-template-columns: minmax(420px, .92fr) minmax(560px, 1.08fr);
-    gap: clamp(58px, 6vw, 108px);
-    background:
-      linear-gradient(115deg, rgba(32,27,22,.84), rgba(8,7,6,.98) 62%),
-      radial-gradient(circle at 15% 20%, #302820, #0a0908 62%);
+    padding: 128px var(--gutter) 70px;
+    display: grid;
+    grid-template-columns: minmax(400px, 0.92fr) minmax(540px, 1.08fr);
+    gap: clamp(48px, 6vw, 104px);
+    align-items: center;
+    isolation: isolate;
+    background: linear-gradient(115deg, rgba(32, 27, 22, 0.84), rgba(8, 7, 6, 0.98) 62%), radial-gradient(circle at 15% 20%, #302820, #0a0908 62%);
   }
   .hero::after {
     content: '';
@@ -687,35 +1071,61 @@ const pageDescription = 'Лариса Белоусова — междунаро�
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: radial-gradient(520px circle at var(--spot-x) var(--spot-y), rgba(216,189,150,.115), transparent 66%);
-    transition: background .12s linear;
+    background: radial-gradient(520px circle at var(--spot-x) var(--spot-y), rgba(216, 189, 150, 0.115), transparent 66%);
+    transition: background 0.12s linear;
   }
   .hero-grid {
-    opacity: .28;
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    opacity: 0.28;
+    background-image: linear-gradient(rgba(216, 189, 150, 0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(216, 189, 150, 0.08) 1px, transparent 1px);
     background-size: 82px 82px;
-    mask-image: linear-gradient(115deg, black, rgba(0,0,0,.22) 55%, transparent 88%);
+    mask-image: linear-gradient(115deg, black, rgba(0, 0, 0, 0.22) 55%, transparent 88%);
+    -webkit-mask-image: linear-gradient(115deg, black, rgba(0, 0, 0, 0.22) 55%, transparent 88%);
   }
-  .hero-glow { left: 36%; top: 20%; width: 430px; height: 430px; opacity: .7; animation: none; }
+  .hero-glow {
+    position: absolute;
+    z-index: -1;
+    left: 36%;
+    top: 20%;
+    width: 430px;
+    height: 430px;
+    border-radius: 50%;
+    opacity: 0.7;
+    background: rgba(142, 88, 47, 0.14);
+    filter: blur(90px);
+    animation: glow-drift 14s ease-in-out infinite alternate;
+  }
   .hero-monogram {
     position: absolute;
     right: -2vw;
     bottom: -8vw;
     z-index: -1;
-    color: rgba(255,255,255,.025);
+    color: rgba(255, 255, 255, 0.025);
     font-family: 'Playfair Display', serif;
     font-size: clamp(260px, 31vw, 560px);
     font-style: italic;
-    letter-spacing: -.14em;
-    line-height: .7;
+    letter-spacing: -0.14em;
+    line-height: 0.7;
     white-space: nowrap;
     pointer-events: none;
   }
-  .portrait-stage { width: min(100%, 592px); padding: 20px 0 0 20px; }
+
+  .portrait-stage {
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+    position: relative;
+    justify-self: end;
+    width: min(100%, 578px);
+    padding: 20px 0 0 20px;
+    perspective: 1200px;
+  }
   .portrait-stage::before {
     content: '';
     position: absolute;
     inset: 0 28px 34px 0;
-    border: 1px solid rgba(216,189,150,.2);
+    border: 1px solid rgba(216, 189, 150, 0.2);
     border-radius: 38px 250px 38px 38px;
   }
   .portrait-index {
@@ -727,29 +1137,93 @@ const pageDescription = 'Лариса Белоусова — междунаро�
     align-items: center;
     gap: 12px;
     padding: 9px 13px;
-    border: 1px solid rgba(216,189,150,.24);
+    border: 1px solid rgba(216, 189, 150, 0.24);
     border-radius: 999px;
-    background: rgba(12,11,10,.78);
-    color: rgba(255,255,255,.52);
-    font-family: monospace;
-    font-size: 8px;
-    letter-spacing: .14em;
+    background: rgba(12, 11, 10, 0.78);
+    color: rgba(255, 255, 255, 0.52);
+    font-family: ui-monospace, monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     backdrop-filter: blur(14px);
   }
   .portrait-index span { color: var(--champagne); }
   .portrait-frame {
-    aspect-ratio: .78;
+    --parallax: 0px;
+    position: relative;
+    aspect-ratio: 0.78;
+    overflow: hidden;
+    border: 1px solid rgba(216, 189, 150, 0.38);
     border-radius: 34px 245px 34px 34px;
-    border-color: rgba(216,189,150,.38);
     background: #d9d6d2;
-    box-shadow: 0 54px 140px rgba(0,0,0,.58), 0 0 0 1px rgba(255,255,255,.025);
+    box-shadow: 0 54px 140px rgba(0, 0, 0, 0.58), 0 0 0 1px rgba(255, 255, 255, 0.025);
+    transform: translateY(var(--parallax)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+    transform-style: preserve-3d;
+    transition: transform 0.5s var(--ease-out);
+    will-change: transform;
   }
-  .portrait-frame::before { inset: 12px; border-radius: 24px 232px 24px 24px; border-color: rgba(255,255,255,.28); }
-  .portrait-frame img { object-position: 50% 17%; transform: scale(1.035); transition: transform 1.1s cubic-bezier(.2,.7,.2,1); }
+  .portrait-frame::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    z-index: 2;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 24px 232px 24px 24px;
+    pointer-events: none;
+  }
+  .portrait-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 17%;
+    filter: saturate(0.9) contrast(1.03);
+    transform: scale(1.035);
+    transition: transform 1.1s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
   .portrait-stage:hover .portrait-frame img { transform: scale(1.065); }
-  .portrait-wash { background: linear-gradient(180deg, transparent 54%, rgba(7,6,5,.82) 100%); }
-  .portrait-caption { inset: auto 30px 25px; }
+  .portrait-wash { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 54%, rgba(7, 6, 5, 0.82) 100%); }
+  .portrait-sheen {
+    position: absolute;
+    inset: -40% -60%;
+    z-index: 3;
+    background: linear-gradient(104deg, transparent 42%, rgba(255, 255, 255, 0.16) 50%, transparent 58%);
+    animation: portrait-sheen 7.5s ease-in-out 1.6s infinite;
+    pointer-events: none;
+  }
+  .portrait-caption {
+    position: absolute;
+    inset: auto 30px 25px;
+    z-index: 4;
+    display: flex;
+    justify-content: space-between;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 9px;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+  }
+  .orbit { position: absolute; border: 1px solid rgba(216, 189, 150, 0.22); border-radius: 50%; pointer-events: none; }
+  .orbit::before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    top: 50%;
+    left: -3px;
+    border-radius: 50%;
+    background: var(--champagne);
+    box-shadow: 0 0 20px var(--champagne);
+  }
+  .orbit-one { width: 104%; aspect-ratio: 1; left: -9%; top: 8%; opacity: 0.62; animation: orbit-spin 40s linear infinite; }
+  .coordinates {
+    position: absolute;
+    right: -100px;
+    bottom: 188px;
+    color: rgba(255, 255, 255, 0.32);
+    font-family: ui-monospace, monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    transform: rotate(-90deg);
+  }
   .portrait-seal {
     position: absolute;
     z-index: 6;
@@ -758,72 +1232,153 @@ const pageDescription = 'Лариса Белоусова — междунаро�
     width: 112px;
     height: 112px;
     padding: 8px;
-    border: 1px solid rgba(216,189,150,.28);
+    border: 1px solid rgba(216, 189, 150, 0.28);
     border-radius: 50%;
-    background: rgba(12,11,10,.82);
+    background: rgba(12, 11, 10, 0.82);
     color: var(--champagne);
-    box-shadow: 0 22px 50px rgba(0,0,0,.34);
+    box-shadow: 0 22px 50px rgba(0, 0, 0, 0.34);
     backdrop-filter: blur(16px);
+    animation: seal-spin 26s linear infinite;
   }
-  .portrait-seal text { fill: rgba(255,255,255,.64); font-family: monospace; font-size: 8px; letter-spacing: 1.7px; }
-  .portrait-seal .seal-mark { fill: none; stroke: var(--champagne); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-  .orbit-one { width: 104%; left: -9%; top: 8%; opacity: .62; animation-duration: 40s; }
-  .orbit-two { display: none; }
-  .coordinates { right: -44px; bottom: 188px; }
+  .portrait-seal text { fill: rgba(255, 255, 255, 0.64); font-family: ui-monospace, monospace; font-size: 8px; letter-spacing: 1.7px; }
+  .portrait-seal .seal-mark { fill: none; stroke: var(--champagne); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; animation: seal-counter 26s linear infinite; transform-origin: 60px 60px; }
 
-  .hero-copy { max-width: 760px; }
+  .hero-copy { position: relative; z-index: 2; max-width: 760px; }
   .hero-status {
     display: flex;
     align-items: center;
     gap: 9px;
     width: max-content;
     margin: 0 0 24px auto;
-    color: rgba(255,255,255,.42);
-    font-family: monospace;
-    font-size: 8px;
-    letter-spacing: .16em;
+    color: rgba(255, 255, 255, 0.45);
+    font-family: ui-monospace, monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
   }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #a9c998; box-shadow: 0 0 0 5px rgba(169,201,152,.08); }
-  .eyebrow { margin-bottom: 22px; font-size: 10px; }
-  .hero-title { margin-bottom: 26px; font-size: clamp(76px, 7.2vw, 124px); line-height: .78; }
-  .hero-title em { margin-left: .22em; text-shadow: 0 10px 45px rgba(216,189,150,.12); }
-  .hero-lead { max-width: 650px; margin-bottom: 23px; color: rgba(255,255,255,.68); font-size: clamp(17px, 1.12vw, 20px); }
-  .hero-credentials { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin-bottom: 30px; color: rgba(255,255,255,.47); font-family: monospace; font-size: 9px; letter-spacing: .13em; text-transform: uppercase; }
-  .hero-credentials i { width: 3px; height: 3px; border-radius: 50%; background: var(--champagne); }
-  .hero-actions { gap: 12px; margin-bottom: 32px; }
-  .primary-action, .secondary-action { min-height: 74px; border-radius: 18px; }
-  .primary-action { min-width: 352px; padding: 10px 18px 10px 11px; background: linear-gradient(120deg, #ead8ba 0%, #d1ad7d 58%, #bc8e58 100%); box-shadow: 0 20px 60px rgba(188,142,88,.22), inset 0 1px 0 rgba(255,255,255,.55); }
-  .primary-action.is-opening { filter: saturate(.65); }
-  .primary-action small { font-family: 'Manrope', sans-serif; font-size: 9px; letter-spacing: .02em; opacity: .6; text-transform: none; }
-  .secondary-action {
-    min-width: 208px;
-    padding: 10px 18px 10px 11px;
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #a9c998; box-shadow: 0 0 0 0 rgba(169, 201, 152, 0.35); animation: pulse-dot 2.6s ease-out infinite; }
+  .eyebrow { display: flex; align-items: center; gap: 15px; margin-bottom: 22px; color: var(--champagne); font-size: 11px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; }
+  .eyebrow-line { width: 46px; height: 1px; background: var(--champagne); transform-origin: left; animation: line-grow 1.1s var(--ease-out) 0.4s both; }
+  .hero-title { margin: 0 0 26px; font-family: 'Manrope', sans-serif; font-size: clamp(72px, 7.2vw, 124px); font-weight: 300; letter-spacing: -0.075em; line-height: 0.78; }
+  .hero-title span,
+  .hero-title em { display: block; }
+  .hero-title em {
+    margin-left: 0.22em;
+    background: linear-gradient(100deg, #f3e3c8, var(--champagne) 45%, #b9905f);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+  }
+  .hero-lead { max-width: 650px; margin: 0 0 24px; color: rgba(255, 255, 255, 0.68); font-size: clamp(16px, 1.12vw, 19px); font-weight: 300; line-height: 1.72; }
+  .hero-credentials {
     display: flex;
     align-items: center;
-    gap: 13px;
-    border: 1px solid rgba(255,255,255,.18);
-    background: rgba(255,255,255,.04);
-    transition: border-color .25s ease, background .25s ease, transform .25s ease;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin-bottom: 30px;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
   }
-  .secondary-action:hover { border-color: rgba(216,189,150,.5); background: rgba(216,189,150,.08); }
-  .secondary-action .action-icon { background: rgba(255,255,255,.065); color: var(--champagne); }
-  .secondary-action > span:last-child { display: grid; gap: 3px; }
-  .secondary-action strong { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
-  .secondary-action small { color: rgba(255,255,255,.42); font-size: 9px; }
-  .stats { gap: 8px; padding: 8px; border: 1px solid rgba(216,189,150,.16); border-radius: 24px; background: rgba(255,255,255,.022); backdrop-filter: blur(10px); }
-  .stats > div { min-height: 116px; padding: 17px 15px; border-radius: 16px; background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.012)); transition: background .25s ease, transform .25s ease; }
-  .stats > div + div { padding-left: 15px; border-left: 0; }
-  .stats > div:hover { transform: translateY(-3px); background: rgba(216,189,150,.08); }
-  .stats div > span { max-width: 130px; color: rgba(255,255,255,.54); font-size: 8px; }
-  .scroll-cue { bottom: 18px; }
+  .hero-credentials i { width: 3px; height: 3px; border-radius: 50%; background: var(--champagne); }
 
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+  .magnetic { --mag-x: 0px; --mag-y: 0px; transform: translate(var(--mag-x), var(--mag-y)); transition: transform 0.3s var(--ease-out), box-shadow 0.3s ease, border-color 0.25s ease, background 0.25s ease; }
+  .primary-action,
+  .secondary-action { min-height: 74px; padding: 10px 18px 10px 11px; display: flex; align-items: center; gap: 13px; border-radius: 18px; }
+  .primary-action {
+    position: relative;
+    overflow: hidden;
+    min-width: 340px;
+    background: linear-gradient(120deg, #ead8ba 0%, #d1ad7d 58%, #bc8e58 100%);
+    color: #17120e;
+    box-shadow: 0 20px 60px rgba(188, 142, 88, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  }
+  .primary-action::after {
+    content: '';
+    position: absolute;
+    top: -60%;
+    left: -40%;
+    width: 40%;
+    height: 220%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    transform: rotate(18deg);
+    animation: cta-sheen 5.5s ease-in-out 2s infinite;
+    pointer-events: none;
+  }
+  .primary-action:hover { box-shadow: 0 26px 70px rgba(198, 154, 99, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.6); }
+  .primary-action.is-opening { filter: saturate(0.65); }
+  .action-icon,
+  .contact-icon { flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; }
+  .action-icon { width: 50px; height: 50px; background: rgba(255, 255, 255, 0.37); transition: transform 0.35s var(--ease-out); }
+  .primary-action:hover .action-icon,
+  .secondary-action:hover .action-icon { transform: scale(1.06); }
+  .action-icon svg,
+  .contact-icon svg { width: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .action-text { position: relative; z-index: 1; display: grid; gap: 3px; }
+  .primary-action strong,
+  .secondary-action strong { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .primary-action small { font-size: 9px; letter-spacing: 0.02em; opacity: 0.62; }
+  .primary-action .action-arrow { position: relative; z-index: 1; margin-left: auto; transition: transform 0.3s var(--ease-out); }
+  .primary-action:hover .action-arrow { transform: translateX(5px); }
+  .secondary-action { min-width: 208px; border: 1px solid rgba(255, 255, 255, 0.18); background: rgba(255, 255, 255, 0.04); }
+  .secondary-action:hover { border-color: rgba(216, 189, 150, 0.5); background: rgba(216, 189, 150, 0.09); }
+  .secondary-action .action-icon { background: rgba(255, 255, 255, 0.065); color: var(--champagne); }
+  .secondary-action small { color: rgba(255, 255, 255, 0.45); font-size: 9px; }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 8px;
+    border: 1px solid rgba(216, 189, 150, 0.16);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.022);
+    backdrop-filter: blur(10px);
+  }
+  .stats > div {
+    min-height: 116px;
+    padding: 17px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 16px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.012));
+    transition: background 0.3s ease, transform 0.3s var(--ease-out);
+  }
+  .stats > div:hover { transform: translateY(-4px); background: rgba(216, 189, 150, 0.09); }
+  .stats strong { color: var(--champagne); font-family: 'Playfair Display', serif; font-size: clamp(28px, 2.2vw, 38px); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .stats div > span { max-width: 130px; color: rgba(255, 255, 255, 0.55); font-size: 9px; line-height: 1.35; letter-spacing: 0.08em; text-transform: uppercase; }
+
+  .scroll-cue {
+    position: absolute;
+    left: var(--gutter);
+    bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: rgba(255, 255, 255, 0.38);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.25s ease;
+  }
+  .scroll-cue:hover { color: var(--champagne); }
+  .scroll-cue i { position: relative; display: block; width: 54px; height: 1px; overflow: hidden; background: rgba(255, 255, 255, 0.17); }
+  .scroll-cue i::after { content: ''; position: absolute; width: 50%; height: 100%; background: var(--champagne); animation: scan-line 2.4s ease-in-out infinite; }
+  .hero-enter { animation: hero-in 0.95s var(--ease-out) both; animation-delay: var(--delay, 0s); }
+
+  /* ═══ Expertise ═══════════════════════════════════════════════════════ */
   .profile-section {
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    padding-top: 156px;
-    padding-bottom: 156px;
+    padding: 150px var(--gutter);
     color: #f7f4ee;
     background: #10100f;
   }
@@ -832,10 +1387,11 @@ const pageDescription = 'Лариса Белоусова — междунаро�
     position: absolute;
     inset: 0;
     z-index: -2;
-    opacity: .38;
-    background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+    opacity: 0.38;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
     background-size: 76px 76px;
     mask-image: linear-gradient(135deg, black, transparent 78%);
+    -webkit-mask-image: linear-gradient(135deg, black, transparent 78%);
     pointer-events: none;
   }
   .profile-section::after {
@@ -847,47 +1403,62 @@ const pageDescription = 'Лариса Белоусова — междунаро�
     width: 760px;
     height: 760px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(184,139,84,.16), transparent 68%);
+    background: radial-gradient(circle, rgba(184, 139, 84, 0.16), transparent 68%);
     pointer-events: none;
   }
-  .section-intro { position: relative; z-index: 1; margin-bottom: 72px; }
-  .profile-section .section-intro { grid-template-columns: 70px minmax(0, 1.4fr) minmax(340px, .6fr); }
-  .profile-section .section-number { color: var(--champagne); font-size: 13px; }
-  .profile-section .section-kicker, .manifesto-section .section-kicker { color: var(--champagne); font-size: 13px; letter-spacing: .2em; }
-  .profile-section .section-intro h2 {
-    max-width: 830px;
-    color: #f7f4ee;
-    font-family: 'Manrope', sans-serif;
-    font-size: clamp(50px, 5.3vw, 82px);
-    font-weight: 600;
-    letter-spacing: -.058em;
-    line-height: .98;
+  .section-intro {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1.4fr) minmax(320px, 0.6fr);
+    gap: 34px;
+    align-items: end;
+    margin-bottom: 68px;
   }
-  .title-accent { color: var(--champagne); font: inherit; font-weight: inherit; letter-spacing: inherit; }
-  .profile-section .section-summary { color: rgba(255,255,255,.68); font-size: 18px; line-height: 1.7; }
-  .expertise-grid { position: relative; z-index: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; border: 0; }
+  .profile-section .section-number { color: var(--champagne); }
+  .profile-section .section-kicker,
+  .manifesto-section .section-kicker { color: var(--champagne); }
+  .section-intro h2,
+  .credentials-copy h2,
+  .connect-copy h2 {
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(46px, 5.3vw, 80px);
+    font-weight: 600;
+    letter-spacing: -0.058em;
+    line-height: 0.98;
+  }
+  .section-intro h2 em,
+  .credentials-copy h2 em,
+  .connect-copy h2 em { color: var(--bronze); font-family: 'Playfair Display', serif; font-weight: 500; }
+  .section-summary { max-width: 480px; margin: 0 0 5px; color: rgba(255, 255, 255, 0.68); font-size: 17px; line-height: 1.72; }
+
+  .expertise-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 18px; }
   .expertise-card {
     --mx: 82%;
     --my: 18%;
-    grid-column: auto;
-    min-height: 352px;
-    padding: 34px;
-    border: 1px solid rgba(255,255,255,.105);
+    position: relative;
+    grid-column: span 2;
+    min-height: 340px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.105);
     border-radius: 24px;
     color: #f7f4ee;
-    background: linear-gradient(145deg, rgba(30,30,28,.96), rgba(18,18,17,.98));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.045), 0 30px 70px -52px rgba(0,0,0,.9);
-    transition: transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s ease, box-shadow .3s ease;
+    background: linear-gradient(145deg, rgba(30, 30, 28, 0.96), rgba(18, 18, 17, 0.98));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 30px 70px -52px rgba(0, 0, 0, 0.9);
   }
+  .expertise-card.is-wide { grid-column: span 3; }
   .expertise-card::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 0;
-    opacity: .55;
-    transform: none;
-    background: radial-gradient(420px circle at var(--mx) var(--my), rgba(216,189,150,.14), transparent 62%);
-    transition: opacity .3s ease;
+    opacity: 0.55;
+    background: radial-gradient(420px circle at var(--mx) var(--my), rgba(216, 189, 150, 0.14), transparent 62%);
+    transition: opacity 0.3s ease;
     pointer-events: none;
   }
   .expertise-card::after {
@@ -898,163 +1469,516 @@ const pageDescription = 'Лариса Белоусова — междунаро�
     height: 2px;
     background: linear-gradient(90deg, transparent, var(--champagne), transparent);
     opacity: 0;
-    transform: scaleX(.25);
-    transition: opacity .3s ease, transform .45s cubic-bezier(.2,.8,.2,1);
+    transform: scaleX(0.25);
+    transition: opacity 0.3s ease, transform 0.45s var(--ease-out);
   }
   .expertise-card > * { position: relative; z-index: 1; }
-  .expertise-card:hover { border-color: rgba(216,189,150,.38); box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 36px 80px -46px rgba(184,139,84,.38); }
+  .expertise-card:hover { border-color: rgba(216, 189, 150, 0.38); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 36px 80px -46px rgba(184, 139, 84, 0.4); }
   .expertise-card:hover::before { opacity: 1; }
   .expertise-card:hover::after { opacity: 1; transform: scaleX(1); }
-  .has-js .expertise-card.reveal.is-visible:hover { transform: translateY(-8px); }
+  .has-js .expertise-card.is-visible { transition: opacity 0.8s ease, transform 0.6s var(--ease-out), border-color 0.3s ease, box-shadow 0.3s ease; }
+  .has-js .expertise-card.is-visible:hover { transform: translateY(-8px); }
   .card-top { display: flex; align-items: center; justify-content: space-between; }
-  .expertise-card .card-index { color: rgba(255,255,255,.5); font-family: monospace; font-size: 13px; letter-spacing: .13em; }
-  .card-icon { width: 58px; height: 58px; display: grid; place-items: center; border: 1px solid rgba(216,189,150,.24); border-radius: 17px; color: var(--champagne); background: rgba(216,189,150,.055); transition: color .3s ease, background .3s ease, transform .35s cubic-bezier(.2,.8,.2,1); }
+  .card-index { color: rgba(255, 255, 255, 0.5); font-family: ui-monospace, monospace; font-size: 13px; letter-spacing: 0.13em; }
+  .card-icon {
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(216, 189, 150, 0.24);
+    border-radius: 17px;
+    color: var(--champagne);
+    background: rgba(216, 189, 150, 0.055);
+    transition: color 0.3s ease, background 0.3s ease, transform 0.4s var(--ease-out);
+  }
   .card-icon svg { width: 29px; fill: none; stroke: currentColor; stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; }
-  .expertise-card:hover .card-icon { color: #15120f; background: var(--champagne); transform: rotate(-4deg); }
-  .expertise-card h3 { max-width: 490px; margin: 70px 0 28px; color: #f7f4ee; font-family: 'Manrope', sans-serif; font-size: clamp(25px, 2vw, 32px); font-weight: 600; letter-spacing: -.035em; line-height: 1.16; }
-  .expertise-tags { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; }
-  .expertise-tags span { padding: 8px 11px; border: 1px solid rgba(255,255,255,.11); border-radius: 8px; color: rgba(255,255,255,.82); background: rgba(255,255,255,.05); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; line-height: 1.15; letter-spacing: 0; }
+  .expertise-card:hover .card-icon { color: #15120f; background: var(--champagne); transform: rotate(-4deg) scale(1.05); }
+  .expertise-card h3 {
+    max-width: 490px;
+    margin: auto 0 14px;
+    color: #f7f4ee;
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(24px, 1.9vw, 31px);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.16;
+  }
+  .card-note { max-width: 420px; margin: 0 0 18px; color: rgba(255, 255, 255, 0.55); font-size: 14px; line-height: 1.55; }
+  .expertise-tags { margin-top: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .expertise-tags span {
+    padding: 8px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 9px;
+    color: rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.05);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.15;
+    transition: border-color 0.25s ease, background 0.25s ease;
+  }
+  .expertise-card:hover .expertise-tags span { border-color: rgba(216, 189, 150, 0.28); background: rgba(216, 189, 150, 0.1); }
 
-  .manifesto-section { position: relative; min-height: 880px; display: flex; align-items: center; overflow: hidden; isolation: isolate; background: #090908; }
-  .manifesto-image { position: absolute; inset: -2%; z-index: -3; width: 104%; height: 104%; object-fit: cover; object-position: 54% 50%; filter: saturate(.62) contrast(1.12); animation: manifesto-breathe 16s cubic-bezier(.45,0,.55,1) infinite alternate; }
-  .manifesto-shade { position: absolute; inset: 0; z-index: -2; background: linear-gradient(90deg, rgba(7,7,6,.97) 0%, rgba(7,7,6,.85) 47%, rgba(7,7,6,.28) 100%), linear-gradient(0deg, rgba(7,7,6,.88), transparent 62%); }
-  .manifesto-content { width: min(calc(100% - 64px), 1400px); margin: 0 auto; padding: 128px 0 162px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 70px 8vw; align-items: end; }
+  /* ═══ Manifesto ═══════════════════════════════════════════════════════ */
+  .manifesto-section { position: relative; min-height: 860px; display: flex; align-items: center; overflow: hidden; isolation: isolate; background: #090908; }
+  .manifesto-image {
+    position: absolute;
+    inset: -2%;
+    z-index: -3;
+    width: 104%;
+    height: 104%;
+    object-fit: cover;
+    object-position: 54% 50%;
+    filter: saturate(0.62) contrast(1.12);
+    animation: manifesto-breathe 18s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  }
+  .manifesto-shade {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background: linear-gradient(90deg, rgba(7, 7, 6, 0.97) 0%, rgba(7, 7, 6, 0.85) 47%, rgba(7, 7, 6, 0.28) 100%), linear-gradient(0deg, rgba(7, 7, 6, 0.88), transparent 62%);
+  }
+  .manifesto-content {
+    width: min(calc(100% - 44px), 1400px);
+    margin: 0 auto;
+    padding: 124px 0 158px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 66px 8vw;
+    align-items: end;
+  }
   .manifesto-copy { max-width: 940px; }
-  .manifesto-content h2 { max-width: 940px; margin: 0 0 30px; font-family: 'Manrope', sans-serif; font-size: clamp(54px, 5.7vw, 88px); font-weight: 600; letter-spacing: -.058em; line-height: .98; }
-  .manifesto-lead { max-width: 680px; margin: 0; color: rgba(255,255,255,.7); font-size: 18px; line-height: 1.7; }
-  .principles { grid-column: 1 / -1; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; border: 0; }
-  .principles > div { position: relative; min-height: 178px; padding: 26px; display: flex; flex-direction: column; gap: 30px; overflow: hidden; border: 1px solid rgba(255,255,255,.14); border-radius: 20px; background: rgba(12,12,11,.52); box-shadow: inset 0 1px 0 rgba(255,255,255,.055), 0 28px 70px -48px rgba(0,0,0,.9); backdrop-filter: blur(18px) saturate(125%); -webkit-backdrop-filter: blur(18px) saturate(125%); transition: transform .3s cubic-bezier(.2,.8,.2,1), border-color .3s ease, background .3s ease; }
-  .principles > div::after { content: ''; position: absolute; inset: auto 22px 0; height: 2px; background: linear-gradient(90deg, transparent, var(--champagne), transparent); opacity: .25; transform: scaleX(.35); transition: opacity .3s ease, transform .4s ease; }
-  .principles > div + div { padding-left: 26px; border-left: 1px solid rgba(255,255,255,.14); }
-  .principles > div:hover { transform: translateY(-6px); border-color: rgba(216,189,150,.38); background: rgba(18,17,15,.68); }
-  .principles > div:hover::after { opacity: .9; transform: scaleX(1); }
+  .manifesto-content h2 { max-width: 940px; margin: 0 0 28px; font-family: 'Manrope', sans-serif; font-size: clamp(44px, 4.9vw, 74px); font-weight: 600; letter-spacing: -0.058em; line-height: 1; }
+  .manifesto-lead { max-width: 680px; margin: 0; color: rgba(255, 255, 255, 0.72); font-size: 17px; line-height: 1.72; }
+  .principles { grid-column: 1 / -1; width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .principles > div {
+    --mx: 50%;
+    --my: 50%;
+    position: relative;
+    min-height: 178px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 20px;
+    background: rgba(12, 12, 11, 0.52);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.055), 0 28px 70px -48px rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(18px) saturate(125%);
+    -webkit-backdrop-filter: blur(18px) saturate(125%);
+  }
+  .principles > div::after {
+    content: '';
+    position: absolute;
+    inset: auto 22px 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--champagne), transparent);
+    opacity: 0.25;
+    transform: scaleX(0.35);
+    transition: opacity 0.3s ease, transform 0.45s var(--ease-out);
+  }
+  .has-js .reveal.is-visible .principles > div { transition: opacity 0.6s ease calc(var(--i, 0) * 55ms + 0.12s), transform 0.5s var(--ease-out), border-color 0.3s ease, background 0.3s ease; }
+  .principles > div:hover { transform: translateY(-6px); border-color: rgba(216, 189, 150, 0.38); background: rgba(18, 17, 15, 0.68); }
+  .principles > div:hover::after { opacity: 0.9; transform: scaleX(1); }
   .principle-top { display: flex; align-items: center; justify-content: space-between; }
-  .principles span { color: var(--champagne); font-family: monospace; font-size: 13px; letter-spacing: .12em; }
+  .principles span { color: var(--champagne); font-family: ui-monospace, monospace; font-size: 13px; letter-spacing: 0.12em; }
   .principle-top svg { width: 25px; fill: none; stroke: var(--champagne); stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; }
-  .principles strong { max-width: 280px; margin-top: auto; font-family: 'Manrope', sans-serif; font-size: clamp(18px, 1.45vw, 22px); font-weight: 600; letter-spacing: -.025em; line-height: 1.3; }
-  .manifesto-marquee { position: absolute; inset: auto 0 0; overflow: hidden; border-top: 1px solid rgba(216,189,150,.2); border-bottom: 1px solid rgba(216,189,150,.2); background: rgba(9,9,8,.82); backdrop-filter: blur(18px); }
-  .manifesto-marquee div { width: max-content; padding: 21px 0; display: flex; align-items: center; gap: 30px; color: rgba(255,255,255,.58); font-family: monospace; font-size: 13px; letter-spacing: .12em; animation: marquee 30s linear infinite; }
+  .principles strong { max-width: 280px; margin-top: auto; font-family: 'Manrope', sans-serif; font-size: clamp(18px, 1.45vw, 22px); font-weight: 600; letter-spacing: -0.025em; line-height: 1.3; }
+
+  .manifesto-marquee {
+    position: absolute;
+    inset: auto 0 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(216, 189, 150, 0.2);
+    border-bottom: 1px solid rgba(216, 189, 150, 0.2);
+    background: rgba(9, 9, 8, 0.82);
+    backdrop-filter: blur(18px);
+    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  }
+  .manifesto-marquee div {
+    width: max-content;
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    color: rgba(255, 255, 255, 0.58);
+    font-family: ui-monospace, monospace;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    animation: marquee 34s linear infinite;
+  }
+  .manifesto-marquee:hover div { animation-play-state: paused; }
   .manifesto-marquee i { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--champagne); }
 
-  .credentials-section { padding-top: 148px; padding-bottom: 148px; background: linear-gradient(150deg, #f7f2e9, #ded2c3); }
-  .credentials-photo { box-shadow: 0 44px 90px -48px rgba(45,34,23,.5); }
-  .quote-card { border-radius: 22px 22px 4px 22px; background: rgba(17,15,13,.92); backdrop-filter: blur(16px); }
-  .credential-list { margin-bottom: 22px; }
-  .credential-badges { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin: 0 0 20px; }
-  .credential-badges a { min-height: 74px; padding: 12px; display: grid; place-items: center; border: 1px solid rgba(59,48,38,.1); border-radius: 15px; background: rgba(255,255,255,.62); transition: transform .25s ease, background .25s ease, box-shadow .25s ease; }
-  .credential-badges a:hover { transform: translateY(-3px); background: white; box-shadow: 0 16px 35px -24px rgba(48,37,26,.55); }
-  .credential-badges img { max-width: 100%; max-height: 44px; object-fit: contain; filter: grayscale(1); opacity: .68; transition: filter .25s ease, opacity .25s ease; }
+  /* ═══ Credentials ═════════════════════════════════════════════════════ */
+  .credentials-section {
+    padding: 146px var(--gutter);
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(64px, 8vw, 150px);
+    align-items: center;
+    background: linear-gradient(150deg, #f7f2e9, #ded2c3);
+    color: #221f1b;
+  }
+  .credentials-visual { position: relative; min-height: 720px; }
+  .credentials-photo { width: 78%; height: 650px; overflow: hidden; border-radius: 220px 220px 24px 24px; filter: grayscale(0.18); box-shadow: 0 44px 90px -48px rgba(45, 34, 23, 0.5); }
+  .credentials-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; transform: scale(1.04); }
+  .vertical-word { position: absolute; right: 2%; top: 2%; margin: 0; color: rgba(71, 60, 49, 0.1); font-size: 70px; font-weight: 300; letter-spacing: 0.08em; writing-mode: vertical-rl; }
+  .quote-card {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: min(390px, 74%);
+    padding: 32px 34px;
+    border-radius: 22px 22px 4px 22px;
+    background: rgba(17, 15, 13, 0.92);
+    color: #fff;
+    box-shadow: 0 30px 70px rgba(57, 45, 31, 0.25);
+    backdrop-filter: blur(16px);
+  }
+  .quote-mark { display: block; height: 42px; color: var(--champagne); font-family: 'Playfair Display', serif; font-size: 70px; line-height: 0.8; }
+  .quote-card blockquote { margin: 14px 0 0; font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; line-height: 1.55; }
+
+  .credentials-copy { position: relative; }
+  .credentials-copy .section-number { position: absolute; top: 7px; right: 0; }
+  .credentials-copy h2 { margin-bottom: 42px; }
+  .credential-list { list-style: none; margin: 0 0 26px; padding: 0; border-top: 1px solid var(--line-light); }
+  .credential-list li {
+    position: relative;
+    min-height: 62px;
+    padding: 13px 6px 13px 0;
+    display: grid;
+    grid-template-columns: 112px 1fr;
+    gap: 20px;
+    align-items: center;
+    border-bottom: 1px solid var(--line-light);
+    transition: padding-left 0.3s var(--ease-out), background 0.3s ease;
+  }
+  .credential-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 3px;
+    height: 0;
+    border-radius: 2px;
+    background: var(--bronze);
+    transform: translateY(-50%);
+    transition: height 0.35s var(--ease-out);
+  }
+  .credential-list li:hover { padding-left: 16px; background: rgba(255, 255, 255, 0.42); }
+  .credential-list li:hover::before { height: 60%; }
+  .credential-list span { color: var(--bronze); font-family: ui-monospace, monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  .credential-list p { margin: 0; color: #4f4942; font-size: 14px; line-height: 1.5; }
+
+  .credential-badges { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 9px; margin: 0 0 24px; }
+  .credential-badges a {
+    min-height: 74px;
+    padding: 12px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(59, 48, 38, 0.1);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.62);
+    transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  }
+  .has-js .reveal.is-visible .credential-badges a { transition: opacity 0.6s ease calc(var(--i, 0) * 55ms + 0.12s), transform 0.3s ease, background 0.25s ease, box-shadow 0.25s ease; }
+  .credential-badges a:hover { transform: translateY(-3px); background: #fff; box-shadow: 0 16px 35px -24px rgba(48, 37, 26, 0.55); }
+  .credential-badges img { max-width: 100%; max-height: 44px; object-fit: contain; filter: grayscale(1); opacity: 0.68; transition: filter 0.25s ease, opacity 0.25s ease; }
   .credential-badges a:hover img { filter: grayscale(0); opacity: 1; }
 
-  .connect-section { padding-top: 148px; background: radial-gradient(circle at 14% 8%, rgba(102,72,43,.22), transparent 28%), #090807; }
-  .contact-list { padding: 8px; border: 1px solid var(--line-dark); border-radius: 24px; background: rgba(255,255,255,.025); }
-  .contact-list > a { min-height: 88px; padding: 11px 15px; border-radius: 16px; border-bottom-color: rgba(216,189,150,.12); }
+  .text-link { min-height: 44px; display: inline-flex; align-items: center; gap: 18px; color: #28231e; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+  .text-link svg { transition: transform 0.25s ease; }
+  .text-link:hover svg { transform: translateX(6px); }
+
+  /* ═══ Ethos ═══════════════════════════════════════════════════════════ */
+  .ethos-section {
+    position: relative;
+    overflow: hidden;
+    padding: 108px var(--gutter);
+    background: linear-gradient(180deg, #0b0a09, #100e0c);
+    border-top: 1px solid rgba(216, 189, 150, 0.12);
+  }
+  .ethos-section::before {
+    content: '';
+    position: absolute;
+    inset: auto 0 -55% 0;
+    height: 110%;
+    background: radial-gradient(ellipse at 50% 100%, rgba(184, 139, 84, 0.18), transparent 62%);
+    pointer-events: none;
+  }
+  .ethos-inner { position: relative; display: grid; gap: 54px; justify-items: center; text-align: center; }
+  .ethos-line { margin: 0; max-width: 20ch; font-family: 'Manrope', sans-serif; font-size: clamp(30px, 4vw, 58px); font-weight: 600; letter-spacing: -0.05em; line-height: 1.08; }
+  .ethos-line em { display: block; color: var(--champagne); font-family: 'Playfair Display', serif; font-weight: 500; font-style: italic; }
+  .ethos-pillars { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .ethos-pillars > div {
+    --mx: 50%;
+    --my: 50%;
+    position: relative;
+    padding: 30px 22px;
+    display: grid;
+    gap: 16px;
+    justify-items: center;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.028);
+  }
+  .ethos-pillars > div::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    background: radial-gradient(300px circle at var(--mx) var(--my), rgba(216, 189, 150, 0.14), transparent 65%);
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .ethos-pillars > div:hover::before { opacity: 1; }
+  .ethos-pillars > div:hover { border-color: rgba(216, 189, 150, 0.32); }
+  .ethos-pillars svg { position: relative; width: 34px; fill: none; stroke: var(--champagne); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+  .ethos-pillars strong { position: relative; color: rgba(255, 255, 255, 0.86); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; line-height: 1.6; text-transform: uppercase; }
+
+  /* ═══ Connect ═════════════════════════════════════════════════════════ */
+  .connect-section {
+    position: relative;
+    padding: 142px var(--gutter) 34px;
+    display: grid;
+    grid-template-columns: 0.8fr 1fr;
+    gap: 50px 8vw;
+    overflow: hidden;
+    background: radial-gradient(circle at 14% 8%, rgba(102, 72, 43, 0.22), transparent 28%), #090807;
+    color: #fff;
+  }
+  .connect-lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.24;
+    background: radial-gradient(circle at 80% 20%, rgba(173, 123, 72, 0.18), transparent 34%),
+      repeating-linear-gradient(110deg, transparent 0 150px, rgba(216, 189, 150, 0.11) 151px 152px, transparent 153px 300px);
+  }
+  .connect-copy,
+  .contact-list,
+  .qr-card,
+  footer { position: relative; z-index: 1; }
+  .connect-copy h2 { margin-bottom: 28px; }
+  .connect-copy h2 em { color: var(--champagne); }
+  .connect-copy > p:not(.section-kicker) { max-width: 450px; margin: 0; color: rgba(255, 255, 255, 0.52); font-size: 16px; line-height: 1.7; }
+
+  .contact-list { padding: 8px; border: 1px solid var(--line-dark); border-radius: 24px; background: rgba(255, 255, 255, 0.025); }
+  .contact-list > a {
+    min-height: 86px;
+    padding: 11px 15px;
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr) 28px;
+    gap: 18px;
+    align-items: center;
+    border-bottom: 1px solid rgba(216, 189, 150, 0.12);
+    border-radius: 16px;
+  }
+  .has-js .reveal.is-visible.contact-list > a { transition: opacity 0.6s ease calc(var(--i, 0) * 55ms + 0.12s), transform 0.5s var(--ease-out), background 0.25s ease, padding 0.25s ease; }
   .contact-list > a:last-child { border-bottom: 0; }
-  .contact-list > a:hover { padding-inline: 20px; background: rgba(216,189,150,.075); }
-  .qr-card { border-radius: 28px; background: linear-gradient(115deg, rgba(255,255,255,.06), rgba(255,255,255,.018)); box-shadow: inset 0 1px 0 rgba(255,255,255,.05); }
-  .qr-shell { border-radius: 18px; box-shadow: 0 20px 50px rgba(0,0,0,.25); }
+  .contact-list > a:hover { padding-inline: 20px; background: rgba(216, 189, 150, 0.075); }
+  .contact-icon { width: 50px; height: 50px; border: 1px solid rgba(255, 255, 255, 0.2); color: var(--champagne); transition: border-color 0.25s ease, background 0.25s ease; }
+  .contact-list > a:hover .contact-icon { border-color: rgba(216, 189, 150, 0.5); background: rgba(216, 189, 150, 0.1); }
+  .linkedin-icon { font-family: 'Inter', sans-serif; font-size: 21px; font-weight: 700; }
+  .contact-text { display: grid; gap: 6px; }
+  .contact-list small { color: rgba(255, 255, 255, 0.42); font-size: 9px; letter-spacing: 0.19em; text-transform: uppercase; }
+  .contact-list strong { font-size: 15px; font-weight: 500; letter-spacing: 0.015em; }
+  .contact-list .action-arrow { color: var(--champagne); transition: transform 0.25s ease; }
+  .contact-list a:hover .action-arrow { transform: translateX(5px); }
+
+  .qr-card {
+    grid-column: 1 / -1;
+    margin-top: 30px;
+    padding: 34px;
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 38px;
+    align-items: center;
+    border: 1px solid var(--line-dark);
+    border-radius: 28px;
+    background: linear-gradient(115deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.018));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(18px);
+  }
+  .qr-shell { padding: 12px; border-radius: 18px; background: #f8f5ee; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25); transition: transform 0.4s var(--ease-out); }
+  .qr-card:hover .qr-shell { transform: translateY(-4px) scale(1.02); }
+  .qr-shell img { display: block; width: 100%; height: auto; }
+  .qr-card h3 { margin: 0 0 13px; color: var(--champagne); font-family: 'Playfair Display', serif; font-size: clamp(26px, 3vw, 44px); font-weight: 500; overflow-wrap: anywhere; }
+  .qr-card > div:last-child > p:not(.section-kicker) { max-width: 620px; margin: 0 0 20px; color: rgba(255, 255, 255, 0.52); font-size: 14px; line-height: 1.65; }
+  .copy-link {
+    min-height: 44px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 0;
+    background: transparent;
+    color: var(--champagne);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.25s ease;
+  }
+  .copy-link:hover { color: var(--champagne-bright); }
+  .copy-link svg { width: 17px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s var(--ease-out); }
+  .copy-link.is-copied svg { transform: scale(1.15) rotate(-6deg); }
+
+  footer {
+    grid-column: 1 / -1;
+    margin-top: 66px;
+    padding-top: 26px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: end;
+    border-top: 1px solid var(--line-dark);
+    color: rgba(255, 255, 255, 0.34);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  footer p { margin: 0; }
+  footer p:last-child { justify-self: end; }
+  .footer-brand { width: 125px; }
 
   .mobile-contact-dock { display: none; }
-  .has-js .reveal { transform: translateY(38px); filter: none; transition: opacity .8s ease, transform .9s cubic-bezier(.16,1,.3,1); }
+
+  /* ═══ Keyframes ═══════════════════════════════════════════════════════ */
+  @keyframes hero-in { from { opacity: 0; transform: translateY(28px); filter: blur(7px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+  @keyframes language-fade { from { opacity: 0.35; filter: blur(3px); } to { opacity: 1; filter: blur(0); } }
+  @keyframes orbit-spin { to { transform: rotate(360deg); } }
+  @keyframes seal-spin { to { transform: rotate(360deg); } }
+  @keyframes seal-counter { to { transform: rotate(-360deg); } }
+  @keyframes glow-drift { to { transform: translate(60px, 40px) scale(1.14); } }
+  @keyframes scan-line { 0% { transform: translateX(-110%); } 100% { transform: translateX(220%); } }
   @keyframes marquee { to { transform: translateX(-50%); } }
   @keyframes manifesto-breathe { from { transform: scale(1.01); } to { transform: scale(1.065); } }
+  @keyframes line-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes pulse-dot { 0% { box-shadow: 0 0 0 0 rgba(169, 201, 152, 0.4); } 70% { box-shadow: 0 0 0 9px rgba(169, 201, 152, 0); } 100% { box-shadow: 0 0 0 0 rgba(169, 201, 152, 0); } }
+  @keyframes cta-sheen { 0%, 72% { transform: translateX(0) rotate(18deg); } 100% { transform: translateX(950%) rotate(18deg); } }
+  @keyframes portrait-sheen { 0%, 78% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+
+  /* ═══ Responsive ══════════════════════════════════════════════════════ */
+  @media (max-width: 1240px) {
+    .coordinates { display: none; }
+  }
 
   @media (max-width: 1080px) {
-    .site-nav { width: min(100% - 40px, 1400px); grid-template-columns: 1fr auto; }
     .nav-links { display: none; }
-    .hero { grid-template-columns: .86fr 1.14fr; gap: 44px; padding-inline: 28px; }
+    .site-nav { grid-template-columns: 1fr auto; }
+    .hero { grid-template-columns: 0.86fr 1.14fr; gap: 42px; }
     .hero-title { font-size: clamp(58px, 7.6vw, 82px); }
     .portrait-seal { right: -18px; width: 94px; height: 94px; }
     .section-intro { grid-template-columns: 50px 1fr; }
-    .profile-section .section-intro { grid-template-columns: 50px 1fr; }
-    .section-summary { grid-column: 2; }
-    .expertise-grid { grid-template-columns: repeat(2, 1fr); }
-    .expertise-card { grid-column: auto; }
-    .credentials-section { gap: 60px; }
+    .section-summary { grid-column: 2; max-width: none; }
+    .expertise-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .expertise-card,
+    .expertise-card.is-wide { grid-column: span 1; }
+    .expertise-card:last-child { grid-column: span 2; }
+    .credentials-section { grid-template-columns: 1fr; gap: 70px; }
     .credentials-photo { width: 88%; }
-    .connect-section { grid-template-columns: .8fr 1.2fr; }
+    .credential-badges { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .connect-section { grid-template-columns: 0.8fr 1.2fr; }
   }
 
   @media (max-width: 820px) {
     body { padding-bottom: 76px; }
-    .site-nav { top: 10px; min-height: 68px; width: calc(100% - 20px); padding: 0 8px 0 15px; border-radius: 18px; }
-    .is-scrolled .site-nav { min-height: 62px; }
-    .brand { width: 118px; }
-    .nav-actions { gap: 14px; }
+    .site-nav { top: 10px; min-height: 66px; width: calc(100% - 18px); padding: 0 8px 0 14px; border-radius: 18px; }
+    .is-scrolled .site-nav { min-height: 60px; }
+    .brand { width: 112px; }
+    .nav-actions { gap: 10px; }
     .nav-contact { width: 44px; height: 44px; padding: 0; justify-content: center; border-radius: 50%; }
-    .nav-contact > span { display: none !important; }
-    .language-switcher { gap: 6px; }
-    .language-switcher button { min-width: 32px; min-height: 44px; }
-    .hero { min-height: auto; padding: 102px 16px 76px; display: flex; flex-direction: column; gap: 38px; align-items: stretch; }
+    :root[data-language] .nav-contact > span { display: none !important; }
+    .language-switcher button { width: 34px; min-height: 32px; font-size: 10px; }
+    .language-thumb { width: 34px; transform: translateX(calc(var(--active) * 34px)); }
+
+    .hero { min-height: auto; padding: 100px 16px 72px; display: flex; flex-direction: column; gap: 36px; align-items: stretch; }
     .hero-grid { background-size: 72px 72px; }
     .hero-monogram { display: none; }
-    .portrait-stage { order: 0; width: 100%; max-width: none; padding: 16px 0 0 13px; }
+    .portrait-stage { width: 100%; padding: 16px 0 0 13px; perspective: none; }
     .portrait-stage::before { inset: 0 13px 20px 0; border-radius: 24px 150px 24px 24px; }
     .portrait-index { left: 30px; top: -2px; }
-    .portrait-frame { aspect-ratio: .83; border-radius: 22px 145px 22px 22px; }
+    .portrait-frame { aspect-ratio: 0.83; border-radius: 22px 145px 22px 22px; }
     .portrait-frame::before { border-radius: 15px 134px 15px 15px; }
-    .portrait-caption { inset-inline: 23px; }
-    .portrait-seal { right: -3px; bottom: 34px; width: 88px; height: 88px; }
+    .portrait-caption { inset-inline: 22px; }
+    .portrait-seal { right: -3px; bottom: 66px; width: 82px; height: 82px; }
     .orbit-one { width: 98%; left: -3%; top: 10%; }
-    .orbit-two, .coordinates { display: none; }
-    .hero-copy { order: 1; }
+    .coordinates { display: none; }
     .hero-status { margin: 0 0 18px; }
-    .eyebrow { margin-bottom: 22px; font-size: 9px; }
-    .hero-title { font-size: clamp(56px, 19vw, 80px); line-height: .88; }
-    .hero-title em { margin-left: .15em; }
-    .hero-lead { font-size: 16px; line-height: 1.67; }
-    .hero-credentials { margin-bottom: 26px; gap: 8px 10px; font-size: 8px; }
-    .hero-actions { margin-bottom: 30px; display: grid; grid-template-columns: 1fr; }
-    .primary-action, .secondary-action { width: 100%; min-width: 0; min-height: 70px; }
+    .hero-title { font-size: clamp(54px, 18vw, 78px); line-height: 0.88; }
+    .hero-title em { margin-left: 0.12em; }
+    .hero-lead { font-size: 16px; }
+    .hero-credentials { margin-bottom: 26px; gap: 8px 10px; font-size: 9px; }
+    .hero-actions { margin-bottom: 28px; display: grid; grid-template-columns: 1fr; }
+    .primary-action,
+    .secondary-action { width: 100%; min-width: 0; min-height: 70px; }
     .stats { grid-template-columns: repeat(2, 1fr); }
-    .stats > div { min-height: 104px; padding: 17px 14px 17px 0; }
-    .stats > div:nth-child(3) { border-left: 0; border-top: 1px solid var(--line-dark); }
-    .stats > div:nth-child(4) { border-top: 1px solid var(--line-dark); }
-    .stats strong { font-size: 31px; }
+    .stats > div { min-height: 102px; padding: 15px 13px; }
+    .stats strong { font-size: 30px; }
     .scroll-cue { display: none; }
-    .profile-section, .credentials-section, .connect-section { padding: 84px 20px; }
-    .profile-section { padding-top: 98px; padding-bottom: 98px; }
-    .section-intro { grid-template-columns: 1fr; gap: 18px; margin-bottom: 46px; }
-    .profile-section .section-intro { grid-template-columns: 1fr; }
+
+    .profile-section,
+    .credentials-section,
+    .connect-section,
+    .ethos-section { padding-inline: 18px; }
+    .profile-section { padding-top: 92px; padding-bottom: 92px; }
+    .credentials-section { padding-block: 84px; }
+    .connect-section { padding-top: 92px; }
+    .ethos-section { padding-block: 76px; }
+    .section-intro { grid-template-columns: 1fr; gap: 16px; margin-bottom: 40px; }
     .section-summary { grid-column: auto; font-size: 16px; }
-    .section-intro h2, .credentials-copy h2, .connect-copy h2 { font-size: clamp(41px, 12vw, 58px); }
-    .expertise-grid { grid-template-columns: 1fr; }
-    .expertise-card { min-height: 310px; padding: 25px; }
-    .expertise-card h3 { margin-top: 52px; font-size: 25px; }
-    .card-icon { width: 54px; height: 54px; }
-    .expertise-tags span { font-size: 13px; }
+    .section-intro h2,
+    .credentials-copy h2,
+    .connect-copy h2 { font-size: clamp(38px, 11vw, 56px); }
+    .expertise-grid { grid-template-columns: 1fr; gap: 14px; }
+    .expertise-card,
+    .expertise-card.is-wide,
+    .expertise-card:last-child { grid-column: span 1; min-height: 300px; padding: 24px; }
+    .expertise-card h3 { margin-top: 48px; font-size: 24px; }
+    .card-icon { width: 52px; height: 52px; }
+
     .manifesto-section { min-height: auto; align-items: flex-end; }
     .manifesto-image { object-position: 66% 50%; }
-    .manifesto-shade { background: linear-gradient(0deg, rgba(7,6,5,.98) 0%, rgba(7,6,5,.75) 56%, rgba(7,6,5,.25) 100%); }
-    .manifesto-content { width: 100%; padding: 104px 20px 136px; display: block; }
-    .manifesto-content h2 { font-size: clamp(43px, 12vw, 58px); }
+    .manifesto-shade { background: linear-gradient(0deg, rgba(7, 6, 5, 0.98) 0%, rgba(7, 6, 5, 0.75) 56%, rgba(7, 6, 5, 0.25) 100%); }
+    .manifesto-content { width: 100%; padding: 96px 18px 128px; display: block; }
+    .manifesto-content h2 { font-size: clamp(40px, 11.5vw, 56px); }
     .manifesto-lead { font-size: 16px; }
-    .principles { margin-top: 48px; grid-template-columns: 1fr; gap: 12px; }
-    .principles > div { min-height: 142px; padding: 22px; display: flex; align-items: stretch; gap: 26px; border-bottom: 1px solid rgba(255,255,255,.14); }
-    .principles > div + div { padding-left: 22px; border-left: 1px solid rgba(255,255,255,.14); }
+    .principles { margin-top: 44px; grid-template-columns: 1fr; gap: 12px; }
+    .principles > div { min-height: 132px; padding: 22px; }
     .principles strong { max-width: none; font-size: 18px; }
-    .manifesto-marquee div { padding: 18px 0; font-size: 13px; }
-    .credentials-section { grid-template-columns: 1fr; gap: 72px; }
-    .credentials-visual { min-height: 570px; }
-    .credentials-photo { width: 91%; height: 540px; border-radius: 180px 180px 20px 20px; }
-    .vertical-word { right: -3%; font-size: 54px; }
-    .quote-card { width: 78%; padding: 27px; }
+    .manifesto-marquee div { padding: 17px 0; font-size: 12px; }
+
+    .credentials-visual { min-height: 560px; }
+    .credentials-photo { width: 90%; height: 530px; border-radius: 180px 180px 20px 20px; }
+    .vertical-word { right: -2%; font-size: 52px; }
+    .quote-card { width: 80%; padding: 26px; }
     .quote-card blockquote { font-size: 16px; }
-    .credentials-copy h2 { margin-bottom: 36px; }
-    .credential-list li { grid-template-columns: 72px 1fr; gap: 14px; min-height: 76px; }
-    .credential-list p { font-size: 14px; line-height: 1.5; }
-    .credential-badges { grid-template-columns: repeat(2, 1fr); }
+    .credentials-copy h2 { margin-bottom: 32px; }
+    .credential-list li { grid-template-columns: 1fr; gap: 6px; min-height: 0; padding-block: 15px; }
+    .credential-list p { font-size: 14px; }
+    .credential-badges { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .ethos-inner { gap: 38px; }
+    .ethos-pillars { grid-template-columns: 1fr; }
+    .ethos-pillars > div { padding: 22px; grid-template-columns: 34px 1fr; justify-items: start; align-items: center; gap: 18px; text-align: left; }
+
     .connect-section { display: block; }
-    .connect-copy { margin-bottom: 52px; }
-    .contact-list { margin-bottom: 60px; }
-    .contact-list > a { grid-template-columns: 52px minmax(0,1fr) 22px; gap: 14px; min-height: 86px; }
+    .connect-copy { margin-bottom: 48px; }
+    .contact-list { margin-bottom: 54px; }
+    .contact-list > a { grid-template-columns: 50px minmax(0, 1fr) 22px; gap: 14px; }
     .contact-list strong { font-size: 13px; overflow-wrap: anywhere; }
-    .qr-card { margin-top: 0; padding: 25px; grid-template-columns: 118px 1fr; gap: 22px; }
-    .qr-card h3 { font-size: 24px; }
-    .qr-card .section-kicker { margin-bottom: 10px; font-size: 8px; }
+    .qr-card { margin-top: 0; padding: 22px; grid-template-columns: 116px 1fr; gap: 20px; }
+    .qr-card h3 { font-size: 23px; }
+    .qr-card .section-kicker { margin-bottom: 10px; font-size: 10px; }
     .qr-card > div:last-child > p:not(.section-kicker) { display: none !important; }
-    footer { margin-top: 72px; grid-template-columns: 1fr; gap: 16px; align-items: start; }
+    footer { margin-top: 64px; grid-template-columns: 1fr; gap: 16px; align-items: start; }
     footer p:last-child { justify-self: start; line-height: 1.6; }
+
     .mobile-contact-dock {
       position: fixed;
       left: 10px;
@@ -1063,39 +1987,57 @@ const pageDescription = 'Лариса Белоусова — междунаро�
       z-index: 60;
       padding: 6px;
       display: grid;
-      grid-template-columns: 1.2fr .8fr;
+      grid-template-columns: 1.25fr 0.75fr;
       gap: 6px;
-      border: 1px solid rgba(255,255,255,.14);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 18px;
-      background: rgba(12,11,10,.88);
-      box-shadow: 0 18px 54px rgba(0,0,0,.4);
+      background: rgba(12, 11, 10, 0.9);
+      box-shadow: 0 18px 54px rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(22px) saturate(140%);
       -webkit-backdrop-filter: blur(22px) saturate(140%);
       opacity: 0;
       transform: translateY(calc(100% + 20px));
       pointer-events: none;
-      transition: opacity .3s ease, transform .4s cubic-bezier(.16,1,.3,1);
+      transition: opacity 0.3s ease, transform 0.45s var(--ease-out);
     }
     .mobile-contact-dock.is-visible { opacity: 1; transform: none; pointer-events: auto; }
-    .mobile-contact-dock a { min-height: 52px; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 13px; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .mobile-contact-dock a {
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 13px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
     .mobile-contact-dock a:first-child { background: linear-gradient(115deg, #ead8ba, #c79d69); color: #17120e; }
-    .mobile-contact-dock a:last-child { border: 1px solid rgba(255,255,255,.14); color: var(--champagne); }
+    .mobile-contact-dock a:last-child { border: 1px solid rgba(255, 255, 255, 0.14); color: var(--champagne); }
     .mobile-contact-dock svg { width: 19px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .toast { bottom: 84px; }
   }
 
   @media (max-width: 420px) {
-    .hero-title { font-size: 56px; }
+    .hero-title { font-size: 52px; }
     .primary-action { padding-right: 13px; gap: 10px; }
-    .primary-action strong { font-size: 10px; }
+    .primary-action strong { font-size: 11px; }
     .primary-action .action-arrow { display: none; }
-    .qr-card { grid-template-columns: 1fr; }
-    .qr-shell { width: 150px; }
+    .credential-badges { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .qr-card { grid-template-columns: 1fr; justify-items: start; }
+    .qr-shell { width: 148px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
-    .has-js .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+    *,
+    *::before,
+    *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    .has-js .reveal,
+    .has-js .reveal .stagger > *,
+    .has-js .reveal.stagger > * { opacity: 1; transform: none; }
     .portrait-frame { transform: none !important; }
+    .portrait-sheen { display: none; }
   }
 </style>
