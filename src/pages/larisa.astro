@@ -451,6 +451,26 @@ const personSchema = {
 
       <section class="connect-section" id="connect">
         <div class="connect-lines" aria-hidden="true"></div>
+        <div class="ethos-band reveal">
+          <p class="ethos-line" data-lang="ru">Строим связи — <em>достигаем результата</em></p>
+          <p class="ethos-line" data-lang="en">Building connections — <em>delivering results</em></p>
+          <p class="ethos-line" data-lang="uz">Aloqalarni quramiz — <em>natijaga erishamiz</em></p>
+          <div class="ethos-pillars stagger">
+            <div>
+              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 27s-9-5.5-9-12a5.5 5.5 0 0 1 9-4.3A5.5 5.5 0 0 1 25 15c0 6.5-9 12-9 12Z" /></svg>
+              <strong data-lang="ru">Инфраструктура для людей</strong><strong data-lang="en">Infrastructure for people</strong><strong data-lang="uz">Odamlar uchun infratuzilma</strong>
+            </div>
+            <div>
+              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 14a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm9 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM4 25v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2M22 17h1a5 5 0 0 1 5 5v3" /></svg>
+              <strong data-lang="ru">Через сотрудничество</strong><strong data-lang="en">Through collaboration</strong><strong data-lang="uz">Hamkorlik orqali</strong>
+            </div>
+            <div>
+              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 27V17m7 10V11m7 16V7m7 20V14" /></svg>
+              <strong data-lang="ru">К лучшему будущему</strong><strong data-lang="en">Towards a better future</strong><strong data-lang="uz">Yaxshiroq kelajak sari</strong>
+            </div>
+          </div>
+        </div>
+
         <div class="connect-copy reveal">
           <p class="section-kicker" data-lang="ru">На связи</p>
           <p class="section-kicker" data-lang="en">Let’s connect</p>
@@ -507,26 +527,6 @@ const personSchema = {
               <span data-copy-label data-lang="en">Copy link</span>
               <span data-copy-label data-lang="uz">Havolani nusxalash</span>
             </button>
-          </div>
-        </div>
-
-        <div class="ethos-band reveal">
-          <p class="ethos-line" data-lang="ru">Строим связи — <em>достигаем результата</em></p>
-          <p class="ethos-line" data-lang="en">Building connections — <em>delivering results</em></p>
-          <p class="ethos-line" data-lang="uz">Aloqalarni quramiz — <em>natijaga erishamiz</em></p>
-          <div class="ethos-pillars stagger">
-            <div>
-              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 27s-9-5.5-9-12a5.5 5.5 0 0 1 9-4.3A5.5 5.5 0 0 1 25 15c0 6.5-9 12-9 12Z" /></svg>
-              <strong data-lang="ru">Инфраструктура для людей</strong><strong data-lang="en">Infrastructure for people</strong><strong data-lang="uz">Odamlar uchun infratuzilma</strong>
-            </div>
-            <div>
-              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 14a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm9 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM4 25v-2a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v2M22 17h1a5 5 0 0 1 5 5v3" /></svg>
-              <strong data-lang="ru">Через сотрудничество</strong><strong data-lang="en">Through collaboration</strong><strong data-lang="uz">Hamkorlik orqali</strong>
-            </div>
-            <div>
-              <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 27V17m7 10V11m7 16V7m7 20V14" /></svg>
-              <strong data-lang="ru">К лучшему будущему</strong><strong data-lang="en">Towards a better future</strong><strong data-lang="uz">Yaxshiroq kelajak sari</strong>
-            </div>
           </div>
         </div>
 
@@ -1710,13 +1710,13 @@ const personSchema = {
   /* ═══ Девиз в подвале ═════════════════════════════════════════════════ */
   .ethos-band {
     grid-column: 1 / -1;
-    margin-top: 96px;
-    padding-top: 72px;
+    margin: 0 0 88px;
+    padding-bottom: 76px;
     display: grid;
     gap: 46px;
     justify-items: center;
     text-align: center;
-    border-top: 1px solid var(--line-dark);
+    border-bottom: 1px solid var(--line-dark);
   }
   .ethos-line { margin: 0; max-width: 22ch; font-family: 'Manrope', sans-serif; font-size: clamp(30px, 3.6vw, 54px); font-weight: 600; letter-spacing: -0.05em; line-height: 1.08; }
   .ethos-line em { display: block; color: var(--champagne); font-family: 'Playfair Display', serif; font-weight: 500; font-style: italic; }
@@ -1751,7 +1751,7 @@ const personSchema = {
   /* ═══ Connect ═════════════════════════════════════════════════════════ */
   .connect-section {
     position: relative;
-    padding: 142px var(--gutter) 34px;
+    padding: 124px var(--gutter) 34px;
     display: grid;
     grid-template-columns: 0.8fr 1fr;
     gap: 50px 8vw;
@@ -1839,7 +1839,7 @@ const personSchema = {
 
   footer {
     grid-column: 1 / -1;
-    margin-top: 54px;
+    margin-top: 88px;
     padding-top: 26px;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -1971,7 +1971,7 @@ const personSchema = {
     .credential-list p { font-size: 14px; }
     .credential-badges { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-    .ethos-band { margin-top: 64px; padding-top: 52px; gap: 34px; }
+    .ethos-band { margin: 0 0 52px; padding-bottom: 46px; gap: 34px; }
     .ethos-line { font-size: clamp(28px, 8.5vw, 40px); }
     .ethos-pillars { grid-template-columns: 1fr; }
     .ethos-pillars > div { padding: 20px; grid-template-columns: 34px 1fr; justify-items: start; align-items: center; gap: 18px; text-align: left; }
