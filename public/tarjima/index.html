@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>Переводчик — преподаватель</title>
+		<style>
+			:root { color-scheme: dark; }
+			* { box-sizing: border-box; }
+			body { margin: 0; padding: 24px; font: 16px/1.6 system-ui, sans-serif; background: #111; color: #E8E5DD; }
+			.wrap { max-width: 820px; margin: 0 auto; }
+			h1 { font-size: 1.25rem; font-weight: 600; margin: 0 0 4px; }
+			.sub { color: #8E8A81; font-size: .85rem; margin-bottom: 22px; }
+			input, button { font: inherit; }
+			input {
+				background: #ffffff0d; border: 1px solid #ffffff26; border-radius: 10px;
+				color: #E8E5DD; padding: 12px 14px; width: 240px;
+			}
+			button {
+				font-weight: 600; cursor: pointer; border: 0; border-radius: 999px;
+				padding: 14px 32px; background: #A58A62; color: #17130A;
+			}
+			button.stop { background: #6E2B2B; color: #fff; }
+			button:disabled { opacity: .4; cursor: default; }
+			.bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+			.state { margin: 20px 0; padding: 12px 16px; border-left: 2px solid #A58A62; background: #ffffff0a; font-size: .9rem; }
+			.state.err { border-color: #C4564A; }
+			.live { min-height: 2.4em; margin: 16px 0; color: #8E8A81; font-style: italic; }
+			.row { border-top: 1px solid #ffffff14; padding: 12px 0; }
+			.ru { color: #B9B5AC; font-size: .9rem; }
+			.uz { margin-top: 4px; font-size: 1.05rem; }
+			.ms { float: right; color: #6E6A62; font-size: .75rem; font-variant-numeric: tabular-nums; }
+			a { color: #A58A62; }
+			code { background: #ffffff14; padding: 2px 6px; border-radius: 5px; font-size: .85em; }
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<h1>Переводчик речи — страница преподавателя</h1>
+			<p class="sub">
+				Распознаёт русскую речь и переводит на узбекский.
+				Слушателям дайте ссылку <a href="/tarjima/view.html" target="_blank">/tarjima/view.html</a>.
+				Нужен <b>Chrome</b> — в Brave распознавание отключено.
+			</p>
+
+			<div class="bar">
+				<input id="key" type="password" placeholder="Ключ преподавателя" autocomplete="current-password" />
+				<button id="go">Начать</button>
+			</div>
+
+			<div class="state" id="state">Введите ключ и нажмите «Начать».</div>
+			<div class="live" id="live"></div>
+			<div id="log"></div>
+		</div>
+
+		<script>
+			const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+			const go = document.getElementById('go');
+			const keyBox = document.getElementById('key');
+			const state = document.getElementById('state');
+			const live = document.getElementById('live');
+			const log = document.getElementById('log');
+
+			// Комната берётся из ?room=..., чтобы можно было вести два потока
+			// одновременно и они не смешались.
+			const room = new URLSearchParams(location.search).get('room') || 'main';
+
+			keyBox.value = localStorage.getItem('tarjima:key') || '';
+			keyBox.onchange = () => localStorage.setItem('tarjima:key', keyBox.value);
+
+			function fail(msg) {
+				state.className = 'state err';
+				state.innerHTML = msg;
+			}
+
+			if (!SR) {
+				fail('Этот браузер не умеет распознавать речь. Нужен <b>Chrome</b>. ' +
+					'В Brave Web Speech API отключён — ошибка <code>network</code> именно от этого.');
+				go.disabled = true;
+			}
+
+			let rec = null, running = false;
+
+			function show(ev) {
+				const row = document.createElement('div');
+				row.className = 'row';
+				row.innerHTML = '<span class="ms"></span><div class="ru"></div><div class="uz"></div>';
+				row.querySelector('.ms').textContent = ev.ms + ' мс';
+				row.querySelector('.ru').textContent = ev.ru;
+				row.querySelector('.uz').textContent = ev.uz;
+				log.prepend(row);
+				while (log.children.length > 30) log.lastChild.remove();
+				if (ev.error) fail('Перевод: ' + ev.error + ' — показан запасной по глоссарию.');
+				else if (ev.storeError) fail('Хранилище: ' + ev.storeError + ' — слушатели фразу не увидят.');
+			}
+
+			async function send(text) {
+				try {
+					const r = await fetch('/api/tarjima/say', {
+						method: 'POST',
+						headers: { 'content-type': 'application/json' },
+						body: JSON.stringify({ text, room, key: keyBox.value }),
+					});
+					if (r.status === 401) return fail('Неверный ключ преподавателя.');
+					if (!r.ok) return fail('Сервер: ' + r.status + ' ' + (await r.text()).slice(0, 120));
+					show(await r.json());
+				} catch (e) {
+					fail('Сеть: ' + e.message);
+				}
+			}
+
+			function start() {
+				rec = new SR();
+				rec.lang = 'ru-RU';
+				rec.continuous = true;
+				rec.interimResults = true;
+
+				rec.onresult = (e) => {
+					let interim = '';
+					for (let i = e.resultIndex; i < e.results.length; i++) {
+						const r = e.results[i];
+						// Переводим только финальные фразы: промежуточные Chrome
+						// переписывает на лету, платить за каждую версию незачем.
+						if (r.isFinal) {
+							const t = r[0].transcript.trim();
+							if (t) send(t);
+						} else interim += r[0].transcript;
+					}
+					live.textContent = interim;
+				};
+
+				rec.onerror = (e) => {
+					if (e.error === 'no-speech' || e.error === 'aborted') return;
+					if (e.error === 'network')
+						return fail('Распознавание недоступно. Почти всегда это <b>Brave</b> — ' +
+							'он режет Web Speech API. Откройте страницу в Chrome.');
+					fail('Распознавание: ' + e.error);
+				};
+
+				// Chrome сам обрывает сессию каждые несколько минут — поднимаем
+				// заново, иначе субтитры молча умрут посреди занятия.
+				rec.onend = () => { if (running) setTimeout(() => { try { rec.start(); } catch {} }, 250); };
+
+				rec.start();
+			}
+
+			go.onclick = () => {
+				if (!keyBox.value) return fail('Сначала введите ключ преподавателя.');
+				localStorage.setItem('tarjima:key', keyBox.value);
+				running = !running;
+				if (running) {
+					start();
+					go.textContent = 'Остановить';
+					go.className = 'stop';
+					state.className = 'state';
+					state.textContent = 'Идёт распознавание. Говорите обычным темпом, делайте паузы между мыслями.';
+				} else {
+					try { rec.stop(); } catch {}
+					go.textContent = 'Начать';
+					go.className = '';
+					state.className = 'state';
+					state.textContent = 'Остановлено.';
+					live.textContent = '';
+				}
+			};
+		</script>
+	</body>
+</html>

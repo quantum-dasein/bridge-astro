@@ -1,0 +1,1094 @@
+// Глоссарий FIDIC RU → UZ, собран из пособия Ларисы «Продвинутый
+// контракт-менеджмент» и узбекских версий сайта. Источник сборки —
+// tools/translator/. Лежит вне api/, потому что Vercel считает функцией
+// каждый .js внутри api/, и файл со словарём превратился бы в роут.
+//
+// Модуль, а не JSON: JSON-импорт в edge-рантайме зависит от сборщика,
+// а обычный экспорт работает всегда.
+
+export default [
+ {
+  "ru": "Фиксированная ежемесячная стоимость сопровождения проекта или портфеля",
+  "uz": "Loyiha yoki portfelni qo'llab-quvvatlashning belgilangan oylik qiymati"
+ },
+ {
+  "ru": "Восемнадцать модулей, <i class=\"text-academy-taupe\">четыре потока</i>",
+  "uz": "O'n sakkiz modul, <i class=\"text-academy-taupe\">to'rt oqim</i>"
+ },
+ {
+  "ru": "PCQI — Практик Королевского института качества (CQI), Великобритания",
+  "uz": "PCQI — Qirollik sifat instituti (CQI) amaliyotchisi, Buyuk Britaniya"
+ },
+ {
+  "ru": "Планировщик (planner) / специалист по Programme и анализу задержек",
+  "uz": "Rejalashtiruvchi (planner) / Programme va kechikishlar tahlili bo‘yicha mutaxassis"
+ },
+ {
+  "ru": "Пробелы в документах по качеству и в исполнительной документации",
+  "uz": "Sifat hujjatlari va ijro hujjatlaridagi bo‘shliqlar"
+ },
+ {
+  "ru": "Разовая стоимость за настройку системы либо за отдельную задачу",
+  "uz": "Tizimni sozlash yoki alohida vazifa uchun bir martalik qiymat"
+ },
+ {
+  "ru": "Отдельная смета по претензионной работе и сопровождению споров",
+  "uz": "Da'vo ishi va nizolarni qo'llab-quvvatlash bo'yicha alohida smeta"
+ },
+ {
+  "ru": "Разбор ситуаций, которые действительно происходят на площадке",
+  "uz": "Obyektda haqiqatan yuz beradigan vaziyatlar tahlili"
+ },
+ {
+  "ru": "Кассовые разрывы из-за несвоевременной сертификации и оплаты",
+  "uz": "Sertifikatlash va to'lovning kechikishi tufayli kassa uzilishlari"
+ },
+ {
+  "ru": "FCCP — Сертифицированный профессиональный консультант FIDIC",
+  "uz": "FCCP — FIDIC sertifikatlangan professional konsultanti"
+ },
+ {
+  "ru": "Для тех, кто отвечает за контракт, а не только читает его",
+  "uz": "Shartnomani faqat o'qibgina qolmay, unga javob beradiganlar uchun"
+ },
+ {
+  "ru": "Член Сертификационного комитета FCCE, FIDIC Credentialing",
+  "uz": "FCCE Sertifikatsiya qo'mitasi a'zosi, FIDIC Credentialing"
+ },
+ {
+  "ru": "Продвинутый контракт-менеджмент (BRIDGE Consult Academy)",
+  "uz": "Ilg'or shartnoma menejmenti (BRIDGE Consult Academy)"
+ },
+ {
+  "ru": "Неприменённая корректировка цены при удорожании ресурсов",
+  "uz": "Resurslar qimmatlashganda narx korreksiyasining qo'llanilmasligi"
+ },
+ {
+  "ru": "от настройки системы до портфеля из нескольких проектов",
+  "uz": "tizimni sozlashdan bir necha loyiha portfeligacha"
+ },
+ {
+  "ru": "Несогласованные формы и многократный возврат документов",
+  "uz": "Kelishilmagan shakllar va hujjatlarning qayta-qayta qaytarilishi"
+ },
+ {
+  "ru": "Просроченные банковские гарантии и незакрытые удержания",
+  "uz": "Muddati o'tgan bank kafolatlari va yopilmagan ushlab qolishlar"
+ },
+ {
+  "ru": "ситуаций, которые действительно происходят на площадке",
+  "uz": "obyektda haqiqatan yuz beradigan vaziyatlar"
+ },
+ {
+  "ru": "Международный стандарт и местная практика одновременно",
+  "uz": "Xalqaro standart va mahalliy amaliyot bir vaqtda"
+ },
+ {
+  "ru": "занятия на русском, материалы и субтитры на узбекском",
+  "uz": "mashg'ulotlar rus tilida, materiallar va subtitrlar o'zbek tilida"
+ },
+ {
+  "ru": "Руководитель сопровождения / ведущий Contract Manager",
+  "uz": "Qo'llab-quvvatlash rahbari / yetakchi Contract Manager"
+ },
+ {
+  "ru": "Специалист по качеству и исполнительной документации",
+  "uz": "Sifat va ijro hujjatlari bo‘yicha mutaxassis"
+ },
+ {
+  "ru": "Quantity surveyor / специалист по обмерам и платежам",
+  "uz": "Quantity surveyor / o'lchovlar va to'lovlar bo'yicha mutaxassis"
+ },
+ {
+  "ru": "Компетенция, признанная теми, кто финансирует проект",
+  "uz": "Loyihani moliyalashtiruvchilar tan olgan kompetensiya"
+ },
+ {
+  "ru": "две редакции рядом — виден не текст, а смена логики",
+  "uz": "ikki tahrir yonma-yon — matn emas, mantiq o'zgarishi ko'rinadi"
+ },
+ {
+  "ru": "Соответствие законодательству Республики Узбекистан",
+  "uz": "O'zbekiston Respublikasi qonunchiligiga muvofiqlik"
+ },
+ {
+  "ru": "Живые занятия онлайн — запись остаётся у участника",
+  "uz": "Jonli onlayn mashg'ulotlar — yozuv ishtirokchida qoladi"
+ },
+ {
+  "ru": "FCCE — Сертифицированный инженер-консультант FIDIC",
+  "uz": "FCCE — FIDIC sertifikatlangan muhandis-konsultanti"
+ },
+ {
+  "ru": "Финансирование проекта и денежный поток Подрядчика",
+  "uz": "Loyihani moliyalashtirish va Pudratchining pul oqimi"
+ },
+ {
+  "ru": "Счёт и договор для оплаты по безналичному расчёту",
+  "uz": "Pul o'tkazish orqali to'lov uchun hisob-faktura va shartnoma"
+ },
+ {
+  "ru": "документооборот, финансы проекта, правовая защита",
+  "uz": "hujjat aylanishi, loyiha moliyasi, huquqiy himoya"
+ },
+ {
+  "ru": "Предупреждение и досудебное урегулирование споров",
+  "uz": "Nizolarning oldini olish va sudgacha hal qilish"
+ },
+ {
+  "ru": "Член Правления Ассоциации дорожников Узбекистана",
+  "uz": "O'zbekiston avtomobil yo'llari assotsiatsiyasi Kengashi a'zosi"
+ },
+ {
+  "ru": "Соблюдение пресекательных сроков на уведомление",
+  "uz": "Xabarnoma uchun qat'iy muddatlarga rioya qilish"
+ },
+ {
+  "ru": "Что важно уточнить: даты, счёт, условия участия",
+  "uz": "Nimani aniqlashtirish muhim: sanalar, hisob, ishtirok shartlari"
+ },
+ {
+  "ru": "Требования финансирующих институтов и комплаенс",
+  "uz": "Moliyalashtiruvchi institutlar talablari va komplayens"
+ },
+ {
+  "ru": "По итогам диагностики BRIDGE Consult подготовит",
+  "uz": "Diagnostika yakunlari bo'yicha BRIDGE Consult tayyorlaydi"
+ },
+ {
+  "ru": "Bridge Consult Academy · Online programme · 01",
+  "uz": "Bridge Consult Academy · Onlayn dastur · 01"
+ },
+ {
+  "ru": "направлений работы в трёх разделах предложения",
+  "uz": "taklifning uch bo'limidagi ish yo'nalishlari"
+ },
+ {
+  "ru": "MCIArb — Член Королевского института арбитров",
+  "uz": "MCIArb — Qirollik arbitrlari instituti a'zosi"
+ },
+ {
+  "ru": "Сертифицированный профессионал ICAgile (ICP)",
+  "uz": "ICAgile sertifikatlangan professionali (ICP)"
+ },
+ {
+  "ru": "Специалист по контрактам и договорной работе",
+  "uz": "Shartnomalar va shartnomaviy ish bo‘yicha mutaxassis"
+ },
+ {
+  "ru": "Цена услуги сопоставима с ценой одной ошибки",
+  "uz": "Xizmat narxi bitta xato narxi bilan taqqoslanadi"
+ },
+ {
+  "ru": "от администрирования контракта до арбитража",
+  "uz": "shartnomani administratsiya qilishdan arbitrajgacha"
+ },
+ {
+  "ru": "Совет по предотвращению и разрешению споров",
+  "uz": "Nizolarning oldini olish va hal qilish kengashi"
+ },
+ {
+  "ru": "Член Европейского совета пользователей LCIA",
+  "uz": "LCIA Yevropa foydalanuvchilari kengashi a'zosi"
+ },
+ {
+  "ru": "Продление срока или дополнительные затраты",
+  "uz": "Muddatni uzaytirish yoki qo'shimcha xarajatlar"
+ },
+ {
+  "ru": "Решение, которое должно выдержать проверку",
+  "uz": "Tekshiruvga bardosh beradigan qaror"
+ },
+ {
+  "ru": "Учредитель и директор ООО «BRIDGE Consult»",
+  "uz": "«BRIDGE Consult» MChJ asoschisi va direktori"
+ },
+ {
+  "ru": "Запрос на договорное сопровождение проекта",
+  "uz": "So'rov — loyihani shartnomaviy qo'llab-quvvatlash"
+ },
+ {
+  "ru": "Член Института управления проектами (PMI)",
+  "uz": "Loyihalarni boshqarish instituti a'zosi (PMI)"
+ },
+ {
+  "ru": "Вышлем программу и даты ближайшего потока",
+  "uz": "Dastur va eng yaqin oqim sanalarini yuboramiz"
+ },
+ {
+  "ru": "Экспресс-диагностика по портфелю проектов",
+  "uz": "Loyihalar portfeli bo'yicha ekspress-diagnostika"
+ },
+ {
+  "ru": "Профессиональные аккредитации и членство",
+  "uz": "Kasbiy akkreditatsiyalar va a'zoliklar"
+ },
+ {
+  "ru": "Русский + узбекские субтитры и материалы",
+  "uz": "Rus tili + o'zbekcha subtitr va materiallar"
+ },
+ {
+  "ru": "Документ-контролёр (document controller)",
+  "uz": "Hujjat nazoratchisi (document controller)"
+ },
+ {
+  "ru": "Член Австрийской арбитражной ассоциации",
+  "uz": "Avstriya arbitraj assotsiatsiyasi a'zosi"
+ },
+ {
+  "ru": "Условия для группы от одной организации",
+  "uz": "Bitta tashkilotdan guruh uchun shartlar"
+ },
+ {
+  "ru": "Корпоративная программа для организации",
+  "uz": "Tashkilot uchun korporativ dastur"
+ },
+ {
+  "ru": "Документы, деньги и право в одних руках",
+  "uz": "Hujjatlar, pul va huquq bir qo'lda"
+ },
+ {
+  "ru": "Подрядчикам · Коммерческое предложение",
+  "uz": "Pudratchilarga · Tijorat taklifi"
+ },
+ {
+  "ru": "Документооборот и договорные процедуры",
+  "uz": "Hujjat aylanishi va shartnomaviy tartiblar"
+ },
+ {
+  "ru": "Качество и исполнительная документация",
+  "uz": "Sifat va ijro hujjatlari"
+ },
+ {
+  "ru": "Валюта, налоги и банковское оформление",
+  "uz": "Valyuta, soliqlar va bank rasmiylashtiruvi"
+ },
+ {
+  "ru": "Договорное сопровождение — подрядчикам",
+  "uz": "Shartnomaviy qo‘llab-quvvatlash — pudratchilarga (UZ)"
+ },
+ {
+  "ru": "и контракты, основанные на результате",
+  "uz": "va natijaga asoslangan shartnomalar"
+ },
+ {
+  "ru": "На площадке что-то пошло не по плану",
+  "uz": "Obyektda nimadir rejadan chetga chiqdi"
+ },
+ {
+  "ru": "Финансирование субподряда и поставок",
+  "uz": "Subpudrat va yetkazib berishlarni moliyalashtirish"
+ },
+ {
+  "ru": "Стоимость определяется индивидуально",
+  "uz": "Narx individual belgilanadi"
+ },
+ {
+  "ru": "Схему ведения всего документооборота",
+  "uz": "Butun hujjat aylanishini yuritish sxemasi"
+ },
+ {
+  "ru": "Записи, которые велись в ходе работ",
+  "uz": "Ishlar davomida yuritilgan yozuvlar"
+ },
+ {
+  "ru": "Член программы ICAA Next Generation",
+  "uz": "ICAA Next Generation dasturi a'zosi"
+ },
+ {
+  "ru": "Даты и расписание ближайшего потока",
+  "uz": "Eng yaqin oqim sanalari va jadvali"
+ },
+ {
+  "ru": "Пока не решили — нужна консультация",
+  "uz": "Hali hal qilmadik — maslahat kerak"
+ },
+ {
+  "ru": "Неоформленные дополнительные работы",
+  "uz": "Rasmiylashtirilmagan qo'shimcha ishlar"
+ },
+ {
+  "ru": "Представления Инженеру (Submittals)",
+  "uz": "Muhandisga taqdim etishlar (Submittals)"
+ },
+ {
+  "ru": "Юридическое сопровождение контракта",
+  "uz": "Shartnomani huquqiy qo'llab-quvvatlash"
+ },
+ {
+  "ru": "Зона ответственности BRIDGE Consult",
+  "uz": "BRIDGE Consult javobgarlik zonasi"
+ },
+ {
+  "ru": "Контракт — это не текст, а цепочка",
+  "uz": "Shartnoma — matn emas, zanjir"
+ },
+ {
+  "ru": "Инженер извещён в контрактный срок",
+  "uz": "Muhandis shartnomaviy muddatda xabardor qilinadi"
+ },
+ {
+  "ru": "Когда предотвратить уже не удалось",
+  "uz": "Oldini olish endi mumkin bo'lmaganda"
+ },
+ {
+  "ru": "Дополнительные работы оплачиваются",
+  "uz": "Qo'shimcha ishlar to'lanadi"
+ },
+ {
+  "ru": "Гарантии и удержания под контролем",
+  "uz": "Kafolatlar va ushlab qolishlar nazoratda"
+ },
+ {
+  "ru": "Авансовый платёж (Advance Payment)",
+  "uz": "Avans to'lovi (Advance Payment)"
+ },
+ {
+  "ru": "Независимость и конфиденциальность",
+  "uz": "Mustaqillik va maxfiylik"
+ },
+ {
+  "ru": "Управление строительной площадкой",
+  "uz": "Qurilish maydonini boshqarish"
+ },
+ {
+  "ru": "Полная программа 18 модулей в PDF",
+  "uz": "18 modullik to‘liq dastur PDF formatida"
+ },
+ {
+  "ru": "Что входит в полное сопровождение",
+  "uz": "To'liq qo'llab-quvvatlashga nimalar kiradi"
+ },
+ {
+  "ru": "Изменения и дополнительные работы",
+  "uz": "O'zgartirishlar va qo'shimcha ishlar"
+ },
+ {
+  "ru": "Мы работаем на стороне Подрядчика",
+  "uz": "Biz Pudratchi tomonida ishlaymiz"
+ },
+ {
+  "ru": "1999 п. 20.1 · 2017 п. 20.1–20.2",
+  "uz": "1999 20.1-band · 2017 20.1–20.2-bandlar"
+ },
+ {
+  "ru": "Заявка на онлайн-практикум FIDIC",
+  "uz": "Ariza — Ilg'or shartnoma menejmenti onlayn"
+ },
+ {
+  "ru": "Корректировка цены и рост затрат",
+  "uz": "Narx korreksiyasi va xarajatlar o'sishi"
+ },
+ {
+  "ru": "Тендер / до подписания контракта",
+  "uz": "Tender / shartnoma imzolangunga qadar"
+ },
+ {
+  "ru": "Лариса Константиновна Белоусова",
+  "uz": "Larisa Belousova"
+ },
+ {
+  "ru": "Анализ контракта и карта рисков",
+  "uz": "Shartnoma tahlili va risklar xaritasi"
+ },
+ {
+  "ru": "Портфель из нескольких проектов",
+  "uz": "Bir necha loyiha portfeli"
+ },
+ {
+  "ru": "Зона ответственности Подрядчика",
+  "uz": "Pudratchi javobgarlik zonasi"
+ },
+ {
+  "ru": "Записи в ходе выполнения работ",
+  "uz": "Ishlar bajarilishi davomidagi yozuvlar"
+ },
+ {
+  "ru": "Контракт-менеджер, организация",
+  "uz": "Shartnoma menejeri, tashkilot"
+ },
+ {
+  "ru": "Планирование денежного потока",
+  "uz": "Pul oqimini rejalashtirish"
+ },
+ {
+  "ru": "Приостановление и расторжение",
+  "uz": "To'xtatib turish va bekor qilish"
+ },
+ {
+  "ru": "Полное ведение одного проекта",
+  "uz": "Bitta loyihani to'liq yuritish"
+ },
+ {
+  "ru": "Чем эта программа отличается",
+  "uz": "Bu dastur nimasi bilan farq qiladi"
+ },
+ {
+  "ru": "Единый формат разбора кейсов",
+  "uz": "Keyslarni tahlil qilishning yagona formati"
+ },
+ {
+  "ru": "Соответствующие пункты FIDIC",
+  "uz": "Tegishli FIDIC bandlari"
+ },
+ {
+  "ru": "Узбекские субтитры к записям",
+  "uz": "Yozuvlarga o'zbekcha subtitrlar"
+ },
+ {
+  "ru": "Полная программа, 18 модулей",
+  "uz": "To'liq dastur, 18 ta modul"
+ },
+ {
+  "ru": "Меньше возвратов и переделок",
+  "uz": "Kamroq qaytarish va qayta ishlash"
+ },
+ {
+  "ru": "Управление документооборотом",
+  "uz": "Hujjat aylanishini boshqarish"
+ },
+ {
+  "ru": "Готовая команда вместо найма",
+  "uz": "Yollash o'rniga tayyor jamoa"
+ },
+ {
+  "ru": "Администрирование контракта",
+  "uz": "Shartnomani administratsiya qilish"
+ },
+ {
+  "ru": "Телефон, Телеграм или email",
+  "uz": "Telefon, Telegram yoki email"
+ },
+ {
+  "ru": "Проблемы, которые мы решаем",
+  "uz": "Biz hal qiladigan muammolar"
+ },
+ {
+  "ru": "Договорные права не сгорают",
+  "uz": "Shartnomaviy huquqlar yonmaydi"
+ },
+ {
+  "ru": "Промежуточные платежи (IPC)",
+  "uz": "Oraliq to'lovlar (IPC)"
+ },
+ {
+  "ru": "Просрочка платежа Заказчика",
+  "uz": "Buyurtmachining to'lov kechikishi"
+ },
+ {
+  "ru": "Основной этап строительства",
+  "uz": "Asosiy qurilish bosqichi"
+ },
+ {
+  "ru": "Открытые претензии или спор",
+  "uz": "Ochiq da'volar yoki nizo"
+ },
+ {
+  "ru": "Продление срока завершения",
+  "uz": "Tugatish muddatini uzaytirish"
+ },
+ {
+  "ru": "Материалы — на двух языках",
+  "uz": "Materiallar — ikki tilda"
+ },
+ {
+  "ru": "Что входит в сопровождение",
+  "uz": "Nimalar kiradi"
+ },
+ {
+  "ru": "Приёмка и закрытие проекта",
+  "uz": "Qabul qilish va loyihani yopish"
+ },
+ {
+  "ru": "Итоговый расчёт и закрытие",
+  "uz": "Yakuniy hisob-kitob va yopish"
+ },
+ {
+  "ru": "1999 п. 3.5 · 2017 п. 3.7",
+  "uz": "1999 3.5-band · 2017 3.7-band"
+ },
+ {
+  "ru": "Программа под организацию",
+  "uz": "Tashkilot uchun dastur"
+ },
+ {
+  "ru": "Преимущественно узбекский",
+  "uz": "Asosan o'zbek tili"
+ },
+ {
+  "ru": "Уведомления, EOT и Claims",
+  "uz": "Xabarnomalar, EOT va Claims"
+ },
+ {
+  "ru": "Начало работ, мобилизация",
+  "uz": "Ishlar boshlanishi, mobilizatsiya"
+ },
+ {
+  "ru": "Обязательства Подрядчика",
+  "uz": "Pudratchi majburiyatlari"
+ },
+ {
+  "ru": "Право и защита интересов",
+  "uz": "Huquq va manfaatlarni himoya qilish"
+ },
+ {
+  "ru": "Результат для Подрядчика",
+  "uz": "Pudratchi uchun natija"
+ },
+ {
+  "ru": "Договоры с контрагентами",
+  "uz": "Kontragentlar bilan shartnomalar"
+ },
+ {
+  "ru": "Контроль для руководства",
+  "uz": "Rahbariyat uchun nazorat"
+ },
+ {
+  "ru": "Обязательства Заказчика",
+  "uz": "Buyurtmachi majburiyatlari"
+ },
+ {
+  "ru": "Либо напишите напрямую:",
+  "uz": "Yoki to'g'ridan-to'g'ri yozing:"
+ },
+ {
+  "ru": "Например: Акмал Рахимов",
+  "uz": "Masalan: Akmal Rahimov"
+ },
+ {
+  "ru": "Должность / организация",
+  "uz": "Lavozim / tashkilot"
+ },
+ {
+  "ru": "Как организована работа",
+  "uz": "Ish qanday tashkil etilgan"
+ },
+ {
+  "ru": "Границы ответственности",
+  "uz": "Javobgarlik chegaralari"
+ },
+ {
+  "ru": "Отправлено со страницы",
+  "uz": "Sahifadan yuborildi"
+ },
+ {
+  "ru": "Три направления работы",
+  "uz": "Uchta ish yo'nalishi"
+ },
+ {
+  "ru": "Деньги приходят в срок",
+  "uz": "Pul o'z vaqtida keladi"
+ },
+ {
+  "ru": "Гарантии и обеспечения",
+  "uz": "Kafolatlar va ta'minotlar"
+ },
+ {
+  "ru": "Форматы сотрудничества",
+  "uz": "Hamkorlik formatlari"
+ },
+ {
+  "ru": "Управление программой",
+  "uz": "Ishlar dasturini boshqarish"
+ },
+ {
+  "ru": "Предотвращение споров",
+  "uz": "Nizolarning oldini olish"
+ },
+ {
+  "ru": "Государственный орган",
+  "uz": "Davlat organi"
+ },
+ {
+  "ru": "Количество участников",
+  "uz": "Ishtirokchilar soni"
+ },
+ {
+  "ru": "Programme и ход работ",
+  "uz": "Programme va ishlar borishi"
+ },
+ {
+  "ru": "Удержания (Retention)",
+  "uz": "Ushlab qolishlar (Retention)"
+ },
+ {
+  "ru": "Интеграция с командой",
+  "uz": "Jamoa bilan integratsiya"
+ },
+ {
+  "ru": "Почему BRIDGE Consult",
+  "uz": "Nima uchun BRIDGE Consult"
+ },
+ {
+  "ru": "Формат сотрудничества",
+  "uz": "Hamkorlik formati"
+ },
+ {
+  "ru": "Определение Инженера",
+  "uz": "Muhandis qarori"
+ },
+ {
+  "ru": "Управление площадкой",
+  "uz": "Qurilish maydonini boshqarish"
+ },
+ {
+  "ru": "Распределение рисков",
+  "uz": "Risklarni taqsimlash"
+ },
+ {
+  "ru": "Влияние на стоимость",
+  "uz": "Xarajatga ta'siri"
+ },
+ {
+  "ru": "Занятия — на русском",
+  "uz": "Mashg'ulotlar — rus tilida"
+ },
+ {
+  "ru": "Договорная переписка",
+  "uz": "Shartnomaviy yozishmalar"
+ },
+ {
+  "ru": "Договорная стратегия",
+  "uz": "Shartnomaviy strategiya"
+ },
+ {
+  "ru": "Претензионная работа",
+  "uz": "Da'vo ishi"
+ },
+ {
+  "ru": "Завершение и приёмка",
+  "uz": "Yakunlash va qabul qilish"
+ },
+ {
+  "ru": "Что беспокоит сейчас",
+  "uz": "Hozir nima tashvishlantirmoqda"
+ },
+ {
+  "ru": "контракт-менеджмент",
+  "uz": "menejmenti"
+ },
+ {
+  "ru": "Смотреть 18 модулей",
+  "uz": "18 ta modulni ko'rish"
+ },
+ {
+  "ru": "Записи в ходе работ",
+  "uz": "Ishlar davomidagi yozuvlar"
+ },
+ {
+  "ru": "Практический вопрос",
+  "uz": "Amaliy masala"
+ },
+ {
+  "ru": "Практический пример",
+  "uz": "Amaliy misol"
+ },
+ {
+  "ru": "2017 — п. 20.1–20.2",
+  "uz": "2017 — 20.1–20.2-bandlar"
+ },
+ {
+  "ru": "Более 15 участников",
+  "uz": "15 dan ortiq ishtirokchi"
+ },
+ {
+  "ru": "Лариса К. Белоусова",
+  "uz": "Larisa K. Belousova"
+ },
+ {
+  "ru": "Две редакции рядом",
+  "uz": "Ikki tahrir yonma-yon"
+ },
+ {
+  "ru": "Управление сроками",
+  "uz": "Muddatlarni boshqarish"
+ },
+ {
+  "ru": "Деньги и изменения",
+  "uz": "Pul va o'zgartirishlar"
+ },
+ {
+  "ru": "Практический вывод",
+  "uz": "Amaliy xulosa"
+ },
+ {
+  "ru": "Контакт для ответа",
+  "uz": "Javob uchun kontakt"
+ },
+ {
+  "ru": "Объёмы не теряются",
+  "uz": "Hajmlar yo'qolmaydi"
+ },
+ {
+  "ru": "Ежедневное ведение",
+  "uz": "Kundalik yuritish"
+ },
+ {
+  "ru": "Типичный сценарий",
+  "uz": "Tipik ssenariy"
+ },
+ {
+  "ru": "Сроки и программа",
+  "uz": "Muddatlar va dastur"
+ },
+ {
+  "ru": "Типичная ситуация",
+  "uz": "Tipik vaziyat"
+ },
+ {
+  "ru": "Заявка отправлена",
+  "uz": "Ariza yuborildi"
+ },
+ {
+  "ru": "Кейсы для разбора",
+  "uz": "Tahlil uchun keyslar"
+ },
+ {
+  "ru": "Контактные данные",
+  "uz": "Kontakt ma'lumotlari"
+ },
+ {
+  "ru": "Полное договорное",
+  "uz": "To'liq shartnomaviy"
+ },
+ {
+  "ru": "Настройка системы",
+  "uz": "Tizimni sozlash"
+ },
+ {
+  "ru": "Влияние на сроки",
+  "uz": "Muddatga ta'siri"
+ },
+ {
+  "ru": "Скачать CV (PDF)",
+  "uz": "CV yuklab olish (PDF)"
+ },
+ {
+  "ru": "Отправить заявку",
+  "uz": "Arizani yuborish"
+ },
+ {
+  "ru": "Отдельные модули",
+  "uz": "Alohida modullar"
+ },
+ {
+  "ru": "СМИ и публикации",
+  "uz": "OAV va nashrlar"
+ },
+ {
+  "ru": "Формы документов",
+  "uz": "Hujjat shakllari"
+ },
+ {
+  "ru": "Договоры проекта",
+  "uz": "Loyiha shartnomalari"
+ },
+ {
+  "ru": "Обмеры и платежи",
+  "uz": "O'lchovlar va to'lovlar"
+ },
+ {
+  "ru": "Отдельная задача",
+  "uz": "Alohida vazifa"
+ },
+ {
+  "ru": "План мобилизации",
+  "uz": "Mobilizatsiya rejasi"
+ },
+ {
+  "ru": "Отправить запрос",
+  "uz": "So‘rov yuborish"
+ },
+ {
+  "ru": "Запрос отправлен",
+  "uz": "So‘rov yuborildi"
+ },
+ {
+  "ru": "Проекты в работе",
+  "uz": "Ishdagi loyihalar"
+ },
+ {
+  "ru": "Более 6 проектов",
+  "uz": "6 dan ortiq loyiha"
+ },
+ {
+  "ru": "Оставить заявку",
+  "uz": "Ariza qoldirish"
+ },
+ {
+  "ru": "Совет по спорам",
+  "uz": "Nizolar kengashi"
+ },
+ {
+  "ru": "Анализ задержек",
+  "uz": "Kechikishlar tahlili"
+ },
+ {
+  "ru": "Контроль затрат",
+  "uz": "Xarajatlar nazorati"
+ },
+ {
+  "ru": "Типичные ошибки",
+  "uz": "Tipik xatolar"
+ },
+ {
+  "ru": "Роли и площадка",
+  "uz": "Rollar va maydon"
+ },
+ {
+  "ru": "6–15 участников",
+  "uz": "6–15 ishtirokchi"
+ },
+ {
+  "ru": "Обсудить проект",
+  "uz": "Loyihani muhokama qilish"
+ },
+ {
+  "ru": "Финансы проекта",
+  "uz": "Loyiha moliyasi"
+ },
+ {
+  "ru": "Пример разбора",
+  "uz": "Tahlil namunasi"
+ },
+ {
+  "ru": "1999 — п. 20.1",
+  "uz": "1999 — 20.1-band"
+ },
+ {
+  "ru": "Формат участия",
+  "uz": "Ishtirok etish formati"
+ },
+ {
+  "ru": "2–5 участников",
+  "uz": "2–5 ishtirokchi"
+ },
+ {
+  "ru": "Арбитраж и суд",
+  "uz": "Arbitraj va sud"
+ },
+ {
+  "ru": "Состав команды",
+  "uz": "Jamoa tarkibi"
+ },
+ {
+  "ru": "Преподаватель",
+  "uz": "O'qituvchi"
+ },
+ {
+  "ru": "Листайте вниз",
+  "uz": "Pastga suring"
+ },
+ {
+  "ru": "Роль Инженера",
+  "uz": "Muhandis roli"
+ },
+ {
+  "ru": "Цель обучения",
+  "uz": "O'quv maqsadi"
+ },
+ {
+  "ru": "Риски и споры",
+  "uz": "Risklar va nizolar"
+ },
+ {
+  "ru": "Читать дальше",
+  "uz": "Davomini o'qish"
+ },
+ {
+  "ru": "Имя и фамилия",
+  "uz": "Ism va familiya"
+ },
+ {
+  "ru": "Язык обучения",
+  "uz": "O'qitish tili"
+ },
+ {
+  "ru": "Основной сайт",
+  "uz": "Asosiy sayt"
+ },
+ {
+  "ru": "сопровождение",
+  "uz": "qo'llab-quvvatlash"
+ },
+ {
+  "ru": "Об основателе",
+  "uz": "Asoschi haqida"
+ },
+ {
+  "ru": "Следующий шаг",
+  "uz": "Keyingi qadam"
+ },
+ {
+  "ru": "Как работаем",
+  "uz": "Qanday ishlaymiz"
+ },
+ {
+  "ru": "4–6 проектов",
+  "uz": "4–6 loyiha"
+ },
+ {
+  "ru": "Продвинутый",
+  "uz": "Ilg'or shartnoma"
+ },
+ {
+  "ru": "Уведомление",
+  "uz": "Xabarnoma"
+ },
+ {
+  "ru": "Обоснование",
+  "uz": "Asoslash"
+ },
+ {
+  "ru": "О программе",
+  "uz": "Dastur haqida"
+ },
+ {
+  "ru": "Комментарий",
+  "uz": "Izoh"
+ },
+ {
+  "ru": "Направления",
+  "uz": "Yo'nalishlar"
+ },
+ {
+  "ru": "Диагностика",
+  "uz": "Diagnostika"
+ },
+ {
+  "ru": "Мобилизация",
+  "uz": "Mobilizatsiya"
+ },
+ {
+  "ru": "2–3 проекта",
+  "uz": "2–3 loyiha"
+ },
+ {
+  "ru": "Требование",
+  "uz": "Talab"
+ },
+ {
+  "ru": "Требования",
+  "uz": "Talablar"
+ },
+ {
+  "ru": "Содержание",
+  "uz": "Mundarija"
+ },
+ {
+  "ru": "1 участник",
+  "uz": "1 ishtirokchi"
+ },
+ {
+  "ru": "Что входит",
+  "uz": "Nimalar kiradi"
+ },
+ {
+  "ru": "Программа",
+  "uz": "Dastur"
+ },
+ {
+  "ru": "Изменения",
+  "uz": "O'zgartirishlar"
+ },
+ {
+  "ru": "Кейс 01.3",
+  "uz": "Keys 01.3"
+ },
+ {
+  "ru": "Результат",
+  "uz": "Natija"
+ },
+ {
+  "ru": "Подрядчик",
+  "uz": "Pudratchi"
+ },
+ {
+  "ru": "Навигация",
+  "uz": "Navigatsiya"
+ },
+ {
+  "ru": "Для кого",
+  "uz": "Kimlar uchun"
+ },
+ {
+  "ru": "Арбитраж",
+  "uz": "Arbitraj"
+ },
+ {
+  "ru": "Заказчик",
+  "uz": "Buyurtmachi"
+ },
+ {
+  "ru": "Свернуть",
+  "uz": "Yopish"
+ },
+ {
+  "ru": "Обучение",
+  "uz": "Ta'lim"
+ },
+ {
+  "ru": "проектов",
+  "uz": "loyihalar uchun"
+ },
+ {
+  "ru": "1 проект",
+  "uz": "1 loyiha"
+ },
+ {
+  "ru": "Событие",
+  "uz": "Hodisa"
+ },
+ {
+  "ru": "Инженер",
+  "uz": "Muhandis"
+ },
+ {
+  "ru": "Платежи",
+  "uz": "To'lovlar"
+ },
+ {
+  "ru": "Русский",
+  "uz": "Rus tili"
+ },
+ {
+  "ru": "Проекты",
+  "uz": "Loyihalar"
+ },
+ {
+  "ru": "Новости",
+  "uz": "Yangiliklar"
+ },
+ {
+  "ru": "Форматы",
+  "uz": "Formatlar"
+ },
+ {
+  "ru": "Команда",
+  "uz": "Jamoa"
+ },
+ {
+  "ru": "Модули",
+  "uz": "Modullar"
+ },
+ {
+  "ru": "онлайн",
+  "uz": "onlayn"
+ },
+ {
+  "ru": "Формат",
+  "uz": "Format"
+ },
+ {
+  "ru": "Заявка",
+  "uz": "Ariza"
+ },
+ {
+  "ru": "Стадия",
+  "uz": "Bosqich"
+ },
+ {
+  "ru": "Метод",
+  "uz": "Metod"
+ }
+];

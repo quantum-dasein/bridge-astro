@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="uz">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>Tarjima — BRIDGE Consult Academy</title>
+		<style>
+			:root { color-scheme: dark; }
+			* { box-sizing: border-box; }
+			body { margin: 0; padding: 16px 18px 48px; font: 18px/1.55 system-ui, sans-serif; background: #111; color: #E8E5DD; }
+			.wrap { max-width: 760px; margin: 0 auto; }
+			header {
+				position: sticky; top: 0; z-index: 2;
+				display: flex; align-items: center; justify-content: space-between; gap: 12px;
+				padding: 10px 0 12px; background: linear-gradient(#111 72%, #111a);
+				border-bottom: 1px solid #ffffff14;
+			}
+			.t { font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: #A58A62; white-space: nowrap; }
+			.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #C4564A; margin-right: 7px; }
+			.dot.on { background: #5E9E5E; }
+			.ctl { font-size: .7rem; color: #8E8A81; display: flex; gap: 12px; align-items: center; }
+			label { cursor: pointer; user-select: none; }
+			#feed { margin-top: 16px; }
+			.row { padding: 13px 0; border-bottom: 1px solid #ffffff0f; animation: in .3s ease-out; }
+			@keyframes in { from { opacity: 0; transform: translateY(6px); } }
+			.uz { font-size: 1.15rem; }
+			.ru { margin-top: 6px; font-size: .82rem; color: #7E7A72; }
+			.hide-ru .ru { display: none; }
+			.empty { color: #6E6A62; font-style: italic; padding: 40px 0; text-align: center; }
+			.big .uz { font-size: 1.45rem; }
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<header>
+				<span class="t"><span class="dot" id="dot"></span><span id="status">Ulanmoqda…</span></span>
+				<span class="ctl">
+					<label><input type="checkbox" id="ru" /> rus</label>
+					<label><input type="checkbox" id="big" /> yirik</label>
+					<label><input type="checkbox" id="follow" checked /> avto</label>
+				</span>
+			</header>
+			<div id="feed"><div class="empty">Mashg‘ulot boshlanishini kuting…</div></div>
+		</div>
+
+		<script>
+			const feed = document.getElementById('feed');
+			const dot = document.getElementById('dot');
+			const status = document.getElementById('status');
+			const follow = document.getElementById('follow');
+			const room = new URLSearchParams(location.search).get('room') || 'main';
+
+			// Русский подстрочник по умолчанию скрыт: нужен не всем, а на
+			// телефоне занимает половину экрана.
+			document.body.classList.add('hide-ru');
+			document.getElementById('ru').onchange = (e) =>
+				document.body.classList.toggle('hide-ru', !e.target.checked);
+			document.getElementById('big').onchange = (e) =>
+				document.body.classList.toggle('big', e.target.checked);
+
+			let seen = 0, first = true, fails = 0;
+
+			function add(ev) {
+				if (first) { feed.innerHTML = ''; first = false; }
+				const row = document.createElement('div');
+				row.className = 'row';
+				row.innerHTML = '<div class="uz"></div><div class="ru"></div>';
+				row.querySelector('.uz').textContent = ev.uz;
+				row.querySelector('.ru').textContent = ev.ru;
+				feed.append(row);
+				while (feed.children.length > 200) feed.firstChild.remove();
+				if (follow.checked) row.scrollIntoView({ block: 'end', behavior: 'smooth' });
+			}
+
+			async function poll() {
+				try {
+					const r = await fetch(`/api/tarjima/feed?room=${encodeURIComponent(room)}&after=${seen}`, {
+						cache: 'no-store',
+					});
+					const d = await r.json();
+					if (d.error) throw new Error(d.error);
+					for (const line of d.lines) add(line);
+					seen = d.total ?? seen;
+					fails = 0;
+					dot.className = 'dot on';
+					status.textContent = 'Efirda';
+				} catch {
+					// Мобильный интернет рвётся постоянно; одна осечка — не повод
+					// пугать человека надписью на весь экран.
+					if (++fails >= 3) {
+						dot.className = 'dot';
+						status.textContent = 'Qayta ulanmoqda…';
+					}
+				}
+			}
+
+			poll();
+			setInterval(poll, 1500);
+			// Вернулись во вкладку — не ждём следующего тика.
+			document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
+		</script>
+	</body>
+</html>
