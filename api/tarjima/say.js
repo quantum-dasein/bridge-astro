@@ -13,6 +13,8 @@
 // Доступ закрыт ключом, а сверху ещё суточный лимит фраз: каждый вызов
 // модели стоит денег, и утёкший ключ не должен превращаться в открытый счёт.
 //
+// Точность и скорость меряет tools/translator/eval.mjs.
+//
 // Переменные окружения Vercel:
 //   TARJIMA_KEY          — пароль преподавателя
 //   ANTHROPIC_API_KEY    — ключ перевода
@@ -25,7 +27,7 @@
 export const config = { runtime: 'edge' };
 
 import Anthropic from '@anthropic-ai/sdk';
-import { findTerms } from '../../src/data/fidicGlossary.mjs';
+import { TERMS, findTerms } from '../../src/data/fidicGlossary.mjs';
 
 const MODEL = process.env.TARJIMA_MODEL || 'claude-opus-5';
 const DAILY_LIMIT = Number(process.env.TARJIMA_DAILY_LIMIT) || 3000;
@@ -45,16 +47,24 @@ const PRICES = {
 // фразу. Включается только там, где он поддерживается.
 const WITH_FALLBACKS = new Set(['claude-opus-5', 'claude-fable-5-1']);
 
+// Инструкция и весь словарь одинаковы для каждой фразы, поэтому идут одним
+// кэшируемым блоком: на занятии фразы следуют каждые несколько секунд, кэш
+// не остывает, и каждая следующая фраза читает этот блок за десятую часть
+// цены и быстрее. Всё, что меняется от фразы к фразе, — только в сообщениях.
 const SYSTEM = `Ты переводишь в реальном времени лекцию по контрактам FIDIC. Слушатели — инженеры, контракт-менеджеры и юристы из Узбекистана; они читают перевод субтитрами.
 
 Каждое сообщение — очередная фраза лектора на русском, распознанная автоматически: без пунктуации, иногда с ошибками распознавания, иногда оборванная на полуслове. Предыдущие фразы и твои переводы идут выше ради связности; переводить их заново не нужно.
 
-Переведи последнюю фразу на узбекский язык латиницей (o‘, g‘). Расставь пунктуацию. Слово, явно искажённое распознаванием, переводи по смыслу контекста; оборванную фразу не достраивай. Номера пунктов (20.1, 3.7) и английские термины FIDIC, если лектор произносит их по-английски (Variation, Claim, EOT, IPC, DAAB, Taking-Over, Programme), оставляй как есть.
+Переведи последнюю фразу на узбекский язык латиницей (o‘, g‘). Расставь пунктуацию. Слово, явно искажённое распознаванием, переводи по смыслу контекста; оборванную фразу не достраивай. Номера пунктов и числа (20.1, 3.7, 28 дней) сохраняй цифрами.
 
-Ответ — только узбекский текст перевода.`;
+Английские термины FIDIC оставляй по-английски: Variation, Claim, EOT, IPC, DAAB, Taking-Over, Programme, Notice of Claim, FIDIC. Распознавание часто записывает их русскими буквами — «вариэйшн», «клейм», «дааб», «иписи», «и о ти», «фидик», «тейкинг овер», — восстанавливай такой термин и пиши по-английски. Книги FIDIC тоже называй по-английски: Red Book, Yellow Book, Silver Book, Pink Book, Green Book, Emerald Book.
 
-const GLOSSARY_INTRO =
-  '\n\nТермины из этой фразы. Используй эти узбекские соответствия, изменяя их по правилам узбекской грамматики:\n';
+После фразы может идти блок <термины> — это подсказка, какие термины словаря в ней прозвучали. Саму подсказку не переводи и не упоминай.
+
+Ответ — только узбекский текст перевода.
+
+Словарь BRIDGE Consult. Если термин прозвучал, используй это узбекское соответствие, изменяя его по правилам узбекской грамматики:
+${TERMS.map((t) => `${t.ru} — ${t.uz}${t.en ? ` (${t.en})` : ''}`).join('\n')}`;
 
 /**
  * Адрес и токен хранилища. Мастер подключения Upstash даёт переменным имена
@@ -173,12 +183,18 @@ async function translate(text, context) {
   // таймаут и одна повторная попытка.
   client ??= new Anthropic({ timeout: 15_000, maxRetries: 1 });
 
-  const terms = findTerms(text);
-  const system = terms.length ? SYSTEM + GLOSSARY_INTRO + terms.map((t) => `${t.ru} — ${t.uz}`).join('\n') : SYSTEM;
-
   const messages = [];
   for (const c of context) messages.push({ role: 'user', content: c.ru }, { role: 'assistant', content: c.uz });
-  messages.push({ role: 'user', content: text });
+
+  // Какие термины словаря прозвучали — рядом с фразой: словарь длинный, и
+  // прямая подсказка надёжнее, чем надежда, что модель сама сопоставит падеж.
+  const terms = findTerms(text);
+  messages.push({
+    role: 'user',
+    content: terms.length
+      ? `${text}\n\n<термины>\n${terms.map((t) => `${t.ru} — ${t.uz}${t.en ? ` (${t.en})` : ''}`).join('\n')}\n</термины>`
+      : text,
+  });
 
   const res = await client.beta.messages.create({
     model: MODEL,
@@ -187,7 +203,7 @@ async function translate(text, context) {
     // секунда — это субтитр, отстающий от лектора.
     output_config: { effort: 'low' },
     ...(WITH_FALLBACKS.has(MODEL) && { betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' }),
-    system,
+    system: [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
     messages,
   });
 
@@ -199,9 +215,17 @@ async function translate(text, context) {
     .trim();
   if (!uz) throw new Error('модель вернула пустой перевод');
 
+  // Кэш: запись дороже обычного входа в 1.25 раза, чтение — в 10 раз дешевле.
+  const u = res.usage ?? {};
+  const tokens = {
+    in: u.input_tokens ?? 0,
+    out: u.output_tokens ?? 0,
+    cacheWrite: u.cache_creation_input_tokens ?? 0,
+    cacheRead: u.cache_read_input_tokens ?? 0,
+  };
   const [pin, pout] = PRICES[res.model] ?? PRICES[MODEL] ?? [0, 0];
-  const cost = ((res.usage?.input_tokens ?? 0) * pin + (res.usage?.output_tokens ?? 0) * pout) / 1e6;
-  return { uz, cost };
+  const cost = ((tokens.in + tokens.cacheWrite * 1.25 + tokens.cacheRead * 0.1) * pin + tokens.out * pout) / 1e6;
+  return { uz, cost, tokens };
 }
 
 function describe(e) {
@@ -260,16 +284,19 @@ export default async function handler(req) {
 
   let uz = text;
   let cost = 0;
+  let tokens = null;
   let error = null;
+  const modelStarted = Date.now();
   if (count !== null && count > DAILY_LIMIT) {
     error = `дневной лимит ${DAILY_LIMIT} фраз исчерпан`;
   } else {
     try {
-      ({ uz, cost } = await translate(text, cleanContext(body.context)));
+      ({ uz, cost, tokens } = await translate(text, cleanContext(body.context)));
     } catch (e) {
       error = describe(e);
     }
   }
+  const modelMs = Date.now() - modelStarted;
 
   // В ленту уходит признак «это не перевод», а не текст ошибки: слушателям
   // внутренности сервера ни к чему, а вот знать, что перед ними русский
@@ -293,14 +320,18 @@ export default async function handler(req) {
   const storeError = stored.status === 'rejected' ? String(stored.reason?.message ?? stored.reason) : null;
   const zoomError = zoom?.error ?? (zoomSent.status === 'rejected' ? String(zoomSent.reason?.message ?? zoomSent.reason) : null);
 
-  // Преподавателю — подробности: ему чинить и считать.
+  // Преподавателю — подробности: ему чинить и считать. modelMs отделяет
+  // время модели от времени хранилища и Zoom — это нужно замеру скорости.
   return json({
     ...line,
     ms: Date.now() - started,
+    modelMs,
     error,
     storeError,
     total,
     cost,
+    tokens,
+    model: MODEL,
     count,
     limit: DAILY_LIMIT,
     zoom: toZoom ? (zoomError ? 'error' : 'ok') : zoom?.error ? 'error' : null,
