@@ -7,6 +7,9 @@
 // в общее хранилище (Upstash Redis через REST), а зрители забирают их опросом
 // из api/tarjima/feed.js.
 //
+// Если преподаватель вставил API token Zoom, та же строка уходит и в сам
+// звонок — субтитрами Zoom, без второго экрана у слушателей.
+//
 // Доступ закрыт ключом, а сверху ещё суточный лимит фраз: каждый вызов
 // модели стоит денег, и утёкший ключ не должен превращаться в открытый счёт.
 //
@@ -42,7 +45,7 @@ const PRICES = {
 // фразу. Включается только там, где он поддерживается.
 const WITH_FALLBACKS = new Set(['claude-opus-5', 'claude-fable-5-1']);
 
-const SYSTEM = `Ты переводишь в реальном времени лекцию по контрактам FIDIC. Слушатели — инженеры, контракт-менеджеры и юристы из Узбекистана; они читают перевод субтитрами на телефоне.
+const SYSTEM = `Ты переводишь в реальном времени лекцию по контрактам FIDIC. Слушатели — инженеры, контракт-менеджеры и юристы из Узбекистана; они читают перевод субтитрами.
 
 Каждое сообщение — очередная фраза лектора на русском, распознанная автоматически: без пунктуации, иногда с ошибками распознавания, иногда оборванная на полуслове. Предыдущие фразы и твои переводы идут выше ради связности; переводить их заново не нужно.
 
@@ -109,6 +112,57 @@ function cleanContext(raw) {
     .filter((c) => c && typeof c.ru === 'string' && typeof c.uz === 'string' && c.ru.trim() && c.uz.trim())
     .slice(-CONTEXT_MAX)
     .map((c) => ({ ru: c.ru.trim().slice(0, 400), uz: c.uz.trim().slice(0, 600) }));
+}
+
+// ——— Zoom ———
+//
+// Организатор в звонке: «Показать субтитры» → «Настроить ручного
+// титровальщика» → «Копировать API token». Это адрес вида
+// https://wmcc.zoom.us/closedcaption?id=…&signature=…; строки субтитров
+// отправляются на него POST-запросами text/plain с растущим seq.
+//
+// Шлём с сервера, а не из браузера: так адрес проверяется, и функцию нельзя
+// заставить отправлять запросы куда попало.
+
+/** Разбирает вставленный токен. null — поле пустое; { error } — вставлено не то. */
+function zoomTarget(raw) {
+  if (typeof raw !== 'string' || !raw.trim()) return null;
+  let u;
+  try {
+    u = new URL(raw.trim());
+  } catch {
+    return { error: 'это не ссылка — скопируйте API token в Zoom ещё раз' };
+  }
+  const id = u.searchParams.get('id');
+  if (u.protocol !== 'https:' || !/(^|\.)zoom\.us$/.test(u.hostname) || u.pathname !== '/closedcaption' || !id)
+    return { error: 'это не API token субтитров Zoom' };
+  u.searchParams.delete('seq');
+  u.searchParams.delete('lang');
+  // У каждого сессионного зала свой адрес (subconfid) — и свой счёт seq.
+  return { url: u.toString(), seqKey: `tarjima:zoomseq:${id}:${u.searchParams.get('subconfid') ?? ''}` };
+}
+
+async function sendToZoom(target, seq, text) {
+  const post = (lang) => {
+    const u = new URL(target.url);
+    u.searchParams.set('seq', String(seq));
+    if (lang) u.searchParams.set('lang', lang);
+    return fetch(u, {
+      method: 'POST',
+      headers: { 'content-type': 'text/plain; charset=utf-8' },
+      body: text,
+    });
+  };
+
+  let res = await post('uz-UZ');
+  // Принимает ли Zoom код узбекского, в его документации не сказано. Если
+  // запрос отвергнут не из-за того, что звонок не начат, — повторяем без кода.
+  if (res.status === 400) {
+    const reason = await res.text();
+    if (!/not started/i.test(reason)) res = await post(null);
+    else throw new Error('Zoom: звонок ещё не начат');
+  }
+  if (!res.ok) throw new Error(`Zoom ${res.status}: ${(await res.text()).slice(0, 120)}`);
 }
 
 let client;
@@ -189,16 +243,20 @@ export default async function handler(req) {
   if (!text) return new Response('empty', { status: 400 });
 
   const started = Date.now();
+  const zoom = zoomTarget(body.zoom);
+  const toZoom = zoom && !zoom.error ? zoom : null;
 
   // Счётчик — до вызова модели: лимит, проверяемый после, денег не бережёт.
-  // Если хранилище недоступно, занятие важнее счётчика.
+  // Тем же запросом — номер строки для Zoom. Если хранилище недоступно,
+  // занятие важнее счётчика.
   const dayKey = `tarjima:count:${new Date().toISOString().slice(0, 10)}`;
-  const count = await pipeline([
+  const [count, zoomSeq] = await pipeline([
     ['INCR', dayKey],
     ['EXPIRE', dayKey, 172800],
+    ...(toZoom ? [['INCR', toZoom.seqKey], ['EXPIRE', toZoom.seqKey, 86400]] : []),
   ])
-    .then(([n]) => n)
-    .catch(() => null);
+    .then((r) => [r[0], toZoom ? r[2] : null])
+    .catch(() => [null, null]);
 
   let uz = text;
   let cost = 0;
@@ -219,18 +277,33 @@ export default async function handler(req) {
   const line = { ru: text, uz: error ? text : uz, at: Date.now() };
   if (error) line.raw = true;
 
-  let total = null;
-  let storeError = null;
-  try {
-    const key = `tarjima:${room}`;
-    [total] = await pipeline([
+  // В Zoom пометки цветом нет — только текст, поэтому она словами.
+  const zoomText = error ? `[rus tilida] ${text}` : uz;
+
+  const key = `tarjima:${room}`;
+  const [stored, zoomSent] = await Promise.allSettled([
+    pipeline([
       ['RPUSH', key, JSON.stringify(line)],
       ['EXPIRE', key, TTL],
-    ]);
-  } catch (e) {
-    storeError = String(e.message ?? e);
-  }
+    ]),
+    toZoom ? sendToZoom(toZoom, zoomSeq ?? Date.now(), zoomText) : Promise.resolve(),
+  ]);
+
+  const total = stored.status === 'fulfilled' ? stored.value[0] : null;
+  const storeError = stored.status === 'rejected' ? String(stored.reason?.message ?? stored.reason) : null;
+  const zoomError = zoom?.error ?? (zoomSent.status === 'rejected' ? String(zoomSent.reason?.message ?? zoomSent.reason) : null);
 
   // Преподавателю — подробности: ему чинить и считать.
-  return json({ ...line, ms: Date.now() - started, error, storeError, total, cost, count, limit: DAILY_LIMIT });
+  return json({
+    ...line,
+    ms: Date.now() - started,
+    error,
+    storeError,
+    total,
+    cost,
+    count,
+    limit: DAILY_LIMIT,
+    zoom: toZoom ? (zoomError ? 'error' : 'ok') : zoom?.error ? 'error' : null,
+    zoomError,
+  });
 }

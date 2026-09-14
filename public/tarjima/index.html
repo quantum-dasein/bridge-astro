@@ -40,6 +40,16 @@
 			.ms { float: right; color: #6E6A62; font-size: .75rem; font-variant-numeric: tabular-nums; }
 			code { background: #ffffff14; padding: 2px 6px; border-radius: 5px; font-size: .85em; }
 
+			.zoom { margin: 16px 0 0; padding: 12px 16px; border: 1px solid #ffffff1f; border-radius: 12px; font-size: .88rem; }
+			.zoom summary { cursor: pointer; font-weight: 600; color: #E8E5DD; }
+			.zoom ol { margin: 10px 0 12px; padding-left: 20px; color: #B9B5AC; }
+			.zoom li { margin: 4px 0; }
+			.zoom input { width: 100%; }
+			.zoom .hint { margin: 8px 0 0; font-size: .78rem; color: #6E6A62; }
+			#zoomState { font-weight: 400; color: #8E8A81; }
+			#zoomState.ok { color: #5E9E5E; }
+			#zoomState.bad { color: #C4564A; }
+
 			/* Экран для слушателей: его показывают в Zoom через демонстрацию. */
 			#overlay {
 				position: fixed; inset: 0; z-index: 10; cursor: pointer;
@@ -69,6 +79,17 @@
 				<button id="screen" class="ghost" title="QR-код и ссылка — показать в Zoom">Экран для слушателей</button>
 			</div>
 			<p class="link">Ссылка слушателям: <a id="viewLink" target="_blank" rel="noopener"></a></p>
+
+			<details class="zoom" id="zoomBox">
+				<summary>Субтитры прямо в Zoom <span id="zoomState"></span></summary>
+				<ol>
+					<li>Начните встречу в Zoom как организатор.</li>
+					<li>Внизу у кнопки <b>«Показать субтитры»</b> нажмите стрелку → <b>«Настроить ручного титровальщика»</b> → <b>«Копировать API token»</b>.</li>
+					<li>Вставьте его сюда. Слушатели включают субтитры кнопкой <b>CC</b> в своём Zoom — второй экран не нужен.</li>
+				</ol>
+				<input id="zoom" type="password" placeholder="API token Zoom" autocomplete="off" spellcheck="false" />
+				<p class="hint">Токен действует только в этой встрече — в новой скопируйте заново. В сессионных залах у каждого зала свой токен.</p>
+			</details>
 
 			<div class="state" id="state">Введите ключ и нажмите «Начать».</div>
 			<div class="stats" id="stats"></div>
@@ -172,12 +193,33 @@
 				queue = queue.then(() => post(text));
 			}
 
+			// ——— Zoom ———
+			// Токен живёт одну встречу — храним до закрытия вкладки, не дольше.
+			const zoomInput = $('zoom');
+			try { zoomInput.value = sessionStorage.getItem('tarjima:zoom') || ''; } catch {}
+			function zoomTyped() {
+				try { sessionStorage.setItem('tarjima:zoom', zoomInput.value.trim()); } catch {}
+				$('zoomState').className = '';
+				$('zoomState').textContent = zoomInput.value.trim() ? '· токен вставлен' : '';
+			}
+			zoomInput.oninput = zoomTyped;
+			zoomTyped();
+			$('zoomBox').open = !!zoomInput.value;
+
+			function zoomNote(ev) {
+				const s = $('zoomState');
+				if (ev.zoom === 'ok') { s.textContent = '· идут ✓'; s.className = 'ok'; }
+				else if (ev.zoom === 'error') { s.textContent = '· ошибка'; s.className = 'bad'; }
+			}
+
 			async function post(text) {
 				try {
 					const r = await fetch('/api/tarjima/say', {
 						method: 'POST',
 						headers: { 'content-type': 'application/json' },
-						body: JSON.stringify({ text, room, key: keyBox.value, context: context.slice(-3) }),
+						body: JSON.stringify({
+							text, room, key: keyBox.value, context: context.slice(-3), zoom: zoomInput.value.trim(),
+						}),
 					});
 					if (r.status === 401) return fail('Неверный ключ преподавателя.');
 					if (!r.ok) return fail('Сервер: ' + r.status + ' ' + (await r.text()).slice(0, 160));
@@ -193,8 +235,12 @@
 						context.push({ ru: ev.ru, uz: ev.uz });
 						if (context.length > 3) context.shift();
 					}
+					zoomNote(ev);
 					if (ev.error) fail(explain(ev.error));
 					else if (ev.storeError) fail('Хранилище: ' + ev.storeError + ' — слушатели эту фразу не увидят.');
+					else if (ev.zoomError)
+						fail('Zoom: ' + ev.zoomError.replace(/^Zoom:?\s*/, '') +
+							'. На странице слушателей субтитры идут, в самом Zoom — нет.');
 					else if (running) note(LISTENING);
 				} catch (e) {
 					fail('Сеть: ' + e.message + '. Фраза не отправлена.');
