@@ -4,31 +4,55 @@
 // держит слушателей в памяти процесса. На Vercel так нельзя: функции живут
 // секунды, а каждый запрос попадает в свой экземпляр — зритель, подключённый
 // к одному, не увидит фразу, ушедшую в другой. Поэтому здесь фразы кладутся
-// в общее хранилище (Upstash Redis через REST, без зависимостей), а зрители
-// забирают их опросом из api/tarjima/feed.js.
+// в общее хранилище (Upstash Redis через REST), а зрители забирают их опросом
+// из api/tarjima/feed.js.
 //
-// Доступ закрыт ключом: каждый вызов стоит денег, открытую ручку зальют
-// мусором за час.
+// Доступ закрыт ключом, а сверху ещё суточный лимит фраз: каждый вызов
+// модели стоит денег, и утёкший ключ не должен превращаться в открытый счёт.
 //
 // Переменные окружения Vercel:
-//   TARJIMA_KEY        — пароль преподавателя
-//   ANTHROPIC_API_KEY  — ключ перевода
-//   KV_REST_API_URL    — ставит интеграция Upstash
-//   KV_REST_API_TOKEN  — ставит интеграция Upstash
-//   TARJIMA_MODEL      — необязательно, по умолчанию claude-sonnet-5
+//   TARJIMA_KEY          — пароль преподавателя
+//   ANTHROPIC_API_KEY    — ключ перевода
+//   KV_REST_API_URL      — ставит интеграция Upstash
+//   KV_REST_API_TOKEN    — ставит интеграция Upstash
+//   TARJIMA_MODEL        — необязательно, по умолчанию claude-opus-5;
+//                          claude-sonnet-5 примерно вдвое дешевле
+//   TARJIMA_DAILY_LIMIT  — необязательно, фраз в сутки, по умолчанию 3000
 
 export const config = { runtime: 'edge' };
 
-import glossary from '../../src/data/fidicGlossary.mjs';
+import Anthropic from '@anthropic-ai/sdk';
+import { findTerms } from '../../src/data/fidicGlossary.mjs';
 
-const MODEL = process.env.TARJIMA_MODEL || 'claude-sonnet-5';
+const MODEL = process.env.TARJIMA_MODEL || 'claude-opus-5';
+const DAILY_LIMIT = Number(process.env.TARJIMA_DAILY_LIMIT) || 3000;
 const TTL = 21600; // 6 часов: занятие кончилось — след сам убрался
+const CONTEXT_MAX = 3;
 
-// Длинные термины первыми: «Продление срока завершения» должно сработать
-// раньше, чем «Продление срока».
-const TERMS = [...glossary].sort((a, b) => b.ru.length - a.ru.length);
+// $ за миллион токенов, вход и выход. Только для оценки стоимости занятия на
+// странице преподавателя — счёт выставляет Anthropic, а не эта таблица.
+const PRICES = {
+  'claude-opus-5': [5, 25],
+  'claude-sonnet-5': [2, 10],
+  'claude-haiku-4-5': [1, 5],
+  'claude-opus-4-8': [5, 25],
+};
 
-/** Обе команды одним HTTP-запросом: меньше задержка до субтитра. */
+// Серверный откат на другую модель, если основная откажется переводить
+// фразу. Включается только там, где он поддерживается.
+const WITH_FALLBACKS = new Set(['claude-opus-5', 'claude-fable-5-1']);
+
+const SYSTEM = `Ты переводишь в реальном времени лекцию по контрактам FIDIC. Слушатели — инженеры, контракт-менеджеры и юристы из Узбекистана; они читают перевод субтитрами на телефоне.
+
+Каждое сообщение — очередная фраза лектора на русском, распознанная автоматически: без пунктуации, иногда с ошибками распознавания, иногда оборванная на полуслове. Предыдущие фразы и твои переводы идут выше ради связности; переводить их заново не нужно.
+
+Переведи последнюю фразу на узбекский язык латиницей (o‘, g‘). Расставь пунктуацию. Слово, явно искажённое распознаванием, переводи по смыслу контекста; оборванную фразу не достраивай. Номера пунктов (20.1, 3.7) и английские термины FIDIC, если лектор произносит их по-английски (Variation, Claim, EOT, IPC, DAAB, Taking-Over, Programme), оставляй как есть.
+
+Ответ — только узбекский текст перевода.`;
+
+const GLOSSARY_INTRO =
+  '\n\nТермины из этой фразы. Используй эти узбекские соответствия, изменяя их по правилам узбекской грамматики:\n';
+
 /**
  * Адрес и токен хранилища. Мастер подключения Upstash даёт переменным имена
  * в зависимости от выбранного префикса, поэтому одно жёстко заданное имя —
@@ -59,6 +83,7 @@ function store() {
   return { url: found[1].trim().replace(/\/$/, ''), token };
 }
 
+/** Несколько команд одним HTTP-запросом: меньше задержка до субтитра. */
 async function pipeline(commands) {
   const { url, token } = store();
   if (!url || !token) throw new Error('KV не подключён: нет KV_REST_API_URL / KV_REST_API_TOKEN');
@@ -71,64 +96,66 @@ async function pipeline(commands) {
   return (await res.json()).map((r) => r.result);
 }
 
-/** Только те термины, что реально встретились: иначе подсказка раздувается. */
-function relevant(text) {
-  const low = text.toLowerCase();
-  const hits = [];
-  for (const t of TERMS) {
-    if (t.ru.length < 4) continue;
-    if (low.includes(t.ru.toLowerCase())) hits.push(t);
-    if (hits.length >= 25) break;
-  }
-  return hits;
-}
-
-/** Запасной перевод: подстановка терминов. Субтитры не должны гаснуть. */
-function byGlossary(text) {
-  let out = text;
-  for (const t of TERMS) {
-    if (t.ru.length < 4) continue;
-    out = out.replaceAll(t.ru, t.uz);
-    out = out.replaceAll(t.ru.charAt(0).toUpperCase() + t.ru.slice(1), t.uz);
-  }
-  return out;
-}
-
-async function translate(text) {
-  const key = process.env.ANTHROPIC_API_KEY;
-  if (!key) return byGlossary(text);
-
-  const terms = relevant(text);
-  const block = terms.length
-    ? '\n\nОбязательный глоссарий (термины BRIDGE Consult, отклоняться нельзя):\n' +
-      terms.map((t) => `${t.ru} = ${t.uz}`).join('\n')
-    : '';
-
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'x-api-key': key,
-      'anthropic-version': '2023-06-01',
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: 1000,
-      system:
-        'Ты синхронный переводчик на лекции по контрактам FIDIC для строителей и юристов Узбекистана. ' +
-        'Переводишь с русского на узбекский (латиница). ' +
-        'Правила: переводи только присланную реплику, ничего не добавляй и не комментируй; ' +
-        'сохраняй номера пунктов и англоязычные термины контракта (Variation, EOT, Claim, IPC, DAAB, Taking-Over) как есть; ' +
-        'если фраза оборвана на полуслове — переводи как есть, не додумывай окончание; ' +
-        'в ответе только перевод, без кавычек и пояснений.' +
-        block,
-      messages: [{ role: 'user', content: text }],
-    }),
+const json = (body, status = 200) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { 'content-type': 'application/json; charset=utf-8' },
   });
 
-  if (!res.ok) throw new Error(`Anthropic ${res.status}: ${(await res.text()).slice(0, 160)}`);
-  const data = await res.json();
-  return (data.content?.[0]?.text ?? '').trim();
+/** Последние фразы с их переводами — от страницы преподавателя, в порядке речи. */
+function cleanContext(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((c) => c && typeof c.ru === 'string' && typeof c.uz === 'string' && c.ru.trim() && c.uz.trim())
+    .slice(-CONTEXT_MAX)
+    .map((c) => ({ ru: c.ru.trim().slice(0, 400), uz: c.uz.trim().slice(0, 600) }));
+}
+
+let client;
+
+async function translate(text, context) {
+  if (!process.env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY не задан на сервере');
+  // Субтитр, пришедший через 20 секунд, уже никому не нужен: короткий
+  // таймаут и одна повторная попытка.
+  client ??= new Anthropic({ timeout: 15_000, maxRetries: 1 });
+
+  const terms = findTerms(text);
+  const system = terms.length ? SYSTEM + GLOSSARY_INTRO + terms.map((t) => `${t.ru} — ${t.uz}`).join('\n') : SYSTEM;
+
+  const messages = [];
+  for (const c of context) messages.push({ role: 'user', content: c.ru }, { role: 'assistant', content: c.uz });
+  messages.push({ role: 'user', content: text });
+
+  const res = await client.beta.messages.create({
+    model: MODEL,
+    max_tokens: 4000,
+    // Перевод короткой фразы не требует долгих размышлений, а каждая лишняя
+    // секунда — это субтитр, отстающий от лектора.
+    output_config: { effort: 'low' },
+    ...(WITH_FALLBACKS.has(MODEL) && { betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' }),
+    system,
+    messages,
+  });
+
+  if (res.stop_reason === 'refusal') throw new Error('модель отказалась переводить эту фразу');
+  const uz = res.content
+    .filter((b) => b.type === 'text')
+    .map((b) => b.text)
+    .join('')
+    .trim();
+  if (!uz) throw new Error('модель вернула пустой перевод');
+
+  const [pin, pout] = PRICES[res.model] ?? PRICES[MODEL] ?? [0, 0];
+  const cost = ((res.usage?.input_tokens ?? 0) * pin + (res.usage?.output_tokens ?? 0) * pout) / 1e6;
+  return { uz, cost };
+}
+
+function describe(e) {
+  if (e instanceof Anthropic.APIError) {
+    const msg = e.error?.error?.message || e.message;
+    return `Anthropic ${e.status ?? ''}: ${msg}`.slice(0, 300);
+  }
+  return String(e?.message ?? e).slice(0, 300);
 }
 
 export default async function handler(req) {
@@ -148,41 +175,52 @@ export default async function handler(req) {
   const room = String(body.room ?? 'main').replace(/[^a-z0-9_-]/gi, '').slice(0, 40) || 'main';
 
   // «Новое занятие»: убрать прежние фразы, чтобы пробы перед эфиром не
-  // висели у слушателей в хвосте ленты. Сам след и так живёт шесть часов,
-  // но два занятия в один день иначе склеились бы.
+  // висели у слушателей в хвосте ленты.
   if (body.reset) {
     try {
       await pipeline([['DEL', `tarjima:${room}`]]);
     } catch (e) {
       return new Response('хранилище: ' + String(e.message ?? e), { status: 500 });
     }
-    return new Response(JSON.stringify({ reset: true }), {
-      status: 200,
-      headers: { 'content-type': 'application/json; charset=utf-8' },
-    });
+    return json({ reset: true });
   }
 
   const text = String(body.text ?? '').trim().slice(0, 2000);
   if (!text) return new Response('empty', { status: 400 });
 
   const started = Date.now();
-  let uz;
+
+  // Счётчик — до вызова модели: лимит, проверяемый после, денег не бережёт.
+  // Если хранилище недоступно, занятие важнее счётчика.
+  const dayKey = `tarjima:count:${new Date().toISOString().slice(0, 10)}`;
+  const count = await pipeline([
+    ['INCR', dayKey],
+    ['EXPIRE', dayKey, 172800],
+  ])
+    .then(([n]) => n)
+    .catch(() => null);
+
+  let uz = text;
+  let cost = 0;
   let error = null;
-  try {
-    uz = await translate(text);
-  } catch (e) {
-    error = String(e.message ?? e);
-    uz = byGlossary(text); // сбой модели не должен гасить субтитры
+  if (count !== null && count > DAILY_LIMIT) {
+    error = `дневной лимит ${DAILY_LIMIT} фраз исчерпан`;
+  } else {
+    try {
+      ({ uz, cost } = await translate(text, cleanContext(body.context)));
+    } catch (e) {
+      error = describe(e);
+    }
   }
 
   // В ленту уходит признак «это не перевод», а не текст ошибки: слушателям
   // внутренности сервера ни к чему, а вот знать, что перед ними русский
-  // оригинал, а не узбекский перевод, — обязательно. Молча выдать одно за
-  // другое на занятии по контрактам нельзя.
-  const line = { ru: text, uz, at: Date.now() };
+  // оригинал, а не узбекский перевод, — обязательно.
+  const line = { ru: text, uz: error ? text : uz, at: Date.now() };
   if (error) line.raw = true;
 
   let total = null;
+  let storeError = null;
   try {
     const key = `tarjima:${room}`;
     [total] = await pipeline([
@@ -190,14 +228,9 @@ export default async function handler(req) {
       ['EXPIRE', key, TTL],
     ]);
   } catch (e) {
-    // Перевод показываем преподавателю даже если хранилище отвалилось —
-    // он хотя бы увидит, что распознавание живо.
-    line.storeError = String(e.message ?? e);
+    storeError = String(e.message ?? e);
   }
 
-  // Преподавателю — подробности: ему чинить.
-  return new Response(JSON.stringify({ ...line, ms: Date.now() - started, error, total }), {
-    status: 200,
-    headers: { 'content-type': 'application/json; charset=utf-8' },
-  });
+  // Преподавателю — подробности: ему чинить и считать.
+  return json({ ...line, ms: Date.now() - started, error, storeError, total, cost, count, limit: DAILY_LIMIT });
 }

@@ -1,50 +1,38 @@
 /**
- * Живой переводчик речи RU → UZ для онлайн-занятий BRIDGE Consult Academy.
+ * Живой переводчик речи RU → UZ — локальная версия для отладки.
  *
- * Зачем свой, а не Wordly: Wordly стоит ~$75 за час каждого потока и не знает
- * терминологии FIDIC — в узбекском для половины понятий нет устоявшегося
- * юридического словаря. Здесь перевод идёт с глоссарием Ларисы, собранным из
- * её же пособия и узбекских версий сайта (tools/translator/glossary.json).
+ * На занятиях работает не она, а продовая: api/tarjima/say.js и
+ * public/tarjima/. Эта раздаёт субтитры через SSE из памяти процесса и
+ * нужна, чтобы погонять распознавание и страницы на своей машине.
  *
- * Как устроено:
- *   1. speaker.html — страница преподавателя. Распознавание речи делает сам
- *      браузер (Chrome, Web Speech API, русский, бесплатно). Готовые фразы
- *      уходят сюда через POST /say.
- *   2. Сервер переводит фразу на узбекский, подставляя в подсказку только те
- *      термины глоссария, что реально встретились — это держит задержку и
- *      цену внизу.
- *   3. viewer.html — страница слушателя. Держит открытым SSE и показывает
- *      субтитры. Участник просто открывает ссылку на телефоне рядом с Zoom.
- *
- * Интеграция с Zoom не нужна: конференция может быть любой.
+ * Словарь терминов общий с продом — src/data/fidicGlossary.mjs.
  *
  * Запуск:
  *   node tools/translator/server.mjs
- *   MOCK=1 node tools/translator/server.mjs      — без ключа, только глоссарий
+ *   MOCK=1 node tools/translator/server.mjs   — без модели и без денег
  *
  * Переменные окружения:
  *   ANTHROPIC_API_KEY — ключ для перевода
- *   TRANSLATOR_MODEL  — модель (по умолчанию claude-sonnet-5)
+ *   TRANSLATOR_MODEL  — модель (по умолчанию claude-opus-5)
  *   PORT              — порт (по умолчанию 8787)
- *   MOCK=1            — не звать модель, подставить только термины глоссария.
- *                       Нужен, чтобы проверить весь тракт без ключа и денег.
+ *   MOCK=1            — модель не вызывается; фраза уходит слушателям как
+ *                       есть, с пометкой, что это не перевод. Проверяет весь
+ *                       тракт «речь → сервер → субтитры».
  */
 
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import Anthropic from '@anthropic-ai/sdk';
+import { TERMS, findTerms } from '../../src/data/fidicGlossary.mjs';
 
 const DIR = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT ?? 8787);
-const MOCK = process.env.MOCK === '1';
-const MODEL = process.env.TRANSLATOR_MODEL ?? 'claude-sonnet-5';
-const KEY = process.env.ANTHROPIC_API_KEY;
+const MOCK = process.env.MOCK === '1' || !process.env.ANTHROPIC_API_KEY;
+const MODEL = process.env.TRANSLATOR_MODEL ?? 'claude-opus-5';
 
-const glossary = JSON.parse(fs.readFileSync(path.join(DIR, 'glossary.json'), 'utf8'));
-// Длинные термины идут первыми: «Продление срока завершения» должно
-// сработать раньше, чем «Продление срока».
-glossary.sort((a, b) => b.ru.length - a.ru.length);
+const client = MOCK ? null : new Anthropic({ timeout: 15_000, maxRetries: 1 });
 
 /** Слушатели субтитров. Каждый — открытый SSE-ответ. */
 const viewers = new Set();
@@ -63,66 +51,24 @@ function broadcast(event) {
 	}
 }
 
-/** Термины глоссария, реально встретившиеся во фразе. */
-function relevantTerms(text) {
-	const low = text.toLowerCase();
-	const hits = [];
-	for (const t of glossary) {
-		if (t.ru.length < 4) continue;
-		if (low.includes(t.ru.toLowerCase())) hits.push(t);
-		if (hits.length >= 25) break;
-	}
-	return hits;
-}
-
-/** Запасной режим: подставляем термины, остальное оставляем как есть. */
-function mockTranslate(text) {
-	let out = text;
-	for (const t of glossary) {
-		if (t.ru.length < 4) continue;
-		out = out.replaceAll(t.ru, t.uz);
-		const cap = t.ru.charAt(0).toUpperCase() + t.ru.slice(1);
-		out = out.replaceAll(cap, t.uz);
-	}
-	return out;
-}
-
 async function translate(text) {
-	if (MOCK || !KEY) return mockTranslate(text);
-
-	const terms = relevantTerms(text);
-	const glossaryBlock = terms.length
-		? `\n\nОбязательный глоссарий (термины BRIDGE Consult, отклоняться нельзя):\n` +
-			terms.map((t) => `${t.ru} = ${t.uz}`).join('\n')
-		: '';
-
+	const terms = findTerms(text);
 	const system =
-		'Ты синхронный переводчик на лекции по контрактам FIDIC для строителей и юристов Узбекистана. ' +
-		'Переводишь с русского на узбекский (латиница). ' +
-		'Правила: переводи только присланную реплику, ничего не добавляй и не комментируй; ' +
-		'сохраняй номера пунктов и англоязычные термины контракта (Variation, EOT, Claim, IPC, DAAB, Taking-Over) как есть; ' +
-		'если фраза оборвана на полуслове — переводи как есть, не додумывай окончание; ' +
-		'в ответе только перевод, без кавычек и пояснений.' +
-		glossaryBlock;
+		'Ты переводишь в реальном времени лекцию по контрактам FIDIC для инженеров и юристов из Узбекистана. ' +
+		'Переведи присланную фразу лектора на узбекский (латиница). В ответе только перевод.' +
+		(terms.length ? '\n\nТермины BRIDGE Consult:\n' + terms.map((t) => `${t.ru} — ${t.uz}`).join('\n') : '');
 
-	const res = await fetch('https://api.anthropic.com/v1/messages', {
-		method: 'POST',
-		headers: {
-			'content-type': 'application/json',
-			'x-api-key': KEY,
-			'anthropic-version': '2023-06-01',
-		},
-		body: JSON.stringify({
-			model: MODEL,
-			max_tokens: 1000,
-			system,
-			messages: [{ role: 'user', content: text }],
-		}),
+	const res = await client.messages.create({
+		model: MODEL,
+		max_tokens: 4000,
+		output_config: { effort: 'low' },
+		system,
+		messages: [{ role: 'user', content: text }],
 	});
-
-	if (!res.ok) throw new Error(`API ${res.status}: ${(await res.text()).slice(0, 200)}`);
-	const data = await res.json();
-	return (data.content?.[0]?.text ?? '').trim();
+	if (res.stop_reason === 'refusal') throw new Error('модель отказалась переводить фразу');
+	const out = res.content.filter((b) => b.type === 'text').map((b) => b.text).join('').trim();
+	if (!out) throw new Error('пустой перевод');
+	return out;
 }
 
 function serveFile(res, name, type) {
@@ -144,7 +90,6 @@ const server = http.createServer(async (req, res) => {
 		return serveFile(res, 'viewer.html', 'text/html; charset=utf-8');
 	}
 
-	// Поток субтитров для слушателей.
 	if (url.pathname === '/stream') {
 		res.writeHead(200, {
 			'content-type': 'text/event-stream; charset=utf-8',
@@ -164,7 +109,6 @@ const server = http.createServer(async (req, res) => {
 		return;
 	}
 
-	// Фраза от преподавателя.
 	if (url.pathname === '/say' && req.method === 'POST') {
 		let body = '';
 		for await (const chunk of req) body += chunk;
@@ -177,16 +121,18 @@ const server = http.createServer(async (req, res) => {
 		if (!text) return res.writeHead(400).end('empty');
 
 		const started = Date.now();
-		let uz = '';
-		let error = null;
-		try {
-			uz = await translate(text);
-		} catch (e) {
-			error = String(e.message ?? e);
-			uz = mockTranslate(text); // перевод не должен исчезать из-за сбоя API
+		let uz = text;
+		let error = MOCK ? 'MOCK: модель не вызывалась' : null;
+		if (!MOCK) {
+			try {
+				uz = await translate(text);
+			} catch (e) {
+				error = String(e.message ?? e);
+			}
 		}
 
 		const event = { ru: text, uz, ms: Date.now() - started, at: Date.now(), error };
+		if (error) event.raw = true;
 		history.push(event);
 		if (history.length > HISTORY_MAX) history.shift();
 		broadcast(event);
@@ -199,9 +145,9 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-	console.log(`\n  Переводчик RU → UZ запущен`);
-	console.log(`  Режим:      ${MOCK || !KEY ? 'MOCK (только глоссарий, без модели)' : MODEL}`);
-	console.log(`  Глоссарий:  ${glossary.length} терминов`);
+	console.log(`\n  Переводчик RU → UZ (локально)`);
+	console.log(`  Режим:      ${MOCK ? 'MOCK — без модели' : MODEL}`);
+	console.log(`  Словарь:    ${TERMS.length} терминов`);
 	console.log(`\n  Преподаватель:  http://localhost:${PORT}/`);
 	console.log(`  Слушатели:      http://localhost:${PORT}/view\n`);
 });

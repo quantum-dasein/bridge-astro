@@ -4,27 +4,37 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="robots" content="noindex, nofollow" />
+		<meta name="theme-color" content="#111111" />
 		<title>Tarjima — BRIDGE Consult Academy</title>
 		<style>
 			:root { color-scheme: dark; }
 			* { box-sizing: border-box; }
-			body { margin: 0; padding: 16px 18px 48px; font: 18px/1.55 system-ui, sans-serif; background: #111; color: #E8E5DD; }
+			body { margin: 0; padding: 0 18px 48px; font: 18px/1.55 system-ui, sans-serif; background: #111; color: #E8E5DD; }
 			.wrap { max-width: 760px; margin: 0 auto; }
 			header {
 				position: sticky; top: 0; z-index: 2;
-				display: flex; align-items: center; justify-content: space-between; gap: 12px;
-				padding: 10px 0 12px; background: linear-gradient(#111 72%, #111a);
+				display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+				padding: 12px 0; background: linear-gradient(#111 78%, #1110);
 				border-bottom: 1px solid #ffffff14;
 			}
 			.t { font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: #A58A62; white-space: nowrap; }
 			.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #C4564A; margin-right: 7px; }
 			.dot.on { background: #5E9E5E; }
-			.ctl { font-size: .7rem; color: #8E8A81; display: flex; gap: 12px; align-items: center; }
-			label { cursor: pointer; user-select: none; }
-			#feed { margin-top: 16px; }
+			.ctl { font-size: .74rem; color: #8E8A81; display: flex; gap: 6px; flex-wrap: wrap; }
+			.ctl label {
+				cursor: pointer; user-select: none; padding: 5px 10px; border-radius: 999px;
+				border: 1px solid #ffffff1f;
+			}
+			.ctl input { position: absolute; opacity: 0; pointer-events: none; }
+			.ctl label:has(input:checked) { background: #A58A62; border-color: #A58A62; color: #17130A; }
+			.ctl label:has(input:focus-visible) { outline: 2px solid #A58A62; outline-offset: 2px; }
+			#feed { margin-top: 12px; }
 			.row { padding: 13px 0; border-bottom: 1px solid #ffffff0f; animation: in .3s ease-out; }
 			@keyframes in { from { opacity: 0; transform: translateY(6px); } }
+			@media (prefers-reduced-motion: reduce) { .row { animation: none; } }
 			.uz { font-size: 1.15rem; }
+			/* Глаз ищет последнюю фразу — остальные приглушены, но читаются. */
+			.row:not(:last-child) .uz { color: #A9A59C; }
 			.ru { margin-top: 6px; font-size: .82rem; color: #7E7A72; }
 			.hide-ru .ru { display: none; }
 			.empty { color: #6E6A62; font-style: italic; padding: 40px 0; text-align: center; }
@@ -32,60 +42,116 @@
 			   прямо, иначе слушатель примет его за узбекский текст. */
 			.row.raw { border-left: 2px solid #C4564A; padding-left: 12px; }
 			.row.raw .uz { color: #B9B5AC; }
+			.row.raw .ru { display: none; } /* оригинал и так стоит строкой выше */
 			.warn { margin-top: 6px; font-size: .72rem; letter-spacing: .04em; color: #C4564A; }
-			.big .uz { font-size: 1.45rem; }
+			.big .uz { font-size: 1.5rem; line-height: 1.45; }
 		</style>
 	</head>
 	<body>
 		<div class="wrap">
 			<header>
-				<span class="t"><span class="dot" id="dot"></span><span id="status">Ulanmoqda…</span></span>
+				<span class="t"><span class="dot" id="dot"></span><span id="status"></span></span>
 				<span class="ctl">
 					<label><input type="checkbox" id="ru" /> rus</label>
+					<label><input type="checkbox" id="kirill" /> кирилл</label>
 					<label><input type="checkbox" id="big" /> yirik</label>
 					<label><input type="checkbox" id="follow" checked /> avto</label>
 				</span>
 			</header>
-			<div id="feed"><div class="empty">Mashg‘ulot boshlanishini kuting…</div></div>
+			<div id="feed"></div>
 		</div>
 
+		<script src="/tarjima/kirill.js"></script>
 		<script>
-			const feed = document.getElementById('feed');
-			const dot = document.getElementById('dot');
-			const status = document.getElementById('status');
-			const follow = document.getElementById('follow');
+			const $ = (id) => document.getElementById(id);
+			const feed = $('feed');
+			const dot = $('dot');
+			const status = $('status');
 			const room = new URLSearchParams(location.search).get('room') || 'main';
 
-			// Русский подстрочник по умолчанию скрыт: нужен не всем, а на
-			// телефоне занимает половину экрана.
-			document.body.classList.add('hide-ru');
-			document.getElementById('ru').onchange = (e) =>
-				document.body.classList.toggle('hide-ru', !e.target.checked);
-			document.getElementById('big').onchange = (e) =>
-				document.body.classList.toggle('big', e.target.checked);
+			const saved = {
+				get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+				set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+			};
+
+			// Выбор слушателя переживает перезагрузку: на телефоне страницу
+			// перезагружают постоянно, и каждый раз заново жать «кирилл» — лишнее.
+			const opts = { ru: false, kirill: false, big: false, follow: true };
+			for (const k of Object.keys(opts)) {
+				const v = saved.get('tarjima:' + k);
+				if (v !== null) opts[k] = v === '1';
+				$(k).checked = opts[k];
+				$(k).onchange = (e) => {
+					opts[k] = e.target.checked;
+					saved.set('tarjima:' + k, opts[k] ? '1' : '0');
+					apply();
+				};
+			}
+
+			// Узбекские подписи интерфейса тоже идут через кириллицу, если она
+			// выбрана. Без kirill.js (не загрузился) — остаётся латиница.
+			const script = (s) => (opts.kirill && window.uzCyrillic ? uzCyrillic(s) : s);
+			const TEXT = {
+				wait: 'Mashg‘ulot boshlanishini kuting…',
+				connecting: 'Ulanmoqda…',
+				live: 'Efirda',
+				reconnecting: 'Qayta ulanmoqda…',
+				raw: 'Tarjima ishlamadi — matn rus tilida',
+			};
+			let statusKey = 'connecting';
+
+			const lines = []; // показанные фразы — чтобы перерисовать при смене алфавита
+
+			function render() {
+				status.textContent = script(TEXT[statusKey]);
+				if (!lines.length) {
+					feed.innerHTML = '<div class="empty"></div>';
+					feed.firstChild.textContent = script(TEXT.wait);
+					return;
+				}
+				feed.innerHTML = '';
+				for (const ev of lines) {
+					const row = document.createElement('div');
+					row.className = 'row' + (ev.raw ? ' raw' : '');
+					row.style.animation = 'none';
+					row.innerHTML = '<div class="uz"></div><div class="ru"></div>';
+					row.querySelector('.uz').textContent = ev.raw ? ev.ru : script(ev.uz);
+					row.querySelector('.ru').textContent = ev.ru;
+					if (ev.raw) {
+						const warn = document.createElement('div');
+						warn.className = 'warn';
+						warn.textContent = script(TEXT.raw);
+						row.append(warn);
+					}
+					feed.append(row);
+				}
+			}
+
+			function apply() {
+				document.body.classList.toggle('hide-ru', !opts.ru);
+				document.body.classList.toggle('big', opts.big);
+				render();
+			}
+
+			function add(ev) {
+				lines.push(ev);
+				while (lines.length > 200) lines.shift();
+				render();
+				const last = feed.lastElementChild;
+				last.style.animation = '';
+				if (opts.follow) last.scrollIntoView({ block: 'end', behavior: 'smooth' });
+			}
+
+			function setStatus(key) {
+				statusKey = key;
+				dot.className = key === 'live' ? 'dot on' : 'dot';
+				status.textContent = script(TEXT[key]);
+			}
 
 			// seen — сколько строк занятия уже показано. Лента отдаёт всем один и
 			// тот же хвост, поэтому нужное отсекаем здесь, по абсолютному номеру.
-			let seen = 0, first = true, fails = 0;
-
-			function add(ev) {
-				if (first) { feed.innerHTML = ''; first = false; }
-				const row = document.createElement('div');
-				row.className = 'row';
-				row.innerHTML = '<div class="uz"></div><div class="ru"></div>';
-				row.querySelector('.uz').textContent = ev.uz;
-				row.querySelector('.ru').textContent = ev.ru;
-				if (ev.raw) {
-					row.classList.add('raw');
-					const warn = document.createElement('div');
-					warn.className = 'warn';
-					warn.textContent = 'Tarjima ishlamadi — matn rus tilida';
-					row.append(warn);
-				}
-				feed.append(row);
-				while (feed.children.length > 200) feed.firstChild.remove();
-				if (follow.checked) row.scrollIntoView({ block: 'end', behavior: 'smooth' });
-			}
+			let seen = 0;
+			let fails = 0;
 
 			async function poll() {
 				try {
@@ -98,8 +164,8 @@
 					// номером не увидел бы ничего, а прежние фразы так и висели бы.
 					if (d.total < seen) {
 						seen = 0;
-						feed.innerHTML = '<div class="empty">Mashg‘ulot boshlanishini kuting…</div>';
-						first = true;
+						lines.length = 0;
+						render();
 					}
 
 					const base = d.total - d.lines.length; // номер первой присланной
@@ -108,18 +174,15 @@
 					seen = Math.max(seen, d.total);
 
 					fails = 0;
-					dot.className = 'dot on';
-					status.textContent = 'Efirda';
+					setStatus('live');
 				} catch {
 					// Мобильный интернет рвётся постоянно; одна осечка — не повод
 					// пугать человека надписью на весь экран.
-					if (++fails >= 3) {
-						dot.className = 'dot';
-						status.textContent = 'Qayta ulanmoqda…';
-					}
+					if (++fails >= 3) setStatus('reconnecting');
 				}
 			}
 
+			apply();
 			poll();
 			setInterval(poll, 2000);
 			// Вернулись во вкладку — не ждём следующего тика.
