@@ -119,7 +119,11 @@ mode = 'ok';
 // ——— варианты моделей ———
 let r = await call({ key: 'secret', text: 'фраза' });
 let q = seen.at(-1);
-check('по умолчанию opus-5, effort low, fallbacks', q.body.model === 'claude-opus-5' && q.body.output_config?.effort === 'low' && q.body.fallbacks === 'default' && r.data.model === 'claude-opus-5', JSON.stringify(q.body).slice(0, 200));
+check('по умолчанию sonnet-5, effort low', q.body.model === 'claude-sonnet-5' && q.body.output_config?.effort === 'low' && r.data.model === 'claude-sonnet-5', JSON.stringify(q.body).slice(0, 200));
+
+r = await call({ key: 'secret', text: 'фраза', model: 'claude-opus-5' });
+q = seen.at(-1);
+check('opus-5: effort low и серверный откат', q.body.model === 'claude-opus-5' && q.body.fallbacks === 'default' && String(q.headers['anthropic-beta']).includes('server-side-fallback'), JSON.stringify(q.body).slice(0, 200));
 
 r = await call({ key: 'secret', text: 'фраза', model: 'claude-sonnet-5' });
 q = seen.at(-1);
@@ -141,7 +145,7 @@ check('fast упёрся в лимит → обычный режим', !r.data.r
 mode = 'ok';
 
 r = await call({ key: 'secret', text: 'фраза', model: 'claude-fable-5-1' });
-check('чужая модель не принимается → по умолчанию', seen.at(-1).body.model === 'claude-opus-5' && r.data.model === 'claude-opus-5');
+check('чужая модель не принимается → по умолчанию', seen.at(-1).body.model === 'claude-sonnet-5' && r.data.model === 'claude-sonnet-5');
 
 // ——— куски ———
 r = await call({ key: 'secret', text: 'в течение 28 дней', pending: ['подрядчик обязан направить уведомление'], context: [{ ru: 'начнём', uz: 'Boshlaymiz.' }] });

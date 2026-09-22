@@ -25,7 +25,8 @@
 //   ANTHROPIC_API_KEY    — ключ перевода
 //   KV_REST_API_URL      — ставит интеграция Upstash
 //   KV_REST_API_TOKEN    — ставит интеграция Upstash
-//   TARJIMA_MODEL        — необязательно, один из ключей VARIANTS ниже
+//   TARJIMA_MODEL        — необязательно, один из ключей VARIANTS ниже;
+//                          по умолчанию claude-sonnet-5
 //   TARJIMA_DAILY_LIMIT  — необязательно, фраз в сутки, по умолчанию 5000
 
 // Функция работает в Вашингтоне, рядом с хранилищем Upstash (iad1) и с API
@@ -49,7 +50,12 @@ const VARIANTS = {
   // постоянная часть короче — поэтому она читает её всякий раз целиком.
   'claude-haiku-4-5': { model: 'claude-haiku-4-5', price: [1, 5] },
 };
-const DEFAULT_VARIANT = VARIANTS[process.env.TARJIMA_MODEL] ? process.env.TARJIMA_MODEL : 'claude-opus-5';
+// По умолчанию Sonnet 5. Замер 22.09.2026 (tools/translator/eval.mjs, 10 фраз
+// лекции): модель отвечает за 1.9 с против 3.1 с у Opus 5, стоит в 2.5 раза
+// дешевле, переводы на этой выборке сопоставимы. Быстрый режим Opus почти не
+// ускорил (3.1 с); Haiku быстрее всех (1.0 с), но делает грамматические
+// ошибки. Вернуть Opus — TARJIMA_MODEL=claude-opus-5 в Vercel.
+const DEFAULT_VARIANT = VARIANTS[process.env.TARJIMA_MODEL] ? process.env.TARJIMA_MODEL : 'claude-sonnet-5';
 
 const DAILY_LIMIT = Number(process.env.TARJIMA_DAILY_LIMIT) || 5000;
 const TTL = 21600; // 6 часов: занятие кончилось — след сам убрался
