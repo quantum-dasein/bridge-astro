@@ -227,10 +227,12 @@
 					if (!r.ok) { it.state = 'lost'; return fail('Сервер: ' + r.status + ' ' + (await r.text()).slice(0, 160)); }
 
 					const ev = await r.json();
+					stats.cost += ev.cost || 0;
+					// Шум без слов: модель пометила — не показываем и в Zoom не шлём.
+					if (ev.skip) { it.state = 'skip'; return renderStats(); }
 					Object.assign(it, { state: 'done', uz: ev.uz, raw: !!ev.raw, lag: Date.now() - it.lastWordAt });
 					show(it);
 					stats.n++;
-					stats.cost += ev.cost || 0;
 					stats.lags.push(it.lag);
 					if (stats.lags.length > 200) stats.lags.shift();
 					renderStats();

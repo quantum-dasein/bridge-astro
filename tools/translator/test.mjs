@@ -27,7 +27,7 @@ const anthropic = http.createServer(async (req, res) => {
   }
   res.end(JSON.stringify({
     id: 'm', type: 'message', role: 'assistant', model: parsed.model,
-    content: [{ type: 'text', text: mode === 'refusal' ? '' : 'Tarjima.' }],
+    content: [{ type: 'text', text: mode === 'refusal' ? '' : mode === 'noise' ? '∅' : 'Tarjima.' }],
     stop_reason: mode === 'refusal' ? 'refusal' : 'end_turn',
     usage: { input_tokens: 100, output_tokens: 10, cache_read_input_tokens: 1800 },
   }));
@@ -111,6 +111,12 @@ mode = 'credit';
   const l = lastLine();
   check('нет денег: понятная ошибка', /credit balance/.test(r.data.error ?? ''), r.data.error);
   check('нет денег: в ленте русский с raw, без текста ошибки', l.raw === true && l.uz === 'проверка баланса' && !('error' in l), JSON.stringify(l));
+}
+mode = 'noise';
+{
+  const before = kv.get('tarjima:main')?.length ?? 0;
+  const r = await call({ key: 'secret', text: 'ээ' });
+  check('шум (∅): skip, в ленту не попал', r.data.skip === true && (kv.get('tarjima:main')?.length ?? 0) === before, JSON.stringify(r.data));
 }
 mode = 'refusal';
 check('отказ модели → raw', /отказалась/.test((await call({ key: 'secret', text: 'x' })).data.error ?? ''));
