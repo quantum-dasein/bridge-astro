@@ -7,8 +7,13 @@
 // в общее хранилище (Upstash Redis через REST), а зрители забирают их опросом
 // из api/tarjima/feed.js.
 //
-// Если преподаватель вставил API token Zoom, та же строка уходит и в сам
-// звонок — субтитрами Zoom, без второго экрана у слушателей.
+// Три действия:
+//   перевод (по умолчанию) — фраза → модель → лента;
+//   action: 'zoom'         — готовая строка → субтитры в сам звонок Zoom.
+//                            Отдельно от перевода: куски переводятся
+//                            параллельно, а в Zoom должны уйти по порядку, и
+//                            порядок знает только страница преподавателя;
+//   reset: true            — «Новое занятие», очистить ленту.
 //
 // Доступ закрыт ключом, а сверху ещё суточный лимит фраз: каждый вызов
 // модели стоит денег, и утёкший ключ не должен превращаться в открытый счёт.
@@ -20,46 +25,53 @@
 //   ANTHROPIC_API_KEY    — ключ перевода
 //   KV_REST_API_URL      — ставит интеграция Upstash
 //   KV_REST_API_TOKEN    — ставит интеграция Upstash
-//   TARJIMA_MODEL        — необязательно, по умолчанию claude-opus-5;
-//                          claude-sonnet-5 примерно вдвое дешевле
-//   TARJIMA_DAILY_LIMIT  — необязательно, фраз в сутки, по умолчанию 3000
+//   TARJIMA_MODEL        — необязательно, один из ключей VARIANTS ниже
+//   TARJIMA_DAILY_LIMIT  — необязательно, фраз в сутки, по умолчанию 5000
 
-export const config = { runtime: 'edge' };
+// Функция работает в Вашингтоне, рядом с хранилищем Upstash (iad1) и с API
+// Anthropic. Без этого она запускалась бы рядом со слушателем и каждый
+// внутренний шаг — счётчик, модель, запись в ленту — ходил бы через океан:
+// лишние полсекунды на каждой фразе. Дальний путь остаётся один — от
+// браузера до функции.
+export const config = { runtime: 'edge', regions: ['iad1'] };
 
 import Anthropic from '@anthropic-ai/sdk';
 import { TERMS, findTerms } from '../../src/data/fidicGlossary.mjs';
 
-const MODEL = process.env.TARJIMA_MODEL || 'claude-opus-5';
-const DAILY_LIMIT = Number(process.env.TARJIMA_DAILY_LIMIT) || 3000;
-const TTL = 21600; // 6 часов: занятие кончилось — след сам убрался
-const CONTEXT_MAX = 3;
-
-// $ за миллион токенов, вход и выход. Только для оценки стоимости занятия на
-// странице преподавателя — счёт выставляет Anthropic, а не эта таблица.
-const PRICES = {
-  'claude-opus-5': [5, 25],
-  'claude-sonnet-5': [2, 10],
-  'claude-haiku-4-5': [1, 5],
-  'claude-opus-4-8': [5, 25],
+// Варианты модели. price — $ за миллион токенов, вход и выход; только для
+// оценки стоимости на странице преподавателя, счёт выставляет Anthropic.
+const VARIANTS = {
+  'claude-opus-5': { model: 'claude-opus-5', effort: 'low', fallbacks: true, price: [5, 25] },
+  // Тот же Opus, но генерирует до 2.5 раза быстрее — за двойную цену.
+  'claude-opus-5-fast': { model: 'claude-opus-5', effort: 'low', fast: true, price: [10, 50] },
+  'claude-sonnet-5': { model: 'claude-sonnet-5', effort: 'low', price: [2, 10] },
+  // У Haiku нет параметра effort; кэш у неё начинается с 4096 токенов, наша
+  // постоянная часть короче — поэтому она читает её всякий раз целиком.
+  'claude-haiku-4-5': { model: 'claude-haiku-4-5', price: [1, 5] },
 };
+const DEFAULT_VARIANT = VARIANTS[process.env.TARJIMA_MODEL] ? process.env.TARJIMA_MODEL : 'claude-opus-5';
 
-// Серверный откат на другую модель, если основная откажется переводить
-// фразу. Включается только там, где он поддерживается.
-const WITH_FALLBACKS = new Set(['claude-opus-5', 'claude-fable-5-1']);
+const DAILY_LIMIT = Number(process.env.TARJIMA_DAILY_LIMIT) || 5000;
+const TTL = 21600; // 6 часов: занятие кончилось — след сам убрался
+const CONTEXT_MAX = 4;
+const PENDING_MAX = 2;
 
 // Инструкция и весь словарь одинаковы для каждой фразы, поэтому идут одним
-// кэшируемым блоком: на занятии фразы следуют каждые несколько секунд, кэш
-// не остывает, и каждая следующая фраза читает этот блок за десятую часть
-// цены и быстрее. Всё, что меняется от фразы к фразе, — только в сообщениях.
+// кэшируемым блоком: на занятии фразы следуют каждые пару секунд, кэш не
+// остывает, и каждая следующая читает этот блок за десятую часть цены и
+// быстрее. Всё, что меняется от фразы к фразе, — только в сообщениях: если
+// сюда попадёт что-то переменное, кэш молча перестанет срабатывать.
 const SYSTEM = `Ты переводишь в реальном времени лекцию по контрактам FIDIC. Слушатели — инженеры, контракт-менеджеры и юристы из Узбекистана; они читают перевод субтитрами.
 
-Каждое сообщение — очередная фраза лектора на русском, распознанная автоматически: без пунктуации, иногда с ошибками распознавания, иногда оборванная на полуслове. Предыдущие фразы и твои переводы идут выше ради связности; переводить их заново не нужно.
+Речь переводится кусками по мере того, как лектор говорит, поэтому кусок часто — начало или середина предложения. Текст распознан автоматически: без пунктуации, иногда с ошибками распознавания. Предыдущие куски и твои переводы идут выше ради связности; переводить их заново не нужно.
 
-Переведи последнюю фразу на узбекский язык латиницей (o‘, g‘). Расставь пунктуацию. Слово, явно искажённое распознаванием, переводи по смыслу контекста; оборванную фразу не достраивай. Номера пунктов и числа (20.1, 3.7, 28 дней) сохраняй цифрами.
+Переведи последний кусок на узбекский язык латиницей (o‘, g‘) так, чтобы он продолжал уже переведённое. Расставь пунктуацию. Слово, явно искажённое распознаванием, переводи по смыслу контекста. Незаконченную мысль не достраивай: переведи ровно то, что сказано. Номера пунктов и числа (20.1, 3.7, 28 дней) сохраняй цифрами.
 
 Английские термины FIDIC оставляй по-английски: Variation, Claim, EOT, IPC, DAAB, Taking-Over, Programme, Notice of Claim, FIDIC. Распознавание часто записывает их русскими буквами — «вариэйшн», «клейм», «дааб», «иписи», «и о ти», «фидик», «тейкинг овер», — восстанавливай такой термин и пиши по-английски. Книги FIDIC тоже называй по-английски: Red Book, Yellow Book, Silver Book, Pink Book, Green Book, Emerald Book.
 
-После фразы может идти блок <термины> — это подсказка, какие термины словаря в ней прозвучали. Саму подсказку не переводи и не упоминай.
+Служебные блоки в сообщении не переводи и не упоминай:
+<начало> — слова лектора прямо перед этим куском, перевод которых ещё не готов; они только для понимания, с чего началось предложение;
+<термины> — какие термины словаря прозвучали в куске.
 
 Ответ — только узбекский текст перевода.
 
@@ -115,13 +127,22 @@ const json = (body, status = 200) =>
     headers: { 'content-type': 'application/json; charset=utf-8' },
   });
 
-/** Последние фразы с их переводами — от страницы преподавателя, в порядке речи. */
+/** Последние куски с их переводами — от страницы преподавателя, в порядке речи. */
 function cleanContext(raw) {
   if (!Array.isArray(raw)) return [];
   return raw
     .filter((c) => c && typeof c.ru === 'string' && typeof c.uz === 'string' && c.ru.trim() && c.uz.trim())
     .slice(-CONTEXT_MAX)
     .map((c) => ({ ru: c.ru.trim().slice(0, 400), uz: c.uz.trim().slice(0, 600) }));
+}
+
+/** Куски, отправленные раньше этого и ещё не переведённые. */
+function cleanPending(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((s) => typeof s === 'string' && s.trim())
+    .slice(-PENDING_MAX)
+    .map((s) => s.trim().slice(0, 400));
 }
 
 // ——— Zoom ———
@@ -175,39 +196,83 @@ async function sendToZoom(target, seq, text) {
   if (!res.ok) throw new Error(`Zoom ${res.status}: ${(await res.text()).slice(0, 120)}`);
 }
 
+async function zoomAction(body) {
+  const target = zoomTarget(body.zoom);
+  if (!target) return json({ zoom: null });
+  if (target.error) return json({ zoom: 'error', zoomError: target.error });
+  const text = String(body.text ?? '').trim().slice(0, 2000);
+  if (!text) return new Response('empty', { status: 400 });
+
+  let seq;
+  try {
+    [seq] = await pipeline([
+      ['INCR', target.seqKey],
+      ['EXPIRE', target.seqKey, 86400],
+    ]);
+  } catch {
+    seq = Date.now(); // без хранилища — хотя бы растущее число
+  }
+  try {
+    await sendToZoom(target, seq, text);
+    return json({ zoom: 'ok' });
+  } catch (e) {
+    return json({ zoom: 'error', zoomError: String(e.message ?? e) });
+  }
+}
+
+// ——— Перевод ———
+
 let client;
 
-async function translate(text, context) {
+async function translate(text, context, pending, variantName) {
   if (!process.env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY не задан на сервере');
-  // Субтитр, пришедший через 20 секунд, уже никому не нужен: короткий
+  const v = VARIANTS[variantName];
+  // Субтитр, пришедший через 15 секунд, уже никому не нужен: короткий
   // таймаут и одна повторная попытка.
-  client ??= new Anthropic({ timeout: 15_000, maxRetries: 1 });
+  client ??= new Anthropic({ timeout: 12_000, maxRetries: 1 });
 
   const messages = [];
   for (const c of context) messages.push({ role: 'user', content: c.ru }, { role: 'assistant', content: c.uz });
 
-  // Какие термины словаря прозвучали — рядом с фразой: словарь длинный, и
+  // Какие термины словаря прозвучали — рядом с куском: словарь длинный, и
   // прямая подсказка надёжнее, чем надежда, что модель сама сопоставит падеж.
-  const terms = findTerms(text);
-  messages.push({
-    role: 'user',
-    content: terms.length
-      ? `${text}\n\n<термины>\n${terms.map((t) => `${t.ru} — ${t.uz}${t.en ? ` (${t.en})` : ''}`).join('\n')}\n</термины>`
-      : text,
-  });
+  const terms = findTerms([...pending, text].join(' '));
+  let content = text;
+  if (pending.length) content = `<начало>\n${pending.join(' ')}\n</начало>\n\n${content}`;
+  if (terms.length)
+    content += `\n\n<термины>\n${terms.map((t) => `${t.ru} — ${t.uz}${t.en ? ` (${t.en})` : ''}`).join('\n')}\n</термины>`;
+  messages.push({ role: 'user', content });
 
-  const res = await client.beta.messages.create({
-    model: MODEL,
-    max_tokens: 4000,
-    // Перевод короткой фразы не требует долгих размышлений, а каждая лишняя
-    // секунда — это субтитр, отстающий от лектора.
-    output_config: { effort: 'low' },
-    ...(WITH_FALLBACKS.has(MODEL) && { betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' }),
-    system: [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
-    messages,
-  });
+  const request = (fast) => {
+    const betas = [];
+    if (v.fallbacks) betas.push('server-side-fallback-2026-07-01');
+    if (fast) betas.push('fast-mode-2026-02-01');
+    const params = {
+      model: v.model,
+      max_tokens: 4000,
+      system: [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
+      messages,
+      // Перевод короткого куска не требует долгих размышлений, а каждая
+      // лишняя секунда — это субтитр, отстающий от лектора.
+      ...(v.effort && { output_config: { effort: v.effort } }),
+      ...(v.fallbacks && { fallbacks: 'default' }),
+      ...(fast && { speed: 'fast' }),
+    };
+    return betas.length ? client.beta.messages.create({ ...params, betas }) : client.messages.create(params);
+  };
 
-  if (res.stop_reason === 'refusal') throw new Error('модель отказалась переводить эту фразу');
+  let res;
+  let fastUsed = !!v.fast;
+  try {
+    res = await request(fastUsed);
+  } catch (e) {
+    // У быстрого режима свой лимит запросов: упёрлись — переводим обычным.
+    if (!(fastUsed && e instanceof Anthropic.RateLimitError)) throw e;
+    fastUsed = false;
+    res = await request(false);
+  }
+
+  if (res.stop_reason === 'refusal') throw new Error('модель отказалась переводить этот кусок');
   const uz = res.content
     .filter((b) => b.type === 'text')
     .map((b) => b.text)
@@ -223,9 +288,9 @@ async function translate(text, context) {
     cacheWrite: u.cache_creation_input_tokens ?? 0,
     cacheRead: u.cache_read_input_tokens ?? 0,
   };
-  const [pin, pout] = PRICES[res.model] ?? PRICES[MODEL] ?? [0, 0];
+  const [pin, pout] = fastUsed ? v.price : VARIANTS[v.fast ? 'claude-opus-5' : variantName].price;
   const cost = ((tokens.in + tokens.cacheWrite * 1.25 + tokens.cacheRead * 0.1) * pin + tokens.out * pout) / 1e6;
-  return { uz, cost, tokens };
+  return { uz, cost, tokens, fast: fastUsed };
 }
 
 function describe(e) {
@@ -250,6 +315,8 @@ export default async function handler(req) {
   if (!expected) return new Response('TARJIMA_KEY не задан на сервере', { status: 500 });
   if (body.key !== expected) return new Response('неверный ключ', { status: 401 });
 
+  if (body.action === 'zoom') return zoomAction(body);
+
   const room = String(body.room ?? 'main').replace(/[^a-z0-9_-]/gi, '').slice(0, 40) || 'main';
 
   // «Новое занятие»: убрать прежние фразы, чтобы пробы перед эфиром не
@@ -266,32 +333,41 @@ export default async function handler(req) {
   const text = String(body.text ?? '').trim().slice(0, 2000);
   if (!text) return new Response('empty', { status: 400 });
 
+  // Модель можно переопределить на запрос — только из списка VARIANTS: так
+  // eval.mjs сравнивает модели на одном и том же проде.
+  const variant = VARIANTS[body.model] ? body.model : DEFAULT_VARIANT;
+
+  // Порядок кусков: страница преподавателя шлёт их параллельно, ответы
+  // могут прийти не по порядку. Номер и сессия едут в ленту, и страница
+  // слушателя расставляет куски сама. start — первый кусок нового
+  // высказывания: там слушатель начинает новый абзац.
+  const seq = Number.isInteger(body.seq) && body.seq >= 0 ? body.seq : undefined;
+  const sid = typeof body.sid === 'string' ? body.sid.replace(/[^a-z0-9]/gi, '').slice(0, 16) || undefined : undefined;
+
   const started = Date.now();
-  const zoom = zoomTarget(body.zoom);
-  const toZoom = zoom && !zoom.error ? zoom : null;
 
   // Счётчик — до вызова модели: лимит, проверяемый после, денег не бережёт.
-  // Тем же запросом — номер строки для Zoom. Если хранилище недоступно,
-  // занятие важнее счётчика.
+  // Функция стоит рядом с хранилищем, так что это миллисекунды. Если
+  // хранилище недоступно, занятие важнее счётчика.
   const dayKey = `tarjima:count:${new Date().toISOString().slice(0, 10)}`;
-  const [count, zoomSeq] = await pipeline([
+  const count = await pipeline([
     ['INCR', dayKey],
     ['EXPIRE', dayKey, 172800],
-    ...(toZoom ? [['INCR', toZoom.seqKey], ['EXPIRE', toZoom.seqKey, 86400]] : []),
   ])
-    .then((r) => [r[0], toZoom ? r[2] : null])
-    .catch(() => [null, null]);
+    .then((r) => r[0])
+    .catch(() => null);
 
   let uz = text;
   let cost = 0;
   let tokens = null;
+  let fast = false;
   let error = null;
   const modelStarted = Date.now();
   if (count !== null && count > DAILY_LIMIT) {
     error = `дневной лимит ${DAILY_LIMIT} фраз исчерпан`;
   } else {
     try {
-      ({ uz, cost, tokens } = await translate(text, cleanContext(body.context)));
+      ({ uz, cost, tokens, fast } = await translate(text, cleanContext(body.context), cleanPending(body.pending), variant));
     } catch (e) {
       error = describe(e);
     }
@@ -303,25 +379,24 @@ export default async function handler(req) {
   // оригинал, а не узбекский перевод, — обязательно.
   const line = { ru: text, uz: error ? text : uz, at: Date.now() };
   if (error) line.raw = true;
+  if (seq !== undefined) line.seq = seq;
+  if (sid) line.sid = sid;
+  if (body.start === true) line.start = true;
 
-  // В Zoom пометки цветом нет — только текст, поэтому она словами.
-  const zoomText = error ? `[rus tilida] ${text}` : uz;
-
-  const key = `tarjima:${room}`;
-  const [stored, zoomSent] = await Promise.allSettled([
-    pipeline([
+  let total = null;
+  let storeError = null;
+  try {
+    const key = `tarjima:${room}`;
+    [total] = await pipeline([
       ['RPUSH', key, JSON.stringify(line)],
       ['EXPIRE', key, TTL],
-    ]),
-    toZoom ? sendToZoom(toZoom, zoomSeq ?? Date.now(), zoomText) : Promise.resolve(),
-  ]);
-
-  const total = stored.status === 'fulfilled' ? stored.value[0] : null;
-  const storeError = stored.status === 'rejected' ? String(stored.reason?.message ?? stored.reason) : null;
-  const zoomError = zoom?.error ?? (zoomSent.status === 'rejected' ? String(zoomSent.reason?.message ?? zoomSent.reason) : null);
+    ]);
+  } catch (e) {
+    storeError = String(e.message ?? e);
+  }
 
   // Преподавателю — подробности: ему чинить и считать. modelMs отделяет
-  // время модели от времени хранилища и Zoom — это нужно замеру скорости.
+  // время модели от остального; region показывает, где отработала функция.
   return json({
     ...line,
     ms: Date.now() - started,
@@ -331,10 +406,10 @@ export default async function handler(req) {
     total,
     cost,
     tokens,
-    model: MODEL,
+    model: variant,
+    fast,
+    region: process.env.VERCEL_REGION ?? null,
     count,
     limit: DAILY_LIMIT,
-    zoom: toZoom ? (zoomError ? 'error' : 'ok') : zoom?.error ? 'error' : null,
-    zoomError,
   });
 }

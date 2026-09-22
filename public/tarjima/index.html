@@ -162,35 +162,91 @@
 			}
 
 			// ——— Статистика занятия ———
-			const stats = { n: 0, ms: 0, cost: 0 };
+			// Отставание — от последнего слова куска до готового перевода на
+			// этой странице. Слушатель на view.html видит перевод ещё примерно
+			// на секунду позже, в Zoom — на время доставки Zoom.
+			const stats = { n: 0, cost: 0, lags: [] };
 			function renderStats() {
 				if (!stats.n) return ($('stats').textContent = '');
+				const s = [...stats.lags].sort((a, b) => a - b);
+				const median = s.length ? s[Math.floor(s.length / 2)] : 0;
 				$('stats').textContent =
-					stats.n + ' фраз · в среднем ' + (stats.ms / stats.n / 1000).toFixed(1) + ' с до субтитра · ≈ $' +
-					stats.cost.toFixed(2) + ' за занятие (оценка)';
+					stats.n + ' кусков · перевод отстаёт от речи на ' + (median / 1000).toFixed(1) +
+					' с (медиана) · ≈ $' + stats.cost.toFixed(2) + ' за занятие (оценка)';
 			}
 
-			function show(ev) {
+			// Строки журнала — по порядку речи, новые сверху, даже если ответы
+			// пришли вразнобой.
+			function show(it) {
 				const row = document.createElement('div');
-				row.className = 'row' + (ev.raw ? ' raw' : '');
+				row.className = 'row' + (it.raw ? ' raw' : '');
+				row.dataset.seq = it.seq;
 				row.innerHTML = '<span class="ms"></span><div class="ru"></div><div class="uz"></div>';
-				row.querySelector('.ms').textContent = (ev.ms / 1000).toFixed(1) + ' с';
-				row.querySelector('.ru').textContent = ev.ru;
-				row.querySelector('.uz').textContent = ev.raw ? 'не переведено' : ev.uz;
-				log.prepend(row);
-				while (log.children.length > 30) log.lastChild.remove();
+				row.querySelector('.ms').textContent = (it.lag / 1000).toFixed(1) + ' с';
+				row.querySelector('.ru').textContent = it.ru;
+				row.querySelector('.uz').textContent = it.raw ? 'не переведено' : it.uz;
+				const after = [...log.children].find((r) => Number(r.dataset.seq) < it.seq);
+				log.insertBefore(row, after ?? null);
+				while (log.children.length > 40) log.lastChild.remove();
 			}
 
-			// ——— Отправка: строго по очереди ———
-			// Фразы уходят одна за другой, а не параллельно: иначе перевод
-			// короткой второй фразы мог бы прийти раньше длинной первой, и
-			// слушатели прочли бы их в обратном порядке. Заодно каждая фраза
-			// переводится с уже готовыми переводами предыдущих — ради связности.
-			const context = [];
-			let queue = Promise.resolve();
+			// ——— Отправка ———
+			// Куски уходят параллельно, не дожидаясь перевода предыдущих: очередь
+			// накапливала отставание, пока лектор говорит без остановки. Порядок
+			// восстанавливается по номеру: для слушателей — на их странице, для
+			// Zoom — здесь, в flushZoom.
+			const sid = Math.random().toString(36).slice(2, 10);
+			let nextSeq = 0;
+			const items = []; // по порядку речи: { seq, ru, state: wait|done|lost, uz, raw, lag, sentAt }
 
-			function send(text) {
-				queue = queue.then(() => post(text));
+			function send(words, lastWordAt, start) {
+				const ru = words.join(' ').trim();
+				if (!ru) return;
+				const done = items.filter((i) => i.state === 'done' && !i.raw);
+				const pending = items.filter((i) => i.state === 'wait').map((i) => i.ru);
+				const it = { seq: nextSeq++, ru, state: 'wait', sentAt: Date.now(), lastWordAt };
+				items.push(it);
+				post(it, {
+					text: ru, room, key: keyBox.value, sid, seq: it.seq, start,
+					context: done.slice(-4).map((i) => ({ ru: i.ru, uz: i.uz })),
+					pending: pending.slice(-2),
+				});
+			}
+
+			async function post(it, body) {
+				const ctl = new AbortController();
+				const timer = setTimeout(() => ctl.abort(), 20000);
+				try {
+					const r = await fetch('/api/tarjima/say', {
+						method: 'POST',
+						headers: { 'content-type': 'application/json' },
+						body: JSON.stringify(body),
+						signal: ctl.signal,
+					});
+					if (r.status === 401) { it.state = 'lost'; return fail('Неверный ключ преподавателя.'); }
+					if (!r.ok) { it.state = 'lost'; return fail('Сервер: ' + r.status + ' ' + (await r.text()).slice(0, 160)); }
+
+					const ev = await r.json();
+					Object.assign(it, { state: 'done', uz: ev.uz, raw: !!ev.raw, lag: Date.now() - it.lastWordAt });
+					show(it);
+					stats.n++;
+					stats.cost += ev.cost || 0;
+					stats.lags.push(it.lag);
+					if (stats.lags.length > 200) stats.lags.shift();
+					renderStats();
+
+					if (ev.error) fail(explain(ev.error));
+					else if (ev.storeError) fail('Хранилище: ' + ev.storeError + ' — слушатели этот кусок не увидят.');
+					else if (running) note(LISTENING);
+				} catch (e) {
+					it.state = 'lost';
+					fail(e.name === 'AbortError'
+						? 'Перевод не пришёл за 20 секунд — кусок пропущен.'
+						: 'Сеть: ' + e.message + '. Кусок не отправлен.');
+				} finally {
+					clearTimeout(timer);
+					flushZoom();
+				}
 			}
 
 			// ——— Zoom ———
@@ -212,52 +268,100 @@
 				else if (ev.zoom === 'error') { s.textContent = '· ошибка'; s.className = 'bad'; }
 			}
 
-			async function post(text) {
+			// В Zoom строки уходят строго по порядку речи. Кусок, застрявший
+			// дольше 5 секунд, не держит остальные: в Zoom его пропускаем (на
+			// странице слушателя он всё равно встанет на место).
+			let zoomHead = 0;
+			let zoomBusy = false;
+			async function flushZoom() {
+				if (zoomBusy) return;
+				zoomBusy = true;
 				try {
-					const r = await fetch('/api/tarjima/say', {
-						method: 'POST',
-						headers: { 'content-type': 'application/json' },
-						body: JSON.stringify({
-							text, room, key: keyBox.value, context: context.slice(-3), zoom: zoomInput.value.trim(),
-						}),
-					});
-					if (r.status === 401) return fail('Неверный ключ преподавателя.');
-					if (!r.ok) return fail('Сервер: ' + r.status + ' ' + (await r.text()).slice(0, 160));
-
-					const ev = await r.json();
-					show(ev);
-					stats.n++;
-					stats.ms += ev.ms || 0;
-					stats.cost += ev.cost || 0;
-					renderStats();
-
-					if (!ev.raw) {
-						context.push({ ru: ev.ru, uz: ev.uz });
-						if (context.length > 3) context.shift();
+					while (zoomHead < items.length) {
+						const it = items[zoomHead];
+						if (it.state === 'wait') {
+							const stuck = Date.now() - it.sentAt > 5000 &&
+								items.slice(zoomHead + 1).some((i) => i.state === 'done');
+							if (!stuck) break;
+							zoomHead++;
+							continue;
+						}
+						zoomHead++;
+						const token = zoomInput.value.trim();
+						if (!token || it.state !== 'done') continue;
+						try {
+							const r = await fetch('/api/tarjima/say', {
+								method: 'POST',
+								headers: { 'content-type': 'application/json' },
+								body: JSON.stringify({
+									action: 'zoom', key: keyBox.value, zoom: token,
+									// В Zoom пометки цветом нет — только текст, поэтому она словами.
+									text: it.raw ? '[rus tilida] ' + it.ru : it.uz,
+								}),
+							});
+							const ev = await r.json();
+							zoomNote(ev);
+							if (ev.zoomError)
+								fail('Zoom: ' + ev.zoomError.replace(/^Zoom:?\s*/, '') +
+									'. На странице слушателей субтитры идут, в самом Zoom — нет.');
+						} catch {
+							zoomNote({ zoom: 'error' });
+						}
 					}
-					zoomNote(ev);
-					if (ev.error) fail(explain(ev.error));
-					else if (ev.storeError) fail('Хранилище: ' + ev.storeError + ' — слушатели эту фразу не увидят.');
-					else if (ev.zoomError)
-						fail('Zoom: ' + ev.zoomError.replace(/^Zoom:?\s*/, '') +
-							'. На странице слушателей субтитры идут, в самом Zoom — нет.');
-					else if (running) note(LISTENING);
-				} catch (e) {
-					fail('Сеть: ' + e.message + '. Фраза не отправлена.');
+				} finally {
+					zoomBusy = false;
 				}
 			}
+			setInterval(flushZoom, 1000); // чтобы застрявший кусок не держал очередь вечно
 
 			// ——— Распознавание ———
-			// Chrome закрывает фразу только на паузе. Лектор, увлёкшись, говорит
-			// минуту без остановки — и субтитр опоздал бы на минуту. Поэтому
-			// длинный кусок закрываем сами: stop() отдаёт накопленное как готовую
-			// фразу, onend тут же поднимает распознавание снова.
-			const FLUSH_WORDS = 30;
-			const FLUSH_MS = 12000;
+			// Chrome отдаёт фразу целиком только на паузе, и длинное предложение
+			// уходило бы на перевод, когда его уже договорили. Поэтому переводим
+			// по ходу речи: как только набралось 6+ слов, которые Chrome уже не
+			// переписывает, отправляем их куском — лучше перед союзом («что»,
+			// «если», «который»…), где заканчивается мысль. Последние слова
+			// промежуточного результата Chrome ещё исправляет — их придерживаем.
+			const CHUNK_MIN = 6;
+			const CHUNK_MAX = 11;
+			const HOLD = 2;
+			const CUT_BEFORE = new Set([
+				'и', 'а', 'но', 'что', 'чтобы', 'если', 'когда', 'потому', 'поэтому', 'или', 'либо', 'где',
+				'хотя', 'однако', 'причём', 'причем', 'тогда', 'который', 'которая', 'которое', 'которые',
+				'которого', 'которой', 'которому', 'которым', 'которых', 'которую',
+			]);
+
+			// Если союза нет, а кусок уже длинный, режем перед предлогом: там
+			// начинается новая группа слов («…28 дней | после того как…»), а не
+			// посередине оборота.
+			const PREP = new Set([
+				'в', 'во', 'на', 'по', 'для', 'до', 'после', 'при', 'согласно', 'через', 'без', 'от', 'из',
+				'с', 'со', 'к', 'о', 'об', 'между', 'перед', 'против', 'вместо', 'кроме',
+			]);
+
+			/** Где резать: индекс первого слова следующего куска, 0 — ещё рано. */
+			function cutAt(words, from, stable) {
+				if (stable - from < CHUNK_MIN) return 0;
+				const w = (k) => (words[k] ?? '').toLowerCase();
+				for (let k = from + CHUNK_MIN; k <= stable && k - from <= CHUNK_MAX; k++)
+					if (CUT_BEFORE.has(w(k))) return k;
+				if (stable - from < CHUNK_MAX) return 0;
+				for (let k = stable; k > from + CHUNK_MIN; k--) if (PREP.has(w(k))) return k;
+				return stable;
+			}
+
+			// Текущее высказывание: индекс результата у Chrome, сколько слов уже
+			// отправлено и когда каждое слово впервые появилось.
+			let cur = null;
+			const fresh = (idx) => ({ idx, sent: 0, seenAt: [], words: [] });
+
+			function flushRest(at) {
+				if (cur && cur.words.length > cur.sent)
+					send(cur.words.slice(cur.sent), cur.seenAt[cur.words.length - 1] ?? at, cur.sent === 0);
+				cur = null;
+			}
 
 			let rec = null;
 			let running = false;
-			let utteranceAt = 0;
 			let wakeLock = null;
 
 			async function keepAwake() {
@@ -273,29 +377,33 @@
 				rec.lang = 'ru-RU';
 				rec.continuous = true;
 				rec.interimResults = true;
+				cur = null;
 
 				rec.onresult = (e) => {
+					const now = Date.now();
 					let interim = '';
 					for (let i = e.resultIndex; i < e.results.length; i++) {
 						const r = e.results[i];
-						// Переводим только финальные фразы: промежуточные Chrome
-						// переписывает на лету, платить за каждую версию незачем.
-						if (r.isFinal) {
-							const t = r[0].transcript.trim();
-							if (t) send(t);
-							utteranceAt = 0;
-						} else interim += r[0].transcript;
-					}
-					live.textContent = interim;
+						const words = r[0].transcript.trim().split(/\s+/).filter(Boolean);
+						if (!cur || cur.idx !== i) {
+							if (cur) flushRest(now); // прежнее высказывание Chrome так и не закрыл
+							cur = fresh(i);
+						}
+						for (let k = cur.seenAt.length; k < words.length; k++) cur.seenAt[k] = now;
+						cur.words = words;
 
-					if (interim.trim()) {
-						utteranceAt ||= Date.now();
-						const words = interim.trim().split(/\s+/).length;
-						if (words >= FLUSH_WORDS || Date.now() - utteranceAt >= FLUSH_MS) {
-							utteranceAt = 0;
-							try { rec.stop(); } catch {}
+						if (r.isFinal) {
+							flushRest(now);
+						} else {
+							const k = cutAt(words, cur.sent, words.length - HOLD);
+							if (k) {
+								send(words.slice(cur.sent, k), cur.seenAt[k - 1], cur.sent === 0);
+								cur.sent = k;
+							}
+							interim += r[0].transcript;
 						}
 					}
+					live.textContent = interim;
 				};
 
 				rec.onerror = (e) => {
@@ -308,10 +416,12 @@
 				};
 
 				// Chrome и сам обрывает сессию каждые несколько минут — поднимаем
-				// заново, иначе субтитры молча умрут посреди занятия.
+				// заново, иначе субтитры молча умрут посреди занятия. Недосказанное
+				// к этому моменту отправляем, чтобы не пропало.
 				rec.onend = () => {
+					flushRest(Date.now());
 					live.textContent = '';
-					if (running) setTimeout(() => { try { rec.start(); } catch {} }, 100);
+					if (running) setTimeout(() => { try { rec.start(); } catch {} }, 50);
 				};
 
 				rec.start();
@@ -351,8 +461,9 @@
 					if (r.status === 401) return fail('Неверный ключ преподавателя.');
 					if (!r.ok) return fail('Сервер: ' + r.status + ' ' + (await r.text()).slice(0, 120));
 					log.innerHTML = '';
-					context.length = 0;
-					Object.assign(stats, { n: 0, ms: 0, cost: 0 });
+					items.length = 0;
+					zoomHead = 0;
+					Object.assign(stats, { n: 0, cost: 0, lags: [] });
 					renderStats();
 					note('Лента очищена. Можно начинать занятие.');
 				} catch (e) {

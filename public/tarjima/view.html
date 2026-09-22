@@ -100,24 +100,56 @@
 			};
 			let statusKey = 'connecting';
 
-			const lines = []; // показанные фразы — чтобы перерисовать при смене алфавита
+			// Показанные куски — по порядку речи. Переводятся они параллельно и
+			// приходят вразнобой, поэтому каждый встаёт на место по номеру.
+			const lines = [];
+			let shownGroups = 0;
+
+			function insert(ev) {
+				let at = lines.length;
+				if (ev.sid !== undefined && ev.seq !== undefined)
+					while (at > 0 && lines[at - 1].sid === ev.sid && lines[at - 1].seq > ev.seq) at--;
+				lines.splice(at, 0, ev);
+				while (lines.length > 300) lines.shift();
+			}
+
+			/**
+			 * Куски одного высказывания складываются в один абзац: читать по
+			 * шесть слов в строке с рамками — рвано. Новый абзац — где лектор
+			 * начал новое высказывание, или через шесть кусков.
+			 */
+			function groups() {
+				const out = [];
+				let g = null;
+				for (const ev of lines) {
+					if (!g || ev.start || !ev.sid || ev.sid !== g.sid || g.items.length >= 6) {
+						g = { sid: ev.sid, items: [] };
+						out.push(g);
+					}
+					g.items.push(ev);
+				}
+				return out;
+			}
 
 			function render() {
 				status.textContent = script(TEXT[statusKey]);
 				if (!lines.length) {
 					feed.innerHTML = '<div class="empty"></div>';
 					feed.firstChild.textContent = script(TEXT.wait);
+					shownGroups = 0;
 					return;
 				}
+				const gs = groups();
 				feed.innerHTML = '';
-				for (const ev of lines) {
+				for (const g of gs) {
+					const raw = g.items.some((i) => i.raw);
 					const row = document.createElement('div');
-					row.className = 'row' + (ev.raw ? ' raw' : '');
+					row.className = 'row' + (raw ? ' raw' : '');
 					row.style.animation = 'none';
 					row.innerHTML = '<div class="uz"></div><div class="ru"></div>';
-					row.querySelector('.uz').textContent = ev.raw ? ev.ru : script(ev.uz);
-					row.querySelector('.ru').textContent = ev.ru;
-					if (ev.raw) {
+					row.querySelector('.uz').textContent = g.items.map((i) => (i.raw ? i.ru : script(i.uz))).join(' ');
+					row.querySelector('.ru').textContent = g.items.map((i) => i.ru).join(' ');
+					if (raw) {
 						const warn = document.createElement('div');
 						warn.className = 'warn';
 						warn.textContent = script(TEXT.raw);
@@ -125,21 +157,16 @@
 					}
 					feed.append(row);
 				}
+				// Появление анимируем только у нового абзаца: кусок, дописанный
+				// в текущий, не должен заставлять его мигать.
+				if (gs.length > shownGroups && shownGroups > 0) feed.lastElementChild.style.animation = '';
+				shownGroups = gs.length;
 			}
 
 			function apply() {
 				document.body.classList.toggle('hide-ru', !opts.ru);
 				document.body.classList.toggle('big', opts.big);
 				render();
-			}
-
-			function add(ev) {
-				lines.push(ev);
-				while (lines.length > 200) lines.shift();
-				render();
-				const last = feed.lastElementChild;
-				last.style.animation = '';
-				if (opts.follow) last.scrollIntoView({ block: 'end', behavior: 'smooth' });
 			}
 
 			function setStatus(key) {
@@ -152,8 +179,13 @@
 			// тот же хвост, поэтому нужное отсекаем здесь, по абсолютному номеру.
 			let seen = 0;
 			let fails = 0;
+			let busy = false;
 
 			async function poll() {
+				// В свёрнутой вкладке не опрашиваем: это только тратит трафик
+				// телефона и квоту запросов Vercel.
+				if (busy || document.hidden) return;
+				busy = true;
 				try {
 					const r = await fetch(`/api/tarjima/feed?room=${encodeURIComponent(room)}`);
 					const d = await r.json();
@@ -169,22 +201,31 @@
 					}
 
 					const base = d.total - d.lines.length; // номер первой присланной
+					let added = 0;
 					for (let i = 0; i < d.lines.length; i++)
-						if (base + i >= seen) add(d.lines[i]);
+						if (base + i >= seen) { insert(d.lines[i]); added++; }
 					seen = Math.max(seen, d.total);
+					if (added) {
+						render();
+						if (opts.follow) feed.lastElementChild.scrollIntoView({ block: 'end', behavior: 'smooth' });
+					}
 
 					fails = 0;
 					setStatus('live');
 				} catch {
-					// Мобильный интернет рвётся постоянно; одна осечка — не повод
+					// Мобильный интернет рвётся постоянно; пара осечек — не повод
 					// пугать человека надписью на весь экран.
-					if (++fails >= 3) setStatus('reconnecting');
+					if (++fails >= 4) setStatus('reconnecting');
+				} finally {
+					busy = false;
 				}
 			}
 
 			apply();
 			poll();
-			setInterval(poll, 2000);
+			// Раз в секунду: CDN отвечает из копии не старше секунды, так что
+			// перевод доходит сюда в среднем через секунду после готовности.
+			setInterval(poll, 1000);
 			// Вернулись во вкладку — не ждём следующего тика.
 			document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
 		</script>
