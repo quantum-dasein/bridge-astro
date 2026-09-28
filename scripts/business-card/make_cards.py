@@ -54,6 +54,10 @@ INK = cmyk(0, 10, 20, 90)          # body text on the white side, mostly K
 MUTED = cmyk(0, 8, 15, 65)         # secondary text on the white side
 QR_INK = cmyk(0, 0, 0, 100)        # single plate — crisp modules, no misregistration
 WHITE = cmyk(0, 0, 0, 0)
+# bridge line drawing on the front: light brown, fading into the dark ground
+BRIDGE_ARCH = cmyk(12, 20, 36, 0)  # #DCC8A8 — arch rib and deck
+BRIDGE_LINE = cmyk(28, 34, 50, 25) # #9C8B71 — hangers, piers
+BRIDGE_FAINT = cmyk(35, 40, 52, 55)  # water ripples, construction lines
 
 
 def register_fonts():
@@ -133,6 +137,92 @@ def draw_qr(c, x, top, size, data):
     return unit, qr.version
 
 
+def P(x, y):
+    """mm from the top-left corner of the trim -> PDF points."""
+    return BLEED + x * mm, BLEED + TRIM_H - y * mm
+
+
+def polyline(c, pts, color, width, dash=None):
+    c.setStrokeColor(color)
+    c.setLineWidth(width)
+    c.setLineCap(1)
+    c.setLineJoin(1)
+    c.setDash(*dash) if dash else c.setDash()
+    path = c.beginPath()
+    path.moveTo(*P(*pts[0]))
+    for pt in pts[1:]:
+        path.lineTo(*P(*pt))
+    c.drawPath(path, stroke=1, fill=0)
+    c.setDash()
+
+
+def draw_bridge(c, deck=46.0, rise=10.0, xa=6.0, xb=79.0, water=52.2, gap_text=None):
+    """Tied network-arch bridge as an architectural line drawing (all in mm)."""
+    xc, half = (xa + xb) / 2, (xb - xa) / 2
+    depth = 1.15  # arch rib depth at the crown
+
+    def upper(x):
+        return deck - rise * (1 - ((x - xc) / half) ** 2)
+
+    def lower(x):
+        return min(upper(x) + depth, deck)
+
+    samples = [xa + (xb - xa) * i / 240 for i in range(241)]
+
+    # network hangers: every node sends two inclined hangers to the deck
+    nodes = 18
+    reach = (xb - xa) * 0.11
+    for i in range(1, nodes):
+        x = xa + (xb - xa) * i / nodes
+        for dx in (-reach, reach):
+            xd = x + dx
+            if xa + 1.5 < xd < xb - 1.5 and lower(x) < deck - 0.3:
+                polyline(c, [(x, lower(x)), (xd, deck)], BRIDGE_LINE, 0.32)
+
+    # arch rib: two chords with a Warren lattice between them
+    polyline(c, [(x, upper(x)) for x in samples], BRIDGE_ARCH, 0.75)
+    polyline(c, [(x, lower(x)) for x in samples], BRIDGE_ARCH, 0.45)
+    panels = 44
+    zig = []
+    for i in range(panels + 1):
+        x = xa + (xb - xa) * i / panels
+        if lower(x) - upper(x) > 0.5:
+            zig.append((x, upper(x) if i % 2 else lower(x)))
+    polyline(c, zig, BRIDGE_ARCH, 0.3)
+
+    # deck girder bleeding off both edges, stiffeners at the hanger nodes
+    polyline(c, [(-BLEED / mm, deck), (TRIM_W / mm + BLEED / mm, deck)], BRIDGE_ARCH, 0.8)
+    polyline(c, [(-BLEED / mm, deck + 1.0), (TRIM_W / mm + BLEED / mm, deck + 1.0)], BRIDGE_ARCH, 0.4)
+    for i in range(-3, 2 * nodes + 4):
+        x = xa + (xb - xa) * i / (2 * nodes)
+        if -2 < x < TRIM_W / mm + 2:
+            polyline(c, [(x, deck), (x, deck + 1.0)], BRIDGE_LINE, 0.3)
+
+    # tapered piers under the springings
+    for x in (xa, xb):
+        polyline(c, [(x - 0.9, deck + 1.0), (x - 1.3, water), (x + 1.3, water), (x + 0.9, deck + 1.0)],
+                 BRIDGE_LINE, 0.45)
+
+    # dash-dot centre line, as on a general-arrangement drawing
+    polyline(c, [(xc, upper(xc) - 1.3), (xc, deck + 3.4)], BRIDGE_FAINT, 0.35, dash=([3, 1.2, 0.5, 1.2], 0))
+
+    # water line, broken where the web address sits
+    left_end, right_end = -BLEED / mm, TRIM_W / mm + BLEED / mm
+    if gap_text:
+        polyline(c, [(left_end, water), (xc - gap_text / 2, water)], BRIDGE_LINE, 0.45)
+        polyline(c, [(xc + gap_text / 2, water), (right_end, water)], BRIDGE_LINE, 0.45)
+    else:
+        polyline(c, [(left_end, water), (right_end, water)], BRIDGE_LINE, 0.45)
+
+    # ripples: short dashes getting sparser away from the bridge
+    ripples = ((53.4, [(4, 14), (22, 30), (55, 63), (71, 81)]),
+               (54.5, [(9, 15), (26, 31), (54, 59), (70, 76)]),
+               (55.6, [(13, 16), (68, 72)]))
+    for y, spans in ripples:
+        for x0, x1 in spans:
+            polyline(c, [(x0, y), (x1, y)], BRIDGE_FAINT, 0.35)
+
+
 def front(path):
     c = new_canvas(path)
     c.setFillColor(DARK)
@@ -141,20 +231,28 @@ def front(path):
     cx = TRIM_W / 2
     usable = TRIM_W - 2 * SAFE
 
-    logo_h = draw_logo(c, cx, 8.6 * mm, 40 * mm, WHITE)
-    rule_y = 8.6 * mm + logo_h + 4.2 * mm
+    logo_top = 5.6 * mm
+    logo_h = draw_logo(c, cx, logo_top, 34 * mm, WHITE)
+    rule_y = logo_top + logo_h + 3.4 * mm
     c.setStrokeColor(TAUPE)
     c.setLineWidth(0.6)
     c.line(BLEED + cx - 5 * mm, BLEED + TRIM_H - rule_y, BLEED + cx + 5 * mm, BLEED + TRIM_H - rule_y)
 
-    draw_text(c, cx, rule_y + 5.2 * mm, 'CONSULTING FOR CONSTRUCTION PROJECTS',
-              'Inter-SemiBold', 6.4, WHITE, tracking=1.05, align='center', max_w=usable)
-    draw_text(c, cx, rule_y + 9.4 * mm, 'FIDIC  ·  EPC / EPC+F  ·  Procurement  ·  Claims',
-              'Inter-Regular', 5.6, CHAMPAGNE, tracking=0.2, align='center', max_w=usable)
-    draw_text(c, cx, rule_y + 12.4 * mm, 'Dispute Avoidance  ·  International Arbitration',
-              'Inter-Regular', 5.6, CHAMPAGNE, tracking=0.2, align='center', max_w=usable)
-    draw_text(c, cx, TRIM_H - 5.6 * mm, WEB.upper(),
-              'Inter-Medium', 5.2, TAUPE, tracking=1.3, align='center', max_w=usable)
+    draw_text(c, cx, rule_y + 4.4 * mm, 'CONSULTING FOR CONSTRUCTION PROJECTS',
+              'Inter-SemiBold', 6.2, WHITE, tracking=1.05, align='center', max_w=usable)
+    draw_text(c, cx, rule_y + 8.0 * mm, 'FIDIC  ·  EPC / EPC+F  ·  Procurement  ·  Claims',
+              'Inter-Regular', 5.4, CHAMPAGNE, tracking=0.2, align='center', max_w=usable)
+    last = rule_y + 10.8 * mm
+    draw_text(c, cx, last, 'Dispute Avoidance  ·  International Arbitration',
+              'Inter-Regular', 5.4, CHAMPAGNE, tracking=0.2, align='center', max_w=usable)
+
+    web_size, web_track = 4.8, 1.3
+    web_w = text_width(WEB.upper(), 'Inter-Medium', web_size, web_track)
+    water = 52.0
+    crown = last / mm + 3.4
+    draw_bridge(c, deck=46.0, rise=46.0 - crown, water=water, gap_text=web_w / mm + 4)
+    draw_text(c, cx, water * mm + 0.62 * mm, WEB.upper(),
+              'Inter-Medium', web_size, BRIDGE_ARCH, tracking=web_track, align='center', max_w=usable)
     c.showPage()
     c.save()
 
