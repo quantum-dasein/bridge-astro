@@ -11,7 +11,15 @@ const C = {
   bronze: '9B7C56', taupe: '8A7B66', ink: '1A1816', inkSoft: '3A342D', mutedD: 'A39C91', mutedL: '6E655A',
   lineD: '4A4034', lineL: 'D6CCBC'
 };
-const F = { serif: 'Playfair Display', sans: 'Manrope', sb: 'Manrope SemiBold', xb: 'Manrope ExtraBold', light: 'Manrope Light' };
+// Brand fonts (Playfair Display, Manrope) renamed with a "Bridge" prefix and embedded in the .pptx,
+// so a differently built "Manrope" installed on the presenting machine can't shadow them.
+const F = { serif: 'Bridge Playfair', sans: 'Bridge Manrope', sb: 'Bridge Manrope SemiBold', xb: 'Bridge Manrope ExtraBold' };
+const EMBED = [
+  ['Bridge Manrope', { regular: 'BridgeManrope-Regular.ttf' }],
+  ['Bridge Manrope SemiBold', { regular: 'BridgeManropeSemiBold-Regular.ttf' }],
+  ['Bridge Manrope ExtraBold', { regular: 'BridgeManropeExtraBold-Regular.ttf' }],
+  ['Bridge Playfair', { regular: 'BridgePlayfair-Regular.ttf', italic: 'BridgePlayfair-Italic.ttf' }]
+];
 const TOTAL = 10;
 
 const pres = new pptxgen();
@@ -377,6 +385,29 @@ function timingXml(anims, map, spids) {
     if (!xml.includes('<p:timing>')) throw new Error('timing not inserted in ' + path);
     zip.file(path, xml);
   }
+  // embed fonts: raw TrueType in ppt/fonts/*.fntdata
+  let rels = await zip.file('ppt/_rels/presentation.xml.rels').async('string');
+  let n = 0, list = '';
+  for (const [face, styles] of EMBED) {
+    list += `<p:embeddedFont><p:font typeface="${face}" pitchFamily="2" charset="0"/>`;
+    for (const st of ['regular', 'bold', 'italic', 'boldItalic']) {
+      if (!styles[st]) continue;
+      const rid = `rIdFont${++n}`;
+      zip.file(`ppt/fonts/font${n}.fntdata`, fs.readFileSync(__dirname + '/fonts/' + styles[st]));
+      rels = rels.replace('</Relationships>', `<Relationship Id="${rid}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/font" Target="fonts/font${n}.fntdata"/></Relationships>`);
+      list += `<p:${st} r:id="${rid}"/>`;
+    }
+    list += '</p:embeddedFont>';
+  }
+  zip.file('ppt/_rels/presentation.xml.rels', rels);
+  let ct = await zip.file('[Content_Types].xml').async('string');
+  ct = ct.replace('<Default ', '<Default Extension="fntdata" ContentType="application/x-fontdata"/><Default ');
+  zip.file('[Content_Types].xml', ct);
+  let px = await zip.file('ppt/presentation.xml').async('string');
+  px = px.replace(' saveSubsetFonts="1"', ' embedTrueTypeFonts="1"').replace(/(<p:notesSz [^>]*\/>)/, `$1<p:embeddedFontLst>${list}</p:embeddedFontLst>`);
+  if (!px.includes('embeddedFontLst')) throw new Error('fonts not embedded');
+  zip.file('ppt/presentation.xml', px);
+
   fs.mkdirSync(require('path').dirname(OUT), { recursive: true });
   fs.writeFileSync(OUT, await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }));
   console.log('wrote', OUT, SL.map(s => s.anims.length).join(','));
