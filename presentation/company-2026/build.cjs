@@ -11,15 +11,10 @@ const C = {
   bronze: '9B7C56', taupe: '8A7B66', ink: '1A1816', inkSoft: '3A342D', mutedD: 'A39C91', mutedL: '6E655A',
   lineD: '4A4034', lineL: 'D6CCBC'
 };
-// Brand fonts (Playfair Display, Manrope) renamed with a "Bridge" prefix and embedded in the .pptx,
-// so a differently built "Manrope" installed on the presenting machine can't shadow them.
-const F = { serif: 'Bridge Playfair', sans: 'Bridge Manrope', sb: 'Bridge Manrope SemiBold', xb: 'Bridge Manrope ExtraBold' };
-const EMBED = [
-  ['Bridge Manrope', { regular: 'BridgeManrope-Regular.ttf' }],
-  ['Bridge Manrope SemiBold', { regular: 'BridgeManropeSemiBold-Regular.ttf' }],
-  ['Bridge Manrope ExtraBold', { regular: 'BridgeManropeExtraBold-Regular.ttf' }],
-  ['Bridge Playfair', { regular: 'BridgePlayfair-Regular.ttf', italic: 'BridgePlayfair-Italic.ttf' }]
-];
+// System fonts only — present on every Windows/macOS machine and in every Office install,
+// so the deck renders identically everywhere. Georgia stands in for Playfair Display, Arial for Manrope.
+// A '#b' suffix means "same face, bold".
+const F = { serif: 'Georgia', sans: 'Arial', sb: 'Arial#b', xb: 'Arial#b' };
 const TOTAL = 10;
 
 const pres = new pptxgen();
@@ -45,7 +40,9 @@ function nm(anim) {
   return name;
 }
 function text(t, o, anim) {
-  cur.s.addText(t, { isTextBox: true, margin: 0, valign: 'top', fontFace: F.sans, ...o, objectName: nm(anim) });
+  const opt = { isTextBox: true, margin: 0, valign: 'top', fontFace: F.sans, ...o, objectName: nm(anim) };
+  if (opt.fontFace.endsWith('#b')) { opt.fontFace = opt.fontFace.slice(0, -2); opt.bold = true; }
+  cur.s.addText(t, opt);
 }
 function img(path, o, anim) { cur.s.addImage({ path: A + path, ...o, objectName: nm(anim) }); }
 function rect(o, anim) { cur.s.addShape(pres.shapes.RECTANGLE, { line: { type: 'none' }, ...o, objectName: nm(anim) }); }
@@ -224,7 +221,7 @@ text('Контрактное сопровождение объектов нац�
 });
 hline(0.75, 6.42, 11.85, C.lineL, fx.wipe(1500, 900));
 text([
-  { text: 'ВОДОСНАБЖЕНИЕ   ', options: { fontFace: F.sb, color: C.bronze, charSpacing: 2 } },
+  { text: 'ВОДОСНАБЖЕНИЕ   ', options: { fontFace: 'Arial', bold: true, color: C.bronze, charSpacing: 2 } },
   { text: 'Янгиюль и Жийдакапа — World Bank, EBRD   ·   Наманган, 60 км трубопровода — OPEC Fund   ·   Самаркандская область — АБР', options: { color: C.inkSoft } }
 ], { x: 0.75, y: 6.55, w: 11.85, h: 0.25, fontSize: 9.5 }, fx.fade(1650, 800));
 cur.s.addNotes('Ключевые проекты: Олимпийский городок (EPC+F), Tashkent Invest Company (White Book), А-373 Камчик (MDB Harmonised), проекты водоснабжения WB/EBRD/OPEC/АБР.');
@@ -385,29 +382,6 @@ function timingXml(anims, map, spids) {
     if (!xml.includes('<p:timing>')) throw new Error('timing not inserted in ' + path);
     zip.file(path, xml);
   }
-  // embed fonts: raw TrueType in ppt/fonts/*.fntdata
-  let rels = await zip.file('ppt/_rels/presentation.xml.rels').async('string');
-  let n = 0, list = '';
-  for (const [face, styles] of EMBED) {
-    list += `<p:embeddedFont><p:font typeface="${face}" pitchFamily="2" charset="0"/>`;
-    for (const st of ['regular', 'bold', 'italic', 'boldItalic']) {
-      if (!styles[st]) continue;
-      const rid = `rIdFont${++n}`;
-      zip.file(`ppt/fonts/font${n}.fntdata`, fs.readFileSync(__dirname + '/fonts/' + styles[st]));
-      rels = rels.replace('</Relationships>', `<Relationship Id="${rid}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/font" Target="fonts/font${n}.fntdata"/></Relationships>`);
-      list += `<p:${st} r:id="${rid}"/>`;
-    }
-    list += '</p:embeddedFont>';
-  }
-  zip.file('ppt/_rels/presentation.xml.rels', rels);
-  let ct = await zip.file('[Content_Types].xml').async('string');
-  ct = ct.replace('<Default ', '<Default Extension="fntdata" ContentType="application/x-fontdata"/><Default ');
-  zip.file('[Content_Types].xml', ct);
-  let px = await zip.file('ppt/presentation.xml').async('string');
-  px = px.replace(' saveSubsetFonts="1"', ' embedTrueTypeFonts="1"').replace(/(<p:notesSz [^>]*\/>)/, `$1<p:embeddedFontLst>${list}</p:embeddedFontLst>`);
-  if (!px.includes('embeddedFontLst')) throw new Error('fonts not embedded');
-  zip.file('ppt/presentation.xml', px);
-
   fs.mkdirSync(require('path').dirname(OUT), { recursive: true });
   fs.writeFileSync(OUT, await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }));
   console.log('wrote', OUT, SL.map(s => s.anims.length).join(','));
