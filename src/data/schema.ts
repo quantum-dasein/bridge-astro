@@ -27,7 +27,7 @@ const organization = {
 	legalName: 'BRIDGE Consult LLC',
 	url: SITE,
 	logo: `${SITE}/bridge%202.svg`,
-	email: 'info@bridgeconsult.uz',
+	email: 'bridgeconsultuzb@gmail.com',
 	telephone: '+998330001530',
 	address: {
 		'@type': 'PostalAddress',

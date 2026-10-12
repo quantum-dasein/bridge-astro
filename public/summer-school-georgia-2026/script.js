@@ -5,7 +5,7 @@
 // всё, что лежит в этом файле, видно любому посетителю.
 // Если функция недоступна, заявка не теряется: открывается письмо на LEAD_EMAIL.
 const APPLY_ENDPOINT = "/api/apply";
-const LEAD_EMAIL = "info@bridgeconsult.uz";
+const LEAD_EMAIL = "bridgeconsultuzb@gmail.com";
 // ─────────────────────────────────────────────────────────────────────────────
 
 const form = document.querySelector("#applyForm");

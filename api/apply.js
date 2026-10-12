@@ -1,5 +1,5 @@
 // Vercel Edge Function — приём заявок с лендингов: /summer-school-georgia-2026/,
-// /academy/ и /contract-support/ (RU/EN/UZ).
+// /academy/, /contract-support/ и формы контактов на главной (RU/EN/UZ).
 //
 // Заявка уходит в Telegram (по одному сообщению каждому получателю) и, если
 // задан FORMSPREE_ID, дублируется на почту через Formspree. Токен бота живёт
@@ -35,6 +35,10 @@ const FIELDS = [
   ['format', 'Формат сотрудничества'],
   ['projects', 'Проектов в работе'],
   ['stage', 'Стадия'],
+  // Поля формы контактов на главной
+  ['request_type', 'Тип запроса'],
+  ['project_stage', 'Стадия проекта'],
+  ['contract_amount', 'Сумма контракта'],
   ['message', 'Комментарий'],
 ];
 
