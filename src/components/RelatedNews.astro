@@ -50,7 +50,7 @@ const fmt = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', yea
 						<NewsPicture src={p.data.coverImage} alt={p.data.title} onerror="this.onerror=null;this.src='/news-cover.jpg'" imgClass="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105" loading="lazy" />
 						<div class="absolute left-3 top-3 flex gap-1.5">
 							{(p.data.tags ?? []).slice(0, 2).map((tag) => (
-								<span class="rounded-full bg-bridge-dark/70 px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-white backdrop-blur-sm">{tag}</span>
+								<span class="rounded-full bg-bridge-dark/80 px-3 py-1 text-[9px] font-bold uppercase tracking-widest text-white">{tag}</span>
 							))}
 						</div>
 					</div>

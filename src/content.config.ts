@@ -21,6 +21,9 @@ const news = defineCollection({
 		// Подпись под видео и вертикальный постер плеера; без них — подпись FIDIC OSH и coverImage.
 		videoCaption: z.string().optional(),
 		videoPoster: z.string().optional(),
+		// Горизонтальная версия ролика для экранов от md и её постер.
+		videoUrlWide: z.string().optional(),
+		videoPosterWide: z.string().optional(),
 		priority: z.number().optional(),
 		tags: z.array(z.string()),
 		lang: z.string().default('ru'),
