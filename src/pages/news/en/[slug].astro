@@ -67,7 +67,7 @@ const videoJsonLd = video
 	? {
 			'@context': 'https://schema.org',
 			'@type': 'VideoObject',
-			name: 'FIDIC OSH — First Meeting',
+			name: post.data.videoCaption ?? 'FIDIC OSH — First Meeting',
 			description: seoDescription,
 			thumbnailUrl: [absoluteImage],
 			uploadDate: date.toISOString(),
@@ -134,12 +134,12 @@ const videoJsonLd = video
 					<div class="my-14 flex flex-col items-center" data-aos="fade-up">
 						<div class="w-full max-w-[320px] overflow-hidden rounded-3xl bg-bridge-dark shadow-[0_40px_90px_-15px_rgba(26,24,22,0.6)] ring-1 ring-white/10">
 							<div class="relative w-full" style="aspect-ratio:9/16">
-								<video controls playsinline preload="metadata" poster={coverImage} class="absolute inset-0 h-full w-full object-cover">
+								<video controls playsinline preload="metadata" poster={post.data.videoPoster ?? coverImage} class="absolute inset-0 h-full w-full object-cover">
 									<source src={video} type="video/mp4" />
 								</video>
 							</div>
 						</div>
-						<p class="mt-4 text-[10px] font-bold uppercase tracking-[0.28em] text-bridge-taupe">FIDIC OSH — First Meeting</p>
+						<p class="mt-4 text-[10px] font-bold uppercase tracking-[0.28em] text-bridge-taupe">{post.data.videoCaption ?? 'FIDIC OSH — First Meeting'}</p>
 					</div>
 				)}
 

@@ -18,6 +18,9 @@ const news = defineCollection({
 		videoUrl: z.string().optional(),
 		// Длительность видео в формате ISO 8601 (PT32S) для схемы VideoObject.
 		videoDuration: z.string().optional(),
+		// Подпись под видео и вертикальный постер плеера; без них — подпись FIDIC OSH и coverImage.
+		videoCaption: z.string().optional(),
+		videoPoster: z.string().optional(),
 		priority: z.number().optional(),
 		tags: z.array(z.string()),
 		lang: z.string().default('ru'),
