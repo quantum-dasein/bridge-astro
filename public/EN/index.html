@@ -2391,11 +2391,24 @@ document.documentElement.style.height = '';
         err.style.display = 'none';
 
         try {
-            const res = await fetch('https://formspree.io/f/meedwzjw', {
+            // Submission goes to the Telegram bot via /api/apply (which also emails it);
+            // if the function is unavailable, fall back to Formspree email directly
+            const data = new FormData(form);
+            const payload = Object.fromEntries(data);
+            payload.contact = payload.email;
+            payload.source = 'Форма контактов на главной (EN)';
+            let res = await fetch('/api/apply', {
                 method: 'POST',
-                body: new FormData(form),
-                headers: { 'Accept': 'application/json' }
-            });
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).catch(() => null);
+            if (!res || !res.ok) {
+                res = await fetch('https://formspree.io/f/xnpjzyzb', {
+                    method: 'POST',
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+            }
             if (res.ok) {
                 form.reset();
                 ok.style.display = 'block';

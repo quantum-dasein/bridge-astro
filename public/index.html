@@ -2261,11 +2261,24 @@ document.documentElement.style.height = '';
         err.style.display = 'none';
 
         try {
-            const res = await fetch('https://formspree.io/f/meedwzjw', {
+            // Заявка уходит в Telegram-бот через /api/apply (он же дублирует на почту);
+            // если функция недоступна — напрямую на почту через Formspree
+            const data = new FormData(form);
+            const payload = Object.fromEntries(data);
+            payload.contact = payload.email;
+            payload.source = 'Форма контактов на главной (RU)';
+            let res = await fetch('/api/apply', {
                 method: 'POST',
-                body: new FormData(form),
-                headers: { 'Accept': 'application/json' }
-            });
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).catch(() => null);
+            if (!res || !res.ok) {
+                res = await fetch('https://formspree.io/f/xnpjzyzb', {
+                    method: 'POST',
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+            }
             if (res.ok) {
                 form.reset();
                 ok.style.display = 'block';
