@@ -18,6 +18,28 @@ const newsPosts = (await getCollection('news'))
 		return (b.data.priority ?? 0) - (a.data.priority ?? 0);
 	});
 
+// Сколько карточек показывать сразу и сколько добавлять по «Показать ещё».
+const PAGE = 9;
+
+// Рубрики фильтра выводятся из тегов, чтобы не размечать каждую статью вручную.
+// Теги на трёх языках разные, поэтому списки — сразу RU / EN / UZ.
+const norm = (s: string) => s.toLowerCase().replace(/[’‘`ʻ]/g, "'");
+const TRAINING = ['обучение', 'training', "ta'lim"];
+const COMPANY = ['новости компании', 'company news', 'kompaniya yangiliklari', 'услуги', 'services', 'xizmatlar', 'публикации', 'publications', 'nashrlar'];
+const ARBITRATION = ['арбитраж', 'arbitration', 'arbitraj'];
+const DISPUTES = [...ARBITRATION, 'разрешение споров', 'dispute resolution', 'nizolarni hal qilish', 'daab'];
+function categoriesOf(tags: string[]) {
+	const t = tags.map(norm);
+	const has = (list: string[]) => t.some((tag) => list.includes(tag));
+	const cats: string[] = [];
+	if (has(COMPANY)) cats.push('company');
+	if (has(TRAINING)) cats.push('training');
+	// «Экспертиза FIDIC» — разборы и аналитика, а не анонсы курсов и новости компании.
+	if (t.includes('fidic') && !has(TRAINING) && !has(COMPANY) && !has(ARBITRATION)) cats.push('fidic');
+	if (has(DISPUTES)) cats.push('disputes');
+	return cats;
+}
+
 const t = {
 	ru: {
 		title: 'Новости | Bridge Consult',
@@ -25,9 +47,13 @@ const t = {
 		heroHeadingA: 'Новости и',
 		heroHeadingB: 'экспертные публикации',
 		heroSub: 'Профессиональные заметки о контрактах FIDIC, инфраструктурных проектах, роли Инженера и развитии отраслевого сообщества.',
-		sectionEyebrow: 'Актуальное',
-		sectionHeading: 'Актуальные материалы',
-		sectionSub: 'Короткая форма, сильная экспертиза и практический взгляд на управление инфраструктурными контрактами.',
+		featured: 'Главное',
+		read: 'Читать',
+		video: 'Видео',
+		allPosts: 'Все публикации',
+		filters: { all: 'Все', company: 'Компания', training: 'Обучение', fidic: 'Экспертиза FIDIC', disputes: 'Арбитраж и споры' },
+		more: 'Показать ещё',
+		emptyFilter: 'В этой рубрике пока нет публикаций.',
 		empty: 'Публикации скоро появятся.',
 		tgEyebrow: 'Telegram-канал',
 		tgTitle: 'FIDIC Uzbekistan',
@@ -40,9 +66,13 @@ const t = {
 		heroHeadingA: 'News &',
 		heroHeadingB: 'expert publications',
 		heroSub: 'Professional notes on FIDIC contracts, infrastructure projects, the role of the Engineer, and the growth of the industry community.',
-		sectionEyebrow: 'Latest',
-		sectionHeading: 'Latest materials',
-		sectionSub: 'Short form, strong expertise and a practical view on managing infrastructure contracts.',
+		featured: 'Featured',
+		read: 'Read',
+		video: 'Video',
+		allPosts: 'All publications',
+		filters: { all: 'All', company: 'Company', training: 'Training', fidic: 'FIDIC insights', disputes: 'Arbitration & disputes' },
+		more: 'Show more',
+		emptyFilter: 'No publications in this section yet.',
 		empty: 'Publications coming soon.',
 		tgEyebrow: 'Telegram channel',
 		tgTitle: 'FIDIC Uzbekistan',
@@ -55,9 +85,13 @@ const t = {
 		heroHeadingA: 'Yangiliklar va',
 		heroHeadingB: 'ekspert nashrlari',
 		heroSub: 'FIDIC shartnomalari, infratuzilma loyihalari, Muhandis roli va soha hamjamiyatining rivoji haqida professional yozuvlar.',
-		sectionEyebrow: 'Dolzarb',
-		sectionHeading: 'So‘nggi materiallar',
-		sectionSub: 'Qisqa shakl, kuchli ekspertiza va infratuzilma shartnomalarini boshqarishga amaliy nazar.',
+		featured: 'Asosiy',
+		read: 'O‘qish',
+		video: 'Video',
+		allPosts: 'Barcha nashrlar',
+		filters: { all: 'Barchasi', company: 'Kompaniya', training: 'Ta’lim', fidic: 'FIDIC ekspertizasi', disputes: 'Arbitraj va nizolar' },
+		more: 'Yana ko‘rsatish',
+		emptyFilter: 'Bu bo‘limda hozircha nashrlar yo‘q.',
 		empty: 'Nashrlar tez orada paydo bo‘ladi.',
 		tgEyebrow: 'Telegram kanali',
 		tgTitle: 'FIDIC Uzbekistan',
@@ -65,6 +99,25 @@ const t = {
 		tgBtn: 'Obuna bo‘lish',
 	},
 }[lang as 'ru' | 'en' | 'uz'] ?? null as never;
+
+const posts = newsPosts.map((post) => ({ post, cats: categoriesOf(post.data.tags) }));
+const featured = posts[0];
+const rest = posts.slice(1);
+const filters = (['all', 'company', 'training', 'fidic', 'disputes'] as const)
+	.map((id) => ({
+		id,
+		label: t.filters[id],
+		count: id === 'all' ? posts.length : posts.filter((p) => p.cats.includes(id)).length,
+	}))
+	.filter((f) => f.count > 0);
+
+const postHref = (id: string) => {
+	const slug = id.replace(/\.(md|mdx)$/i, '');
+	const baseSlug = slug.replace(/^(ru|en|uz)-/, '');
+	return lang === 'en' ? `/news/en/${baseSlug}/` : lang === 'uz' ? `/news/uz/${baseSlug}/` : `/news/${slug}/`;
+};
+const locale = lang === 'uz' ? 'uz-UZ' : lang === 'en' ? 'en-US' : 'ru-RU';
+const formatDate = (d: Date) => new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
 ---
 
 <Layout title={t.title} description={t.description} image="/og-image.jpg" lang={lang}>
@@ -76,7 +129,7 @@ const t = {
 	</Fragment>
 	<SiteHeader lang={lang} />
 
-	<section class="relative overflow-hidden bg-bridge-dark pt-40 pb-28 font-sans md:pt-48 md:pb-36">
+	<section class="relative overflow-hidden bg-bridge-dark pt-36 pb-32 font-sans md:pt-44 md:pb-40">
 		<NewsPicture src="/news-cover.jpg" alt="" imgClass="absolute inset-0 z-0 h-full w-full object-cover object-center opacity-40 grayscale" loading="eager" fetchpriority="high" />
 		<div class="absolute inset-0 z-[1] bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/70 to-bridge-dark"></div>
 		<div class="absolute left-1/2 top-1/2 z-[1] h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-bridge-taupe/20 blur-[140px]"></div>
@@ -90,34 +143,102 @@ const t = {
 			<h1 class="mb-6 text-4xl font-bold tracking-tight text-white md:text-6xl lg:text-7xl" data-aos="fade-up" data-aos-delay="100">
 				{t.heroHeadingA} <span class="text-bridge-taupe">{t.heroHeadingB}</span>
 			</h1>
-			<p class="mx-auto max-w-3xl text-lg font-light leading-relaxed text-gray-300 md:text-xl" data-aos="fade-up" data-aos-delay="200">
+			<p class="mx-auto max-w-3xl text-base font-light leading-relaxed text-gray-300 md:text-xl" data-aos="fade-up" data-aos-delay="200">
 				{t.heroSub}
 			</p>
 		</div>
 	</section>
 
-	<section class="relative overflow-hidden bg-bridge-light py-16 font-sans md:py-24">
-		<div class="absolute -left-32 top-20 h-72 w-72 rounded-full bg-bridge-taupe/10 blur-3xl"></div>
-		<div class="absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-dark/10 blur-3xl"></div>
-
-		<div class="relative z-10 mx-auto max-w-7xl px-6">
-			<div class="mb-12 flex flex-col justify-between gap-6 md:mb-16 md:flex-row md:items-end">
-				<div class="max-w-2xl" data-aos="fade-up">
-					<div class="mb-4 flex items-center text-xs font-bold uppercase tracking-widest text-bridge-taupe">
-						<span class="mr-4 h-px w-8 bg-bridge-taupe"></span>
-						{t.sectionEyebrow}
+	{featured && (
+		<section class="relative z-10 -mt-20 px-4 font-sans md:-mt-24 md:px-6" data-featured-block>
+			<div class="mx-auto max-w-7xl" data-aos="fade-up">
+				<a
+					href={postHref(featured.post.id)}
+					class="group grid overflow-hidden rounded-[1.75rem] bg-[#1f1d1b] text-white shadow-[0_40px_90px_-30px_rgba(26,24,22,0.75)] ring-1 ring-white/10 md:grid-cols-12 md:rounded-[2rem]"
+				>
+					<!-- Обложки рисуются в 16:9 с текстом у краёв, поэтому не растягиваем их по высоте колонки, чтобы не срезать надписи. -->
+					<div class="relative aspect-video overflow-hidden md:col-span-7 md:self-center">
+						<NewsPicture
+							src={featured.post.data.coverImage}
+							alt={featured.post.data.title}
+							class="absolute inset-0 block h-full w-full"
+							imgClass="h-full w-full object-cover object-center transition-transform duration-[1200ms] group-hover:scale-105"
+							loading="eager"
+							fetchpriority="high"
+						/>
+						<div class="absolute inset-0 bg-gradient-to-t from-[#1f1d1b] via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#1f1d1b]/80"></div>
+						<div class="absolute left-5 top-5 flex flex-wrap gap-2 md:left-7 md:top-7">
+							<span class="rounded-full bg-bridge-taupe px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white shadow-lg">{t.featured}</span>
+							{featured.post.data.videoUrl && (
+								<span class="inline-flex items-center gap-2 rounded-full bg-white/90 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-bridge-dark shadow-lg">
+									<svg class="h-3 w-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.78-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg>
+									{t.video}
+								</span>
+							)}
+						</div>
 					</div>
-					<h2 class="text-3xl font-bold leading-tight text-bridge-dark md:text-5xl">{t.sectionHeading}</h2>
-				</div>
-				<p class="max-w-md text-base font-light leading-relaxed text-gray-600 md:text-lg" data-aos="fade-up" data-aos-delay="100">
-					{t.sectionSub}
-				</p>
+					<div class="flex flex-col justify-center gap-4 p-6 pt-2 md:col-span-5 md:gap-5 md:p-10 lg:p-12">
+						<div class="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.24em] text-bridge-taupe md:text-xs">
+							<span class="h-px w-8 bg-bridge-taupe"></span>
+							<time datetime={featured.post.data.date.toISOString()}>{formatDate(featured.post.data.date)}</time>
+						</div>
+						<h2 class="text-2xl font-bold leading-tight tracking-tight md:text-3xl lg:text-4xl">{featured.post.data.title}</h2>
+						<p class="line-clamp-4 text-sm font-light leading-relaxed text-gray-300 md:text-base">{featured.post.data.excerpt}</p>
+						<span class="mt-2 inline-flex w-max items-center gap-3 rounded-full bg-white px-6 py-3 text-xs font-bold uppercase tracking-widest text-bridge-dark transition-colors duration-300 group-hover:bg-bridge-taupe group-hover:text-white">
+							{t.read}
+							<svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+						</span>
+					</div>
+				</a>
 			</div>
+		</section>
+	)}
 
-			{newsPosts.length > 0 ? (
-				<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-					{newsPosts.map((post, index) => <NewsCard post={post} index={index} lang={lang} />)}
-				</div>
+	<!-- overflow-x-clip, а не overflow-hidden: иначе sticky у панели фильтров не работает. -->
+	<section class="relative overflow-x-clip bg-bridge-light pt-12 pb-16 font-sans md:pt-16 md:pb-24">
+		<div class="pointer-events-none absolute -left-32 top-40 h-72 w-72 rounded-full bg-bridge-taupe/10 blur-3xl"></div>
+		<div class="pointer-events-none absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-dark/10 blur-3xl"></div>
+
+		<div class="relative z-10 mx-auto max-w-7xl px-4 md:px-6" data-news-root data-page={PAGE}>
+			{posts.length > 0 ? (
+				<>
+					<div class="mb-2 flex items-center px-0.5 text-[10px] font-bold uppercase tracking-[0.24em] text-bridge-taupe md:text-xs">
+						<span class="mr-4 h-px w-8 bg-bridge-taupe"></span>
+						{t.allPosts}
+					</div>
+
+					<div class="news-filterbar sticky z-30 -mx-4 mb-5 px-4 py-3 md:-mx-6 md:mb-10 md:px-6 md:py-4" style="top: var(--news-sticky-top, 72px)">
+						<div class="news-chips flex gap-2 overflow-x-auto" role="toolbar" aria-label={t.allPosts}>
+							{filters.map((f) => (
+								<button type="button" class="news-chip" data-filter={f.id} aria-pressed={f.id === 'all' ? 'true' : 'false'}>
+									{f.label}
+									<span class="news-chip-count">{f.count}</span>
+								</button>
+							))}
+						</div>
+					</div>
+
+					<div class="news-grid grid gap-3 md:grid-cols-2 md:gap-6 lg:grid-cols-6 lg:gap-8">
+						{posts.map((p, index) => (
+							index === 0
+								? <NewsCard post={p.post} lang={lang} categories={p.cats} hidden={true} featured={true} />
+								: <NewsCard post={p.post} lang={lang} categories={p.cats} hidden={index > PAGE} wide={index <= 2} />
+						))}
+					</div>
+
+					<div data-empty hidden>
+						<p class="news-surface rounded-3xl border border-white/70 bg-white p-10 text-center text-base font-light text-gray-600 premium-shadow">{t.emptyFilter}</p>
+					</div>
+
+					<div data-more-wrap hidden={rest.length <= PAGE}>
+						<div class="mt-10 flex justify-center md:mt-14">
+							<button type="button" data-more class="group inline-flex items-center gap-3 rounded-full border border-bridge-taupe/40 bg-white px-8 py-4 text-xs font-bold uppercase tracking-widest text-bridge-dark premium-shadow transition-all duration-300 hover:-translate-y-0.5 hover:border-bridge-taupe hover:bg-bridge-dark hover:text-white">
+								{t.more}
+								<svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+							</button>
+						</div>
+					</div>
+				</>
 			) : (
 				<div class="news-surface rounded-3xl border border-white/70 bg-white p-10 text-center premium-shadow" data-aos="fade-up">
 					<p class="text-lg font-light text-gray-600">{t.empty}</p>
@@ -129,7 +250,7 @@ const t = {
 				href="https://t.me/fidicuzb"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="tg-cta group mt-10 flex flex-col items-start justify-between gap-6 rounded-3xl p-8 premium-shadow md:mt-12 md:flex-row md:items-center md:p-10"
+				class="tg-cta group mt-12 flex flex-col items-start justify-between gap-6 rounded-3xl p-7 premium-shadow md:mt-16 md:flex-row md:items-center md:p-10"
 				data-aos="fade-up"
 			>
 				<div class="flex items-start gap-5">
@@ -150,3 +271,85 @@ const t = {
 		</div>
 	</section>
 </Layout>
+
+<script>
+	// Фильтр по рубрикам и «Показать ещё». Без JS видны главная новость и первые PAGE карточек.
+	const root = document.querySelector<HTMLElement>('[data-news-root]');
+	if (root) {
+		const PAGE = Number(root.dataset.page) || 9;
+		const items = Array.from(root.querySelectorAll<HTMLElement>('.news-item'));
+		const chips = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+		const featuredBlock = document.querySelector<HTMLElement>('[data-featured-block]');
+		const moreWrap = root.querySelector<HTMLElement>('[data-more-wrap]');
+		const moreBtn = root.querySelector<HTMLButtonElement>('[data-more]');
+		const empty = root.querySelector<HTMLElement>('[data-empty]');
+		const header = document.querySelector<HTMLElement>('header');
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		let cat = 'all';
+		let limit = PAGE;
+
+		// Панель фильтров прилипает под шапкой; высота шапки меняется при прокрутке.
+		const setStickyTop = () => {
+			const h = header ? header.getBoundingClientRect().height : 72;
+			document.documentElement.style.setProperty('--news-sticky-top', `${Math.round(h)}px`);
+		};
+		setStickyTop();
+		// border-box: при прокрутке у шапки меняется padding, а не содержимое.
+		if (header && 'ResizeObserver' in window) new ResizeObserver(setStickyTop).observe(header, { box: 'border-box' });
+
+		const animateIn = (el: HTMLElement) => {
+			if (reduceMotion) return;
+			el.classList.remove('news-in');
+			void el.offsetWidth;
+			el.classList.add('news-in');
+		};
+
+		const render = (animateAll: boolean) => {
+			let match = 0;
+			let shown = 0;
+			for (const el of items) {
+				const isFeatured = el.hasAttribute('data-featured');
+				const ok = cat === 'all' ? !isFeatured : (el.dataset.cats || '').split(' ').includes(cat);
+				if (ok) match++;
+				const visible = ok && match <= limit;
+				const wasHidden = el.hidden;
+				el.hidden = !visible;
+				if (visible) shown++;
+				el.classList.toggle('is-wide', visible && shown <= 2);
+				if (visible && (animateAll || wasHidden)) animateIn(el);
+			}
+			if (featuredBlock) featuredBlock.hidden = cat !== 'all';
+			if (moreWrap) moreWrap.hidden = match <= limit;
+			if (empty) empty.hidden = match > 0;
+		};
+
+		const select = (next: string, scroll: boolean) => {
+			cat = chips.some((c) => c.dataset.filter === next) ? next : 'all';
+			limit = PAGE;
+			chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.filter === cat)));
+			render(true);
+			const url = new URL(window.location.href);
+			if (cat === 'all') url.searchParams.delete('cat');
+			else url.searchParams.set('cat', cat);
+			history.replaceState(null, '', url);
+			// Если панель уже прилипла, возвращаем к началу ленты, а не оставляем посреди пустоты.
+			if (scroll) {
+				const stickyTop = header ? header.getBoundingClientRect().height : 72;
+				const y = root.getBoundingClientRect().top + window.scrollY - stickyTop - 8;
+				if (window.scrollY > y) window.scrollTo({ top: y, behavior: reduceMotion ? 'auto' : 'smooth' });
+			}
+			const active = chips.find((c) => c.dataset.filter === cat);
+			active?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: reduceMotion ? 'auto' : 'smooth' });
+		};
+
+		chips.forEach((chip) => chip.addEventListener('click', () => select(chip.dataset.filter || 'all', true)));
+		moreBtn?.addEventListener('click', () => {
+			limit += PAGE;
+			render(false);
+		});
+
+		const initial = new URLSearchParams(window.location.search).get('cat');
+		if (initial) select(initial, false);
+	}
+</script>

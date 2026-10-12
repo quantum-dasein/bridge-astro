@@ -204,6 +204,11 @@ body {
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
+/* clip, а не hidden: hidden делает body контейнером прокрутки, и position: sticky
+   внутри страницы перестаёт работать. Старые браузеры без clip остаются на hidden. */
+body {
+  overflow-x: clip;
+}
 
 /* ===== News pages: dark-theme polish (style.css handles the rest) ===== */
 html.dark-theme body {
@@ -346,4 +351,110 @@ html.dark-theme .news-cta-action::after {
 .tg-cta:hover {
   background: linear-gradient(135deg, rgba(138, 123, 102, 0.2), rgba(138, 123, 102, 0.08));
   border-color: rgba(138, 123, 102, 0.55);
+}
+
+/* ===== Лента новостей: панель рубрик, сетка, появление карточек ===== */
+/* Фон панели сплошной, без backdrop-filter: размытие под липкими слоями даёт
+   чёрные вспышки при прокрутке в Chromium. */
+.news-filterbar {
+  background: rgba(245, 244, 242, 0.97);
+}
+.news-chips {
+  scrollbar-width: none;
+  /* На телефоне рубрики листаются вбок — край подсказывает, что там есть ещё. */
+  -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+  mask-image: linear-gradient(90deg, #000 85%, transparent);
+}
+.news-chips::-webkit-scrollbar {
+  display: none;
+}
+@media (min-width: 768px) {
+  .news-chips {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+.news-chip {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem 1.15rem;
+  border: 1px solid rgba(138, 123, 102, 0.3);
+  border-radius: 9999px;
+  background: #fff;
+  color: #292724;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+.news-chip:hover {
+  border-color: #8A7B66;
+}
+.news-chip:focus-visible {
+  outline: 2px solid #8A7B66;
+  outline-offset: 2px;
+}
+.news-chip[aria-pressed='true'] {
+  background: #292724;
+  border-color: #292724;
+  color: #fff;
+}
+.news-chip-count {
+  font-size: 0.62rem;
+  letter-spacing: 0;
+  opacity: 0.5;
+}
+.news-item[hidden] {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .news-grid > .news-item {
+    grid-column: span 2 / span 2;
+  }
+  /* Две первые карточки ленты — шире и с крупным заголовком. */
+  .news-grid > .news-item.is-wide {
+    grid-column: span 3 / span 3;
+  }
+  .news-grid > .news-item.is-wide .news-item-title {
+    font-size: 1.6rem;
+  }
+}
+@keyframes news-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.news-item.news-in {
+  animation: news-in 0.55s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+html.dark-theme .news-filterbar {
+  background: rgba(21, 20, 19, 0.97);
+}
+html.dark-theme .news-chip {
+  background: #1c1b19;
+  border-color: #2a2928;
+  color: #d4d4d8;
+}
+html.dark-theme .news-chip:hover {
+  border-color: #D4C3A3;
+}
+html.dark-theme .news-chip[aria-pressed='true'] {
+  background: #D4C3A3;
+  border-color: #D4C3A3;
+  color: #151413;
+}
+@media (prefers-reduced-motion: reduce) {
+  .news-item.news-in {
+    animation: none;
+  }
 }

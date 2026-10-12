@@ -4,12 +4,17 @@ import NewsPicture from './NewsPicture.astro';
 
 interface Props {
 	post: CollectionEntry<'news'>;
-	index?: number;
 	lang?: string;
+	categories?: string[];
+	hidden?: boolean;
+	wide?: boolean;
+	// Главная новость: в ленте «Все» она стоит отдельным блоком сверху, а в сетке
+	// появляется только при выбранной рубрике.
+	featured?: boolean;
 }
 
-const { post, index = 0, lang = 'ru' } = Astro.props;
-const { title, date, excerpt, coverImage, tags } = post.data;
+const { post, lang = 'ru', categories = [], hidden = false, wide = false, featured = false } = Astro.props;
+const { title, date, excerpt, coverImage, tags, videoUrl, videoDuration } = post.data;
 const slug = post.id.replace(/\.(md|mdx)$/i, '');
 const baseSlug = slug.replace(/^(ru|en|uz)-/, '');
 const href = lang === 'en'
@@ -24,43 +29,63 @@ const formattedDate = new Intl.DateTimeFormat(locale, {
 	year: 'numeric',
 }).format(date);
 const readLabel = lang === 'uz' ? 'Maqolani o‘qish' : lang === 'en' ? 'Read article' : 'Читать публикацию';
+const videoLabel = lang === 'uz' ? 'Video' : lang === 'en' ? 'Video' : 'Видео';
 const fallbackImage = '/larisa-belousova-uznews.png';
+
+// PT1M25S -> 1:25
+const durationMatch = videoDuration?.match(/^PT(?:(\d+)M)?(?:(\d+)S)?$/);
+const durationText = durationMatch
+	? `${durationMatch[1] ?? 0}:${String(durationMatch[2] ?? 0).padStart(2, '0')}`
+	: null;
 ---
 
+<!-- На телефоне карточка — строка с миниатюрой слева, с md — классическая карточка с обложкой сверху. -->
 <article
-	class="news-surface group overflow-hidden rounded-3xl border border-white/70 bg-white premium-shadow hover-float"
-	data-aos="fade-up"
-	data-aos-delay={index * 100}
+	class:list={['news-item', { 'is-wide': wide }]}
+	data-cats={categories.join(' ')}
+	data-featured={featured ? '' : undefined}
+	hidden={hidden}
 >
-	<a href={href} class="flex h-full flex-col">
-		<div class="relative aspect-[16/10] overflow-hidden bg-bridge-dark">
+	<a
+		href={href}
+		class="news-surface group flex h-full items-center gap-4 overflow-hidden rounded-2xl border border-white/70 bg-white p-3 premium-shadow transition-all duration-500 hover:-translate-y-1 md:flex-col md:items-stretch md:gap-0 md:rounded-3xl md:p-0"
+	>
+		<div class="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl bg-bridge-dark md:aspect-[16/10] md:h-auto md:w-full md:rounded-none">
 			<NewsPicture
 				src={coverImage}
 				alt={title}
 				onerror={`this.onerror=null;this.src='${fallbackImage}'`}
-				imgClass="h-full w-full object-cover object-center grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
+				imgClass="h-full w-full object-cover object-center transition-all duration-700 group-hover:scale-105 md:grayscale md:group-hover:grayscale-0"
 				loading="lazy"
 			/>
-			<div class="absolute inset-0 bg-gradient-to-t from-bridge-dark/70 via-bridge-dark/10 to-transparent"></div>
-			<div class="absolute left-5 top-5 flex flex-wrap gap-2">
+			<div class="absolute inset-0 hidden bg-gradient-to-t from-bridge-dark/70 via-bridge-dark/10 to-transparent md:block"></div>
+			<div class="absolute left-5 top-5 hidden flex-wrap gap-2 md:flex">
 				{tags.slice(0, 2).map((tag) => (
 					<span class="rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-bridge-dark shadow-lg">
 						{tag}
 					</span>
 				))}
 			</div>
+			{videoUrl && (
+				<span class="absolute inset-0 flex items-center justify-center md:inset-auto md:bottom-5 md:left-5">
+					<span class="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-bridge-dark shadow-lg md:h-auto md:w-auto md:gap-2 md:px-3 md:py-1.5">
+						<svg class="ml-0.5 h-3.5 w-3.5 md:ml-0 md:h-3 md:w-3" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.78-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg>
+						<span class="hidden text-[10px] font-bold uppercase tracking-widest md:inline">{videoLabel}{durationText && ` · ${durationText}`}</span>
+					</span>
+				</span>
+			)}
 		</div>
-		<div class="flex flex-1 flex-col p-6 md:p-8">
-			<time class="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-bridge-taupe" datetime={date.toISOString()}>
+		<div class="flex min-w-0 flex-1 flex-col md:p-7 lg:p-8">
+			<time class="mb-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-bridge-taupe md:mb-4 md:text-xs md:tracking-[0.22em]" datetime={date.toISOString()}>
 				{formattedDate}
 			</time>
-			<h2 class="mb-4 text-2xl font-bold leading-tight text-bridge-dark transition-colors group-hover:text-bridge-taupe md:text-3xl">
+			<h2 class="news-item-title line-clamp-3 text-[15px] font-bold leading-snug text-bridge-dark transition-colors group-hover:text-bridge-taupe md:mb-4 md:text-xl md:leading-tight">
 				{title}
 			</h2>
-			<p class="mb-6 text-sm font-light leading-relaxed text-gray-600 md:text-base">
+			<p class="mb-6 hidden text-sm font-light leading-relaxed text-gray-600 md:line-clamp-3">
 				{excerpt}
 			</p>
-			<span class="mt-auto inline-flex items-center text-xs font-bold uppercase tracking-widest text-bridge-dark">
+			<span class="mt-auto hidden items-center text-xs font-bold uppercase tracking-widest text-bridge-dark md:inline-flex">
 				{readLabel}
 				<span class="ml-3 h-px w-10 bg-bridge-taupe transition-all duration-300 group-hover:w-16"></span>
 			</span>
