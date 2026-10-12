@@ -2,225 +2,228 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>404 — Bridge Consult | Страница не найдена</title>
 <meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#14110f">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
     :root {
         --taupe: #8A7B66;
         --taupe-light: #D4C3A3;
-        --ink: #1a1816;
-        --ink-deep: #12100e;
+        --ink: #14110f;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; overflow: hidden; }
+    html, body { height: 100%; overflow: hidden; background: var(--ink); }
     body {
-        font-family: 'Inter', system-ui, sans-serif;
-        background: var(--ink);
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
         color: #fff;
         -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Galaxy background: warm core + drifting CSS stars + grain ── */
+    /* Фон: тёплое свечение там, где должен был сомкнуться пролёт, и лёгкое зерно. */
     .bg {
-        position: fixed; inset: 0; z-index: 0; overflow: hidden;
+        position: fixed; inset: 0; z-index: 0;
         background:
-            radial-gradient(ellipse 80% 60% at 50% 42%, rgba(138,123,102,0.16) 0%, transparent 60%),
-            radial-gradient(ellipse 50% 40% at 78% 78%, rgba(138,123,102,0.07) 0%, transparent 70%),
-            linear-gradient(180deg, var(--ink-deep) 0%, var(--ink) 45%, var(--ink-deep) 100%);
+            radial-gradient(ellipse 55% 45% at 50% 38%, rgba(201,168,106,0.16) 0%, transparent 65%),
+            radial-gradient(ellipse 90% 60% at 50% 110%, rgba(138,123,102,0.12) 0%, transparent 70%),
+            linear-gradient(180deg, #100e0c 0%, var(--ink) 40%, #0e0c0a 100%);
     }
-    .bg::before {
-        content: ''; position: absolute; inset: -440px 0 -440px 0;
-        background-image:
-            radial-gradient(1.4px 1.4px at 37px 63px,  rgba(255,255,255,0.75), transparent 60%),
-            radial-gradient(1px   1px   at 143px 187px, rgba(255,255,255,0.45), transparent 60%),
-            radial-gradient(1.8px 1.8px at 231px 41px,  rgba(212,195,163,0.8),  transparent 60%),
-            radial-gradient(1px   1px   at 317px 265px, rgba(255,255,255,0.35), transparent 60%),
-            radial-gradient(1.3px 1.3px at 71px 331px,  rgba(255,255,255,0.6),  transparent 60%),
-            radial-gradient(1px   1px   at 401px 127px, rgba(212,195,163,0.5),  transparent 60%),
-            radial-gradient(1.6px 1.6px at 187px 409px, rgba(255,255,255,0.5),  transparent 60%),
-            radial-gradient(1px   1px   at 359px 373px, rgba(255,255,255,0.3),  transparent 60%);
-        background-size: 440px 440px;
-        animation: stardrift 90s linear infinite;
-    }
-    @keyframes stardrift { to { transform: translateY(-440px); } }
     .bg::after {
-        content: ''; position: absolute; inset: 0; opacity: 0.5; pointer-events: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+        content: ''; position: absolute; inset: 0; opacity: 0.55; pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    #scene { position: fixed; inset: 0; z-index: 1; }
-
-    /* ── Content ── */
-    .wrap {
-        position: relative; z-index: 2;
-        height: 100%;
-        display: flex; flex-direction: column;
-        align-items: center; justify-content: center;
-        text-align: center; padding: 24px;
+    /* Огромные «404» стоят за сценой: мост проходит перед цифрами. */
+    .big404 {
+        position: fixed; left: 0; right: 0; top: 34%; z-index: 1;
+        transform: translateY(-50%);
+        text-align: center; pointer-events: none; user-select: none;
+        font-family: 'Playfair Display', Georgia, serif; font-weight: 700;
+        font-size: clamp(150px, 31vw, 440px); line-height: 1; letter-spacing: -0.02em;
+        color: rgba(212,195,163,0.05);
+        -webkit-text-stroke: 1px rgba(212,195,163,0.3);
+        opacity: 0; animation: big-rise 1.6s 0.2s cubic-bezier(.2,.7,.2,1) forwards;
     }
+
+    #scene { position: fixed; inset: 0; z-index: 2; width: 100%; height: 100%; display: block; }
+
+    /* Нижняя виньетка, чтобы текст читался поверх сцены на любых экранах. */
+    .shade {
+        position: fixed; left: 0; right: 0; bottom: 0; height: 58%; z-index: 3; pointer-events: none;
+        background: linear-gradient(to top, rgba(14,12,10,0.96) 0%, rgba(14,12,10,0.75) 45%, transparent 100%);
+    }
+
     .logo {
-        position: fixed; top: 32px; left: 40px; z-index: 3;
-        font-weight: 800; font-size: 22px; letter-spacing: 0.02em; color: #fff;
-        text-decoration: none;
+        position: fixed; top: max(28px, env(safe-area-inset-top)); left: clamp(20px, 4vw, 48px); z-index: 5;
+        display: block; line-height: 0;
+        opacity: 0; animation: fade 1s 0.4s ease forwards;
     }
-    .logo small { display: block; font-size: 9px; letter-spacing: 0.55em; font-weight: 700; color: var(--taupe); }
+    .logo img { height: 40px; width: auto; filter: brightness(0) invert(1); opacity: 0.92; transition: opacity .3s; }
+    .logo:hover img { opacity: 1; }
 
-    .code {
-        font-size: clamp(120px, 26vw, 320px);
-        font-weight: 800; line-height: 0.9; letter-spacing: -0.04em;
-        background: linear-gradient(115deg, #fff 15%, var(--taupe-light) 45%, var(--taupe) 80%);
-        -webkit-background-clip: text; background-clip: text;
-        -webkit-text-fill-color: transparent; color: transparent;
-        text-shadow: 0 0 120px rgba(138,123,102,0.35);
-        animation: float 7s ease-in-out infinite;
-        user-select: none;
+    .content {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 4;
+        display: flex; flex-direction: column; align-items: center; text-align: center;
+        padding: 0 24px calc(92px + env(safe-area-inset-bottom));
     }
-    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+    .content > * { opacity: 0; animation: rise 1.1s cubic-bezier(.2,.7,.2,1) forwards; }
+    .content > .eyebrow { animation-delay: 1.4s; }
+    .content > .title { animation-delay: 1.55s; }
+    .content > .sub { animation-delay: 1.7s; }
+    .content > .actions { animation-delay: 1.85s; }
 
-    .line {
-        width: 64px; height: 1px; margin: 26px auto 22px;
-        background: linear-gradient(to right, transparent, var(--taupe), transparent);
+    .eyebrow {
+        display: flex; align-items: center; gap: 14px;
+        font-size: 11px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase;
+        color: var(--taupe-light);
     }
-    h1 { font-size: clamp(20px, 3.4vw, 34px); font-weight: 700; }
+    .eyebrow::before, .eyebrow::after { content: ''; width: 36px; height: 1px; background: var(--taupe); }
+    .title {
+        margin-top: 18px;
+        font-family: 'Playfair Display', Georgia, serif; font-weight: 400;
+        font-size: clamp(30px, 4.6vw, 58px); line-height: 1.08; letter-spacing: -0.01em;
+        max-width: 900px;
+    }
+    .title em { font-style: italic; color: var(--taupe-light); }
     .sub {
-        margin-top: 14px; max-width: 560px;
-        color: rgba(255,255,255,0.55); font-weight: 300;
-        font-size: clamp(14px, 1.6vw, 17px); line-height: 1.65;
+        margin-top: 16px; max-width: 540px;
+        color: rgba(255,255,255,0.58); font-weight: 300;
+        font-size: clamp(14px, 1.4vw, 16px); line-height: 1.7;
     }
-    .sub .alt { display: block; font-size: 12.5px; margin-top: 10px; color: rgba(255,255,255,0.35); }
-
-    .actions { margin-top: 38px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .actions { margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
     .btn {
         display: inline-flex; align-items: center; gap: 10px;
-        padding: 15px 32px; border-radius: 999px;
+        padding: 15px 30px; border-radius: 999px;
         font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
-        text-decoration: none; transition: all .35s ease;
+        text-decoration: none; transition: transform .35s ease, background .35s ease, border-color .35s ease, color .35s ease;
     }
-    .btn-primary { background: var(--taupe); color: #fff; box-shadow: 0 8px 30px -8px rgba(138,123,102,0.6); }
-    .btn-primary:hover { background: #9c8d76; transform: translateY(-3px); box-shadow: 0 14px 40px -8px rgba(138,123,102,0.7); }
-    .btn-ghost { border: 1px solid rgba(255,255,255,0.2); color: #fff; }
-    .btn-ghost:hover { border-color: var(--taupe); background: rgba(255,255,255,0.06); transform: translateY(-3px); }
+    .btn svg { width: 15px; height: 15px; transition: transform .35s ease; }
+    .btn-primary { background: #fff; color: #1d1916; }
+    .btn-primary:hover { background: var(--taupe-light); transform: translateY(-2px); }
+    .btn-primary:hover svg { transform: translateX(4px); }
+    .btn-ghost { border: 1px solid rgba(255,255,255,0.22); color: #fff; }
+    .btn-ghost:hover { border-color: var(--taupe-light); color: var(--taupe-light); transform: translateY(-2px); }
 
     .langs {
-        position: fixed; bottom: 30px; left: 0; right: 0; z-index: 3;
-        display: flex; gap: 20px; justify-content: center;
-        font-size: 11px; font-weight: 700; letter-spacing: 0.25em;
+        position: fixed; bottom: calc(30px + env(safe-area-inset-bottom)); left: 0; right: 0; z-index: 5;
+        display: flex; gap: 22px; justify-content: center;
+        font-size: 11px; font-weight: 700; letter-spacing: 0.26em;
+        opacity: 0; animation: fade 1s 2s ease forwards;
     }
-    .langs a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color .3s; }
-    .langs a:hover { color: var(--taupe-light); }
-    .langs a.active { color: var(--taupe-light); }
+    .langs a { color: rgba(255,255,255,0.38); text-decoration: none; transition: color .3s; }
+    .langs a:hover, .langs a.active { color: var(--taupe-light); }
 
+    @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    /* У .big404 свой translateY(-50%) для центрирования — анимируем его отдельно. */
+    @keyframes big-rise { from { opacity: 0; transform: translateY(calc(-50% + 30px)); } to { opacity: 1; transform: translateY(-50%); } }
+    @keyframes fade { to { opacity: 1; } }
+
+    @media (max-width: 640px) {
+        .logo img { height: 32px; }
+        .big404 { top: 30%; }
+        .content { padding-bottom: calc(78px + env(safe-area-inset-bottom)); }
+        .title { font-size: clamp(28px, 8.4vw, 38px); }
+        .actions { margin-top: 24px; gap: 10px; }
+        .btn { padding: 13px 22px; }
+        .btn-ghost.secondary { display: none; }
+        .shade { height: 64%; }
+    }
+    @media (max-height: 640px) and (min-width: 641px) {
+        .content { padding-bottom: 64px; }
+        .sub { display: none; }
+    }
     @media (prefers-reduced-motion: reduce) {
-        .code, .bg::before { animation: none; }
+        .big404, .content > *, .logo, .langs { animation: none !important; opacity: 1 !important; }
     }
 </style>
 </head>
 <body>
 <div class="bg"></div>
-<canvas id="scene"></canvas>
+<div class="big404" aria-hidden="true">404</div>
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="shade"></div>
 
-<a class="logo" href="/" data-file-href="index.html">Bridge<small>CONSULT</small></a>
+<a class="logo" href="/" data-file-href="index.html" aria-label="Bridge Consult">
+    <img src="/bridge%202.svg" alt="Bridge Consult" width="106" height="40">
+</a>
 
-<div class="wrap">
-    <div class="code">404</div>
-    <div class="line"></div>
-    <h1>Этот мост ещё не построен</h1>
-    <p class="sub">
-        Страница, которую вы ищете, не существует или была перемещена.
-        Но мы знаем, как навести мосты — начните с главной.
-        <span class="alt">This bridge isn't built yet · Bu ko'prik hali qurilmagan</span>
-    </p>
+<main class="content">
+    <div class="eyebrow">Ошибка 404</div>
+    <h1 class="title">Этот мост <em>ещё не построен</em></h1>
+    <p class="sub">Страница не существует или была перемещена. Но мы знаем, как наводить мосты — начните с главной.</p>
     <div class="actions">
-        <a class="btn btn-primary" href="/" data-file-href="index.html">На главную</a>
-        <a class="btn btn-ghost" href="/projects.html" data-file-href="projects.html">Проекты</a>
-        <a class="btn btn-ghost" href="/news/" data-file-href="news/index.html">Новости</a>
+        <a class="btn btn-primary" href="/" data-file-href="index.html"><span>На главную</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
+        <a class="btn btn-ghost" href="/news/" data-file-href="news/index.html"><span>Новости</span></a>
+        <a class="btn btn-ghost secondary" href="/projects.html" data-file-href="projects.html"><span>Проекты</span></a>
     </div>
-</div>
+</main>
 
-<nav class="langs">
-    <a href="/" data-file-href="index.html">RU</a>
-    <a href="/EN/" data-file-href="EN/index.html">EN</a>
-    <a href="/UZ/" data-file-href="UZ/index.html">UZ</a>
+<nav class="langs" aria-label="Language">
+    <a href="#">RU</a>
+    <a href="#">EN</a>
+    <a href="#">UZ</a>
 </nav>
 
 <script>
 var bridge404Texts = {
     ru: {
         docTitle: '404 — Bridge Consult | Страница не найдена',
-        title: 'Этот мост ещё не построен',
-        sub: 'Страница, которую вы ищете, не существует или была перемещена. Но мы знаем, как навести мосты — начните с главной.',
-        alt: "This bridge isn't built yet · Bu ko'prik hali qurilmagan",
-        home: 'На главную',
-        projects: 'Проекты',
-        news: 'Новости',
-        homeHref: '/',
-        projectsHref: '/projects.html',
-        newsHref: '/news/',
-        homeFile: 'index.html',
-        projectsFile: 'projects.html',
-        newsFile: 'news/index.html'
+        eyebrow: 'Ошибка 404',
+        title: 'Этот мост <em>ещё не построен</em>',
+        sub: 'Страница не существует или была перемещена. Но мы знаем, как наводить мосты — начните с главной.',
+        home: 'На главную', news: 'Новости', projects: 'Проекты',
+        homeHref: '/', newsHref: '/news/', projectsHref: '/projects.html',
+        homeFile: 'index.html', newsFile: 'news/index.html', projectsFile: 'projects.html'
     },
     en: {
         docTitle: '404 — Bridge Consult | Page Not Found',
-        title: "This bridge isn't built yet",
-        sub: "The page you are looking for does not exist or has moved. We still know how to build bridges — start from the home page.",
-        alt: 'Этот мост ещё не построен · Bu ko‘prik hali qurilmagan',
-        home: 'Home',
-        projects: 'Projects',
-        news: 'News',
-        homeHref: '/EN/',
-        projectsHref: '/EN/projects.html',
-        newsHref: '/news/en/',
-        homeFile: 'EN/index.html',
-        projectsFile: 'EN/projects.html',
-        newsFile: 'news/en/index.html'
+        eyebrow: 'Error 404',
+        title: 'This bridge <em>isn’t built yet</em>',
+        sub: 'The page doesn’t exist or has moved. We still know how to build bridges — start from the home page.',
+        home: 'Home', news: 'News', projects: 'Projects',
+        homeHref: '/EN/', newsHref: '/news/en/', projectsHref: '/EN/projects.html',
+        homeFile: 'EN/index.html', newsFile: 'news/en/index.html', projectsFile: 'EN/projects.html'
     },
     uz: {
         docTitle: '404 — Bridge Consult | Sahifa topilmadi',
-        title: 'Bu ko‘prik hali qurilmagan',
-        sub: 'Siz izlayotgan sahifa mavjud emas yoki ko‘chirilgan. Biz esa ko‘priklarni qanday qurishni bilamiz — bosh sahifadan boshlang.',
-        alt: "Этот мост ещё не построен · This bridge isn't built yet",
-        home: 'Bosh sahifa',
-        projects: 'Loyihalar',
-        news: 'Yangiliklar',
-        homeHref: '/UZ/',
-        projectsHref: '/UZ/projects.html',
-        newsHref: '/news/uz/',
-        homeFile: 'UZ/index.html',
-        projectsFile: 'UZ/projects.html',
-        newsFile: 'news/uz/index.html'
+        eyebrow: '404 xatosi',
+        title: 'Bu ko‘prik <em>hali qurilmagan</em>',
+        sub: 'Sahifa mavjud emas yoki ko‘chirilgan. Biz esa ko‘priklarni qanday qurishni bilamiz — bosh sahifadan boshlang.',
+        home: 'Bosh sahifa', news: 'Yangiliklar', projects: 'Loyihalar',
+        homeHref: '/UZ/', newsHref: '/news/uz/', projectsHref: '/UZ/projects.html',
+        homeFile: 'UZ/index.html', newsFile: 'news/uz/index.html', projectsFile: 'UZ/projects.html'
     }
 };
 
-function bridge404SetActionLink(el, href, fileHref) {
+function bridge404SetLink(el, href, fileHref) {
     if (!el) return;
-    el.setAttribute('href', href);
+    el.setAttribute('href', window.location.protocol === 'file:' ? fileHref : href);
     el.setAttribute('data-file-href', fileHref);
-    if (window.location.protocol === 'file:') el.setAttribute('href', fileHref);
 }
 
 function bridge404SetLang(lang) {
     var t = bridge404Texts[lang] || bridge404Texts.ru;
-    var title = document.querySelector('.wrap h1');
-    var sub = document.querySelector('.sub');
     var actions = document.querySelectorAll('.actions a');
     document.documentElement.lang = lang;
     document.title = t.docTitle;
-    if (title) title.textContent = t.title;
-    if (sub) sub.innerHTML = t.sub + '<span class="alt">' + t.alt + '</span>';
-    if (actions[0]) actions[0].textContent = t.home;
-    if (actions[1]) actions[1].textContent = t.projects;
-    if (actions[2]) actions[2].textContent = t.news;
-    bridge404SetActionLink(document.querySelector('.logo'), t.homeHref, t.homeFile);
-    bridge404SetActionLink(actions[0], t.homeHref, t.homeFile);
-    bridge404SetActionLink(actions[1], t.projectsHref, t.projectsFile);
-    bridge404SetActionLink(actions[2], t.newsHref, t.newsFile);
+    document.querySelector('.eyebrow').textContent = t.eyebrow;
+    document.querySelector('.title').innerHTML = t.title;
+    document.querySelector('.sub').textContent = t.sub;
+    actions[0].querySelector('span').textContent = t.home;
+    actions[1].querySelector('span').textContent = t.news;
+    actions[2].querySelector('span').textContent = t.projects;
+    bridge404SetLink(document.querySelector('.logo'), t.homeHref, t.homeFile);
+    bridge404SetLink(actions[0], t.homeHref, t.homeFile);
+    bridge404SetLink(actions[1], t.newsHref, t.newsFile);
+    bridge404SetLink(actions[2], t.projectsHref, t.projectsFile);
     document.querySelectorAll('.langs a').forEach(function (link) {
-        var active = (link.textContent || '').trim().toLowerCase() === lang;
+        var active = link.textContent.trim().toLowerCase() === lang;
         link.classList.toggle('active', active);
-        link.setAttribute('href', '#');
         if (active) link.setAttribute('aria-current', 'true');
         else link.removeAttribute('aria-current');
     });
@@ -229,25 +232,319 @@ function bridge404SetLang(lang) {
 
 function bridge404InitialLang() {
     var path = window.location.pathname.toLowerCase();
-    if (path.indexOf('/en/') !== -1 || path.endsWith('/en')) return 'en';
-    if (path.indexOf('/uz/') !== -1 || path.endsWith('/uz')) return 'uz';
+    if (path.indexOf('/en/') !== -1 || /\/en$/.test(path)) return 'en';
+    if (path.indexOf('/uz/') !== -1 || /\/uz$/.test(path)) return 'uz';
     try { return localStorage.getItem('bc-404-lang') || 'ru'; } catch (e) { return 'ru'; }
 }
 
 document.querySelectorAll('.langs a').forEach(function (link) {
     link.addEventListener('click', function (event) {
-        var lang = (link.textContent || '').trim().toLowerCase();
-        if (!bridge404Texts[lang]) return;
         event.preventDefault();
-        bridge404SetLang(lang);
+        bridge404SetLang(link.textContent.trim().toLowerCase());
     });
 });
 
-function bridge404SetFileLinks() {
-    if (window.location.protocol !== 'file:') return;
-    document.querySelectorAll('[data-file-href]').forEach(function (link) {
-        link.setAttribute('href', link.getAttribute('data-file-href'));
+/* ── Сцена: два пролёта арочного моста идут навстречу друг другу и не сходятся ── */
+function bridge404StartScene() {
+    if (window.bridge404SceneStarted || typeof THREE === 'undefined') return;
+    var canvas = document.getElementById('scene');
+    var renderer;
+    try {
+        renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+    } catch (e) { return; } // без WebGL остаётся CSS-версия: фон, «404» и текст
+    window.bridge404SceneStarted = true;
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setClearColor(0x000000, 0);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+
+    var scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x14110f, 0.045);
+    var camera = new THREE.PerspectiveCamera(32, 1, 0.1, 400);
+
+    // Окружение для металла: без отражений золото выглядит пластиком.
+    (function buildEnvironment() {
+        var env = new THREE.Scene();
+        env.add(new THREE.Mesh(new THREE.BoxGeometry(60, 60, 60), new THREE.MeshBasicMaterial({ color: 0x15110d, side: THREE.BackSide })));
+        function panel(w, h, color, x, y, z, ry, rx) {
+            var m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide }));
+            m.position.set(x, y, z); m.rotation.y = ry || 0; m.rotation.x = rx || 0; env.add(m);
+        }
+        panel(30, 6, 0xfff1d6, 0, 22, -6, 0, Math.PI / 2);   // мягкий верхний свет
+        panel(10, 18, 0xffd49a, -24, 6, 6, Math.PI / 2);     // тёплый боковой
+        panel(10, 18, 0x8a7b66, 24, 4, -8, -Math.PI / 2);    // приглушённый контровой
+        panel(40, 4, 0x6b5b45, 0, -6, 20, Math.PI);          // отражённый снизу
+        var pmrem = new THREE.PMREMGenerator(renderer);
+        scene.environment = pmrem.fromScene(env, 0.04).texture;
+        pmrem.dispose();
+    })();
+
+    var gold = new THREE.MeshStandardMaterial({ color: 0xC9A06A, metalness: 1, roughness: 0.26, envMapIntensity: 1.35 });
+    var goldDark = new THREE.MeshStandardMaterial({ color: 0x8a6d45, metalness: 1, roughness: 0.4 });
+    var deckMat = new THREE.MeshStandardMaterial({ color: 0xcfc5b4, roughness: 0.62, metalness: 0.05 });
+    var girderMat = new THREE.MeshStandardMaterial({ color: 0x2e2924, roughness: 0.6, metalness: 0.4 });
+    var pierMat = new THREE.MeshStandardMaterial({ color: 0x221e1a, roughness: 0.85, metalness: 0.1, envMapIntensity: 0.35 });
+
+    scene.add(new THREE.AmbientLight(0xfff3e0, 0.22));
+    var key = new THREE.DirectionalLight(0xffe2bd, 2.1);
+    key.position.set(-6, 9, 8); scene.add(key);
+    var rim = new THREE.DirectionalLight(0xC9A06A, 1.4);
+    rim.position.set(5, 3, -9); scene.add(rim);
+    var gapLight = new THREE.PointLight(0xffc97a, 2.4, 9, 2);
+    gapLight.position.set(0, 1.2, 1.2); scene.add(gapLight);
+
+    function glowTexture() {
+        var c = document.createElement('canvas'); c.width = c.height = 128;
+        var g = c.getContext('2d');
+        var grd = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+        grd.addColorStop(0, 'rgba(255,236,200,1)');
+        grd.addColorStop(0.25, 'rgba(232,190,120,0.55)');
+        grd.addColorStop(1, 'rgba(201,160,106,0)');
+        g.fillStyle = grd; g.fillRect(0, 0, 128, 128);
+        var tex = new THREE.CanvasTexture(c);
+        tex.encoding = THREE.sRGBEncoding;
+        return tex;
+    }
+    var glowTex = glowTexture();
+    function glow(size, opacity) {
+        var s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffd7a0, transparent: true, opacity: opacity, blending: THREE.AdditiveBlending, depthWrite: false }));
+        s.scale.set(size, size, 1);
+        return s;
+    }
+
+    // Половина моста строится для левого берега; правая — её зеркальная копия.
+    var SPAN = 6.6, GAP = 0.78, RISE = 3.3, LAND = 12, ARCH_Z = 0.64, WATER_Y = -2.6;
+    function archY(x) { var u = x / SPAN; return RISE * (1 - u * u); }
+
+    function buildHalf() {
+        var half = new THREE.Group();
+        var deckLen = LAND - GAP;
+        var deckX = -(GAP + deckLen / 2);
+
+        var deck = new THREE.Mesh(new THREE.BoxGeometry(deckLen, 0.13, 1.5), deckMat);
+        deck.position.set(deckX, 0, 0); half.add(deck);
+        var girder = new THREE.Mesh(new THREE.BoxGeometry(deckLen, 0.3, 1.0), girderMat);
+        girder.position.set(deckX, -0.22, 0); half.add(girder);
+        [-0.76, 0.76].forEach(function (z) {
+            var fascia = new THREE.Mesh(new THREE.BoxGeometry(deckLen, 0.05, 0.03), gold);
+            fascia.position.set(deckX, -0.02, z); half.add(fascia);
+        });
+        [-0.74, 0.74].forEach(function (z) {
+            var rail = new THREE.Mesh(new THREE.BoxGeometry(deckLen, 0.05, 0.04), gold);
+            rail.position.set(deckX, 0.36, z); half.add(rail);
+            for (var px = -GAP - 0.2; px > -LAND; px -= 0.55) {
+                var post = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.28, 0.03), goldDark);
+                post.position.set(px, 0.22, z); half.add(post);
+            }
+        });
+
+        [-ARCH_Z, ARCH_Z].forEach(function (z) {
+            var pts = [];
+            for (var i = 0; i <= 40; i++) {
+                var x = -SPAN + (SPAN - GAP) * (i / 40);
+                pts.push(new THREE.Vector3(x, archY(x), z));
+            }
+            half.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 160, 0.085, 14, false), gold));
+            var end = pts[pts.length - 1];
+            var cap = new THREE.Mesh(new THREE.SphereGeometry(0.085, 16, 12), gold);
+            cap.position.copy(end); half.add(cap);
+            var tipGlow = glow(0.9, 0.55);
+            tipGlow.position.copy(end); half.add(tipGlow);
+
+            for (var hx = -SPAN + 0.55; hx < -GAP - 0.15; hx += 0.42) {
+                var top = archY(hx);
+                var hanger = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, top - 0.08, 6), gold);
+                hanger.position.set(hx, 0.08 + (top - 0.08) / 2, z); half.add(hanger);
+            }
+        });
+        // Связи между арками поверху.
+        [-5.2, -3.9, -2.6, -1.4].forEach(function (bx) {
+            var brace = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, ARCH_Z * 2, 8), goldDark);
+            brace.rotation.x = Math.PI / 2;
+            brace.position.set(bx, archY(bx), 0); half.add(brace);
+        });
+
+        // Опоры стоят ровно до воды: ниже начинается отражение.
+        [-SPAN, -SPAN - 2.6].forEach(function (px) {
+            [-0.5, 0.5].forEach(function (pz) {
+                var col = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.26, WATER_Y * -1 - 0.37, 20), pierMat);
+                col.position.set(px, (WATER_Y - 0.37) / 2, pz); half.add(col);
+            });
+            var capBeam = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.18, 1.5), pierMat);
+            capBeam.position.set(px, -0.46, 0); half.add(capBeam);
+        });
+
+        // Оборванный край: торчащая арматура и тёплое свечение среза.
+        for (var r = 0; r < 7; r++) {
+            var len = 0.18 + Math.random() * 0.34;
+            var bar = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, len, 5), goldDark);
+            bar.rotation.z = Math.PI / 2 + (Math.random() - 0.5) * 0.5;
+            bar.position.set(-GAP + len / 2, -0.25 + Math.random() * 0.3, -0.6 + Math.random() * 1.2);
+            half.add(bar);
+        }
+        var edgeGlow = glow(1.3, 0.5);
+        edgeGlow.position.set(-GAP, 0.02, 0); half.add(edgeGlow);
+        return half;
+    }
+
+    var bridge = new THREE.Group();
+    scene.add(bridge);
+    var left = buildHalf();
+    var right = buildHalf();
+    right.scale.x = -1;
+    bridge.add(left, right);
+    // Правый берег строили «по другому чертежу»: ниже и с небольшим поворотом — пролёты не совпадут.
+    var RIGHT_DROP = -0.36;
+    right.position.y = RIGHT_DROP;
+    right.rotation.z = 0.03;
+    right.rotation.y = -0.05;
+
+    // «Проектный» пролёт: пунктир там, где должны были сомкнуться арки и настил.
+    var blueprint = new THREE.Group();
+    bridge.add(blueprint);
+    var dashMat = new THREE.LineDashedMaterial({ color: 0xE8C98F, dashSize: 0.12, gapSize: 0.09, transparent: true, opacity: 0.6, depthWrite: false });
+    function dashed(points) {
+        var line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), dashMat);
+        line.computeLineDistances();
+        blueprint.add(line);
+    }
+    [-ARCH_Z, ARCH_Z].forEach(function (z) {
+        var pts = [];
+        for (var i = 0; i <= 24; i++) {
+            var x = -GAP + (2 * GAP) * (i / 24);
+            pts.push(new THREE.Vector3(x, archY(x) + RIGHT_DROP * (i / 24), z));
+        }
+        dashed(pts);
     });
+    [-0.74, 0.74].forEach(function (z) {
+        dashed([new THREE.Vector3(-GAP, 0.08, z), new THREE.Vector3(GAP, 0.08 + RIGHT_DROP, z)]);
+    });
+
+    // Искры в разрыве медленно поднимаются, как пыль над ночной стройкой.
+    var SPARKS = 320;
+    var sparkGeo = new THREE.BufferGeometry();
+    var sparkPos = new Float32Array(SPARKS * 3);
+    var sparkSpeed = new Float32Array(SPARKS);
+    for (var s = 0; s < SPARKS; s++) {
+        sparkPos[s * 3] = (Math.random() - 0.5) * 1.8;
+        sparkPos[s * 3 + 1] = -2.2 + Math.random() * 6.5;
+        sparkPos[s * 3 + 2] = (Math.random() - 0.5) * 2.2;
+        sparkSpeed[s] = 0.15 + Math.random() * 0.45;
+    }
+    sparkGeo.setAttribute('position', new THREE.BufferAttribute(sparkPos, 3));
+    var sparks = new THREE.Points(sparkGeo, new THREE.PointsMaterial({ map: glowTex, color: 0xffd9a0, size: 0.09, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false }));
+    bridge.add(sparks);
+
+    var gapGlow = glow(5.5, 0.32);
+    gapGlow.position.set(0, 1.3, -0.5); bridge.add(gapGlow);
+
+    // Звёзды и тёмная «вода» внизу.
+    var STARS = 1400;
+    var starPos = new Float32Array(STARS * 3);
+    for (var k = 0; k < STARS; k++) {
+        var rr = 70 + Math.random() * 60, th = Math.random() * Math.PI * 2, ph = Math.random() * Math.PI * 0.55;
+        starPos[k * 3] = rr * Math.sin(ph) * Math.cos(th);
+        starPos[k * 3 + 1] = rr * Math.cos(ph) * 0.6 + 6;
+        starPos[k * 3 + 2] = -Math.abs(rr * Math.sin(ph) * Math.sin(th)) - 20;
+    }
+    var starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    var stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ map: glowTex, color: 0xf3e6cf, size: 0.55, transparent: true, opacity: 0.7, depthWrite: false, fog: false }));
+    scene.add(stars);
+
+    // Отражение: зеркальная копия моста под полупрозрачной тёмной водой.
+    var reflection = bridge.clone();
+    reflection.scale.y = -1;
+    reflection.position.y = WATER_Y * 2;
+    scene.add(reflection);
+    var reflLeft = reflection.children[0], reflRight = reflection.children[1], reflBlueprint = reflection.children[2];
+    // Вода растворяется вдаль: иначе её дальний край читается как жёсткая линия горизонта.
+    var fadeCanvas = document.createElement('canvas'); fadeCanvas.width = 4; fadeCanvas.height = 256;
+    var fctx = fadeCanvas.getContext('2d');
+    var fgrd = fctx.createLinearGradient(0, 256, 0, 0); // низ текстуры — ближний край плоскости
+    fgrd.addColorStop(0, '#fff'); fgrd.addColorStop(0.5, '#fff'); fgrd.addColorStop(0.6, '#000'); fgrd.addColorStop(1, '#000');
+    fctx.fillStyle = fgrd; fctx.fillRect(0, 0, 4, 256);
+    var water = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), new THREE.MeshBasicMaterial({ color: 0x14110f, transparent: true, opacity: 0.8, alphaMap: new THREE.CanvasTexture(fadeCanvas), depthWrite: false }));
+    water.rotation.x = -Math.PI / 2; water.position.y = WATER_Y; scene.add(water);
+    var shimmer = glow(14, 0.12);
+    shimmer.position.set(0, WATER_Y + 0.02, 1.5); shimmer.scale.set(16, 2.2, 1); scene.add(shimmer);
+
+    // Камера: на широком экране виден весь мост, на телефоне — крупный план разрыва.
+    // Ракурс три четверти и чуть снизу: арки нависают, настил уходит в туман.
+    var target = new THREE.Vector3(0.4, 1.1, 0);
+    var baseCam = new THREE.Vector3();
+    function resize() {
+        var w = window.innerWidth, h = window.innerHeight, aspect = w / h;
+        renderer.setSize(w, h, false);
+        camera.aspect = aspect;
+        var desiredWidth = aspect < 0.8 ? 6.6 : (aspect < 1.3 ? 11.5 : 17.5);
+        var dist = desiredWidth / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * aspect);
+        baseCam.set(-dist * 0.22, 0.6 + dist * 0.04, dist);
+        // Сцену поднимаем в верхнюю часть экрана — внизу текст.
+        camera.setViewOffset(w, h, 0, h * (aspect < 0.8 ? 0.17 : 0.13), w, h);
+        camera.updateProjectionMatrix();
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    var mouseX = 0, mouseY = 0, camX = 0, camY = 0;
+    window.addEventListener('pointermove', function (e) {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+
+    var clock = new THREE.Clock();
+    var INTRO = 2.6;
+    function easeOutExpo(t) { return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+
+    function frame() {
+        var t = clock.getElapsedTime();
+        var p = reduced ? 1 : easeOutExpo(Math.min(t / INTRO, 1));
+
+        // Пролёты выезжают с берегов, затем «дышат»: тянутся друг к другу и не дотягиваются.
+        var reach = reduced ? 0 : Math.sin(t * 0.7) * 0.07 * p;
+        left.position.x = reflLeft.position.x = -7 * (1 - p) + reach;
+        right.position.x = reflRight.position.x = 7 * (1 - p) - reach;
+        blueprint.visible = reflBlueprint.visible = p > 0.92;
+        dashMat.opacity = 0.25 + 0.35 * (0.5 + 0.5 * Math.sin(t * 2.2));
+
+        var arr = sparkGeo.attributes.position.array;
+        for (var i = 0; i < SPARKS; i++) {
+            arr[i * 3 + 1] += sparkSpeed[i] * 0.012;
+            arr[i * 3] += Math.sin(t * 0.8 + i) * 0.0012;
+            if (arr[i * 3 + 1] > 4.4) arr[i * 3 + 1] = -2.2;
+        }
+        sparkGeo.attributes.position.needsUpdate = true;
+        sparks.material.opacity = 0.9 * p;
+
+        gapLight.intensity = (2.0 + Math.sin(t * 3.1) * 0.35 + Math.sin(t * 7.3) * 0.15) * p;
+        gapGlow.material.opacity = (0.26 + 0.08 * Math.sin(t * 1.4)) * p;
+        stars.rotation.y = t * 0.004;
+
+        camX += (mouseX * 1.6 - camX) * 0.035;
+        camY += (-mouseY * 0.7 - camY) * 0.035;
+        var drift = reduced ? 0 : Math.sin(t * 0.18) * 0.6;
+        camera.position.set(baseCam.x + camX + drift, baseCam.y + camY, baseCam.z + (1 - p) * 4);
+        camera.lookAt(target);
+        renderer.render(scene, camera);
+    }
+
+    var running = true;
+    function loop() {
+        if (!running) return;
+        frame();
+        if (!reduced) requestAnimationFrame(loop);
+    }
+    // Во вкладке в фоне сцену не считаем.
+    document.addEventListener('visibilitychange', function () {
+        if (document.hidden) { running = false; }
+        else if (!running) { running = true; loop(); }
+    });
+    loop();
+    if (reduced) window.addEventListener('resize', frame, { passive: true });
 }
 
 function bridge404LoadScript(src, onload, onerror) {
@@ -258,105 +555,12 @@ function bridge404LoadScript(src, onload, onerror) {
     document.head.appendChild(script);
 }
 
-function bridge404StartScene() {
-    if (window.bridge404SceneStarted) return;
-    if (typeof THREE === 'undefined') return; // graceful CSS-only fallback
-    window.bridge404SceneStarted = true;
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    var canvas = document.getElementById('scene');
-    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    canvas.dataset.engine = 'three';
-    document.documentElement.classList.add('three-ready');
-
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.z = 7;
-
-    var group = new THREE.Group();
-    scene.add(group);
-
-    // Wireframe planet — same DNA as the Projects Universe
-    var planet = new THREE.LineSegments(
-        new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(2.3, 2)),
-        new THREE.LineBasicMaterial({ color: 0x8A7B66, transparent: true, opacity: 0.28 })
-    );
-    group.add(planet);
-
-    var inner = new THREE.LineSegments(
-        new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(1.55, 1)),
-        new THREE.LineBasicMaterial({ color: 0xD4C3A3, transparent: true, opacity: 0.14 })
-    );
-    group.add(inner);
-
-    // A ring of small "unfinished bridge" pylon points orbiting the planet
-    var dots = new THREE.Group();
-    var dotGeo = new THREE.SphereGeometry(0.035, 8, 8);
-    var dotMat = new THREE.MeshBasicMaterial({ color: 0xD4C3A3, transparent: true, opacity: 0.9 });
-    for (var i = 0; i < 26; i++) {
-        // leave a visible gap in the ring — the "missing span" of the bridge
-        var a = (i / 30) * Math.PI * 2;
-        var d = new THREE.Mesh(dotGeo, dotMat);
-        d.position.set(Math.cos(a) * 3.4, Math.sin(a * 2) * 0.18, Math.sin(a) * 3.4);
-        dots.add(d);
-    }
-    dots.rotation.x = 0.42;
-    group.add(dots);
-
-    var mouseX = 0, mouseY = 0;
-    document.addEventListener('mousemove', function (e) {
-        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-    }, { passive: true });
-
-    function resize() {
-        var w = window.innerWidth, h = window.innerHeight;
-        renderer.setSize(w, h, false);
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    var t = 0;
-    function tick() {
-        requestAnimationFrame(tick);
-        if (!reduced) {
-            t += 0.0035;
-            planet.rotation.y = t;
-            planet.rotation.x = t * 0.35;
-            inner.rotation.y = -t * 0.7;
-            dots.rotation.y = t * 0.5;
-            group.rotation.x += ((mouseY * 0.22) - group.rotation.x) * 0.04;
-            group.rotation.z += ((mouseX * 0.12) - group.rotation.z) * 0.04;
-        }
-        renderer.render(scene, camera);
-    }
-    tick();
-}
-
 (function () {
     bridge404SetLang(bridge404InitialLang());
-    bridge404SetFileLinks();
-
-    if (typeof THREE !== 'undefined') {
-        bridge404StartScene();
-        return;
-    }
-
-    var localThree = window.location.protocol === 'file:'
-        ? 'vendor/three.r128.min.js'
-        : '/vendor/three.r128.min.js';
-
+    if (typeof THREE !== 'undefined') { bridge404StartScene(); return; }
+    var localThree = window.location.protocol === 'file:' ? 'vendor/three.r128.min.js' : '/vendor/three.r128.min.js';
     bridge404LoadScript(localThree, bridge404StartScene, function () {
-        bridge404LoadScript(
-            'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
-            bridge404StartScene,
-            function () {
-                document.documentElement.classList.add('three-fallback');
-            }
-        );
+        bridge404LoadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', bridge404StartScene, function () {});
     });
 })();
 </script>
