@@ -4,16 +4,19 @@ import '../styles/global.css';
 const origin = 'https://www.bridgeconsult.uz';
 const pageUrl = `${origin}/larisa/`;
 const shortUrl = 'bridgeconsult.uz/larisa';
-const pageTitle = 'Лариса Белоусова — Founder & Director, BRIDGE Consult';
+// В поиске её ищут и латиницей («larisa belousova»), поэтому оба написания в заголовке.
+const pageTitle = 'Лариса Белоусова (Larisa Belousova) — BRIDGE Consult';
 const pageDescription =
-  'Лариса Белоусова — специалист по инфраструктурным контрактам: FIDIC, EPC/EPC+F, закупки, claims, предотвращение и разрешение споров. Визитная карточка, контакты и CV.';
+  'Лариса Белоусова — специалист по инфраструктурным контрактам: FIDIC, EPC/EPC+F, закупки, claims и разрешение споров. Визитная карточка, контакты и CV.';
 const year = new Date().getFullYear();
 
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
+  // Тот же @id, что на главной и в лендингах: Google связывает их в одного человека.
+  '@id': `${origin}/#larisa-belousova`,
   name: 'Larisa K. Belousova',
-  alternateName: ['Лариса Константиновна Белоусова', 'Larisa Belousova'],
+  alternateName: ['Лариса Константиновна Белоусова', 'Лариса Белоусова', 'Larisa Belousova', 'Larissa Belousova'],
   jobTitle: 'Founder & Director',
   description:
     'Infrastructure contracts specialist with 27+ years of experience, supporting governments, international financial institutions and private clients in the delivery of complex infrastructure projects.',
@@ -23,6 +26,7 @@ const personSchema = {
   telephone: '+998330001530',
   worksFor: {
     '@type': 'Organization',
+    '@id': `${origin}/#organization`,
     name: 'BRIDGE Consult LLC',
     url: origin
   },

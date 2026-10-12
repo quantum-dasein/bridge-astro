@@ -39,7 +39,9 @@ const shareLabel = lang === 'uz' ? 'Ulashish' : lang === 'en' ? 'Share' : 'По�
 const videoCaption = post.data.videoCaption ?? (lang === 'uz' ? 'FIDIC OSH — Birinchi uchrashuv' : lang === 'en' ? 'FIDIC OSH — First Meeting' : 'FIDIC OSH — Первая встреча');
 const fallbackImage = '/larisa-belousova-uznews.png';
 
-const pageTitle = `${title} | Bridge Consult`;
+// Google обрезает заголовок примерно после 60 символов: приписку бренда добавляем, только если она помещается.
+const serpTitle = post.data.seoTitle ?? title;
+const pageTitle = serpTitle.length + " | Bridge Consult".length <= 60 ? `${serpTitle} | Bridge Consult` : serpTitle;
 const pageUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
 const encodedUrl = encodeURIComponent(pageUrl);
 const encodedTitle = encodeURIComponent(title);
@@ -57,7 +59,7 @@ const newsArticleJsonLd = {
 	description: excerpt,
 	image: [absoluteImage],
 	datePublished: date.toISOString(),
-	dateModified: date.toISOString(),
+	dateModified: (post.data.updated ?? date).toISOString(),
 	mainEntityOfPage: {
 		'@type': 'WebPage',
 		'@id': pageUrl,
@@ -106,7 +108,7 @@ const videoJsonLd = video
 		<link rel="alternate" hreflang="uz" href={langUrls.uz} />
 		<link rel="alternate" hreflang="x-default" href={langUrls.ru} />
 		<meta property="article:published_time" content={date.toISOString()} />
-		<meta property="article:modified_time" content={date.toISOString()} />
+		<meta property="article:modified_time" content={(post.data.updated ?? date).toISOString()} />
 		{tags.map((tag) => <meta property="article:tag" content={tag} />)}
 		<script type="application/ld+json" set:html={JSON.stringify(newsArticleJsonLd)}></script>
 		{videoJsonLd && <script type="application/ld+json" set:html={JSON.stringify(videoJsonLd)}></script>}

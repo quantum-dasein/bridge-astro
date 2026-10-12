@@ -14,9 +14,9 @@
 export const offerUz = {
 	lang: 'uz',
 	meta: {
-		title: "To'liq shartnomaviy qo'llab-quvvatlash — pudratchilar uchun BRIDGE Consult",
+		title: 'Pudratchilar uchun shartnomaviy yordam | BRIDGE Consult',
 		description:
-			"FIDIC va natijaga asoslangan shartnomalar bo'yicha infratuzilma loyihalarida hujjat aylanishi, shartnomani moliyaviy administratsiya qilish va Pudratchi manfaatlarini huquqiy himoya qilish.",
+			'FIDIC infratuzilma loyihalarida hujjat aylanishi, shartnomani moliyaviy administratsiya qilish va Pudratchi manfaatlarini huquqiy himoya qilish.',
 	},
 
 	nav: [

@@ -46,6 +46,11 @@
       "permanent": true
     },
     {
+      "source": "/news/en/fidic-daaba-explained/",
+      "destination": "/news/en/fidic-daab-explained/",
+      "permanent": true
+    },
+    {
       "source": "/news/en-fidic-eot-explained/",
       "destination": "/news/en/fidic-eot-explained/",
       "permanent": true

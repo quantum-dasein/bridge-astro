@@ -42,7 +42,7 @@ export const projectCases = [
 		client: 'АО «Tashkent Invest Company»',
 		institution: 'Городская инфраструктура Ташкента',
 		image: '/tashkent-invest-company.png',
-		metaTitle: 'Tashkent Invest Company | Закупки и управление EPC+F контрактами',
+		metaTitle: 'Tashkent Invest Company: управление EPC+F контрактами',
 		metaDescription:
 			'Кейс Bridge Consult: система закупок и управления контрактами для инфраструктурных проектов Tashkent Invest Company по модели EPC+F.',
 		summary:

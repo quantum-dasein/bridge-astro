@@ -12,7 +12,7 @@
 export const academyUz = {
 	lang: 'uz',
 	meta: {
-		title: "Ilg'or shartnoma menejmenti — onlayn dastur, BRIDGE Consult Academy",
+		title: 'FIDIC shartnoma menejmenti onlayn — BRIDGE Consult Academy',
 		description:
 			"1999 va 2017 tahrirlar bo'yicha 18 ta modul va 40 dan ortiq amaliy keys. Jonli onlayn mashg'ulotlar, yozuv ishtirokchida qoladi, o'zbekcha subtitrlar.",
 	},

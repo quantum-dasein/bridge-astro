@@ -64,7 +64,7 @@ const text: Record<'en' | 'uz', Record<ProjectSlug, ProjectText>> = {
 			period: '2025 - present',
 			client: 'JSC Tashkent Invest Company',
 			institution: 'Tashkent urban infrastructure',
-			metaTitle: 'Tashkent Invest Company | EPC+F Procurement and Contract Management',
+			metaTitle: 'Tashkent Invest Company: EPC+F Contract Management',
 			metaDescription:
 				'Bridge Consult case study: procurement and contract management system for Tashkent Invest Company infrastructure projects under EPC+F.',
 			summary:
@@ -275,7 +275,7 @@ const text: Record<'en' | 'uz', Record<ProjectSlug, ProjectText>> = {
 			period: '2025 - hozirgacha',
 			client: 'AJ Tashkent Invest Company',
 			institution: 'Toshkent shahar infratuzilmasi',
-			metaTitle: 'Tashkent Invest Company | EPC+F xaridlar va shartnoma boshqaruvi',
+			metaTitle: 'Tashkent Invest Company: EPC+F shartnoma boshqaruvi',
 			metaDescription:
 				'Bridge Consult keysi: Tashkent Invest Company infratuzilma loyihalari uchun EPC+F modeli bo‘yicha xaridlar va shartnomalarni boshqarish tizimi.',
 			summary:
@@ -431,9 +431,9 @@ const text: Record<'en' | 'uz', Record<ProjectSlug, ProjectText>> = {
 			category: 'Energetika',
 			client: 'KT-Corporation (Koreya)',
 			institution: 'Osiyo taraqqiyot banki (OTB)',
-			metaTitle: 'Avtomatlashtirilgan elektr energiyasi hisobi | Bridge Consult keysi',
+			metaTitle: 'Elektr energiyasi hisobi tizimi | Bridge Consult keysi',
 			metaDescription:
-				'Bridge Consult keysi: OTB ishtirokida Buxoro, Jizzax va Samarqand viloyatlari uchun elektr energiyasini monitoring va hisobga olish avtomatlashtirilgan tizimi.',
+				'Bridge Consult keysi: OTB ishtirokida Buxoro, Jizzax va Samarqand viloyatlarida elektr energiyasini hisobga olishning avtomatlashtirilgan tizimi.',
 			summary:
 				'Buxoro, Jizzax va Samarqand viloyatlari iste’molchilari uchun elektr energiyasini monitoring va hisobga olish avtomatlashtirilgan tizimini joriy etish.',
 			context:

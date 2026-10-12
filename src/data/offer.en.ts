@@ -14,9 +14,9 @@
 export const offerEn = {
 	lang: 'en',
 	meta: {
-		title: 'Full contract administration for projects — BRIDGE Consult for contractors',
+		title: 'Contract Administration for Contractors | BRIDGE Consult',
 		description:
-			'Document control, financial administration of the contract and legal protection of the Contractor on infrastructure projects under FIDIC and output- and performance-based contracts.',
+			'Document control, financial contract administration and legal protection for Contractors on FIDIC infrastructure projects and output-based contracts.',
 	},
 
 	nav: [

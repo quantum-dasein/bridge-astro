@@ -12,7 +12,7 @@
 export const academyRu = {
 	lang: 'ru',
 	meta: {
-		title: 'Продвинутый контракт-менеджмент — онлайн-программа BRIDGE Consult Academy',
+		title: 'Контракт-менеджмент FIDIC онлайн — BRIDGE Consult Academy',
 		description:
 			'18 модулей и более 40 практических кейсов по редакциям FIDIC 1999 и 2017. Живые занятия онлайн, запись остаётся у участника, узбекские субтитры.',
 	},

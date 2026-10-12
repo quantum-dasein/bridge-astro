@@ -12,9 +12,9 @@
 export const academyEn = {
 	lang: 'en',
 	meta: {
-		title: 'Advanced Contract Management — online programme, BRIDGE Consult Academy',
+		title: 'FIDIC Contract Management Online — BRIDGE Consult Academy',
 		description:
-			'18 modules and more than 40 practical cases across the 1999 and 2017 editions. Live online sessions, the recording stays with the participant, Uzbek subtitles.',
+			'18 modules and 40+ practical cases on the FIDIC 1999 and 2017 editions. Live online sessions, recordings stay with participants, Uzbek subtitles.',
 	},
 
 	nav: [

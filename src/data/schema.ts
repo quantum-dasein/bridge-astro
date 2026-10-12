@@ -37,6 +37,7 @@ const organization = {
 		addressCountry: 'UZ',
 	},
 	founder: { '@id': PERSON_ID },
+	sameAs: ['https://t.me/fidicuzb'],
 };
 
 /**
@@ -48,10 +49,11 @@ const person = {
 	'@type': 'Person',
 	'@id': PERSON_ID,
 	name: 'Larisa Belousova',
-	alternateName: 'Лариса Константиновна Белоусова',
+	alternateName: ['Лариса Белоусова', 'Лариса Константиновна Белоусова', 'Larissa Belousova'],
 	jobTitle: 'Founder and Director',
 	worksFor: { '@id': ORG_ID },
-	url: `${SITE}/academy/`,
+	url: `${SITE}/larisa/`,
+	sameAs: ['https://www.linkedin.com/in/larissalk'],
 	image: `${SITE}/larisa-belousova.jpg`,
 	hasCredential: [
 		{

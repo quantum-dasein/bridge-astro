@@ -5,7 +5,11 @@ const news = defineCollection({
 	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/news' }),
 	schema: z.object({
 		title: z.string(),
+		// Короткий заголовок для выдачи, если основной длиннее ~60 символов и обрезается.
+		seoTitle: z.string().optional(),
 		date: z.date(),
+		// Дата существенного обновления текста — попадает в dateModified.
+		updated: z.date().optional(),
 		excerpt: z.string(),
 		// excerpt служит текстом карточки в листингах и может быть длинным.
 		// metaDescription — короткий вариант (~155 симв.) специально для <meta name="description">,

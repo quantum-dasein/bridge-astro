@@ -1,7 +1,8 @@
 User-agent: *
 Allow: /
 
-Disallow: /_astro/
+# /_astro/ не закрываем: там стили и скрипты страниц, без них Google видит страницу
+# без оформления и может посчитать её неудобной для телефона.
 Disallow: /api/
 # /summer-school/ намеренно скрыта через <meta name="robots" content="noindex">.
 # Disallow здесь не ставим: он бы запретил Google прочитать страницу,
