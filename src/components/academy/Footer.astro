@@ -28,6 +28,8 @@ interface Props {
 }
 
 const { description, navTitle, nav, contactsTitle, address, rights, disclaimer } = Astro.props;
+// The pages pass their language only through the copy; the rights line tells it apart.
+const credit = /Barcha/.test(rights) ? 'Sayt — Rodion Belousov' : /[А-Яа-я]/.test(rights) ? 'Сайт — Rodion Belousov' : 'Website by Rodion Belousov';
 ---
 
 <footer class="relative overflow-hidden bg-academy-carbon px-6 pt-16 pb-9 text-academy-paper sm:px-10 lg:px-14 lg:pt-20">
@@ -126,6 +128,9 @@ const { description, navTitle, nav, contactsTitle, address, rights, disclaimer }
 			</p>
 			<p class="text-[0.76rem] font-light text-academy-paper/35">
 				&copy; 2016–2026 Bridge Consult. {rights}
+			</p>
+			<p class="mt-2 text-[0.76rem] font-light text-academy-paper/35">
+				<a href="https://rodionbelousov.studio/" target="_blank" rel="noopener" class="transition-colors duration-300 hover:text-academy-brass">{credit}</a>
 			</p>
 		</div>
 	</div>

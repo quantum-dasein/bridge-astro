@@ -19,6 +19,7 @@ const t = {
 		contacts: 'Контактные данные',
 		address: '100180, Республика Узбекистан,<br>г. Ташкент, Юнусабадский район,<br>ул. Ахмада Дониша, 12 квартал, 20А',
 		rights: 'Все права защищены.',
+		credit: 'Сайт — Rodion Belousov',
 	},
 	en: {
 		description: 'Your trusted partner in contract engineering and dispute resolution. We build bridges between legal certainty and successful project delivery.',
@@ -32,6 +33,7 @@ const t = {
 		contacts: 'Contact Details',
 		address: '100180, Republic of Uzbekistan,<br>Tashkent, Yunusabad district,<br>Ahmad Donish St., block 12, 20A',
 		rights: 'All rights reserved.',
+		credit: 'Website by Rodion Belousov',
 	},
 	uz: {
 		description: 'Shartnoma injiniringi va nizolarni hal qilishda ishonchli hamkoringiz. Huquqiy ishonchlilik va loyihalarni muvaffaqiyatli amalga oshirish o‘rtasida ko‘priklar quramiz.',
@@ -45,6 +47,7 @@ const t = {
 		contacts: 'Aloqa ma’lumotlari',
 		address: '100180, O‘zbekiston Respublikasi,<br>Toshkent shahri, Yunusobod tumani,<br>Ahmad Donish ko‘chasi, 12-kvartal, 20A',
 		rights: 'Barcha huquqlar himoyalangan.',
+		credit: 'Sayt — Rodion Belousov',
 	},
 }[lang as 'ru' | 'en' | 'uz'] ?? null as never;
 ---
@@ -99,6 +102,7 @@ const t = {
 		</div>
 		<div class="pt-6 md:pt-8 border-t border-gray-800 flex flex-col items-center justify-center text-xs md:text-sm text-gray-500 font-light text-center">
 			<p>&copy; 2016-2026 Bridge Consult. {t.rights}</p>
+			<p class="mt-2"><a href="https://rodionbelousov.studio/" target="_blank" rel="noopener" class="hover:text-bridge-taupe transition-colors">{t.credit}</a></p>
 		</div>
 	</div>
 </footer>
