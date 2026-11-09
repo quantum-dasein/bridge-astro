@@ -54,21 +54,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // Умная шапка (сжимается при скролле; в тёмной теме не подменяем фон на белый)
     const header = document.querySelector('header');
     if (header) {
+        // Классы трогаем только когда состояние реально сменилось и не чаще кадра:
+        // раньше обработчик дёргал DOM на каждое событие прокрутки.
+        let scrolled = null;
+        let queued = false;
+        const sync = () => {
+            queued = false;
+            const now = window.scrollY > 50;
+            if (now === scrolled) return;
+            scrolled = now;
+            header.classList.toggle('header-scrolled', now);
+            if (isDarkTheme()) return;
+            if (now) header.classList.replace('bg-white/95', 'bg-white');
+            else header.classList.replace('bg-white', 'bg-white/95');
+        };
         window.addEventListener('scroll', () => {
-            if (isDarkTheme()) {
-                header.classList.toggle('header-scrolled', window.scrollY > 50);
-                return;
-            }
-            if (window.scrollY > 50) {
-                header.classList.add('header-scrolled');
-                header.classList.replace('bg-white/95', 'bg-white');
-            } else {
-                header.classList.remove('header-scrolled');
-                header.classList.replace('bg-white', 'bg-white/95');
-            }
-        });
+            if (queued) return;
+            queued = true;
+            requestAnimationFrame(sync);
+        }, { passive: true });
+        sync();
     }
 });
+
+// Запуск «после прелоадера»: пока он на экране, анимации под ним не проигрываем
+function bcAfterPreloader(fn) {
+    let done = false;
+    const run = () => { if (done) return; done = true; fn(); };
+    if (document.documentElement.classList.contains('pl-on')) {
+        window.addEventListener('bc:reveal', run);
+        setTimeout(run, 7000);
+    } else {
+        run();
+    }
+}
 
 // Плавная анимация для аккордеона
 document.addEventListener('DOMContentLoaded', () => {
@@ -148,43 +167,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const animationDuration = 2500;
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const animateCounters = () => {
-        if (prefersReduced) {
-            counters.forEach(counter => { counter.innerText = counter.getAttribute('data-target'); });
-            return;
-        }
-        counters.forEach(counter => {
-            const target = +counter.getAttribute('data-target');
-            const startTime = performance.now();
+    if (!counters.length) return;
 
-            const step = (currentTime) => {
-                const elapsedTime = currentTime - startTime;
-                const progress = Math.min(elapsedTime / animationDuration, 1);
-                const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+    // Каждый счётчик считает один раз и только свой. Раньше появление любого
+    // из них перезапускало все четыре — на телефоне цифры прыгали обратно к нулю.
+    const animateCounter = (counter) => {
+        if (counter.dataset.counted) return;
+        counter.dataset.counted = '1';
+        const target = +counter.getAttribute('data-target');
+        if (prefersReduced) { counter.textContent = target; return; }
+        const startTime = performance.now();
 
-                counter.innerText = Math.floor(easeProgress * target);
-
-                if (progress < 1) {
-                    requestAnimationFrame(step);
-                } else {
-                    counter.innerText = target;
-                }
-            };
-            requestAnimationFrame(step);
-        });
+        const step = (currentTime) => {
+            const progress = Math.min((currentTime - startTime) / animationDuration, 1);
+            const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+            const value = String(progress < 1 ? Math.floor(easeProgress * target) : target);
+            if (counter.textContent !== value) counter.textContent = value;
+            if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
     };
 
-    const observerOptions = { threshold: 0.5 };
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateCounters();
+    bcAfterPreloader(() => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                animateCounter(entry.target);
                 observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    counters.forEach(counter => observer.observe(counter));
+            });
+        }, { threshold: 0.5 });
+        counters.forEach(counter => observer.observe(counter));
+    });
 });
 
 /// --- ЛОГИКА КНОПКИ "ЧИТАТЬ ПОЛНОСТЬЮ" ДЛЯ МОБИЛЬНЫХ ---
@@ -536,4 +549,264 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 }());
+
+// ══ Главная v2: живые эффекты. Работают только на body.bc-home ══════════════
+
+// Сетка узлов на 2D-canvas — замена three.js + Vanta в блоке FAQ.
+// Рисует только пока блок на экране и вкладка активна.
+function bcNet(host, reduce) {
+    const canvas = document.createElement('canvas');
+    canvas.setAttribute('aria-hidden', 'true');
+    canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block';
+    host.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const LINK = 165;
+    const section = host.closest('section') || host;
+    let w = 0, h = 0, nodes = [], raf = 0, sizeRaf = 0, onScreen = false, last = 0;
+    let px = -9999, py = -9999;
+
+    const make = () => {
+        const z = 0.35 + Math.random() * 0.65; // «глубина»: дальние узлы мельче, бледнее и медленнее
+        const a = Math.random() * Math.PI * 2;
+        const sp = (0.07 + Math.random() * 0.17) * z;
+        return { x: Math.random() * w, y: Math.random() * h, z, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp };
+    };
+
+    function draw(dt) {
+        ctx.clearRect(0, 0, w, h);
+        for (const n of nodes) {
+            n.x += n.vx * dt; n.y += n.vy * dt;
+            if (n.x < -20) n.x = w + 20; else if (n.x > w + 20) n.x = -20;
+            if (n.y < -20) n.y = h + 20; else if (n.y > h + 20) n.y = -20;
+            const dx = n.x - px, dy = n.y - py, d2 = dx * dx + dy * dy;
+            if (d2 < 16900 && d2 > 1) { // курсор мягко расталкивает узлы
+                const d = Math.sqrt(d2), f = (130 - d) / 130 * 0.7 * dt;
+                n.x += dx / d * f; n.y += dy / d * f;
+            }
+        }
+        // Поверх холста лежит затемняющий градиент секции, поэтому рисуем
+        // светлым акцентом палитры — на экране он читается как приглушённый тауп
+        ctx.lineWidth = 1.2;
+        for (let i = 0; i < nodes.length; i++) {
+            const a = nodes[i];
+            ctx.strokeStyle = '#D4C3A3';
+            for (let j = i + 1; j < nodes.length; j++) {
+                const b = nodes[j];
+                const dx = a.x - b.x, dy = a.y - b.y;
+                if (dx > LINK || dx < -LINK || dy > LINK || dy < -LINK) continue;
+                const d = Math.sqrt(dx * dx + dy * dy);
+                if (d > LINK) continue;
+                ctx.globalAlpha = (1 - d / LINK) * (0.3 + 0.7 * Math.min(a.z, b.z));
+                ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+            }
+            const cx = a.x - px, cy = a.y - py;
+            if (cx < 190 && cx > -190 && cy < 190 && cy > -190) {
+                const cd = Math.sqrt(cx * cx + cy * cy);
+                if (cd < 190) { // связи тянутся к курсору
+                    ctx.globalAlpha = 1 - cd / 190;
+                    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(px, py); ctx.stroke();
+                }
+            }
+        }
+        ctx.fillStyle = '#D4C3A3';
+        for (const n of nodes) {
+            ctx.globalAlpha = 0.45 + n.z * 0.55;
+            ctx.beginPath(); ctx.arc(n.x, n.y, 1.2 + n.z * 1.8, 0, 6.2832); ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+    }
+
+    function resize() {
+        sizeRaf = 0;
+        const r = host.getBoundingClientRect();
+        if (r.width < 2 || r.height < 2) return;
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        if (Math.abs(r.width - w) < 1 && Math.abs(r.height - h) < 1) return;
+        w = r.width; h = r.height;
+        canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const want = Math.max(22, Math.min(120, Math.round(w * h / 15000)));
+        while (nodes.length < want) nodes.push(make());
+        nodes.length = want;
+        for (const n of nodes) { if (n.x > w + 20) n.x = Math.random() * w; if (n.y > h + 20) n.y = Math.random() * h; }
+        draw(0);
+    }
+    const queueResize = () => { if (!sizeRaf) sizeRaf = requestAnimationFrame(resize); };
+
+    function frame(t) {
+        raf = 0;
+        if (!onScreen || document.hidden) return;
+        const dt = last ? Math.min((t - last) / 16.67, 3) : 1;
+        last = t;
+        draw(dt);
+        raf = requestAnimationFrame(frame);
+    }
+    const start = () => { if (!raf && onScreen && !reduce && !document.hidden) { last = 0; raf = requestAnimationFrame(frame); } };
+
+    new IntersectionObserver((entries) => {
+        onScreen = entries[entries.length - 1].isIntersecting;
+        if (onScreen) start();
+    }, { rootMargin: '120px 0px' }).observe(host);
+    document.addEventListener('visibilitychange', start);
+    // Секция растёт, когда открывают ответ, — холст подстраивается под неё
+    if (window.ResizeObserver) new ResizeObserver(queueResize).observe(host);
+    else window.addEventListener('resize', queueResize, { passive: true });
+
+    section.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'touch') return;
+        const r = host.getBoundingClientRect();
+        px = e.clientX - r.left; py = e.clientY - r.top;
+    }, { passive: true });
+    section.addEventListener('pointerleave', () => { px = py = -9999; });
+
+    resize();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (!document.body.classList.contains('bc-home')) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    // 1. Фоновые видео играют только пока их секция на экране.
+    //    Раньше оба ролика декодировались всё время, даже в самом низу страницы.
+    if (!reduce) {
+        document.querySelectorAll('video[data-bc-autoplay]').forEach((video) => {
+            new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const p = video.play();
+                        if (p && p.catch) p.catch(() => {}); // режим энергосбережения — остаётся постер
+                    } else {
+                        video.pause();
+                    }
+                });
+            }, { rootMargin: '200px 0px' }).observe(video);
+        });
+    }
+
+    // 2. Секции вне экрана ставят свои бесконечные CSS-анимации на паузу
+    const offIO = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => entry.target.classList.toggle('bc-off', !entry.isIntersecting));
+    }, { rootMargin: '250px 0px' });
+    document.querySelectorAll('section, .bc-marquee').forEach((el) => offIO.observe(el));
+
+    // 3. Сетка в FAQ
+    document.querySelectorAll('.bc-net').forEach((el) => bcNet(el, reduce));
+
+    // 4. Свет за курсором на тёмных карточках (один обработчик на документ)
+    if (fine) {
+        const SPOT = '.glass-card, .bc-why-card, .accordion-item, .faq-item, #hp-news-grid > a';
+        let spotEl = null, sx = 0, sy = 0, spotRaf = 0;
+        document.addEventListener('pointermove', (e) => {
+            const el = e.target && e.target.closest ? e.target.closest(SPOT) : null;
+            if (!el) return;
+            spotEl = el; sx = e.clientX; sy = e.clientY;
+            if (spotRaf) return;
+            spotRaf = requestAnimationFrame(() => {
+                spotRaf = 0;
+                const r = spotEl.getBoundingClientRect();
+                spotEl.style.setProperty('--mx', Math.round(sx - r.left) + 'px');
+                spotEl.style.setProperty('--my', Math.round(sy - r.top) + 'px');
+            });
+        }, { passive: true });
+    }
+
+    // 5. Наклон фото в команде — свой, без библиотеки
+    if (fine && !reduce && !window.VanillaTilt) {
+        document.querySelectorAll('.tilt-card').forEach((card) => {
+            const glare = document.createElement('span');
+            glare.className = 'bc-glare';
+            glare.setAttribute('aria-hidden', 'true');
+            card.appendChild(glare);
+            let rect = null, raf = 0, rx = 0, ry = 0, gx = 50, gy = 50;
+            const apply = () => {
+                raf = 0;
+                card.style.transform = 'perspective(900px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) scale3d(1.03,1.03,1.03)';
+                glare.style.background = 'radial-gradient(circle at ' + gx.toFixed(0) + '% ' + gy.toFixed(0) + '%, rgba(255,255,255,.26), transparent 62%)';
+            };
+            card.addEventListener('pointerenter', () => { rect = card.getBoundingClientRect(); card.classList.add('bc-tilting'); });
+            card.addEventListener('pointermove', (e) => {
+                if (!rect) return;
+                const x = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+                const y = Math.min(Math.max((e.clientY - rect.top) / rect.height, 0), 1);
+                ry = (x - 0.5) * 10; rx = (0.5 - y) * 10; gx = x * 100; gy = y * 100;
+                if (!raf) raf = requestAnimationFrame(apply);
+            });
+            card.addEventListener('pointerleave', () => {
+                rect = null;
+                if (raf) { cancelAnimationFrame(raf); raf = 0; }
+                card.classList.remove('bc-tilting');
+                card.style.transform = '';
+            });
+        });
+    }
+
+    // 6. «Магнитные» кнопки. Двигаем свойством translate — оно складывается
+    //    с transform, которым Tailwind приподнимает кнопку при наведении.
+    if (fine && !reduce) {
+        document.querySelectorAll('.bc-magnet').forEach((el) => {
+            let rect = null;
+            el.addEventListener('pointerenter', () => { rect = el.getBoundingClientRect(); });
+            el.addEventListener('pointermove', (e) => {
+                if (!rect) return;
+                const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
+                const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
+                el.style.translate = (x * 12).toFixed(1) + 'px ' + (y * 9).toFixed(1) + 'px';
+            });
+            el.addEventListener('pointerleave', () => { rect = null; el.style.translate = ''; });
+        });
+    }
+
+    // 7. Первый экран: фон отстаёт от прокрутки, за курсором идёт мягкий свет
+    const heroBg = document.querySelector('.bc-hero-bg');
+    const hero = heroBg && heroBg.parentElement;
+    if (hero && !reduce) {
+        if (window.innerWidth >= 768) {
+            let queued = false, heroH = hero.offsetHeight;
+            const move = () => {
+                queued = false;
+                const y = window.scrollY;
+                if (y <= heroH) heroBg.style.transform = 'translate3d(0,' + (y * 0.22).toFixed(1) + 'px,0)';
+            };
+            window.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(move); } }, { passive: true });
+            window.addEventListener('resize', () => { heroH = hero.offsetHeight; }, { passive: true });
+        }
+        if (fine) {
+            const glow = document.createElement('div');
+            glow.className = 'bc-hero-glow';
+            glow.setAttribute('aria-hidden', 'true');
+            hero.insertBefore(glow, heroBg.nextSibling);
+            let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0, top = 0, left = 0;
+            const tick = () => {
+                cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12;
+                glow.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+                raf = (Math.abs(tx - cx) > 0.5 || Math.abs(ty - cy) > 0.5) ? requestAnimationFrame(tick) : 0;
+            };
+            hero.addEventListener('pointerenter', () => {
+                const r = hero.getBoundingClientRect();
+                top = r.top + window.scrollY; left = r.left;
+            });
+            hero.addEventListener('pointermove', (e) => {
+                tx = e.clientX - left; ty = e.pageY - top;
+                if (!glow.classList.contains('is-on')) { cx = tx; cy = ty; glow.classList.add('is-on'); }
+                if (!raf) raf = requestAnimationFrame(tick);
+            }, { passive: true });
+            hero.addEventListener('pointerleave', () => glow.classList.remove('is-on'));
+        }
+    }
+
+    // 8. Если окно расширили до десктопа с открытым мобильным меню — закрываем его,
+    //    иначе страница оставалась с заблокированной прокруткой
+    const desktop = window.matchMedia('(min-width: 1200px)');
+    const closeMenu = () => {
+        const menu = document.getElementById('mobile-menu');
+        const btn = document.getElementById('mobile-menu-btn');
+        if (desktop.matches && menu && btn && menu.classList.contains('translate-x-0')) btn.click();
+    };
+    if (desktop.addEventListener) desktop.addEventListener('change', closeMenu);
+    else if (desktop.addListener) desktop.addListener(closeMenu);
+});
 

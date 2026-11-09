@@ -5,7 +5,6 @@
         <!-- Google Analytics loaded after cookie consent (see main.js) -->
         <meta charset="UTF-8">
         <!-- Preconnect to the CDN origins this page already depends on: saves DNS+TLS setup -->
-        <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
         <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
         <link rel="preconnect" href="https://ajax.googleapis.com" crossorigin>
         <link rel="preconnect" href="https://unpkg.com" crossorigin>
@@ -130,7 +129,8 @@
         </script>
     
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-        <link rel="stylesheet" href="../style.css">
+        <script>try{if(!sessionStorage.getItem('bc_pl')&&!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)){sessionStorage.setItem('bc_pl','1');document.documentElement.className+=' pl-on'}}catch(e){}</script>
+        <link rel="stylesheet" href="../style.css?v=20261109">
         
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
         <style>
@@ -201,240 +201,73 @@
         <link rel="stylesheet" href="../tw.css">
 
     </head>
-<body class="font-sans text-bridge-dark antialiased bg-white selection:bg-bridge-taupe/20 overflow-x-hidden">
-    <script>
-        (function() {
-          var KEY_LS = 'bc_preloader_ts';
-          var KEY_SS = 'bc_preloader_shown';
-          var lastSeen = localStorage.getItem(KEY_LS);
-          var shownThisSession = sessionStorage.getItem(KEY_SS);
-          var shouldShow = !lastSeen || !shownThisSession;
-        
-          var pl = document.getElementById('preloader');
-        
-          if (!shouldShow) {
-            if (pl) { pl.style.cssText = 'display:none!important'; }
-            else { document.write('<style>#preloader{display:none!important}</style>'); }
-            document.documentElement.style.overflow = '';
-            return;
-          }
-        
-          localStorage.setItem(KEY_LS, String(Date.now()));
-          sessionStorage.setItem(KEY_SS, '1');
-          document.documentElement.style.overflow = 'hidden';
-document.documentElement.style.height = '100%';
-document.body && (document.body.style.overflow = 'hidden');
-document.body && (document.body.style.height = '100%');
-document.body && (document.body.style.position = 'fixed');
-document.body && (document.body.style.width = '100%');
-        
-          document.addEventListener('DOMContentLoaded', function() {
-            var preloader    = document.getElementById('preloader');
-            var logoSvg      = document.getElementById('logo-svg');
-            var centerGlow   = document.getElementById('preloader-center-glow');
-            var barContainer = document.getElementById('preloader-bar-container');
-            var progressBar  = document.getElementById('preloader-progress');
-            var bufferBar    = document.getElementById('preloader-buffer');
-            var counterEl    = document.getElementById('preloader-counter');
-            var hugeCounter  = document.getElementById('huge-counter');
-            var statusEl     = document.getElementById('preloader-status');
-        
-            document.documentElement.style.overflow = '';
-        
-            var WAVE = ['lp-B','lp-R','lp-I','lp-D','lp-G','lp-E','lp-deco','lp-C','lp-O','lp-N','lp-S','lp-U','lp-L','lp-T'];
-        
-            function triggerWave(onDone) {
-              WAVE.forEach(function(id, i) {
-                setTimeout(function() {
-                  var el = document.getElementById(id);
-                  if (!el) return;
-                  el.classList.add('lit');
-                  setTimeout(function() {
-                    el.classList.remove('lit');
-                    el.classList.add('breathe');
-                  }, 350);
-                  if (i === WAVE.length - 1 && onDone) setTimeout(onDone, 350);
-                }, i * 45);
-              });
-            }
-        
-            setTimeout(function() {
-              if (logoSvg) { logoSvg.style.transform = 'translateY(0)'; logoSvg.style.opacity = '1'; }
-            }, 200);
-        
-            setTimeout(function() {
-              if (barContainer) barContainer.style.opacity = '1';
-              var count = 0;
-        
-              function tick() {
-                var inc = Math.random() * 4 + 2.5;
-                var delay = Math.random() * 18 + 12;
-        
-                if      (count > 22 && count < 24)  { delay = 180;  inc = 2; }
-                else if (count > 55 && count < 57)  { delay = 220; inc = 3; }
-                else if (count > 85)                { inc = Math.random() * 1.5 + 0.8; delay = 30; }
-        
-                count = Math.min(count + inc, 100);
-                var intC = Math.floor(count);
-                var decC = count === 100 ? '100.00' : count.toFixed(2);
-        
-                if (progressBar) progressBar.style.width = count + '%';
-                if (bufferBar) bufferBar.style.width = Math.min(count + Math.random() * 12 + 6, 100) + '%';
-                if (counterEl) counterEl.innerText = decC + '%';
-                if (hugeCounter) hugeCounter.innerText = intC;
-        
-                if (statusEl) {
-                  if      (intC >  2 && intC <=  22) statusEl.innerText = 'Erecting main pillars...';
-                  else if (intC > 22 && intC <=  55) statusEl.innerText = 'Tensioning suspension cables...';
-                  else if (intC > 55 && intC <=  85) statusEl.innerText = 'Installing bridge deck...';
-                  else if (intC > 85 && intC <  100) statusEl.innerText = 'Finalizing FIDIC compliance...';
-                }
-        
-                if (count === 100) {
-                  if (statusEl) {
-                    statusEl.innerText = 'INFRASTRUCTURE READY.';
-                    statusEl.classList.remove('animate-pulse');
-                    statusEl.style.color = '#fff';
-                  }
-                  setTimeout(function() {
-                    if (barContainer) barContainer.style.opacity = '0';
-                    if (hugeCounter) hugeCounter.style.opacity = '0';
-                    if (logoSvg) logoSvg.style.transform = 'scale(1.08)';
-                    if (centerGlow) {
-                      centerGlow.style.background = 'radial-gradient(ellipse, rgba(138,123,102,.2) 0%, transparent 70%)';
-                      centerGlow.style.transform = 'translate(-50%,-50%) scale(1.3)';
-                    }
-                    triggerWave(function() {
-                      setTimeout(function() {
-                        if (preloader) preloader.style.transform = 'translateY(-100%)';
-                        document.body.style.overflow = '';
-document.body.style.height = '';
-document.body.style.position = '';
-document.body.style.width = '';
-document.documentElement.style.height = '';
-                        if (window.AOS) { try { AOS.refreshHard(); } catch(e) {} }
-                        window.dispatchEvent(new Event('scroll'));
-                        setTimeout(function() { if (preloader) preloader.remove(); }, 900);
-                      }, 300);
-                    });
-                  }, 250);
-                } else {
-                  setTimeout(tick, delay);
-                }
-              }
-        
-              setTimeout(tick, 150);
-            }, 400);
-          });
-        })();
-        </script>
-    <div id="preloader" class="fixed inset-0 z-[999999] bg-[#090807] flex flex-col items-center justify-center transition-transform duration-[1.8s] ease-[cubic-bezier(0.76,0,0.24,1)] overflow-hidden">
-    
-        <div class="absolute inset-0 z-0 opacity-[0.05] pointer-events-none mix-blend-overlay" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
-    
-        <div id="preloader-center-glow" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[50vw] bg-bridge-taupe/0 rounded-full blur-[100px] pointer-events-none transition-all duration-[2.5s] z-0"></div>
-    
-        <div id="huge-counter" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[45vw] md:text-[35vw] font-bold pointer-events-none select-none font-serif tracking-tighter transition-opacity duration-1000 z-0" style="-webkit-text-stroke: 2px rgba(138, 123, 102, 0.12); color: transparent;">0</div>
-    
-        <div class="absolute inset-0 z-10 pointer-events-none opacity-90 flex items-end justify-center mix-blend-screen overflow-hidden">
-            <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" class="absolute w-[300%] sm:w-[200%] md:w-full h-full left-1/2 -translate-x-1/2 fill-none" style="stroke:#8A7B66;filter:drop-shadow(0 0 15px rgba(138,123,102,.6))">
-                <g style="stroke:rgba(255,255,255,.1);stroke-width:1.5;stroke-dasharray:4 8">
-                    <line x1="0" y1="270" x2="1920" y2="270" class="svg-draw-fast" />
-                    <line x1="0" y1="540" x2="1920" y2="540" class="svg-draw-fast" />
-                    <line x1="960" y1="0" x2="960" y2="1080" class="svg-draw-fast" />
-                </g>
-                <g style="stroke-width:4" class="svg-draw delay-1">
-                    <path d="M 400 1080 L 480 300 L 520 300 L 600 1080" />
-                    <line x1="420" y1="800" x2="580" y2="800" style="stroke-width:3" />
-                    <line x1="440" y1="600" x2="560" y2="600" style="stroke-width:3" />
-                    <line x1="465" y1="400" x2="535" y2="400" style="stroke-width:3" />
-                    <path d="M 1320 1080 L 1400 300 L 1440 300 L 1520 1080" />
-                    <line x1="1340" y1="800" x2="1500" y2="800" style="stroke-width:3" />
-                    <line x1="1360" y1="600" x2="1480" y2="600" style="stroke-width:3" />
-                    <line x1="1385" y1="400" x2="1455" y2="400" style="stroke-width:3" />
-                </g>
-                <path d="M -200 100 Q 960 1100 2120 100" style="stroke-width:5;filter:drop-shadow(0 0 20px rgba(138,123,102,1))" class="svg-draw delay-2" />
-                <g style="stroke:rgba(255,255,255,.4);stroke-width:2" class="svg-draw-fast delay-3">
-                    <line x1="200" y1="420" x2="200" y2="850" />
-                    <line x1="300" y1="520" x2="300" y2="850" />
-                    <line x1="700" y1="810" x2="700" y2="850" />
-                    <line x1="800" y1="845" x2="800" y2="850" />
-                    <line x1="1120" y1="845" x2="1120" y2="850" />
-                    <line x1="1220" y1="810" x2="1220" y2="850" />
-                    <line x1="1620" y1="520" x2="1620" y2="850" />
-                    <line x1="1720" y1="420" x2="1720" y2="850" />
-                </g>
-                <path d="M 0 850 L 1920 850" style="stroke:white;stroke-width:6;filter:drop-shadow(0 0 20px rgba(255,255,255,.8))" class="svg-draw delay-4" />
-                <path d="M 0 870 L 1920 870" style="stroke:rgba(138,123,102,.8);stroke-width:3" class="svg-draw delay-4" />
-            </svg>
-        </div>
-    
-        <div class="laser-scanner absolute top-0 left-0 w-full h-[15vh] z-10 pointer-events-none"></div>
-    
-        <style>
-            .glow-dot { box-shadow: 0 0 15px 3px rgba(255, 255, 255, 0.9), 0 0 30px 6px rgba(138, 123, 102, 0.6); }
-            .svg-draw { stroke-dasharray: 4000; stroke-dashoffset: 4000; animation: drawBlueprint 5s cubic-bezier(0.2, 0, 0.1, 1) forwards; }
-            .svg-draw-fast { stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawBlueprint 3s cubic-bezier(0.2, 0, 0.1, 1) forwards; }
-            .delay-1 { animation-delay: 0.3s; } .delay-2 { animation-delay: 1.0s; } .delay-3 { animation-delay: 2.0s; } .delay-4 { animation-delay: 2.5s; }
-            @keyframes drawBlueprint { to { stroke-dashoffset: 0; } }
-            .laser-scanner { background: linear-gradient(to bottom, transparent, rgba(138,123,102,0.02) 50%, rgba(138,123,102,0.4) 95%, rgba(255,255,255,0.8) 100%); animation: scan 4s ease-in-out infinite; border-bottom: 1px solid rgba(255,255,255,0.5); box-shadow: 0 10px 30px rgba(138,123,102,0.3); }
-            @keyframes scan { 0% { transform: translateY(-100%); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(1080px); opacity: 0; } }
-            
-            /* СТИЛИ КЛОДА ДЛЯ НЕОНА */
-            #logo-svg { overflow: visible; transition: transform 1s cubic-bezier(.16,1,.3,1), opacity 1s ease; }
-            .lp { fill: #1d1814; }
-            @keyframes neonOn {
-                0%   { fill:#1d1814; filter:none }
-                7%   { fill:#6b5c4a; filter: drop-shadow(0 0 4px rgba(138,123,102,.5)) drop-shadow(0 0 12px rgba(138,123,102,.25)) }
-                13%  { fill:#251d16; filter:none }
-                21%  { fill:#c4ae96; filter: drop-shadow(0 0 10px #8A7B66) drop-shadow(0 0 28px rgba(138,123,102,.75)) drop-shadow(0 0 55px rgba(138,123,102,.35)) }
-                28%  { fill:#2e2319; filter:none }
-                40%  { fill:#a08e7b; filter: drop-shadow(0 0 9px #8A7B66) drop-shadow(0 0 24px rgba(138,123,102,.7)) }
-                100% { fill:#8c7e6e; filter: drop-shadow(0 0 8px rgba(138,123,102,.8)) drop-shadow(0 0 20px rgba(138,123,102,.45)) }
-            }
-            .lp.lit { animation: neonOn 1.1s cubic-bezier(.4,0,.2,1) forwards; }
-            @keyframes neonBreathe {
-                0%,100% { fill: #8c7e6e; filter: drop-shadow(0 0 8px rgba(138,123,102,.8)) drop-shadow(0 0 20px rgba(138,123,102,.45)); }
-                50% { fill: #a09080; filter: drop-shadow(0 0 14px rgba(138,123,102,1)) drop-shadow(0 0 35px rgba(138,123,102,.65)) drop-shadow(0 0 60px rgba(138,123,102,.25)); }
-            }
-            .lp.breathe { animation: neonBreathe 3s ease-in-out infinite; }
-        </style>
-    
-        <div class="relative z-20 flex flex-col items-center w-[90%] max-w-[500px] px-4 md:px-6 mt-10 bg-black/40 py-8 rounded-3xl backdrop-blur-lg border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.8)]">
-            
-            <div class="relative mb-12 w-full flex justify-center py-2 h-16 md:h-20">
-                <svg id="logo-svg" viewBox="0 0 1705 641" xmlns="http://www.w3.org/2000/svg" class="absolute h-full w-auto max-w-full" style="transform:translateY(120%);opacity:0;overflow:visible" fill="none">
-                    <path class="lp" id="lp-B" d="M106.588 74.0645C267.594 74.0645 267.699 144.585 269.688 153.441 C286.416 227.912 229.553 267.836 221.893 273.215L221.869 273.231 C229.275 273.231 280.118 300.442 281.12 368.065 C282.537 463.639 191.385 483.829 146.195 482.541H1.77148V75.0312L106.588 74.0645Z M184.998 354.7C182.905 295.288 105.299 298.991 94.3506 304.787V407.511 C125.264 409.711 186.672 402.229 184.998 354.7Z M94.3506 244.41H137.984C156.5 244.41 176.948 218.017 176.948 193.532 C176.948 168.737 157.949 146.035 137.984 146.035H94.3506V244.41Z"/>
-                    <path class="lp" id="lp-R" d="M302.05 197.881V479.001L390.605 392.057V316.383 C534.095 100.761 862.572 51.6862 1008.87 54.1013 C1426.08 50.8812 1635.29 266.632 1705.23 417.174 C1521.52 21.7387 1164.09 0.96875 1008.87 0.96875 C735 0.96875 497.031 105.463 390.605 217.202V197.881H302.05Z"/>
-                    <path class="lp" id="lp-I" d="M515.547 223.162L426.027 304.471V482.546H515.547V223.162Z"/>
-                    <path class="lp" id="lp-D" d="M836.596 482.227H751.584V446.161 C751.584 480.295 693.299 485.608 672.207 486.735 C651.115 487.862 532.774 474.66 532.774 343.277 C532.774 211.895 627.447 192.896 672.207 192.413 C708.015 192.027 740.045 218.657 751.584 232.021V104.664 C751.636 104.647 775.271 96.9851 792.479 92.749 C809.707 88.5083 835.63 85.8262 835.63 85.8262L836.596 482.227Z M673.979 260.841C637.876 260.841 608.609 296.667 608.609 340.861 C608.609 385.055 637.876 420.882 673.979 420.882 C710.081 420.882 739.348 385.056 739.348 340.861 C739.348 296.667 710.081 260.841 673.979 260.841Z"/>
-                    <path class="lp" id="lp-G" d="M1070.38 95.1602C1103.39 97.4143 1125.93 97.7359 1160.87 107.718V433.437 C1160.87 565.784 1070.22 590.096 998.573 594.282 C941.254 597.631 882.701 564.979 860.589 548.234L896.172 496.712 C905.886 508.09 939.966 530.716 998.573 530.201 C1057.18 529.686 1070.76 474.278 1070.22 446.639 C1068.55 474.59 1018.64 484.368 993.903 485.764 C882.357 488.468 854.363 384.276 854.309 331.841 C852.892 238.07 943.347 191.442 993.903 191.441 C1028.68 191.441 1059.27 218.062 1070.22 231.372L1070.38 95.1602Z M997.124 257.617C961.466 257.618 932.56 293.588 932.56 337.96 C932.56 382.332 961.466 418.303 997.124 418.304 C1032.78 418.304 1061.69 382.332 1061.69 337.96 C1061.69 293.588 1032.78 257.617 997.124 257.617Z"/>
-                    <path class="lp" id="lp-E" d="M1340.23 189.833C1404.49 190.284 1443.28 218.368 1465.64 253.3 C1488 288.221 1493.94 329.974 1492.54 357.771L1492.53 357.925H1275.99 C1276.91 378.817 1284.41 394.657 1295.94 405.202 C1307.5 415.776 1323.11 421.039 1340.23 420.718 C1353.9 420.461 1366.15 415.216 1375.91 408.758 C1385.66 402.299 1392.92 394.632 1396.61 389.549 L1396.67 389.466 1396.77 389.485 1481.62 405.747 L1481.79 405.779 1481.75 405.943 C1477.23 424.351 1460.81 445.217 1436.06 461.505 C1411.3 477.796 1378.18 489.52 1340.23 489.629 C1273.07 489.822 1232.29 463.677 1208.6 430.899 C1184.92 398.134 1178.34 358.757 1179.54 332.485 C1179.54 308.519 1187.58 272.633 1211.68 242.848 C1235.8 213.055 1275.97 189.382 1340.23 189.833Z M1337.81 245.863C1293.76 246.378 1276.42 283.539 1273.25 302.055H1406.72 C1402.27 283.861 1386.92 245.289 1337.81 245.863Z"/>
-                    <path class="lp" id="lp-deco" d="M1703.62 465.477C1510.9 76.804 1171.49 60.059 929.82 76.804 C1464.69 59.7369 1560 338.441 1606.54 432.47L1703.62 465.477Z"/>
-                    <path class="lp" id="lp-C" d="M109.486 544.855L95.961 550.007C89.5207 526.693 70.1997 522.797 57.4802 522.797 C43.1202 522.797 15.2961 531.974 15.2961 575.768C15.2961 619.563 43.4188 629.545 57.4802 629.062C85.3345 629.062 94.9413 607.916 97.5711 597.344 L111.418 600.725C108.842 610.643 103.475 619.241 101.113 622.3 C94.5119 630.672 89.0376 639.756 57.4802 640.172 C20.7704 640.655 7.56776 616.02 2.41551 596.055 C-1.70629 580.083 0.698091 562.781 2.41551 556.126 C6.27969 541.044 22.7025 510.85 57.4802 510.721 C92.2578 510.592 106.641 533.423 109.486 544.855Z"/>
-                    <path class="lp" id="lp-O" d="M191.438 510.719C225.139 510.719 252.46 539.697 252.46 575.443 C252.46 611.19 225.139 640.169 191.438 640.169 C157.737 640.169 130.417 611.19 130.417 575.443 C130.417 539.697 157.737 510.719 191.438 510.719Z M191.438 523.6C165.917 523.6 145.228 547.315 145.228 576.57 C145.228 605.826 165.917 629.542 191.438 629.542 C216.959 629.542 237.647 605.826 237.647 576.57 C237.647 547.315 216.958 523.6 191.438 523.6Z"/>
-                    <path class="lp" id="lp-N" d="M290.619 638.882H277.738V513.135H290.619L362.106 615.214V513.135 H376.758V638.882H362.106L290.619 536.481V638.882Z"/>
-                    <path class="lp" id="lp-S" d="M498.798 544.209L485.435 548.878 C483.668 544.209 484.859 538.735 476.1 531.007 C467.342 523.278 455.596 523.064 450.818 523.922 C441.964 523.922 423.709 527.078 421.519 539.701 C419.329 552.324 427.905 558.593 432.467 560.149 C439.391 561.866 457.585 566.718 474.973 572.386 C497.353 579.47 499.393 588.916 501.862 595.41 C505.082 601.528 504.599 640.331 457.585 640.331 C414.306 640.331 402.305 614.784 401.715 602.011 L415.239 598.147C420.714 628.255 447.439 628.255 457.585 628.255 C467.084 628.255 483.378 625.132 488.015 610.705 C492.652 596.279 478.14 587.628 470.304 585.105 C459.141 582.475 433.594 575.767 420.714 569.97 C407.833 564.174 406.652 547.376 407.672 539.701 C407.672 534.388 418.136 510.559 450.818 510.559 C484.952 510.559 497.027 533.046 498.798 544.209Z"/>
-                    <path class="lp" id="lp-U" d="M529.394 514.422H543.724V590.579 C543.724 603.459 548.296 628.898 578.823 628.254 C609.351 627.61 614.943 605.445 613.923 594.443V514.422 H627.931V590.579C627.931 602.493 629.702 640.652 578.823 640.652 C564.655 641.564 535.223 635.435 530.843 603.62 C530.221 599.098 529.914 594.391 529.57 589.597 L529.394 587.197 529.394 514.422Z"/>
-                    <path class="lp" id="lp-L" d="M672.852 513.619H658.844L659.005 638.561H735.001V626.164H672.852V513.619Z"/>
-                    <path class="lp" id="lp-T" d="M793.769 638.72H780.566L780.083 525.854H737.899V513.939 H838.851V525.854H793.769V638.72Z"/>
+<body class="bc-home font-sans text-bridge-dark antialiased bg-white selection:bg-bridge-taupe/20 overflow-x-hidden">
+    <!-- Прелоадер v2: один и тот же блок на главной и на проектах, стили — в style.css -->
+    <div id="preloader" aria-hidden="true" style="display:none">
+        <div class="pl-wipe"></div>
+        <div class="pl-panel">
+            <div class="pl-glow"></div>
+            <div class="pl-grid"><i></i></div>
+            <span class="pl-mark tl"></span><span class="pl-mark tr"></span><span class="pl-mark bl"></span><span class="pl-mark br"></span>
+            <div class="pl-stage">
+                <svg class="pl-logo" viewBox="0 0 1705 641" xmlns="http://www.w3.org/2000/svg" fill="none" focusable="false">
+                <path class="lp" id="lp-B" pathLength="1" style="--i:0" d="M106.588 74.0645C267.594 74.0645 267.699 144.585 269.688 153.441 C286.416 227.912 229.553 267.836 221.893 273.215L221.869 273.231 C229.275 273.231 280.118 300.442 281.12 368.065 C282.537 463.639 191.385 483.829 146.195 482.541H1.77148V75.0312L106.588 74.0645Z M184.998 354.7C182.905 295.288 105.299 298.991 94.3506 304.787V407.511 C125.264 409.711 186.672 402.229 184.998 354.7Z M94.3506 244.41H137.984C156.5 244.41 176.948 218.017 176.948 193.532 C176.948 168.737 157.949 146.035 137.984 146.035H94.3506V244.41Z"/>
+                <path class="lp" id="lp-R" pathLength="1" style="--i:1" d="M302.05 197.881V479.001L390.605 392.057V316.383 C534.095 100.761 862.572 51.6862 1008.87 54.1013 C1426.08 50.8812 1635.29 266.632 1705.23 417.174 C1521.52 21.7387 1164.09 0.96875 1008.87 0.96875 C735 0.96875 497.031 105.463 390.605 217.202V197.881H302.05Z"/>
+                <path class="lp" id="lp-I" pathLength="1" style="--i:2" d="M515.547 223.162L426.027 304.471V482.546H515.547V223.162Z"/>
+                <path class="lp" id="lp-D" pathLength="1" style="--i:3" d="M836.596 482.227H751.584V446.161 C751.584 480.295 693.299 485.608 672.207 486.735 C651.115 487.862 532.774 474.66 532.774 343.277 C532.774 211.895 627.447 192.896 672.207 192.413 C708.015 192.027 740.045 218.657 751.584 232.021V104.664 C751.636 104.647 775.271 96.9851 792.479 92.749 C809.707 88.5083 835.63 85.8262 835.63 85.8262L836.596 482.227Z M673.979 260.841C637.876 260.841 608.609 296.667 608.609 340.861 C608.609 385.055 637.876 420.882 673.979 420.882 C710.081 420.882 739.348 385.056 739.348 340.861 C739.348 296.667 710.081 260.841 673.979 260.841Z"/>
+                <path class="lp" id="lp-G" pathLength="1" style="--i:4" d="M1070.38 95.1602C1103.39 97.4143 1125.93 97.7359 1160.87 107.718V433.437 C1160.87 565.784 1070.22 590.096 998.573 594.282 C941.254 597.631 882.701 564.979 860.589 548.234L896.172 496.712 C905.886 508.09 939.966 530.716 998.573 530.201 C1057.18 529.686 1070.76 474.278 1070.22 446.639 C1068.55 474.59 1018.64 484.368 993.903 485.764 C882.357 488.468 854.363 384.276 854.309 331.841 C852.892 238.07 943.347 191.442 993.903 191.441 C1028.68 191.441 1059.27 218.062 1070.22 231.372L1070.38 95.1602Z M997.124 257.617C961.466 257.618 932.56 293.588 932.56 337.96 C932.56 382.332 961.466 418.303 997.124 418.304 C1032.78 418.304 1061.69 382.332 1061.69 337.96 C1061.69 293.588 1032.78 257.617 997.124 257.617Z"/>
+                <path class="lp" id="lp-E" pathLength="1" style="--i:5" d="M1340.23 189.833C1404.49 190.284 1443.28 218.368 1465.64 253.3 C1488 288.221 1493.94 329.974 1492.54 357.771L1492.53 357.925H1275.99 C1276.91 378.817 1284.41 394.657 1295.94 405.202 C1307.5 415.776 1323.11 421.039 1340.23 420.718 C1353.9 420.461 1366.15 415.216 1375.91 408.758 C1385.66 402.299 1392.92 394.632 1396.61 389.549 L1396.67 389.466 1396.77 389.485 1481.62 405.747 L1481.79 405.779 1481.75 405.943 C1477.23 424.351 1460.81 445.217 1436.06 461.505 C1411.3 477.796 1378.18 489.52 1340.23 489.629 C1273.07 489.822 1232.29 463.677 1208.6 430.899 C1184.92 398.134 1178.34 358.757 1179.54 332.485 C1179.54 308.519 1187.58 272.633 1211.68 242.848 C1235.8 213.055 1275.97 189.382 1340.23 189.833Z M1337.81 245.863C1293.76 246.378 1276.42 283.539 1273.25 302.055H1406.72 C1402.27 283.861 1386.92 245.289 1337.81 245.863Z"/>
+                <path class="lp" id="lp-deco" pathLength="1" style="--i:6" d="M1703.62 465.477C1510.9 76.804 1171.49 60.059 929.82 76.804 C1464.69 59.7369 1560 338.441 1606.54 432.47L1703.62 465.477Z"/>
+                <path class="lp" id="lp-C" pathLength="1" style="--i:7" d="M109.486 544.855L95.961 550.007C89.5207 526.693 70.1997 522.797 57.4802 522.797 C43.1202 522.797 15.2961 531.974 15.2961 575.768C15.2961 619.563 43.4188 629.545 57.4802 629.062C85.3345 629.062 94.9413 607.916 97.5711 597.344 L111.418 600.725C108.842 610.643 103.475 619.241 101.113 622.3 C94.5119 630.672 89.0376 639.756 57.4802 640.172 C20.7704 640.655 7.56776 616.02 2.41551 596.055 C-1.70629 580.083 0.698091 562.781 2.41551 556.126 C6.27969 541.044 22.7025 510.85 57.4802 510.721 C92.2578 510.592 106.641 533.423 109.486 544.855Z"/>
+                <path class="lp" id="lp-O" pathLength="1" style="--i:8" d="M191.438 510.719C225.139 510.719 252.46 539.697 252.46 575.443 C252.46 611.19 225.139 640.169 191.438 640.169 C157.737 640.169 130.417 611.19 130.417 575.443 C130.417 539.697 157.737 510.719 191.438 510.719Z M191.438 523.6C165.917 523.6 145.228 547.315 145.228 576.57 C145.228 605.826 165.917 629.542 191.438 629.542 C216.959 629.542 237.647 605.826 237.647 576.57 C237.647 547.315 216.958 523.6 191.438 523.6Z"/>
+                <path class="lp" id="lp-N" pathLength="1" style="--i:9" d="M290.619 638.882H277.738V513.135H290.619L362.106 615.214V513.135 H376.758V638.882H362.106L290.619 536.481V638.882Z"/>
+                <path class="lp" id="lp-S" pathLength="1" style="--i:10" d="M498.798 544.209L485.435 548.878 C483.668 544.209 484.859 538.735 476.1 531.007 C467.342 523.278 455.596 523.064 450.818 523.922 C441.964 523.922 423.709 527.078 421.519 539.701 C419.329 552.324 427.905 558.593 432.467 560.149 C439.391 561.866 457.585 566.718 474.973 572.386 C497.353 579.47 499.393 588.916 501.862 595.41 C505.082 601.528 504.599 640.331 457.585 640.331 C414.306 640.331 402.305 614.784 401.715 602.011 L415.239 598.147C420.714 628.255 447.439 628.255 457.585 628.255 C467.084 628.255 483.378 625.132 488.015 610.705 C492.652 596.279 478.14 587.628 470.304 585.105 C459.141 582.475 433.594 575.767 420.714 569.97 C407.833 564.174 406.652 547.376 407.672 539.701 C407.672 534.388 418.136 510.559 450.818 510.559 C484.952 510.559 497.027 533.046 498.798 544.209Z"/>
+                <path class="lp" id="lp-U" pathLength="1" style="--i:11" d="M529.394 514.422H543.724V590.579 C543.724 603.459 548.296 628.898 578.823 628.254 C609.351 627.61 614.943 605.445 613.923 594.443V514.422 H627.931V590.579C627.931 602.493 629.702 640.652 578.823 640.652 C564.655 641.564 535.223 635.435 530.843 603.62 C530.221 599.098 529.914 594.391 529.57 589.597 L529.394 587.197 529.394 514.422Z"/>
+                <path class="lp" id="lp-L" pathLength="1" style="--i:12" d="M672.852 513.619H658.844L659.005 638.561H735.001V626.164H672.852V513.619Z"/>
+                <path class="lp" id="lp-T" pathLength="1" style="--i:13" d="M793.769 638.72H780.566L780.083 525.854H737.899V513.939 H838.851V525.854H793.769V638.72Z"/>
                 </svg>
-            </div>
-    
-            <div id="preloader-bar-container" class="w-full opacity-0 transition-opacity duration-700">
-                <div class="flex justify-between w-full text-[10px] md:text-sm font-bold uppercase tracking-[0.2em] text-gray-400 font-sans mb-5">
-                    <span id="preloader-status" class="animate-pulse" style="color:#8A7B66">Initializing CAD...</span>
-                    <span id="preloader-counter" class="text-white tracking-widest font-mono" style="text-shadow:0 0 8px rgba(255,255,255,.6)">0.00%</span>
-                </div>
-                <div class="w-full h-[2px] bg-white/10 relative overflow-visible rounded-full">
-                    <div id="preloader-buffer" class="absolute top-0 left-0 h-full w-0 transition-all duration-[200ms] ease-out" style="background:rgba(138,123,102,.2);"></div>
-                    <div id="preloader-progress" class="absolute top-0 left-0 h-full w-0 transition-all duration-[100ms] ease-linear" style="background:#8A7B66;box-shadow:0 0 15px #8A7B66;">
-                        <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-[4px] h-[4px] bg-white rounded-full glow-dot"></div>
-                    </div>
-                </div>
+                <div class="pl-bar"><i></i><b></b></div>
+                <div class="pl-meta"><span class="pl-cap">FIDIC · EPC · DAAB</span><span class="pl-num"><span id="pl-n">0</span><i>%</i></span></div>
             </div>
         </div>
     </div>
+    <script>
+    (function () {
+        var d = document, h = d.documentElement, pl = d.getElementById('preloader');
+        if (!pl) return;
+        if (!/(^|\s)pl-on(\s|$)/.test(h.className)) { pl.parentNode.removeChild(pl); return; }
+        var num = d.getElementById('pl-n'), t0 = Date.now(), target = 0.35, shown = 0, done = false;
+        var MIN = 1650, MAX = 4000;
+        function up(v) { if (v > target) target = v; }
+        if (d.readyState !== 'loading') up(0.7); else d.addEventListener('DOMContentLoaded', function () { up(0.7); });
+        if (d.fonts && d.fonts.ready) d.fonts.ready.then(function () { up(0.85); });
+        if (d.readyState === 'complete') up(1); else window.addEventListener('load', function () { up(1); });
+        function finish() {
+            if (done) return; done = true; clearInterval(iv);
+            pl.style.setProperty('--p', '1'); num.textContent = '100';
+            h.classList.add('pl-out');
+            try { window.dispatchEvent(new Event('bc:reveal')); } catch (e) {}
+            setTimeout(function () {
+                h.classList.remove('pl-on'); h.classList.remove('pl-out');
+                if (pl.parentNode) pl.parentNode.removeChild(pl);
+                if (window.AOS && AOS.refreshHard) AOS.refreshHard();
+                window.dispatchEvent(new Event('scroll'));
+            }, 1300);
+        }
+        var iv = setInterval(function () {
+            var el = Date.now() - t0;
+            var goal = Math.min(target, el / MIN);
+            if (el > MAX || d.hidden) goal = 1;
+            shown += (goal - shown) * 0.2;
+            if (goal - shown < 0.006) shown = goal;
+            pl.style.setProperty('--p', shown.toFixed(3));
+            num.textContent = Math.round(shown * 100);
+            if (shown >= 1) { clearInterval(iv); setTimeout(finish, 280); }
+        }, 40);
+        setTimeout(finish, MAX + 1500);
+    })();
+    </script>
+
     <header class="fixed w-full top-0 z-[100] bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
         <div class="max-w-[1400px] mx-auto px-4 md:px-6 h-20 flex items-center justify-between relative z-[101]">
             
@@ -442,7 +275,7 @@ document.documentElement.style.height = '';
                 <img src="../bridge 2.svg" alt="Bridge Consult" class="site-logo h-9 md:h-11 object-contain relative z-[101]">
             </a>
             
-            <nav class="hidden 2xl:flex items-center gap-4 2xl:gap-6">
+            <nav class="bc-nav hidden 2xl:flex items-center gap-4 2xl:gap-6">
                 <a href="#about" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">About Us</a>
                 <a href="#services" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Services</a>
                 <a href="projects.html" class="nav-link text-sm font-medium hover:text-bridge-taupe transition-colors whitespace-nowrap">Projects</a>
@@ -472,8 +305,8 @@ document.documentElement.style.height = '';
                 </div>
             </nav>
     
-            <div class="hidden 2xl:flex items-center space-x-4">
-                <div class="flex items-center space-x-2 pr-4 border-r border-gray-200">
+            <div class="bc-nav-r hidden 2xl:flex items-center space-x-4">
+                <div class="bc-nav-social flex items-center space-x-2 pr-4 border-r border-gray-200">
                     <a href="https://www.linkedin.com/in/larissalk" target="_blank" class="w-9 h-9 rounded-full bg-bridge-light flex items-center justify-center text-bridge-taupe hover:bg-bridge-taupe hover:text-white transition-all duration-300 shadow-sm"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
                     <a href="https://t.me/fidicuzb" target="_blank" class="w-9 h-9 rounded-full bg-bridge-light flex items-center justify-center text-bridge-taupe hover:bg-bridge-taupe hover:text-white transition-all duration-300 shadow-sm"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.11.03-1.84 1.18-5.2 3.45-.49.33-.94.5-1.35.49-.45-.01-1.3-.25-1.94-.46-.78-.26-1.4-.4-1.34-.84.03-.23.36-.47.98-.72 3.85-1.68 6.42-2.78 7.71-3.32 3.67-1.53 4.43-1.8 4.93-1.81.11 0 .36.03.49.13.11.09.14.22.15.34.01.07.01.18 0 .22z"/></svg></a>
                 </div>
@@ -496,12 +329,12 @@ document.documentElement.style.height = '';
                 </button>
                 
                 <div class="flex items-center space-x-3">
-                    <a href="tel:+998330001530" class="text-xs font-bold text-bridge-dark hover:text-bridge-taupe transition-colors tracking-wide whitespace-nowrap">+998 33 000 15 30</a>
-                    <a href="#contact-form" class="bg-bridge-dark text-white px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-bridge-taupe transition-colors shadow-md whitespace-nowrap">Contact Us</a>
+                    <a href="tel:+998330001530" class="bc-nav-phone text-xs font-bold text-bridge-dark hover:text-bridge-taupe transition-colors tracking-wide whitespace-nowrap">+998 33 000 15 30</a>
+                    <a href="#contact-form" class="bc-cta bc-magnet bg-bridge-dark text-white px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-bridge-taupe transition-colors shadow-md whitespace-nowrap">Contact Us</a>
                 </div>
             </div>
     
-            <button id="mobile-menu-btn" class="2xl:hidden flex flex-col justify-between w-7 h-5 text-bridge-dark focus:outline-none relative z-[101] cursor-pointer">
+            <button id="mobile-menu-btn" class="bc-burger 2xl:hidden flex flex-col justify-between w-7 h-5 text-bridge-dark focus:outline-none relative z-[101] cursor-pointer">
                 <span class="w-full h-[2px] bg-current transition-all duration-300 origin-left burger-line-1"></span>
                 <span class="w-full h-[2px] bg-current transition-all duration-300 burger-line-2"></span>
                 <span class="w-full h-[2px] bg-current transition-all duration-300 origin-left burger-line-3"></span>
@@ -509,7 +342,7 @@ document.documentElement.style.height = '';
         </div>
     
         <!-- МОБИЛЬНОЕ МЕНЮ EN -->
-        <div id="mobile-menu" class="fixed inset-0 w-full h-[100dvh] bg-white z-[100] flex flex-col p-8 transition-transform duration-500 translate-x-full 2xl:hidden pt-28 overflow-y-auto">
+        <div id="mobile-menu" class="bc-mm fixed inset-0 w-full h-[100dvh] bg-white z-[100] flex flex-col p-8 transition-transform duration-500 translate-x-full 2xl:hidden pt-28 overflow-y-auto">
             <div class="flex items-center justify-center space-x-6 mb-10 pb-6 border-b border-gray-100 font-bold text-sm uppercase tracking-widest font-sans">
                 <a href="/" class="text-gray-400 hover:text-bridge-taupe transition-colors pb-1">RU</a>
                 <a href="#" class="text-bridge-taupe border-b-2 border-bridge-taupe pb-1">EN</a>
@@ -544,27 +377,29 @@ document.documentElement.style.height = '';
         </div>
     </header>
 
-<section class="relative w-full bg-cover bg-center" style="background-image: url('../hero-bg.png'); background-image: image-set(url('../hero-bg.webp') type('image/webp'), url('../hero-bg.png') type('image/png')); background-color: #1a1a1a;">
+<section class="bc-hero relative w-full" style="background-color: #1a1a1a;">
+    <div class="bc-hero-bg" aria-hidden="true" style="background-image: url('../hero-bg.png'); background-image: image-set(url('../hero-bg.webp') type('image/webp'), url('../hero-bg.png') type('image/png'));"></div>
     <div class="absolute inset-0 bg-gradient-to-r from-bridge-dark/95 via-bridge-dark/80 to-transparent"></div>
     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-bridge-dark/80 z-0"></div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-6 pt-[140px] md:pt-[180px] pb-[120px] md:pb-[160px]">
         <div class="max-w-3xl">
-            <div class="flex flex-wrap gap-2 md:gap-3 mb-6" data-aos="fade-down" data-aos-duration="1000">
+            <div class="bc-rise flex flex-wrap gap-2 md:gap-3 mb-6" style="--i:0">
                 <span class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">FIDIC / EPC</span>
                 <span class="bg-white/10 backdrop-blur-md border border-white/20 text-white text-[10px] md:text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">Contract Engineering</span>
             </div>
             
-            <h1 class="text-white text-3xl sm:text-5xl md:text-6xl font-sans font-bold leading-tight mb-6 break-words" data-aos="fade-up" data-aos-delay="100">
+            <h1 class="bc-hero-title text-white text-3xl sm:text-5xl md:text-6xl font-sans font-bold leading-tight mb-6 break-words">
                 Advisory on Infrastructure Contracts, Claims, and <span class="text-bridge-taupe">Dispute Resolution</span>
             </h1>
+            <script>(function(){var h=document.querySelector('.bc-hero-title');if(!h)return;var n=0;(function walk(el){[].slice.call(el.childNodes).forEach(function(c){if(c.nodeType===3){var f=document.createDocumentFragment();c.nodeValue.split(/(\s+)/).forEach(function(p){if(!p)return;if(/^\s+$/.test(p)){f.appendChild(document.createTextNode(' '));return}var o=document.createElement('span');o.className='bc-w';var i=document.createElement('span');i.className='bc-wi';i.style.setProperty('--w',n++);i.textContent=p;o.appendChild(i);f.appendChild(o)});el.replaceChild(f,c)}else if(c.nodeType===1)walk(c)})})(h);h.className+=' bc-split'})();</script>
             
-            <p class="text-gray-300 text-lg md:text-xl font-light leading-relaxed mb-10 max-w-2xl font-sans" data-aos="fade-up" data-aos-delay="200">
+            <p class="bc-rise text-gray-300 text-lg md:text-xl font-light leading-relaxed mb-10 max-w-2xl font-sans" style="--i:5">
                 Expertise in: <span id="hero-typed" class="text-bridge-taupe font-medium"></span>
             </p>
-            <div class="flex flex-col sm:flex-row gap-4" data-aos="fade-up" data-aos-delay="300">
-                <a href="#contact-form" class="text-center bg-white text-bridge-dark px-8 py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-bridge-taupe hover:text-white transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1">Discuss a Project</a>
-                <a href="#services" class="text-center bg-transparent border border-white/30 text-white px-8 py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-all hover:-translate-y-1">Our Services</a>
+            <div class="bc-rise flex flex-col sm:flex-row gap-4" style="--i:7">
+                <a href="#contact-form" class="bc-cta bc-magnet text-center bg-white text-bridge-dark px-8 py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-bridge-taupe hover:text-white transition-all shadow-[0_10px_30px_rgba(0,0,0,0.3)] hover:-translate-y-1">Discuss a Project</a>
+                <a href="#services" class="bc-magnet text-center bg-transparent border border-white/30 text-white px-8 py-4 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-white/10 transition-all hover:-translate-y-1">Our Services</a>
             </div>
         </div>
     </div>
@@ -599,7 +434,7 @@ document.documentElement.style.height = '';
     <div class="max-w-7xl mx-auto px-6">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div data-aos="fade-right" data-aos-duration="1000">
-                <div class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-4">1 // ABOUT THE COMPANY</div>
+                <div class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-4 bc-eyebrow">ABOUT THE COMPANY</div>
                 <h2 class="text-4xl md:text-5xl font-sans font-bold text-bridge-dark mb-8 leading-tight" data-aos="fade-up">About Us</h2>
                 <div class="space-y-6 text-gray-600 font-light text-lg">
                     <p><strong class="font-bold text-bridge-dark">BRIDGE CONSULT</strong> is an independent consulting firm specializing in contract engineering, construction contract administration, and dispute resolution in international infrastructure projects.</p>
@@ -622,8 +457,10 @@ document.documentElement.style.height = '';
     </div>
 </section>
 
+<div class="bc-marquee" aria-hidden="true"><div class="bc-marquee-track"><span data-t="FIDIC — EPC — CLAIMS — DAAB — FORENSIC DELAY ANALYSIS — DISPUTE RESOLUTION — "></span><span data-t="FIDIC — EPC — CLAIMS — DAAB — FORENSIC DELAY ANALYSIS — DISPUTE RESOLUTION — "></span></div></div>
+
 <section id="services" class="py-16 md:py-32 bg-bridge-dark relative font-sans overflow-hidden">
-    <video autoplay loop muted playsinline preload="none" poster="../poster-ultra.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
+    <video data-bc-autoplay loop muted playsinline preload="none" poster="../poster-ultra.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
         <source src="../ultra-bridge.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-gradient-to-b from-bridge-dark/95 via-bridge-dark/70 to-bridge-dark/95 z-[1]"></div>
@@ -632,7 +469,7 @@ document.documentElement.style.height = '';
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20" data-aos="fade-up">
             <div class="max-w-2xl">
                 <div class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-4 flex items-center">
-                    <span class="w-8 h-px bg-bridge-taupe mr-4"></span> 2 // SERVICES OVERVIEW
+                    <span class="w-8 h-px bg-bridge-taupe mr-4"></span><span class="bc-eyebrow">SERVICES OVERVIEW</span>
                 </div>
                 <h2 class="text-3xl md:text-5xl font-sans font-bold text-white leading-tight">Services Overview</h2>
             </div>
@@ -685,7 +522,7 @@ document.documentElement.style.height = '';
     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[150vw] md:w-[800px] aspect-square max-w-[800px] bg-bridge-taupe/20 rounded-full blur-[100px] md:blur-[150px] pointer-events-none"></div>
     <div class="max-w-5xl mx-auto px-6 relative z-10">
         <div class="text-center mb-20" data-aos="fade-up">
-            <span class="text-bridge-taupe font-bold tracking-widest uppercase text-sm mb-4 block animate-pulse">Innovative Approach</span>
+            <span class="text-bridge-taupe font-bold tracking-widest uppercase text-sm mb-4 block bc-eyebrow">Innovative Approach</span>
             <h2 class="text-4xl md:text-6xl font-sans font-bold text-white mb-6 break-words">Top-Tier <span class="text-transparent bg-clip-text bg-gradient-to-r from-bridge-taupe to-[#D4C3A3]">Standards</span></h2>
             <p class="text-gray-400 text-lg font-light max-w-2xl mx-auto">Integrating world-class dispute resolution practices into real-world project conditions.</p>
         </div>
@@ -757,28 +594,28 @@ document.documentElement.style.height = '';
 </section>
 
 <section class="py-32 relative overflow-hidden bg-bridge-dark font-sans">
-    <video autoplay loop muted playsinline preload="none" poster="../poster-elegant.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-70">
+    <video data-bc-autoplay loop muted playsinline preload="none" poster="../poster-elegant.jpg" class="absolute inset-0 w-full h-full object-cover z-0 opacity-70">
         <source src="../elegant-video.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-gradient-to-t from-bridge-dark via-bridge-dark/60 to-bridge-dark/95 z-[1]"></div>
     
     <div class="max-w-7xl mx-auto px-6 relative z-10">
         <div class="text-center mb-20" data-aos="fade-up">
-            <div class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-4">Our Approach</div>
+            <div class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-4 bc-eyebrow">Our Approach</div>
             <h2 class="text-4xl md:text-5xl font-sans font-bold text-white mb-6">Why Choose Bridge Consult</h2>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div class="bg-bridge-dark/30 border border-white/10 p-10 rounded-3xl backdrop-blur-md hover:bg-white/10 hover:border-bridge-taupe/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl" data-aos="fade-up" data-aos-delay="100">
+            <div class="bc-why-card bg-bridge-dark/30 border border-white/10 p-10 rounded-3xl backdrop-blur-md hover:bg-white/10 hover:border-bridge-taupe/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl" data-aos="fade-up" data-aos-delay="100">
                 <div class="text-bridge-taupe text-5xl font-sans font-bold mb-6 opacity-50">01</div>
                 <h3 class="text-xl font-bold text-white mb-4">International Standards</h3>
                 <p class="text-gray-400 font-light leading-relaxed">Deep understanding of FIDIC forms, EPC contracts, and stringent IFI requirements.</p>
             </div>
-            <div class="bg-bridge-dark/30 border border-white/10 p-10 rounded-3xl backdrop-blur-md hover:bg-white/10 hover:border-bridge-taupe/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl" data-aos="fade-up" data-aos-delay="200">
+            <div class="bc-why-card bg-bridge-dark/30 border border-white/10 p-10 rounded-3xl backdrop-blur-md hover:bg-white/10 hover:border-bridge-taupe/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl" data-aos="fade-up" data-aos-delay="200">
                 <div class="text-bridge-taupe text-5xl font-sans font-bold mb-6 opacity-50">02</div>
                 <h3 class="text-xl font-bold text-white mb-4">Local Adaptation</h3>
                 <p class="text-gray-400 font-light leading-relaxed">Integrating international contracts into the legal framework of Uzbekistan without compromising their legal validity.</p>
             </div>
-            <div class="bg-bridge-dark/30 border border-white/10 p-10 rounded-3xl backdrop-blur-md hover:bg-white/10 hover:border-bridge-taupe/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl" data-aos="fade-up" data-aos-delay="300">
+            <div class="bc-why-card bg-bridge-dark/30 border border-white/10 p-10 rounded-3xl backdrop-blur-md hover:bg-white/10 hover:border-bridge-taupe/50 transition-all duration-500 hover:-translate-y-2 shadow-2xl" data-aos="fade-up" data-aos-delay="300">
                 <div class="text-bridge-taupe text-5xl font-sans font-bold mb-6 opacity-50">03</div>
                 <h3 class="text-xl font-bold text-white mb-4">Comprehensive Protection</h3>
                 <p class="text-gray-400 font-light leading-relaxed">Client interest defense at all levels: from quantum audit to arbitration representation.</p>
@@ -794,7 +631,7 @@ document.documentElement.style.height = '';
             <div class="w-full md:w-auto mb-8 md:mb-0">
                 <div class="flex items-center gap-4 mb-4">
                     <span class="w-10 h-[2px] bg-bridge-taupe shrink-0"></span>
-                    <span class="text-bridge-taupe font-bold tracking-widest uppercase text-xs shrink-0">Portfolio</span>
+                    <span class="text-bridge-taupe font-bold tracking-widest uppercase text-xs shrink-0 bc-eyebrow">Portfolio</span>
                 </div>
                 <h2 class="text-3xl md:text-5xl font-sans font-bold text-bridge-dark leading-tight break-words">Selected Project Experience</h2>
             </div>
@@ -903,7 +740,7 @@ document.documentElement.style.height = '';
 <section id="team" class="py-32 bg-bridge-light font-sans">
     <div class="max-w-7xl mx-auto px-6">
         <div class="text-center mb-20" data-aos="fade-up">
-            <div class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-4">Expertise</div>
+            <div class="text-bridge-taupe font-bold tracking-widest uppercase text-xs mb-4 bc-eyebrow">Expertise</div>
             <h2 class="text-4xl md:text-5xl font-sans font-bold text-bridge-dark mb-6">Our Key Personnel</h2>
             <p class="text-gray-500 max-w-3xl mx-auto text-lg font-light">The foundation of BRIDGE CONSULT is the unique experience of our specialists. We have brought together professionals with decades of practice in engineering, law, and international arbitration.</p>
         </div>
@@ -1142,7 +979,7 @@ document.documentElement.style.height = '';
 
         <div class="bridge-section-kicker" data-aos="fade-right">
             <div class="bridge-section-kicker-line"></div>
-            <span>Institutional Development</span>
+            <span class="bc-eyebrow">Institutional Development</span>
         </div>
 
         <div class="bridge-section-grid">
@@ -1523,7 +1360,7 @@ document.documentElement.style.height = '';
             <div class="max-w-2xl">
                 <div class="flex items-center gap-4 mb-4">
                     <span class="w-8 h-px bg-bridge-taupe"></span>
-                    <span class="text-bridge-taupe font-bold tracking-widest uppercase text-xs">Publications & Expert Opinion</span>
+                    <span class="text-bridge-taupe font-bold tracking-widest uppercase text-xs bc-eyebrow">Publications & Expert Opinion</span>
                 </div>
                 <h2 class="text-4xl md:text-5xl font-bold text-bridge-dark">Featured In</h2>
             </div>
@@ -1536,7 +1373,7 @@ document.documentElement.style.height = '';
             <!-- Article 1: UzReport -->
             <a href="https://uzreport.news/economy/what-is-fidic-and-does-uzbekistan-need-it-" target="_blank" class="media-photo-card group bg-white rounded-3xl overflow-hidden premium-shadow hover-float flex flex-col border border-gray-100 transition-all duration-500" data-aos="fade-up" data-aos-delay="100">
                 <div class="media-photo-wrap relative h-72 overflow-hidden bg-bridge-dark shrink-0 flex items-center justify-center" title="Click photo for color">
-                    <img src="../larisa-belousova-uznews.png" alt="Larisa Belousova" class="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105">
+                    <img src="../larisa-belousova-uznews.png" loading="lazy" decoding="async" alt="Larisa Belousova" class="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105">
                     <div class="absolute top-6 left-6 z-20">
                         <span class="bg-white text-bridge-dark text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest shadow-lg">UzReport.news</span>
                     </div>
@@ -1591,7 +1428,7 @@ document.documentElement.style.height = '';
         <div class="text-center mb-16">
             <div class="flex items-center justify-center gap-4 mb-6" data-aos="fade-up">
                 <div class="w-12 h-px bg-bridge-taupe"></div>
-                <span class="text-bridge-taupe font-bold tracking-widest uppercase text-sm">Trust at the Highest Level</span>
+                <span class="text-bridge-taupe font-bold tracking-widest uppercase text-sm bc-eyebrow">Trust at the Highest Level</span>
                 <div class="w-12 h-px bg-bridge-taupe"></div>
             </div>
             <h2 class="text-4xl md:text-5xl lg:text-6xl font-sans font-bold text-bridge-dark leading-tight mb-8" data-aos="fade-up" data-aos-delay="100">
@@ -1636,7 +1473,7 @@ document.documentElement.style.height = '';
 <!-- ======================================================== -->
 <section id="faq" class="relative overflow-hidden font-sans border-t border-white/10" style="background:#1a1816; padding-top:8rem; padding-bottom:6rem;">
     
-    <div id="vanta-faq-bg-en" class="absolute inset-0 z-0"></div>
+    <div id="vanta-faq-bg-en" class="bc-net absolute inset-0 z-0"></div>
 
     <div class="absolute inset-0 z-[1] pointer-events-none" style="background:linear-gradient(to bottom,#1a1816,rgba(26,24,22,0.7),#1a1816);"></div>
 
@@ -1644,7 +1481,7 @@ document.documentElement.style.height = '';
         <div class="text-center mb-20" data-aos="fade-up">
             <div class="flex items-center justify-center gap-4 mb-4">
                 <span class="w-8 h-px bg-bridge-taupe"></span>
-                <span class="text-bridge-taupe font-bold tracking-widest uppercase text-xs">Knowledge Base</span>
+                <span class="text-bridge-taupe font-bold tracking-widest uppercase text-xs bc-eyebrow">Knowledge Base</span>
                 <span class="w-8 h-px bg-bridge-taupe"></span>
             </div>
             <h2 class="text-4xl md:text-5xl font-sans font-bold text-white mb-6">Frequently Asked Questions</h2>
@@ -1772,40 +1609,6 @@ document.documentElement.style.height = '';
         }
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.net.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            if (document.getElementById("vanta-faq-bg-en")) {
-                // Канвас Vanta замеряет размер один раз при инициализации, а
-                // секция растёт, когда открывают ответ. Без пересчёта нижний
-                // отступ оставался мёртвой чёрной полосой без сетки.
-                window.__faqVanta = VANTA.NET({
-                    el: "#vanta-faq-bg-en",
-                    mouseControls: true,
-                    touchControls: true,
-                    gyroControls: false,
-                    minHeight: 200.00,
-                    minWidth: 200.00,
-                    scale: 1.00,
-                    scaleMobile: 1.00,
-                    color: 0x8a7b66,       
-                    backgroundColor: 0x1a1a1a, 
-                    points: 10.00,         
-                    maxDistance: 24.00,    
-                    spacing: 20.00,        
-                    showDots: true
-                });
-
-                var faqSection = document.getElementById("faq");
-                if (faqSection && window.ResizeObserver) {
-                    new ResizeObserver(function () {
-                        if (window.__faqVanta && window.__faqVanta.resize) window.__faqVanta.resize();
-                    }).observe(faqSection);
-                }
-            }
-        });
-    </script>
 </section>
 
 <!-- ======================================================== -->
@@ -1820,7 +1623,7 @@ document.documentElement.style.height = '';
             <div>
                 <div class="flex items-center gap-4 mb-5">
                     <span class="w-8 h-px" style="background:#8A7B66;"></span>
-                    <span class="font-bold tracking-[0.24em] uppercase text-xs" style="color:#8A7B66;">Newsroom</span>
+                    <span class="font-bold tracking-[0.24em] uppercase text-xs bc-eyebrow" style="color:#8A7B66;">Newsroom</span>
                 </div>
                 <h2 class="text-3xl md:text-5xl font-sans font-bold leading-tight" style="color:#fff;">
                     News &amp;<br><span style="background: linear-gradient(to right,#8A7B66,#D4C3A3); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">expert publications</span>
@@ -2063,7 +1866,7 @@ document.documentElement.style.height = '';
                 padding: 4rem 3rem 4rem 3.5rem;
             " data-aos="fade-left" data-aos-duration="1000">
 
-                <div style="width: 100%; max-width: 500px; background: rgba(255,255,255,0.02); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px -10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);">
+                <div style="width: 100%; max-width: 500px; background: linear-gradient(160deg, rgba(48,44,39,0.82), rgba(26,24,22,0.9)); border: 1px solid rgba(255,255,255,0.07); border-radius: 2rem; padding: 3rem; box-shadow: 0 30px 60px -10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);">
                     <!-- Form heading -->
                     <div style="margin-bottom: 2.5rem;">
                         <span style="
@@ -2520,11 +2323,17 @@ document.documentElement.style.height = '';
 </footer>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
-<script src="../main.js"></script>
+<script src="../main.js?v=20261109"></script>
 <script>
-    AOS.init({ once: true, offset: 50 });
-    VanillaTilt.init(document.querySelectorAll(".tilt-card"), { max: 5, speed: 400, glare: true, "max-glare": 0.2 });
+    (function () {
+        var o = { once: true, offset: 50, duration: 800, easing: 'ease-out-cubic' }, done = false;
+        function go() { if (done) return; done = true; AOS.init(o); }
+        // Пока на экране прелоадер, появление блоков не запускаем — иначе оно проиграется под ним
+        if (/(^|\s)pl-on(\s|$)/.test(document.documentElement.className)) {
+            window.addEventListener('bc:reveal', go);
+            setTimeout(go, 7000);
+        } else go();
+    })();
 </script>
 
 <div id="projectModal" class="fixed inset-0 z-[100] flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
