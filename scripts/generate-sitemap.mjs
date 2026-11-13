@@ -36,11 +36,11 @@ function urlEntry({ loc, alternates = null, changefreq = 'monthly', priority = '
 }
 
 function readNews() {
-	const files = fs.readdirSync(NEWS_DIR).filter((file) => file.endsWith('.mdx'));
+	const files = fs.readdirSync(NEWS_DIR).filter((file) => /\.mdx?$/.test(file));
 	const groups = new Map();
 
 	for (const file of files) {
-		const slug = file.replace(/\.mdx$/, '');
+		const slug = file.replace(/\.mdx?$/, '');
 		const match = slug.match(/^(ru|en|uz)-(.+)$/);
 		if (!match) continue;
 

@@ -458,3 +458,139 @@ html.dark-theme .news-chip[aria-pressed='true'] {
     animation: none;
   }
 }
+
+/* ===== Статьи автопилота: подзаголовки, нумерованные шаги, таблицы, врезки, инфографика =====
+   Классы .bc-* приходят из Markdown, который готовит редакционный бот. */
+.news-body h3 {
+  margin: 1.9rem 0 0.6rem;
+  color: #292724;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.news-body.news-body ol {
+  margin: 0 0 1.5rem;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: bc-step;
+}
+.news-body.news-body ol > li {
+  counter-increment: bc-step;
+  margin-bottom: 1rem;
+  padding-left: 2.75rem;
+}
+.news-body.news-body ol > li::before {
+  content: counter(bc-step);
+  top: 0.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  border: 1px solid #8A7B66;
+  border-radius: 999px;
+  background: transparent;
+  color: #8A7B66;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.news-body .bc-table {
+  margin: 2rem 0;
+  overflow-x: auto;
+  border: 1px solid #e5e1db;
+  border-radius: 1rem;
+  background: #ffffff;
+  -webkit-overflow-scrolling: touch;
+}
+.news-body .bc-table table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.news-body .bc-table th {
+  padding: 0.9rem 1.1rem;
+  background: #292724;
+  color: #F5F4F2;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-align: left;
+  text-transform: uppercase;
+}
+.news-body .bc-table td {
+  padding: 0.9rem 1.1rem;
+  border-top: 1px solid #ece8e1;
+  color: #4b5563;
+  font-weight: 300;
+  line-height: 1.6;
+  vertical-align: top;
+}
+.news-body .bc-table td:first-child {
+  color: #292724;
+  font-weight: 600;
+}
+.news-body .bc-note {
+  margin: 2rem 0;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(138, 123, 102, 0.35);
+  border-radius: 1rem;
+  background: rgba(138, 123, 102, 0.07);
+}
+.news-body .bc-note > strong {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: #8A7B66;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.news-body.news-body .bc-note p {
+  margin: 0;
+  color: #292724;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.news-body .bc-figure {
+  margin: 2.75rem 0;
+}
+.news-body .bc-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1.25rem;
+  box-shadow: 0 24px 60px -24px rgba(26, 24, 22, 0.35);
+}
+.news-body .bc-figure.bc-info {
+  max-width: 31rem;
+  margin-inline: auto;
+}
+.news-body .bc-figure figcaption {
+  margin-top: 0.9rem;
+  color: #8A7B66;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-align: center;
+  text-transform: uppercase;
+}
+html.dark-theme .news-body h3,
+html.dark-theme .news-body .bc-table td:first-child,
+html.dark-theme .news-body.news-body .bc-note p {
+  color: #f4f4f5;
+}
+html.dark-theme .news-body .bc-table {
+  border-color: #2a2928;
+  background: #1c1b19;
+}
+html.dark-theme .news-body .bc-table td {
+  border-top-color: #2a2928;
+  color: #d4d4d8;
+}
+html.dark-theme .news-body .bc-table th {
+  background: #0f0e0d;
+}
+html.dark-theme .news-body .bc-note {
+  background: rgba(212, 195, 163, 0.07);
+  border-color: rgba(212, 195, 163, 0.25);
+}
