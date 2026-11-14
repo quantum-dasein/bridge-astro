@@ -409,15 +409,14 @@ const formatDate = (d: Date) => new Intl.DateTimeFormat(locale, { day: 'numeric'
 		let ctrl: AbortController | null = null;
 
 		const localSearch = (q: string) => {
-			const words = q.toLowerCase().split(/\s+/).filter((w) => w.length > 1);
+			const words = q.toLowerCase().split(/[^\p{L}\p{N}+]+/u).filter((w) => w.length > 1);
+			if (!words.length) return [];
 			return items
-				.map((el) => {
+				.filter((el) => {
 					const text = (el.textContent || '').toLowerCase();
-					return { url: el.dataset.url || '', hits: words.filter((w) => text.includes(w)).length };
+					return words.every((w) => text.includes(w));
 				})
-				.filter((x) => x.hits > 0)
-				.sort((a, b) => b.hits - a.hits)
-				.map((x) => x.url);
+				.map((el) => el.dataset.url || '');
 		};
 
 		const showStatus = (text: string, terms: { url: string; title: string }[]) => {
@@ -461,7 +460,7 @@ const formatDate = (d: Date) => new Intl.DateTimeFormat(locale, { day: 'numeric'
 				const data = await r.json();
 				const known = new Set(items.map((el) => el.dataset.url));
 				urls = (data.results || []).filter((x: any) => x.kind === 'news' && known.has(x.url)).map((x: any) => x.url);
-				terms = (data.results || []).filter((x: any) => x.kind === 'term').slice(0, 4);
+				terms = (data.results || []).filter((x: any) => x.kind === 'term').slice(0, 6);
 			} catch (e) {
 				if ((e as Error).name === 'AbortError') return;
 				smart = false;
@@ -469,6 +468,8 @@ const formatDate = (d: Date) => new Intl.DateTimeFormat(locale, { day: 'numeric'
 			}
 			if (spin) spin.hidden = true;
 			if (input?.value.trim() !== q) return;
+			// То, что нашлось прямо на странице по буквам, не должно пропасть: добавляем в конец, если сервис это не вернул.
+			if (smart) for (const u of localSearch(q)) if (!urls.includes(u)) urls.push(u);
 			ranked = urls;
 			chips.forEach((c) => (c.disabled = true));
 			render(true);
@@ -490,7 +491,16 @@ const formatDate = (d: Date) => new Intl.DateTimeFormat(locale, { day: 'numeric'
 			}
 			url.searchParams.set('q', q);
 			history.replaceState(null, '', url);
-			timer = window.setTimeout(() => runSearch(q), 380);
+			// Сразу показываем совпадения по буквам, а умный поиск уточняет список через мгновение.
+			const quick = localSearch(q);
+			if (quick.length || !ranked) {
+				ranked = quick;
+				chips.forEach((c) => (c.disabled = true));
+				render(false);
+				if (status) status.hidden = true;
+			}
+			if (spin) spin.hidden = false;
+			timer = window.setTimeout(() => runSearch(q), 250);
 		});
 		input?.addEventListener('keydown', (e) => {
 			if (e.key === 'Escape') {
