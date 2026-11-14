@@ -1,0 +1,91 @@
+---
+// Главная страница словаря FIDIC: все термины по алфавиту с быстрым поиском.
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import { glossaryUrl, glossaryIndexUrl, GLOSSARY_T, type Lang } from '../data/glossary';
+
+interface Props {
+	lang?: Lang;
+}
+const { lang = 'ru' } = Astro.props;
+const t = GLOSSARY_T[lang];
+const origin = 'https://www.bridgeconsult.uz';
+const langUrls = { ru: origin + glossaryIndexUrl('ru'), en: origin + glossaryIndexUrl('en'), uz: origin + glossaryIndexUrl('uz') };
+const terms = (await getCollection('glossary'))
+	.filter((e) => (e.data.lang ?? 'ru') === lang)
+	.sort((a, b) => a.data.term.localeCompare(b.data.term));
+const slugOf = (id: string) => id.replace(/\.(md|mdx)$/i, '').replace(/^(ru|en|uz)-/, '');
+const setJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'DefinedTermSet',
+	name: t.title,
+	url: langUrls[lang],
+	hasDefinedTerm: terms.map((e) => ({ '@type': 'DefinedTerm', name: e.data.term, url: origin + glossaryUrl(lang, slugOf(e.id)) })),
+};
+const newsUrl = lang === 'ru' ? '/news/' : `/news/${lang}/`;
+---
+
+<Layout title={t.pageTitle} description={t.description} image="/og-image.jpg" lang={lang}>
+	<Fragment slot="head">
+		<link rel="alternate" hreflang="ru" href={langUrls.ru} />
+		<link rel="alternate" hreflang="en" href={langUrls.en} />
+		<link rel="alternate" hreflang="uz" href={langUrls.uz} />
+		<link rel="alternate" hreflang="x-default" href={langUrls.ru} />
+		<script type="application/ld+json" set:html={JSON.stringify(setJsonLd)}></script>
+	</Fragment>
+	<SiteHeader lang={lang} langUrls={langUrls} />
+
+	<section class="relative overflow-hidden bg-bridge-dark pt-36 pb-20 font-sans md:pt-44 md:pb-24">
+		<div class="absolute left-1/2 top-1/2 z-[1] h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-bridge-taupe/20 blur-[140px]"></div>
+		<div class="relative z-10 mx-auto max-w-5xl px-6 text-center">
+			<h1 class="mb-6 text-4xl font-bold tracking-tight text-white md:text-6xl">{t.heroA} <span class="text-bridge-taupe">{t.heroB}</span></h1>
+			<p class="mx-auto max-w-2xl text-base font-light leading-relaxed text-gray-300 md:text-xl">{t.sub}</p>
+			{terms.length > 0 && (
+				<label class="bc-search bc-search-dark mx-auto mt-10 max-w-xl">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path stroke-linecap="round" d="M20 20l-3.5-3.5" /></svg>
+					<input type="search" data-term-search placeholder={t.search} aria-label={t.search} autocomplete="off" />
+				</label>
+			)}
+		</div>
+	</section>
+
+	<section class="bg-bridge-light py-12 font-sans md:py-20">
+		<div class="mx-auto max-w-6xl px-4 md:px-6">
+			{terms.length > 0 ? (
+				<>
+					<div class="bc-term-grid">
+						{terms.map((e) => (
+							<a href={glossaryUrl(lang, slugOf(e.id))} class="bc-term-card news-surface" data-term={[e.data.term, e.data.title, ...e.data.aliases].join(' ').toLowerCase()}>
+								<strong>{e.data.term}</strong>
+								<span>{e.data.excerpt}</span>
+							</a>
+						))}
+					</div>
+					<p class="mt-10 text-center text-base font-light text-gray-600" data-term-empty hidden>{t.nothing}</p>
+				</>
+			) : (
+				<p class="news-surface rounded-3xl border border-white/70 bg-white p-10 text-center text-lg font-light text-gray-600 premium-shadow">{t.empty}</p>
+			)}
+			<p class="mt-12 text-center"><a href={newsUrl} class="text-xs font-bold uppercase tracking-widest text-bridge-taupe hover:text-bridge-dark">{t.toNews} →</a></p>
+		</div>
+	</section>
+	<SiteFooter lang={lang} />
+</Layout>
+
+<script>
+	const input = document.querySelector<HTMLInputElement>('[data-term-search]');
+	const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-term]'));
+	const empty = document.querySelector<HTMLElement>('[data-term-empty]');
+	input?.addEventListener('input', () => {
+		const q = input.value.trim().toLowerCase();
+		let shown = 0;
+		for (const c of cards) {
+			const ok = !q || (c.dataset.term || '').includes(q);
+			c.hidden = !ok;
+			if (ok) shown++;
+		}
+		if (empty) empty.hidden = shown > 0;
+	});
+</script>

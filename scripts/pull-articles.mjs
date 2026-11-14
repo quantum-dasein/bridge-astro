@@ -1,6 +1,7 @@
-// Забирает готовые статьи у редакционного бота (Bridge Consult · SMM Studio) и кладёт их в сайт:
-// три Markdown-файла (ru/en/uz) в src/content/news и картинки в public/media/news/<slug>/.
-// Запускается из .github/workflows/autopilot-news.yml. Идемпотентен: уже добавленные статьи пропускает.
+// Забирает готовые материалы у редакционного бота (Bridge Consult · SMM Studio) и кладёт их в сайт:
+// три Markdown-файла (ru/en/uz) в src/content/news или src/content/glossary и картинки в public/media/<раздел>/<slug>/.
+// Запускается из .github/workflows/autopilot-news.yml. Идемпотентен: уже добавленное пропускает,
+// а обновляет только то, у чего бот поднял номер редакции (rev).
 //
 //   node scripts/pull-articles.mjs --check   — только проверить, есть ли что добавить (без зависимостей)
 //   node scripts/pull-articles.mjs           — скачать, оптимизировать картинки и записать файлы
@@ -10,10 +11,11 @@ import { join } from 'node:path';
 const FEED = process.env.FEED_URL || 'https://bridgeconsult-studio.rodionbelousov.workers.dev/site/feed.json';
 const ORIGIN = new URL(FEED).origin;
 const root = process.cwd();
-const newsDir = join(root, 'src', 'content', 'news');
-const mediaDir = join(root, 'public', 'media', 'news');
 const checkOnly = process.argv.includes('--check');
 const LANGS = ['ru', 'en', 'uz'];
+const COLLECTIONS = { news: { needsCover: true }, glossary: { needsCover: false } };
+const contentDir = (c) => join(root, 'src', 'content', c);
+const mediaDir = (c) => join(root, 'public', 'media', c);
 
 async function get(url, as = 'json') {
 	let last;
@@ -31,49 +33,59 @@ async function get(url, as = 'json') {
 }
 
 const setOutput = (k, v) => process.env.GITHUB_OUTPUT && appendFileSync(process.env.GITHUB_OUTPUT, `${k}=${v}\n`);
-const okSlug = (s) => typeof s === 'string' && /^[a-z0-9][a-z0-9-]{2,70}$/.test(s);
-// Статьи приходят извне, поэтому не пускаем в сайт ничего исполняемого.
+const okSlug = (s) => typeof s === 'string' && /^[a-z0-9][a-z0-9-]{1,70}$/.test(s);
+// Материалы приходят извне, поэтому не пускаем в сайт ничего исполняемого.
 const unsafe = (text) => /<\s*(script|iframe|object|embed|link|meta|style|form)\b|\son\w+\s*=|javascript:/i.test(text);
+const revOf = (file) => (existsSync(file) ? Number(readFileSync(file, 'utf8').match(/^rev:\s*(\d+)/m)?.[1] ?? 1) : 0);
 
 const feed = await get(FEED);
 const todo = [];
 for (const a of feed.articles ?? []) {
-	if (!okSlug(a.slug)) { console.warn(`skip: bad slug ${a.slug}`); continue; }
+	const collection = a.collection ?? 'news';
+	const rules = COLLECTIONS[collection];
+	if (!rules || !okSlug(a.slug)) { console.warn(`skip: bad entry ${collection}/${a.slug}`); continue; }
 	const names = LANGS.map((l) => `${l}-${a.slug}.md`);
 	if (names.some((n) => typeof a.files?.[n] !== 'string' || !a.files[n].startsWith('---\n') || unsafe(a.files[n]))) { console.warn(`skip: ${a.slug} failed validation`); continue; }
 	if (!(a.images ?? []).every((i) => /^[a-z]+(-(ru|en|uz))?$/.test(i.name) && String(i.url).startsWith(`${ORIGIN}/site/img/`))) { console.warn(`skip: ${a.slug} bad images`); continue; }
-	if (!a.images.some((i) => i.name === 'cover')) { console.warn(`skip: ${a.slug} has no cover`); continue; }
-	// Статья уже на сайте (в любом формате) — не трогаем.
-	if (LANGS.some((l) => existsSync(join(newsDir, `${l}-${a.slug}.md`)) || existsSync(join(newsDir, `${l}-${a.slug}.mdx`)))) continue;
-	todo.push(a);
+	if (rules.needsCover && !a.images.some((i) => i.name === 'cover')) { console.warn(`skip: ${a.slug} has no cover`); continue; }
+	const dir = contentDir(collection);
+	// Написанное руками (.mdx) не трогаем никогда.
+	if (LANGS.some((l) => existsSync(join(dir, `${l}-${a.slug}.mdx`)))) continue;
+	const have = revOf(join(dir, `ru-${a.slug}.md`));
+	const rev = Number(a.rev ?? 1);
+	if (have >= rev) continue;
+	todo.push({ ...a, collection, update: have > 0 });
 }
-// Снятые с публикации: удаляем только то, что добавил автопилот (у таких статей есть папка с картинками).
-const drop = (feed.remove ?? []).filter((s) => okSlug(s) && existsSync(join(mediaDir, s)) && existsSync(join(newsDir, `ru-${s}.md`)));
+// Снятое с публикации: удаляем только то, что добавил автопилот (.md, а не .mdx).
+const drop = (feed.remove ?? [])
+	.map((r) => (typeof r === 'string' ? { collection: 'news', slug: r } : r))
+	.filter((r) => COLLECTIONS[r.collection] && okSlug(r.slug) && existsSync(join(contentDir(r.collection), `ru-${r.slug}.md`)));
 
-console.log(`feed: ${feed.articles?.length ?? 0} ready, ${todo.length} new, ${drop.length} to remove`);
+console.log(`feed: ${feed.articles?.length ?? 0} ready, ${todo.length} to write, ${drop.length} to remove`);
 setOutput('changed', todo.length || drop.length ? 'true' : 'false');
 if (checkOnly || (!todo.length && !drop.length)) process.exit(0);
 
 const { default: sharp } = await import('sharp');
 const titles = [];
 for (const a of todo) {
-	const dir = join(mediaDir, a.slug);
-	mkdirSync(dir, { recursive: true });
+	const media = join(mediaDir(a.collection), a.slug);
+	if (a.images.length) mkdirSync(media, { recursive: true });
 	for (const img of a.images) {
 		const src = await get(img.url, 'buffer');
 		const base = sharp(src).rotate().resize({ width: 1600, withoutEnlargement: true });
-		await base.clone().jpeg({ quality: 84, mozjpeg: true }).toFile(join(dir, `${img.name}.jpg`));
-		await base.clone().webp({ quality: 80, effort: 5 }).toFile(join(dir, `${img.name}.webp`));
-		await base.clone().avif({ quality: 55, effort: 4 }).toFile(join(dir, `${img.name}.avif`));
+		await base.clone().jpeg({ quality: 84, mozjpeg: true }).toFile(join(media, `${img.name}.jpg`));
+		await base.clone().webp({ quality: 80, effort: 5 }).toFile(join(media, `${img.name}.webp`));
+		await base.clone().avif({ quality: 55, effort: 4 }).toFile(join(media, `${img.name}.avif`));
 	}
-	for (const l of LANGS) writeFileSync(join(newsDir, `${l}-${a.slug}.md`), a.files[`${l}-${a.slug}.md`]);
-	titles.push(a.title || a.slug);
-	console.log(`added: ${a.slug}`);
+	mkdirSync(contentDir(a.collection), { recursive: true });
+	for (const l of LANGS) writeFileSync(join(contentDir(a.collection), `${l}-${a.slug}.md`), a.files[`${l}-${a.slug}.md`]);
+	titles.push(`${a.update ? 'update: ' : ''}${a.title || a.slug}`);
+	console.log(`${a.update ? 'updated' : 'added'}: ${a.collection}/${a.slug}`);
 }
-for (const s of drop) {
-	for (const l of LANGS) rmSync(join(newsDir, `${l}-${s}.md`), { force: true });
-	rmSync(join(mediaDir, s), { recursive: true, force: true });
-	titles.push(`removed ${s}`);
-	console.log(`removed: ${s}`);
+for (const r of drop) {
+	for (const l of LANGS) rmSync(join(contentDir(r.collection), `${l}-${r.slug}.md`), { force: true });
+	rmSync(join(mediaDir(r.collection), r.slug), { recursive: true, force: true });
+	titles.push(`removed ${r.slug}`);
+	console.log(`removed: ${r.collection}/${r.slug}`);
 }
-writeFileSync(join(root, '.autopilot-message'), titles.length === 1 ? `Autopilot: ${titles[0]}` : `Autopilot: ${titles.length} articles\n\n${titles.map((t) => `- ${t}`).join('\n')}`);
+writeFileSync(join(root, '.autopilot-message'), titles.length === 1 ? `Autopilot: ${titles[0]}` : `Autopilot: ${titles.length} items\n\n${titles.map((t) => `- ${t}`).join('\n')}`);

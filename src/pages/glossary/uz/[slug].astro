@@ -1,0 +1,20 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import GlossaryTerm from '../../../components/GlossaryTerm.astro';
+
+export const prerender = true;
+export async function getStaticPaths() {
+	const entries = (await getCollection('glossary')).filter((e) => (e.data.lang ?? 'ru') === 'uz');
+	return entries.map((entry) => ({
+		params: { slug: entry.id.replace(/\.(md|mdx)$/i, '').replace(/^(ru|en|uz)-/, '') },
+		props: { entry },
+	}));
+}
+
+interface Props {
+	entry: CollectionEntry<'glossary'>;
+}
+const { entry } = Astro.props;
+---
+
+<GlossaryTerm entry={entry} />

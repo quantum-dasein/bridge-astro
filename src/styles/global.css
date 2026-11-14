@@ -594,3 +594,288 @@ html.dark-theme .news-body .bc-note {
   background: rgba(212, 195, 163, 0.07);
   border-color: rgba(212, 195, 163, 0.25);
 }
+
+
+/* ===== Поиск по новостям, словарь FIDIC, подпись эксперта ===== */
+.bc-search-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.bc-search {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  min-width: 0;
+  height: 3rem;
+  padding: 0 1rem 0 2.9rem;
+  border: 1px solid rgba(138, 123, 102, 0.35);
+  border-radius: 999px;
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.bc-search:focus-within {
+  border-color: #8A7B66;
+  box-shadow: 0 0 0 4px rgba(138, 123, 102, 0.15);
+}
+.bc-search > svg {
+  position: absolute;
+  left: 1.05rem;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: #8A7B66;
+}
+.bc-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #292724;
+  font-size: 0.95rem;
+}
+.bc-search input::placeholder {
+  color: #9b948a;
+}
+.bc-search input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+.bc-search-spin {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.5rem;
+  border: 2px solid rgba(138, 123, 102, 0.3);
+  border-top-color: #8A7B66;
+  border-radius: 999px;
+  animation: bc-spin 0.7s linear infinite;
+}
+.bc-search-spin[hidden] {
+  display: none;
+}
+@keyframes bc-spin {
+  to { transform: rotate(360deg); }
+}
+.bc-search-dark {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+.bc-search-dark input {
+  color: #ffffff;
+}
+.bc-search-dark input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+.bc-glossary-link {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: 3rem;
+  padding: 0 1.25rem;
+  border: 1px solid rgba(138, 123, 102, 0.35);
+  border-radius: 999px;
+  color: #292724;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.bc-glossary-link:hover {
+  border-color: #292724;
+  background: #292724;
+  color: #F5F4F2;
+}
+@media (max-width: 640px) {
+  .bc-search-row { flex-wrap: wrap; }
+  .bc-glossary-link { height: 2.5rem; }
+}
+.news-chip:disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+.bc-search-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+  margin: 0 0 1.5rem;
+  color: #6b645a;
+  font-size: 0.82rem;
+}
+.bc-search-status[hidden] {
+  display: none;
+}
+.bc-search-terms a,
+.bc-term-chips a {
+  display: inline-block;
+  margin: 0.2rem 0.35rem 0.2rem 0;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(138, 123, 102, 0.4);
+  border-radius: 999px;
+  color: #292724;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.bc-search-terms a:hover,
+.bc-term-chips a:hover {
+  background: #292724;
+  color: #F5F4F2;
+}
+.bc-term-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+}
+.bc-term-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(138, 123, 102, 0.22);
+  border-radius: 1.25rem;
+  background: #ffffff;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.bc-term-card[hidden] {
+  display: none;
+}
+.bc-term-card:hover {
+  transform: translateY(-3px);
+  border-color: #8A7B66;
+  box-shadow: 0 22px 45px -24px rgba(138, 123, 102, 0.55);
+}
+.bc-term-card strong {
+  color: #292724;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.bc-term-card span {
+  display: -webkit-box;
+  overflow: hidden;
+  color: #6b645a;
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+.bc-term-news {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bc-term-news li {
+  padding: 0.85rem 0;
+  border-bottom: 1px solid #e5e1db;
+}
+.bc-term-news a {
+  color: #292724;
+  font-weight: 600;
+}
+.bc-term-news a:hover {
+  color: #8A7B66;
+}
+.bc-byline {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 2.25rem;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid #e5e1db;
+  border-radius: 1rem;
+  background: #ffffff;
+  color: #292724;
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+}
+.bc-byline:hover {
+  border-color: #8A7B66;
+}
+.bc-byline img {
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  object-fit: cover;
+  object-position: center top;
+}
+.bc-byline > span {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.35;
+}
+.bc-byline-label {
+  color: #8A7B66;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.bc-byline strong {
+  font-size: 0.98rem;
+}
+.bc-byline-role {
+  color: #6b645a;
+  font-size: 0.78rem;
+  font-weight: 300;
+}
+.news-body a.bc-term-link {
+  text-decoration-style: dotted;
+}
+html.dark-theme .bc-search:not(.bc-search-dark),
+html.dark-theme .bc-term-card,
+html.dark-theme .bc-byline {
+  border-color: #2a2928;
+  background: #1c1b19;
+}
+html.dark-theme .bc-search input,
+html.dark-theme .bc-term-card strong,
+html.dark-theme .bc-byline,
+html.dark-theme .bc-term-news a,
+html.dark-theme .bc-glossary-link,
+html.dark-theme .bc-search-terms a,
+html.dark-theme .bc-term-chips a {
+  color: #f4f4f5;
+}
+html.dark-theme .bc-term-news li {
+  border-bottom-color: #2a2928;
+}
+
+/* Цитата эксперта из Telegram-канала внутри статьи */
+.news-body .bc-expert {
+  margin: 2rem 0;
+}
+.news-body.news-body .bc-expert blockquote {
+  margin: 0;
+  padding: 1.5rem 1.75rem;
+  border-left: 3px solid #8A7B66;
+  border-radius: 0 1rem 1rem 0;
+  background: #ffffff;
+  color: #292724;
+  font-size: 1.12rem;
+  font-style: italic;
+  line-height: 1.7;
+}
+.news-body .bc-expert figcaption {
+  margin-top: 0.75rem;
+  padding-left: 1.75rem;
+  color: #6b645a;
+  font-size: 0.82rem;
+}
+.news-body .bc-expert figcaption strong {
+  color: #292724;
+}
+html.dark-theme .news-body.news-body .bc-expert blockquote {
+  background: #1c1b19;
+  color: #f4f4f5;
+}
+html.dark-theme .news-body .bc-expert figcaption strong {
+  color: #f4f4f5;
+}

@@ -46,7 +46,7 @@ function readNews() {
 
 		const [, lang, baseSlug] = match;
 		const text = fs.readFileSync(path.join(NEWS_DIR, file), 'utf8');
-		const date = text.match(/^date:\s*([0-9-]+)/m)?.[1] ?? null;
+		const date = text.match(/^updated:\s*([0-9-]+)/m)?.[1] ?? text.match(/^date:\s*([0-9-]+)/m)?.[1] ?? null;
 
 		if (!groups.has(baseSlug)) groups.set(baseSlug, {});
 		groups.get(baseSlug)[lang] = { slug, date };
@@ -155,6 +155,33 @@ for (const [baseSlug, translations] of readNews()) {
 	entries.push(urlEntry({ loc: alternates.ru, alternates, changefreq: 'weekly', priority, lastmod }));
 	entries.push(urlEntry({ loc: alternates.en, alternates, changefreq: 'weekly', priority: '0.7', lastmod }));
 	entries.push(urlEntry({ loc: alternates.uz, alternates, changefreq: 'weekly', priority: '0.7', lastmod }));
+}
+
+// Словарь FIDIC: главная и страница на каждый термин (три языка).
+const GLOSSARY_DIR = path.join(ROOT, 'src', 'content', 'glossary');
+const glossaryIndexAlternates = { ru: '/glossary/', en: '/glossary/en/', uz: '/glossary/uz/', 'x-default': '/glossary/' };
+const glossaryTerms = new Map();
+if (fs.existsSync(GLOSSARY_DIR)) {
+	for (const file of fs.readdirSync(GLOSSARY_DIR)) {
+		const m = file.match(/^(ru|en|uz)-(.+)\.mdx?$/);
+		if (!m) continue;
+		const text = fs.readFileSync(path.join(GLOSSARY_DIR, file), 'utf8');
+		const date = text.match(/^updated:\s*([0-9-]+)/m)?.[1] ?? text.match(/^date:\s*([0-9-]+)/m)?.[1] ?? null;
+		if (!glossaryTerms.has(m[2])) glossaryTerms.set(m[2], {});
+		glossaryTerms.get(m[2])[m[1]] = date;
+	}
+}
+const completeTerms = [...glossaryTerms.entries()].filter(([, t]) => langs.every((l) => l in t)).sort(([a], [b]) => a.localeCompare(b));
+if (completeTerms.length) {
+	entries.push(urlEntry({ loc: '/glossary/', alternates: glossaryIndexAlternates, changefreq: 'weekly', priority: '0.8' }));
+	entries.push(urlEntry({ loc: '/glossary/en/', alternates: glossaryIndexAlternates, changefreq: 'weekly', priority: '0.8' }));
+	entries.push(urlEntry({ loc: '/glossary/uz/', alternates: glossaryIndexAlternates, changefreq: 'weekly', priority: '0.8' }));
+}
+for (const [slug, dates] of completeTerms) {
+	const alternates = { ru: `/glossary/${slug}/`, en: `/glossary/en/${slug}/`, uz: `/glossary/uz/${slug}/`, 'x-default': `/glossary/${slug}/` };
+	entries.push(urlEntry({ loc: alternates.ru, alternates, changefreq: 'monthly', priority: '0.7', lastmod: dates.ru }));
+	entries.push(urlEntry({ loc: alternates.en, alternates, changefreq: 'monthly', priority: '0.7', lastmod: dates.en }));
+	entries.push(urlEntry({ loc: alternates.uz, alternates, changefreq: 'monthly', priority: '0.7', lastmod: dates.uz }));
 }
 
 for (const slug of readProjectSlugs()) {

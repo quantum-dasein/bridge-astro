@@ -1,0 +1,24 @@
+---
+// Подпись под вводкой: под чьей редакцией вышел материал. Ведёт на страницу эксперта.
+import { EXPERTS, type ExpertKey } from '../data/authors';
+
+interface Props { expert: string; lang?: string; updated?: Date }
+const { expert, lang = 'ru', updated } = Astro.props;
+const l = (lang === 'en' || lang === 'uz' ? lang : 'ru') as 'ru' | 'en' | 'uz';
+const e = EXPERTS[expert as ExpertKey];
+const label = { ru: 'Под редакцией', en: 'Reviewed by', uz: 'Tahrir' }[l];
+const updatedLabel = { ru: 'Обновлено', en: 'Updated', uz: 'Yangilangan' }[l];
+const locale = l === 'uz' ? 'uz-UZ' : l === 'en' ? 'en-GB' : 'ru-RU';
+const fmt = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+{e && (
+	<a href="/larisa/" class="bc-byline" data-aos="fade-up">
+		<img src={e.photo} alt={e.name[l]} width="48" height="48" loading="lazy" decoding="async" />
+		<span>
+			<span class="bc-byline-label">{label}</span>
+			<strong>{e.name[l]}</strong>
+			<span class="bc-byline-role">{e.role[l]}{updated && ` · ${updatedLabel} ${fmt.format(updated)}`}</span>
+		</span>
+	</a>
+)}

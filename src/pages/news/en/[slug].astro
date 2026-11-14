@@ -4,6 +4,8 @@ import Layout from '../../../layouts/Layout.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import NewsPicture from '../../../components/NewsPicture.astro';
+import ExpertByline from '../../../components/ExpertByline.astro';
+import { articleAuthor, faqJsonLd } from '../../../data/authors';
 import RelatedNews from '../../../components/RelatedNews.astro';
 import TelegramCta from '../../../components/TelegramCta.astro';
 
@@ -47,11 +49,7 @@ const newsArticleJsonLd = {
 		'@type': 'WebPage',
 		'@id': pageUrl,
 	},
-	author: {
-		'@type': 'Organization',
-		name: 'Bridge Consult',
-		url: new URL('/EN/', pageUrl).toString(),
-	},
+	author: articleAuthor(post.data.expert, pageUrl),
 	publisher: {
 		'@type': 'Organization',
 		name: 'Bridge Consult',
@@ -94,6 +92,7 @@ const videoJsonLd = video
 		<meta property="article:modified_time" content={(post.data.updated ?? date).toISOString()} />
 		{tags.map((tag) => <meta property="article:tag" content={tag} />)}
 		<script type="application/ld+json" set:html={JSON.stringify(newsArticleJsonLd)}></script>
+		{post.data.faq?.length && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd(post.data.faq))}></script>}
 		{videoJsonLd && <script type="application/ld+json" set:html={JSON.stringify(videoJsonLd)}></script>}
 	</Fragment>
 	<SiteHeader active="news" lang="en" langUrls={langUrls} />
@@ -130,6 +129,7 @@ const videoJsonLd = video
 					<NewsPicture src={coverImage} alt={title} imgClass="aspect-[16/10] w-full object-cover" loading="eager" />
 				</figure>
 				<p class="mb-10 border-l-2 border-bridge-taupe pl-6 text-lg font-light italic leading-relaxed text-bridge-dark md:text-xl" data-aos="fade-up">{excerpt}</p>
+				{post.data.expert && <ExpertByline expert={post.data.expert} lang="en" updated={post.data.updated} />}
 				<div class="news-body" data-aos="fade-up" data-aos-delay="100"><Content /></div>
 
 				{video && (

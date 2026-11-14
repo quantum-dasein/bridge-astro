@@ -55,6 +55,12 @@ const t = {
 		more: 'Показать ещё',
 		emptyFilter: 'В этой рубрике пока нет публикаций.',
 		empty: 'Публикации скоро появятся.',
+		search: 'Что вы ищете? Например: как продлить срок строительства',
+		searchSmart: 'Нашли по смыслу запроса',
+		searchPlain: 'Нашли по словам запроса',
+		searchNone: 'Ничего не нашли. Попробуйте описать вопрос другими словами.',
+		searchTerms: 'В словаре FIDIC',
+		glossary: 'Словарь FIDIC',
 		tgEyebrow: 'Telegram-канал',
 		tgTitle: 'FIDIC Uzbekistan',
 		tgDesc: 'Анонсы встреч, разбор кейсов и экспертные материалы по контрактам FIDIC — первыми в нашем Telegram-канале.',
@@ -74,6 +80,12 @@ const t = {
 		more: 'Show more',
 		emptyFilter: 'No publications in this section yet.',
 		empty: 'Publications coming soon.',
+		search: 'What are you looking for? e.g. how to extend the time for completion',
+		searchSmart: 'Matched by meaning',
+		searchPlain: 'Matched by keywords',
+		searchNone: 'Nothing found. Try describing your question differently.',
+		searchTerms: 'In the FIDIC glossary',
+		glossary: 'FIDIC glossary',
 		tgEyebrow: 'Telegram channel',
 		tgTitle: 'FIDIC Uzbekistan',
 		tgDesc: 'Meeting announcements, case studies and expert materials on FIDIC contracts — first in our Telegram channel.',
@@ -93,6 +105,12 @@ const t = {
 		more: 'Yana ko‘rsatish',
 		emptyFilter: 'Bu bo‘limda hozircha nashrlar yo‘q.',
 		empty: 'Nashrlar tez orada paydo bo‘ladi.',
+		search: 'Nimani qidiryapsiz? Masalan: qurilish muddatini qanday uzaytirish mumkin',
+		searchSmart: 'Soʻrov maʼnosi boʻyicha topildi',
+		searchPlain: 'Soʻzlar boʻyicha topildi',
+		searchNone: 'Hech narsa topilmadi. Savolni boshqacha yozib koʻring.',
+		searchTerms: 'FIDIC lugʻatida',
+		glossary: 'FIDIC lugʻati',
 		tgEyebrow: 'Telegram kanali',
 		tgTitle: 'FIDIC Uzbekistan',
 		tgDesc: 'Uchrashuvlar e’lonlari, keyslar tahlili va FIDIC shartnomalari bo‘yicha ekspert materiallari — birinchi bo‘lib Telegram kanalimizda.',
@@ -199,7 +217,7 @@ const formatDate = (d: Date) => new Intl.DateTimeFormat(locale, { day: 'numeric'
 		<div class="pointer-events-none absolute -left-32 top-40 h-72 w-72 rounded-full bg-bridge-taupe/10 blur-3xl"></div>
 		<div class="pointer-events-none absolute -right-32 bottom-20 h-72 w-72 rounded-full bg-bridge-dark/10 blur-3xl"></div>
 
-		<div class="relative z-10 mx-auto max-w-7xl px-4 md:px-6" data-news-root data-page={PAGE}>
+		<div class="relative z-10 mx-auto max-w-7xl px-4 md:px-6" data-news-root data-page={PAGE} data-lang={lang}>
 			{posts.length > 0 ? (
 				<>
 					<div class="mb-2 flex items-center px-0.5 text-[10px] font-bold uppercase tracking-[0.24em] text-bridge-taupe md:text-xs">
@@ -208,6 +226,14 @@ const formatDate = (d: Date) => new Intl.DateTimeFormat(locale, { day: 'numeric'
 					</div>
 
 					<div class="news-filterbar sticky z-30 -mx-4 mb-5 px-4 py-3 md:-mx-6 md:mb-10 md:px-6 md:py-4" style="top: var(--news-sticky-top, 72px)">
+						<div class="bc-search-row">
+							<label class="bc-search">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path stroke-linecap="round" d="M20 20l-3.5-3.5" /></svg>
+								<input type="search" data-news-search placeholder={t.search} aria-label={t.search} autocomplete="off" enterkeyhint="search" maxlength="160" />
+								<span class="bc-search-spin" data-search-spin hidden></span>
+							</label>
+							<a href={lang === 'ru' ? '/glossary/' : `/glossary/${lang}/`} class="bc-glossary-link">{t.glossary}</a>
+						</div>
 						<div class="news-chips flex gap-2 overflow-x-auto" role="toolbar" aria-label={t.allPosts}>
 							{filters.map((f) => (
 								<button type="button" class="news-chip" data-filter={f.id} aria-pressed={f.id === 'all' ? 'true' : 'false'}>
@@ -217,6 +243,8 @@ const formatDate = (d: Date) => new Intl.DateTimeFormat(locale, { day: 'numeric'
 							))}
 						</div>
 					</div>
+
+					<div class="bc-search-status" data-search-status hidden data-smart={t.searchSmart} data-plain={t.searchPlain} data-none={t.searchNone} data-terms={t.searchTerms}></div>
 
 					<div class="news-grid grid gap-3 md:grid-cols-2 md:gap-6 lg:grid-cols-6 lg:gap-8">
 						{posts.map((p, index) => (
@@ -288,6 +316,8 @@ const formatDate = (d: Date) => new Intl.DateTimeFormat(locale, { day: 'numeric'
 
 		let cat = 'all';
 		let limit = PAGE;
+		// Поиск: адреса найденных статей в порядке релевантности; null — поиск не идёт.
+		let ranked: string[] | null = null;
 
 		// Панель фильтров прилипает под шапкой; высота шапки меняется при прокрутке.
 		const setStickyTop = () => {
@@ -306,6 +336,21 @@ const formatDate = (d: Date) => new Intl.DateTimeFormat(locale, { day: 'numeric'
 		};
 
 		const render = (animateAll: boolean) => {
+			if (ranked) {
+				for (const el of items) {
+					const idx = ranked.indexOf(el.dataset.url || '');
+					const wasHidden = el.hidden;
+					el.hidden = idx < 0;
+					el.style.order = idx < 0 ? '' : String(idx);
+					el.classList.toggle('is-wide', idx === 0 || idx === 1);
+					if (idx >= 0 && (animateAll || wasHidden)) animateIn(el);
+				}
+				if (featuredBlock) featuredBlock.hidden = true;
+				if (moreWrap) moreWrap.hidden = true;
+				if (empty) empty.hidden = true;
+				return;
+			}
+			for (const el of items) el.style.order = '';
 			let match = 0;
 			let shown = 0;
 			for (const el of items) {
@@ -351,5 +396,112 @@ const formatDate = (d: Date) => new Intl.DateTimeFormat(locale, { day: 'numeric'
 
 		const initial = new URLSearchParams(window.location.search).get('cat');
 		if (initial) select(initial, false);
+
+		// ===== Умный поиск =====
+		// Запрос уходит редакционному боту: он сравнивает смысл запроса со смыслом статей, поэтому
+		// «как продлить срок» находит статью про EOT. Если бот недоступен — ищем по словам прямо здесь.
+		const SEARCH_API = 'https://bridgeconsult-studio.rodionbelousov.workers.dev/site/search';
+		const input = root.querySelector<HTMLInputElement>('[data-news-search]');
+		const status = root.querySelector<HTMLElement>('[data-search-status]');
+		const spin = root.querySelector<HTMLElement>('[data-search-spin]');
+		const lang = root.dataset.lang || 'ru';
+		let timer = 0;
+		let ctrl: AbortController | null = null;
+
+		const localSearch = (q: string) => {
+			const words = q.toLowerCase().split(/\s+/).filter((w) => w.length > 1);
+			return items
+				.map((el) => {
+					const text = (el.textContent || '').toLowerCase();
+					return { url: el.dataset.url || '', hits: words.filter((w) => text.includes(w)).length };
+				})
+				.filter((x) => x.hits > 0)
+				.sort((a, b) => b.hits - a.hits)
+				.map((x) => x.url);
+		};
+
+		const showStatus = (text: string, terms: { url: string; title: string }[]) => {
+			if (!status) return;
+			status.replaceChildren();
+			const line = document.createElement('span');
+			line.textContent = text;
+			status.append(line);
+			if (terms.length) {
+				const box = document.createElement('span');
+				box.className = 'bc-search-terms';
+				box.append(`${status.dataset.terms}: `);
+				for (const tm of terms) {
+					const a = document.createElement('a');
+					a.href = tm.url;
+					a.textContent = tm.title;
+					box.append(a);
+				}
+				status.append(box);
+			}
+			status.hidden = false;
+		};
+
+		const stopSearch = () => {
+			ranked = null;
+			if (status) status.hidden = true;
+			chips.forEach((c) => (c.disabled = false));
+			render(true);
+		};
+
+		const runSearch = async (q: string) => {
+			ctrl?.abort();
+			ctrl = new AbortController();
+			if (spin) spin.hidden = false;
+			let urls: string[] = [];
+			let terms: { url: string; title: string }[] = [];
+			let smart = true;
+			try {
+				const r = await fetch(`${SEARCH_API}?lang=${lang}&q=${encodeURIComponent(q)}`, { signal: ctrl.signal });
+				if (!r.ok) throw new Error(String(r.status));
+				const data = await r.json();
+				const known = new Set(items.map((el) => el.dataset.url));
+				urls = (data.results || []).filter((x: any) => x.kind === 'news' && known.has(x.url)).map((x: any) => x.url);
+				terms = (data.results || []).filter((x: any) => x.kind === 'term').slice(0, 4);
+			} catch (e) {
+				if ((e as Error).name === 'AbortError') return;
+				smart = false;
+				urls = localSearch(q);
+			}
+			if (spin) spin.hidden = true;
+			if (input?.value.trim() !== q) return;
+			ranked = urls;
+			chips.forEach((c) => (c.disabled = true));
+			render(true);
+			const found = urls.length || terms.length;
+			showStatus(found ? `${smart ? status?.dataset.smart : status?.dataset.plain}: ${urls.length}` : status?.dataset.none || '', terms);
+		};
+
+		input?.addEventListener('input', () => {
+			window.clearTimeout(timer);
+			const q = input.value.trim();
+			const url = new URL(window.location.href);
+			if (q.length < 2) {
+				ctrl?.abort();
+				if (spin) spin.hidden = true;
+				url.searchParams.delete('q');
+				history.replaceState(null, '', url);
+				if (ranked) stopSearch();
+				return;
+			}
+			url.searchParams.set('q', q);
+			history.replaceState(null, '', url);
+			timer = window.setTimeout(() => runSearch(q), 380);
+		});
+		input?.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape') {
+				input.value = '';
+				input.dispatchEvent(new Event('input'));
+			}
+		});
+		const initialQuery = new URLSearchParams(window.location.search).get('q');
+		if (input && initialQuery) {
+			input.value = initialQuery;
+			runSearch(initialQuery.trim());
+		}
 	}
 </script>

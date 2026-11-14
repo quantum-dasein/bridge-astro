@@ -31,7 +31,34 @@ const news = defineCollection({
 		priority: z.number().optional(),
 		tags: z.array(z.string()),
 		lang: z.string().default('ru'),
+		// Эксперт, под чьей редакцией вышел материал ('larisa'): подпись под заголовком и автор в разметке.
+		expert: z.string().optional(),
+		// Вопросы и ответы статьи — уходят в разметку FAQPage.
+		faq: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
+		// Номер редакции статьи автопилота: по нему обновляется уже опубликованный текст.
+		rev: z.number().optional(),
 	}),
 });
 
-export const collections = { news };
+// Словарь FIDIC: одна страница на термин, на трёх языках (ru-/en-/uz- в имени файла).
+const glossary = defineCollection({
+	loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/glossary' }),
+	schema: z.object({
+		title: z.string(),
+		// Сам термин, как его пишут и ищут: «DAAB», «Notice of Claim».
+		term: z.string(),
+		// Варианты написания: по ним термин находят в статьях и ставят ссылку на эту страницу.
+		aliases: z.array(z.string()).default([]),
+		seoTitle: z.string().optional(),
+		excerpt: z.string(),
+		metaDescription: z.string().optional(),
+		date: z.date(),
+		updated: z.date().optional(),
+		socialImage: z.string().optional(),
+		faq: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
+		lang: z.string().default('ru'),
+		rev: z.number().optional(),
+	}),
+});
+
+export const collections = { news, glossary };

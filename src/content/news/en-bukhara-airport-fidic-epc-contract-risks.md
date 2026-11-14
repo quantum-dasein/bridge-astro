@@ -10,7 +10,20 @@ tags:
   - "FIDIC"
   - "PPP"
   - "EPC contracts"
+expert: "larisa"
+faq:
+  - q: "Which FIDIC contract is used for airport construction in Uzbekistan?"
+    a: "There is no single form. The terminal, designed by the private partner, usually goes under the Yellow Book or an EPC contract, while the airfield, designed by the Employer, goes under the Red Book. In a PPP structure, FIDIC sits within the partnership agreement rather than replacing it."
+  - q: "Who won the tender for the new Bukhara airport?"
+    a: "A consortium of Turkey's Limak İnşaat Sanayi ve Ticaret A.Ş. and Qatar's Hamad Bin Khalid Contracting Company W.L.L. The result was announced by the state-owned Uzbekistan Airports on 12 November 2026; the next step is a 23-year PPP agreement under a BTO model."
+  - q: "What is the BTO model and how does it differ from a standard construction contract?"
+    a: "BTO stands for build, transfer, operate: the private partner builds the facility, operates it and then hands it over to the state. Unlike a contractor, the partner is responsible for the facility for decades, so it assesses whole-life cost rather than the construction estimate."
+  - q: "Why do terminal and airfield disputes arise on airport projects?"
+    a: "The terminal is built by the private partner, while the runway, apron and access road are built by the state. If one project falls behind, the other cannot bring its facility into operation, and a dispute follows over whose delay caused the idle time. That is why the scope boundary and interfaces are fixed before signing."
+  - q: "What did the ICSID ruling in the Turkish investors' case against Uzbekistan show?"
+    a: "On 26 October 2026 the tribunal dismissed all of the claimants' claims in a case registered in 2021. The proceedings took more than five years, and that length alone is an argument for a standing DAAB and early resolution of disagreements on the project."
 lang: "en"
+rev: 2
 ---
 
 New Bukhara International Airport will be built by a consortium of Turkey's Limak İnşaat and Qatar's Hamad Bin Khalid Contracting under a BTO model with a 23-year agreement. For the region's contracting market, the key point is that the project will rest on a package of contracts rather than a single construction contract: a PPP agreement, an EPC contract for the terminal and an operating agreement. That package, more than the announcement of the winner, will decide who pays for delays and rework.
@@ -140,3 +153,5 @@ On 26 October 2026 the tribunal dismissed all of the claimants' claims in a case
 Bridge Consult supports employers and contractors on FIDIC contracts — from reviewing conditions and notices to claims, DAAB proceedings and arbitration. Founder **Larissa Belousova** is a FIDIC Certified Consulting Engineer and an ADB Accredited Contract Management and Dispute Avoidance Specialist.
 
 > Have a question about a live contract? [Contact us](/EN/#contact-form) and we will look at your situation.
+
+<!--bc:aa9dd9cc5f7cc4321:2-->

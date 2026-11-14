@@ -10,7 +10,20 @@ tags:
   - "FIDIC"
   - "DXSh"
   - "EPC-shartnomalar"
+expert: "larisa"
+faq:
+  - q: "Oʻzbekistonda aeroport qurilishida qaysi FIDIC shartnomasi qoʻllaniladi?"
+    a: "Yagona proforma yoʻq: xususiy sherik loyihalaydigan terminal odatda Yellow Book yoki EPC-shartnoma asosida, loyihasi buyurtmachiniki boʻlgan aerodrom qismi esa Red Book asosida quriladi. DXSh sxemasida FIDIC sheriklik kelishuvining oʻrnini bosmaydi, uning ichiga joylashadi."
+  - q: "Yangi Buxoro aeroporti tenderida kim gʻolib chiqdi?"
+    a: "Turkiyaning Limak İnşaat Sanayi ve Ticaret A.Ş. va Qatarning Hamad Bin Khalid Contracting Company W.L.L. kompaniyalari konsorsiumi. Natijalarni 2026-yil 12-noyabrda davlatga qarashli «Uzbekistan Airports» AJ eʼlon qildi. Oldinda BTO modeli boʻyicha 23 yillik DXSh kelishuvi turibdi."
+  - q: "BTO modeli nima va u oddiy pudratdan nimasi bilan farq qiladi?"
+    a: "BTO — build, transfer, operate: xususiy sherik obyektni quradi, uni boshqaradi va keyin davlatga topshiradi. Pudratdan farqli ravishda sherik obyekt uchun oʻnlab yillar javob beradi, shuning uchun qurilish smetasini emas, hayotiy sikl qiymatini baholaydi."
+  - q: "Nega bunday loyihalarda terminal va aerodrom oʻrtasida nizo kelib chiqadi?"
+    a: "Terminalni xususiy sherik, uchish-qoʻnish yoʻlagi, perron va kirish yoʻlini esa davlat quradi. Bir qurilish ortda qolsa, ikkinchisi obyektni ishga tushira olmaydi va turib qolishga kimning kechikishi sabab boʻlgani haqida nizo boshlanadi. Shuning uchun hajmlar chegarasi va interfeyslar imzolashdan oldin qayd etiladi."
+  - q: "ICSIDning turk investorlari va Oʻzbekiston ishi boʻyicha qarori nimani koʻrsatdi?"
+    a: "2026-yil 26-oktyabrda tribunal 2021-yilda roʻyxatga olingan daʼvo boʻyicha arizachilarning barcha talablarini rad etdi. Ish koʻrish besh yildan ortiq davom etdi. Bu muddatning oʻzi doimiy DAAB va loyihadagi kelishmovchiliklarni erta hal qilish foydasiga dalildir."
 lang: "uz"
+rev: 2
 ---
 
 «Yangi Buxoro» aeroportini turkiyalik Limak İnşaat va qatarlik Hamad Bin Khalid Contracting konsorsiumi BTO modeli asosida quradi, kelishuv muddati 23 yil. Mintaqadagi shartnomalar bozori uchun buning maʼnosi aniq: loyihada bitta pudrat shartnomasi emas, «davlat-xususiy sheriklik (DXSh) kelishuvi, terminal boʻyicha EPC-shartnoma va boshqaruv shartnomasi» toʻplami paydo boʻladi. Kechikish va qayta ishlash xarajatlarini kim toʻlashini gʻolib haqidagi xabar emas, aynan shu toʻplam belgilaydi.
@@ -127,7 +140,7 @@ Terminalni xususiy sherik, uchish-qoʻnish yoʻlagi, perron va kirish yoʻlini e
 
 2026-yil 26-oktyabrda tribunal 2021-yilda roʻyxatga olingan daʼvo boʻyicha arizachilarning barcha talablarini rad etdi. Ish koʻrish besh yildan ortiq davom etdi. Bu muddatning oʻzi doimiy DAAB va loyihadagi kelishmovchiliklarni erta hal qilish foydasiga dalildir.
 
-## Maqola nimalarga tayanadi
+## Material nimalarga tayanadi
 
 - [Spot – Oʻzbekiston biznes yangiliklari: «Buxoroning yangi aeroportini Turkiya va Qatar kompaniyalari quradi»](https://www.spot.uz/ru/2026/11/12/bukhara-airport-winners/)
 - [Gazeta.uz: «Xalqaro arbitraj turk investorlarining Oʻzbekistonga nisbatan talablarini rad etdi»](https://www.gazeta.uz/ru/2026/11/13/icsid/)
@@ -140,3 +153,5 @@ Terminalni xususiy sherik, uchish-qoʻnish yoʻlagi, perron va kirish yoʻlini e
 Bridge Consult buyurtmachi va pudratchilarni FIDIC shartnomalarida qoʻllab-quvvatlaydi: shartlar va bildirishnomalarni tekshirishdan tortib daʼvolar, DAAB va arbitrajgacha. Kompaniya asoschisi **Larisa Belousova** — FIDIC Certified Consulting Engineer, OTB akkreditatsiyasidan oʻtgan shartnomalarni boshqarish va nizolarning oldini olish boʻyicha mutaxassis.
 
 > Amaldagi shartnoma boʻyicha savolingiz bormi? [Biz bilan bogʻlaning](/UZ/#contact-form) — vaziyatingizni birga koʻrib chiqamiz.
+
+<!--bc:aa9dd9cc5f7cc4321:2-->

@@ -4,6 +4,8 @@ import Layout from '../../layouts/Layout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import NewsPicture from '../../components/NewsPicture.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
+import ExpertByline from '../../components/ExpertByline.astro';
+import { articleAuthor, faqJsonLd } from '../../data/authors';
 import RelatedNews from '../../components/RelatedNews.astro';
 import TelegramCta from '../../components/TelegramCta.astro';
 export const prerender = true;
@@ -64,11 +66,7 @@ const newsArticleJsonLd = {
 		'@type': 'WebPage',
 		'@id': pageUrl,
 	},
-	author: {
-		'@type': 'Organization',
-		name: 'Bridge Consult',
-		url: new URL('/', pageUrl).toString(),
-	},
+	author: articleAuthor(post.data.expert, pageUrl),
 	publisher: {
 		'@type': 'Organization',
 		name: 'Bridge Consult',
@@ -111,6 +109,7 @@ const videoJsonLd = video
 		<meta property="article:modified_time" content={(post.data.updated ?? date).toISOString()} />
 		{tags.map((tag) => <meta property="article:tag" content={tag} />)}
 		<script type="application/ld+json" set:html={JSON.stringify(newsArticleJsonLd)}></script>
+		{post.data.faq?.length && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd(post.data.faq))}></script>}
 		{videoJsonLd && <script type="application/ld+json" set:html={JSON.stringify(videoJsonLd)}></script>}
 	</Fragment>
 
@@ -157,6 +156,7 @@ const videoJsonLd = video
 					{excerpt}
 				</p>
 
+				{post.data.expert && <ExpertByline expert={post.data.expert} lang="ru" updated={post.data.updated} />}
 				<div class="news-body" data-aos="fade-up" data-aos-delay="100">
 					<Content />
 				</div>
