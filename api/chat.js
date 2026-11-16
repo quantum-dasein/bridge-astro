@@ -9,7 +9,10 @@ const ALLOWED_ORIGINS = [
   'https://www.bridgeconsult.uz',
   'https://bridgeconsult.uz',
 ];
-const MODEL = 'claude-haiku-4-5';   // site assistant — kept on Haiku for cost
+// Site assistant — kept on Haiku for cost. ANTHROPIC_BASE_URL lets the key come from an
+// Anthropic-compatible gateway (currently fableaiapi); SITE_CHAT_MODEL overrides the model.
+const MODEL = process.env.SITE_CHAT_MODEL || 'claude-haiku-5-5';
+const API_BASE = (process.env.ANTHROPIC_BASE_URL || 'https://api.anthropic.com').replace(/\/+$/, '').replace(/\/v1$/, '');
 const MAX_TOKENS = 800;
 
 export default async function handler(req) {
@@ -31,7 +34,7 @@ export default async function handler(req) {
   const messages = Array.isArray(body.messages) ? body.messages.slice(-10) : [];
   if (!messages.length) return new Response('Bad Request', { status: 400 });
 
-  const upstream = await fetch('https://api.anthropic.com/v1/messages', {
+  const upstream = await fetch(`${API_BASE}/v1/messages`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
