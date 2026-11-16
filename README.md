@@ -47,6 +47,22 @@ Two Vercel Edge functions sit outside the Astro build in `api/`:
 | `TELEGRAM_BOT_TOKEN` | `api/apply.js` | for form delivery |
 | `TELEGRAM_CHAT_IDS` | `api/apply.js` | comma-separated recipient ids |
 | `FORMSPREE_ID` | `api/apply.js` | optional email copy |
+| `GERMANY_TELEGRAM_BOT_TOKEN` | `api/germany-apply.js` | Germany 2027 bot token, production secret |
+| `GERMANY_TELEGRAM_CHAT_IDS` | `api/germany-apply.js` | approved recipient chat ids for the Germany bot |
+| `GERMANY_TELEGRAM_WEBHOOK_SECRET` | `api/germany-telegram.js` | Telegram webhook authentication secret |
+
+The Germany 2027 landing lives in `public/germany-2027/` (RU and `en.html`).
+Its form uses `/api/germany-apply`, independently of the existing forms.
+Submissions are persisted in the existing Redis store in separate per-recipient
+pending hashes before the API reports success. Telegram failures leave them queued.
+The authenticated `/api/germany-telegram` webhook drains each approved recipient's
+queue when they start or message the bot. Other accounts receive their own Telegram
+ID on `/start`, with a notice that they are not registered for notifications;
+they never receive application data. Start diagnostics expire after 24 hours. Configure it
+using Telegram `setWebhook` with the matching secret token. The same endpoint
+supports an authenticated GET returning pending counts (no applicant data).
+Run `node --test scripts/test-germany-apply.mjs` to check validation, durable
+acceptance during Telegram failures, webhook authentication and delivery after Start.
 
 Telegram will not let a bot message someone who has never pressed Start on it.
 A recipient in `TELEGRAM_CHAT_IDS` who has not done so returns `chat not found`

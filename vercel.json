@@ -109,6 +109,11 @@
       "source": "/contract-support/uz",
       "destination": "/contract-support/uz/",
       "permanent": true
+    },
+    {
+      "source": "/germany-2027",
+      "destination": "/germany-2027/",
+      "permanent": true
     }
   ],
   "headers": [

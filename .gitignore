@@ -27,3 +27,6 @@ pnpm-debug.log*
 
 # local scratch: screenshots, extracts and one-off tooling
 tmp/
+
+.vercel
+.env*
