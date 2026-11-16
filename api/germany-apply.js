@@ -36,7 +36,7 @@ export default async function handler(req) {
     '🔔 Новая заявка — Германия 2027',
     `Имя: ${values.name}`, `Организация / должность: ${values.company}`,
     `Email: ${values.email}`, `Интересующие темы: ${values.message || 'Не указаны'}`,
-    `Язык страницы: ${body.language === 'en' ? 'EN' : 'RU'}`,
+    `Язык страницы: ${({ en: 'EN', de: 'DE', uz: 'UZ' })[body.language] || 'RU'}`,
     'Программа: 19–26 апреля 2027, Галле / Лейпциг',
   ].join('\n\n');
   try {

@@ -98,9 +98,11 @@ const newsIndexAlternates = {
 };
 
 const entries = [];
-const germanyAlternates = { ru: '/germany-2027/', en: '/germany-2027/en.html' };
+const germanyAlternates = { ru: '/germany-2027/', en: '/germany-2027/en.html', de: '/germany-2027/de.html', uz: '/germany-2027/uz.html' };
 entries.push(urlEntry({ loc: '/germany-2027/', alternates: germanyAlternates, priority: '0.8' }));
 entries.push(urlEntry({ loc: '/germany-2027/en.html', alternates: germanyAlternates, priority: '0.7' }));
+entries.push(urlEntry({ loc: '/germany-2027/de.html', alternates: germanyAlternates, priority: '0.7' }));
+entries.push(urlEntry({ loc: '/germany-2027/uz.html', alternates: germanyAlternates, priority: '0.7' }));
 
 entries.push(urlEntry({ loc: '/', alternates: homeAlternates, priority: '1.0' }));
 entries.push(urlEntry({ loc: '/EN/', alternates: homeAlternates, priority: '0.9' }));
