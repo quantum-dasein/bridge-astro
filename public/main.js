@@ -498,16 +498,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1 }).observe(mapIframe);
 });
 
-// Lazy-load model-viewer (откладывает загрузку GLB до появления элемента в экране)
+// Lazy-load model-viewer: и сама библиотека (~900 КБ JS), и GLB-модели
+// грузятся, только когда элемент подходит к экрану. Раньше библиотека
+// стояла <script type="module"> в <head> и грузилась на каждом заходе.
+var BC_MODEL_VIEWER_SRC = 'https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js';
+function bcLoadModelViewer() {
+    if (window.customElements && customElements.get('model-viewer')) return;
+    if (document.querySelector('script[data-bc-model-viewer]')) return;
+    var s = document.createElement('script');
+    s.type = 'module';
+    s.src = BC_MODEL_VIEWER_SRC;
+    s.setAttribute('data-bc-model-viewer', '');
+    document.head.appendChild(s);
+}
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('model-viewer[data-src]').forEach(mv => {
+    var mvs = document.querySelectorAll('model-viewer[data-src]');
+    if (!mvs.length) return;
+    if (!('IntersectionObserver' in window)) {
+        bcLoadModelViewer();
+        mvs.forEach(mv => mv.setAttribute('src', mv.dataset.src));
+        return;
+    }
+    mvs.forEach(mv => {
         new IntersectionObserver((entries, obs) => {
             entries.forEach(entry => {
                 if (!entry.isIntersecting) return;
+                bcLoadModelViewer();
                 mv.setAttribute('src', mv.dataset.src);
                 obs.unobserve(entry.target);
             });
-        }, { threshold: 0.1 }).observe(mv);
+        }, { rootMargin: '600px 0px' }).observe(mv);
     });
 });
 

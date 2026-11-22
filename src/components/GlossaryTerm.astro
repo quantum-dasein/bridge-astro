@@ -30,13 +30,24 @@ const others = (await getCollection('glossary'))
 	.sort((a, b) => a.data.term.localeCompare(b.data.term))
 	.slice(0, 14);
 
-// Статьи, где этот термин — главный герой: по названию и тегам.
-const needles = [d.term, ...d.aliases].map((s) => s.toLowerCase());
+// Статьи о термине: сначала те, где он в названии или тегах, затем те,
+// где он встречается в тексте. Это ещё и внутренние ссылки, по которым
+// Google находит EN/UZ-статьи, так что список длиннее прежних четырёх.
+const needles = [d.term, ...d.aliases].map((s) => s.toLowerCase()).filter((s) => s.length >= 3);
+const mentions = (text: string) => {
+	const low = text.toLowerCase();
+	return needles.some((n) => new RegExp(`(^|[^\\p{L}\\p{N}])${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|[^\\p{L}\\p{N}])`, 'u').test(low));
+};
 const news = (await getCollection('news'))
 	.filter((p) => (p.data.lang ?? 'ru') === lang)
-	.filter((p) => needles.some((n) => p.data.title.toLowerCase().includes(n) || p.data.tags.some((tag) => tag.toLowerCase() === n)))
-	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-	.slice(0, 4);
+	.map((p) => ({
+		p,
+		score: needles.some((n) => p.data.title.toLowerCase().includes(n) || p.data.tags.some((tag) => tag.toLowerCase() === n)) ? 2 : mentions(p.body ?? '') ? 1 : 0,
+	}))
+	.filter((x) => x.score > 0)
+	.sort((a, b) => b.score - a.score || b.p.data.date.valueOf() - a.p.data.date.valueOf())
+	.slice(0, 6)
+	.map((x) => x.p);
 const newsUrl = (id: string) => {
 	const s = id.replace(/\.(md|mdx)$/i, '');
 	const base = s.replace(/^(ru|en|uz)-/, '');

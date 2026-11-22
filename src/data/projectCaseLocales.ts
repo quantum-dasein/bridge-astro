@@ -90,9 +90,9 @@ const text: Record<'en' | 'uz', Record<ProjectSlug, ProjectText>> = {
 			category: 'Road construction',
 			client: 'Azerbaijani company',
 			institution: 'Asian Development Bank (ADB)',
-			metaTitle: 'SRRP Road Reconstruction | FIDIC Red Book and ADB',
+			metaTitle: 'SRRP Uzbekistan (ADB): Lots 1-3, Roads 4R105 and 4R100',
 			metaDescription:
-				'Bridge Consult case study: reconstruction of 107 km of roads 4R105 and 4R100 under the FIDIC Red Book with ADB financing.',
+				'SRRP/CW Lots 1-3 (ADB): 107 km of roads 4R105 and 4R100 rebuilt under the FIDIC Red Book. Contractor support on notices, variations and records.',
 			summary:
 				'SRRP/CW/Lot 1, SRRP/CW/Lot 2 and SRRP/CW/Lot 3: reconstruction of 107 km of road 4R105 (km 5-70) and road 4R100 (km 128-174).',
 			context:
